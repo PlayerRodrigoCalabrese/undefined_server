@@ -19,9 +19,9 @@ LIMITE_STATS_SIN_BUFF = 111,12;128,7;117,6;210,40;211,40;212,40;213,40;214,40;25
 
 PARAM_VIP_CRAFT_SPEED = true
 PARAM_CORREGIR_NOMBRE_JUGADOR = true
-NOMBRE_SERVER = TEST_ADMIN
-MENSAJE_BIENVENIDA_1 = asdfasd\nprobando como va todo mañana se é à ç 
-MENSAJE_REBOOT = Testing Reboot
+NOMBRE_SERVER = UndefinedEMU
+MENSAJE_BIENVENIDA_1 = <b>Undefined EMU - Basado en BUSTEMU</b> - http://privatedofus.net
+MENSAJE_REBOOT = Reinicio automatico
 PUBLICIDAD_1 = Quelque chose vous empêche de jouer correctement ? Signalez le via le bouton de rapport en haut à droite !
 PUBLICIDAD_2 = Si tienes ideas para mejorar el server, pues escribelas en el panel de reportes
 PUBLICIDAD_3 = No te olvides de usar la wikia del server, para ayudarte en el juego

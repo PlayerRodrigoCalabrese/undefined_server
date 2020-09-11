@@ -455,15 +455,15 @@ public class Comandos {
 					enLinea %= 60000L;
 					final int segundo = (int) (enLinea / 1000L);
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
-						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "====================\n" + MainServidor.NOMBRE_SERVER
-						+ " (ELBUSTEMU " + Constantes.VERSION_EMULADOR + ")\n\nUptime: " + dia + "j " + hora + "h " + minuto + "m "
+						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "================================================\n" + MainServidor.NOMBRE_SERVER
+						+ " (UndefinedEMU)\n\nUptime: " + dia + "j " + hora + "h " + minuto + "m "
 						+ segundo + "s\n" + "Joueurs en ligne: " + ServidorServer.nroJugadoresLinea() + "\n"
-						+ "Record de connexions: " + ServidorServer.getRecordJugadores() + "\n" + "====================");
+						+ "Record de connexions: " + ServidorServer.getRecordJugadores() + "\n" + "================================================");
 					} else {
-						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "====================\n" + MainServidor.NOMBRE_SERVER
-						+ " (ELBUSTEMU " + Constantes.VERSION_EMULADOR + ")\n\nEnLínea: " + dia + "d " + hora + "h " + minuto + "m "
+						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "================================================\n" + MainServidor.NOMBRE_SERVER
+						+ " (UndefinedEMU)\n\nOnline: " + dia + "d " + hora + "h " + minuto + "m "
 						+ segundo + "s\n" + "Jugadores en línea: " + ServidorServer.nroJugadoresLinea() + "\n"
-						+ "Record de conexión: " + ServidorServer.getRecordJugadores() + "\n" + "====================");
+						+ "Record de conexión: " + ServidorServer.getRecordJugadores() + "\n" + "================================================");
 					}
 				} catch (final Exception e) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Ocurrio un error");

@@ -117,10 +117,9 @@ public class Consola extends Thread {
 					final int minuto = (int) (enLinea / 60000L);
 					enLinea %= 60000L;
 					final int segundo = (int) (enLinea / 1000L);
-					System.out.println("===========\n" + MainServidor.NOMBRE_SERVER + " (ELBUSTEMU " + Constantes.VERSION_EMULADOR
-					+ ")\n\nEnLínea: " + dia + "d " + hora + "h " + minuto + "m " + segundo + "s\n" + "Jugadores en línea: "
+					System.out.println("================================================\n" + MainServidor.NOMBRE_SERVER + " (UndefinedEMU)\n\nOnline: " + dia + "d " + hora + "h " + minuto + "m " + segundo + "s\n" + "Jugadores en línea: "
 					+ ServidorServer.nroJugadoresLinea() + "\n" + "Record de conexión: " + ServidorServer.getRecordJugadores()
-					+ "\n" + "===========");
+					+ "\n" + "================================================");
 					break;
 				case "SAVE" :
 				case "GUARDAR" :

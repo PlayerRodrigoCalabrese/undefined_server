@@ -11,7 +11,7 @@
  Target Server Version : 100413
  File Encoding         : 65001
 
- Date: 10/09/2020 21:01:30
+ Date: 11/09/2020 09:45:52
 */
 
 SET NAMES utf8mb4;
@@ -294,7 +294,7 @@ INSERT INTO `casas` VALUES (345, 0, 1000000, 0, '-', 0);
 INSERT INTO `casas` VALUES (346, 0, 1000000, 0, '-', 0);
 INSERT INTO `casas` VALUES (347, 0, 1000000, 0, '-', 0);
 INSERT INTO `casas` VALUES (348, 0, 1000000, 0, '-', 0);
-INSERT INTO `casas` VALUES (349, 2, 0, 0, '-', 0);
+INSERT INTO `casas` VALUES (349, 0, 0, 0, '-', 0);
 INSERT INTO `casas` VALUES (350, 0, 1000000, 0, '-', 0);
 INSERT INTO `casas` VALUES (351, 0, 1000000, 0, '-', 0);
 INSERT INTO `casas` VALUES (352, 0, 1000000, 0, '-', 0);
@@ -591,7 +591,7 @@ INSERT INTO `casas` VALUES (650, 0, 1000000, 0, '-', 0);
 INSERT INTO `casas` VALUES (651, 0, 1000000, 0, '-', 0);
 INSERT INTO `casas` VALUES (652, 0, 1000000, 0, '-', 0);
 INSERT INTO `casas` VALUES (653, 0, 1000000, 0, '-', 0);
-INSERT INTO `casas` VALUES (654, 1, 0, 1, '012_____', 6);
+INSERT INTO `casas` VALUES (654, 0, 0, 1, '012_____', 6);
 INSERT INTO `casas` VALUES (655, 0, 0, 0, '-', 0);
 INSERT INTO `casas` VALUES (656, 0, 0, 0, '-', 0);
 INSERT INTO `casas` VALUES (657, 0, 1000000, 0, '-', 0);
@@ -1732,7 +1732,7 @@ CREATE TABLE `comandos`  (
   `comando` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `date` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 9231 CHARACTER SET = latin1 COLLATE = latin1_spanish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 9247 CHARACTER SET = latin1 COLLATE = latin1_spanish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of comandos
@@ -10967,6 +10967,22 @@ INSERT INTO `comandos` VALUES (9227, 'Xuqup', 'infos', '10 sep. 2020 10:18:45');
 INSERT INTO `comandos` VALUES (9228, 'Xuqup', 'infos', '10 sep. 2020 10:18:54');
 INSERT INTO `comandos` VALUES (9229, 'Xuqup', 'info', '10 sep. 2020 10:18:57');
 INSERT INTO `comandos` VALUES (9230, 'Xuqup', 'infos', '10 sep. 2020 10:46:10');
+INSERT INTO `comandos` VALUES (9231, 'Player-Xd', 'infos', '11 sep. 2020 08:58:27');
+INSERT INTO `comandos` VALUES (9232, 'Player-Xd', 'help', '11 sep. 2020 09:00:15');
+INSERT INTO `comandos` VALUES (9233, 'Player-Xd', 'infos', '11 sep. 2020 09:03:44');
+INSERT INTO `comandos` VALUES (9234, 'Player-Xd', 'infos', '11 sep. 2020 09:03:53');
+INSERT INTO `comandos` VALUES (9235, 'Player-Xd', 'infos', '11 sep. 2020 09:07:40');
+INSERT INTO `comandos` VALUES (9236, 'Player-Xd', 'npc', '11 sep. 2020 09:13:23');
+INSERT INTO `comandos` VALUES (9237, 'Player-Xd', 'mapinfo', '11 sep. 2020 09:13:25');
+INSERT INTO `comandos` VALUES (9238, 'Player-Xd', 'mapainfo', '11 sep. 2020 09:13:29');
+INSERT INTO `comandos` VALUES (9239, 'Player-Xd', 'info', '11 sep. 2020 09:13:31');
+INSERT INTO `comandos` VALUES (9240, 'Player-Xd', 'infomapa', '11 sep. 2020 09:13:33');
+INSERT INTO `comandos` VALUES (9241, 'Player-Xd', 'info_mapa', '11 sep. 2020 09:13:49');
+INSERT INTO `comandos` VALUES (9242, 'Player-Xd', 'exit', '11 sep. 2020 09:27:53');
+INSERT INTO `comandos` VALUES (9243, 'Player-Xd', 'infos', '11 sep. 2020 09:28:23');
+INSERT INTO `comandos` VALUES (9244, 'Player-Xd', 'mapa_info', '11 sep. 2020 09:31:25');
+INSERT INTO `comandos` VALUES (9245, 'Player-Xd', 'infos', '11 sep. 2020 09:35:59');
+INSERT INTO `comandos` VALUES (9246, 'Player-Xd', 'infos', '11 sep. 2020 09:41:32');
 
 -- ----------------------------
 -- Table structure for cuentas_servidor
@@ -10988,7 +11004,7 @@ CREATE TABLE `cuentas_servidor`  (
   `mensajes` text CHARACTER SET latin1 COLLATE latin1_spanish_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `cuenta`(`cuenta`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 18 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 22 CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of cuentas_servidor
@@ -11002,6 +11018,7 @@ INSERT INTO `cuentas_servidor` VALUES (7, 'beta6', 0, '', '', '', '', '', 0, '',
 INSERT INTO `cuentas_servidor` VALUES (8, 'beta7', 0, '', '', '', '', '', 0, '', '2018~5~21~14~32~28', '127.0.0.1', '');
 INSERT INTO `cuentas_servidor` VALUES (9, 'beta8', 0, '', '', '', '', '', 0, '', '2016~5~28~0~17~27', '127.0.0.1', '');
 INSERT INTO `cuentas_servidor` VALUES (17, 'beta9', 0, '', '', '', '', '', 0, '', '', '', '');
+INSERT INTO `cuentas_servidor` VALUES (21, 'admin', 0, '', '', '', '', '', 0, '', '2020~9~11~9~35~58', '127.0.0.1', '');
 
 -- ----------------------------
 -- Table structure for denuncias
@@ -15909,6 +15926,16 @@ CREATE TABLE `objetos`  (
 ) ENGINE = InnoDB CHARACTER SET = latin1 COLLATE = latin1_spanish_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of objetos
+-- ----------------------------
+INSERT INTO `objetos` VALUES (1, 2473, 1, -1, '76#2#0#0#0d0+2,77#2#0#0#0d0+2,7b#2#0#0#0d0+2,7c#2#0#0#0d0+2,7e#2#0#0#0d0+2', 0, 0);
+INSERT INTO `objetos` VALUES (2, 2474, 1, -1, '76#2#0#0#0d0+2,77#2#0#0#0d0+2,7b#2#0#0#0d0+2,7c#2#0#0#0d0+2,7e#2#0#0#0d0+2', 0, 0);
+INSERT INTO `objetos` VALUES (3, 2475, 1, -1, '76#2#0#0#0d0+2,77#2#0#0#0d0+2,7b#2#0#0#0d0+2,7c#2#0#0#0d0+2,7e#2#0#0#0d0+2', 0, 0);
+INSERT INTO `objetos` VALUES (4, 2476, 1, -1, '76#2#0#0#0d0+2,77#2#0#0#0d0+2,7b#2#0#0#0d0+2,7c#2#0#0#0d0+2,7e#2#0#0#0d0+2', 0, 0);
+INSERT INTO `objetos` VALUES (5, 2477, 1, -1, '76#2#0#0#0d0+2,77#2#0#0#0d0+2,7b#2#0#0#0d0+2,7c#2#0#0#0d0+2,7e#2#0#0#0d0+2', 0, 0);
+INSERT INTO `objetos` VALUES (6, 2478, 1, -1, '76#2#0#0#0d0+2,77#2#0#0#0d0+2,7b#2#0#0#0d0+2,7c#2#0#0#0d0+2,7e#2#0#0#0d0+2', 0, 0);
+
+-- ----------------------------
 -- Table structure for personajes
 -- ----------------------------
 DROP TABLE IF EXISTS `personajes`;
@@ -15978,6 +16005,11 @@ CREATE TABLE `personajes`  (
   `orden` text CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = MyISAM CHARACTER SET = latin1 COLLATE = latin1_swedish_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of personajes
+-- ----------------------------
+INSERT INTO `personajes` VALUES (1, 'Player-Xd', 0, 9, -1, -1, -1, 10000, 0, 0, 10000, 1, 0, 100, 90, 0, 0, 0, 1, 21, 0, 0, 0, 0, 0, 0, 1, 0, '*#%!pi$:?^¡@~', 10326, 357, 100, '161,1,b;164,1,c;169,1,d', '1|2|3|4|5|6', '10292,299', '164,528,844,935,951,1158,1242,1841,2191,3022,3250,4263,4739,5295,6137,6855,6954,7411,8037,8088,8125,8163,8437,8785,9454,10297,10304,10317,10349,10643,11170,11210', '', 0, -1, 0, '', 0, 0, 0, 0, 0, 0, 0, 8200, 8, 0, 7667711, '', '', '', '', '', 0, '', 0, '', -1, '0,0');
 
 -- ----------------------------
 -- Table structure for prismas
