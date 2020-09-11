@@ -1,0 +1,423 @@
+<commands>
+
+        <item type="startup" label="StartUp">
+
+		<item type="sendCommand" command="infos" />
+
+		<item type="sendChat" command=".infos" />
+        </item>
+
+
+
+
+        <item type="static" label="Menu Admin Eratzo" />
+
+	<item type="static" label="Acciones Sobre el Jugador" />
+
+        <item type="loadXML" label="Recargar Fichero XML" />
+		
+		<item type="sendCommand" label="Panel admin" command="panel_admin" />
+
+
+
+	<item type="menu" label="Informaciones">
+
+		<item type="sendCommand" label="Informar Bug" command="a %p Si tienes un error o algun inconveniente, puedes hacerlo mediante el boton Comunicar un bug que se encuentra en el menu www.eratzo.com" />
+
+		<item type="sendCommand" label="Aviso De mute 1" command="a %p Atencion Este es Tu 1 Aviso Al 2 Seras Muteado 1 hora !" />
+
+		<item type="sendCommand" label="Aviso Sancion 1 dia" command="a %p Atencion Este es Tu 1 Aviso Al 2 Seras Sancionado 1 Dia !" />
+
+                <item type="sendCommand" label="Aviso De Baneo" command="a %p Atencion Este es Tu 1 Aviso Como Lo vuelvas A Repetir Seras Baneado Indinitidamente !" />
+
+                <item type="sendCommand" label="Aviso Insultos Comercio" command="a %p Porfavor Usa El Canal Comercio Para Comerciar O Negociar Y NO PARA INSULTAR !" />
+
+		<item type="sendCommand" label="Aviso Comercio Adecuado" command="a %p Porfavor Usa El Canal Comercio Para Comerciar O Negociar !" />
+
+		<item type="sendCommand" label="Aviso De Canal Canal Reclutamiento !" command="a %p Porfavor Usa El Canal Reclutamiento Para Reclutar o Pedir Ayuda Para Alguna Dung !" />
+	</item>
+
+
+
+                                 <item type="menu" label="Zonas Incarnam">
+
+                    <item type="sendCommand" label="Templo" command="teleport 10258 271 %p" />
+
+                    <item type="sendCommand" label="Plaza Mercante" command="teleport 10301 128 %p" />
+
+                    <item type="sendCommand" label="Zaap Bosque" command="teleport 10349 282 %p" />
+
+                    <item type="sendCommand" label="Chafers" command="teleport 10341 382 %p" />
+
+                    <item type="sendCommand" label="Lago" command="teleport 10332 387 %p" />
+
+                    <item type="sendCommand" label="Dung Incarnam" command="teleport 10352 298 %p" />
+
+                    <item type="sendCommand" label="Milicia" command="teleport 10307 323 %p" />
+
+                    <item type="sendCommand" label="Espada gigante" command="teleport 10280 212 %p" />
+
+                    <item type="sendCommand" label="Olmo de incarnam" command="teleport 10287 294 %p" />
+
+
+                    <item type="sendCommand" label="Miliratas" command="teleport 10356 196 %p" />
+
+	</item>
+
+
+                                 <item type="menu" label="Zonas Astrub">
+
+
+                         <item type="menu" label="Talleres">
+
+                    <item type="sendCommand" label="Taller Sastres" command="teleport 7548 295 %p" />
+
+                    <item type="sendCommand" label="Taller Joyeros" command="teleport 7544 337 %p" />
+
+                    <item type="sendCommand" label="Taller Zapateros" command="teleport 7616 340 %p" />
+
+                    <item type="sendCommand" label="Taller Escultores" command="teleport 7576 170 %p" />
+
+                    <item type="sendCommand" label="Taller Herreros" command="teleport 7614 216 %p" />
+
+                    <item type="sendCommand" label="Taller Alquimistas" command="teleport 7760 316 %p" />
+
+                    <item type="sendCommand" label="Taller Panaderos" command="teleport 7546 316 %p" />
+
+                    <item type="sendCommand" label="Pescaderos y pescadores" command="teleport 7596 279 %p" />
+
+                    <item type="sendCommand" label="Taller Mineros" command="teleport 7615 202 %p" />
+
+                    <item type="sendCommand" label="Carniceros y Cazadores" command="teleport 7581 339 %p" />
+
+                    <item type="sendCommand" label="Taller Lenadores" command="teleport 8708 284 %p" />
+
+                    <item type="sendCommand" label="Taller Campecinos" command="teleport 7613 353 %p" />
+
+	                  </item>
+
+
+                         <item type="menu" label="Mercadillos">
+
+                    <item type="sendCommand" label="Sastres" command="teleport 7513 280 %p" />
+
+                    <item type="sendCommand" label="joyeros" command="teleport 7514 280 %p" />
+
+                    <item type="sendCommand" label="Zapateros" command="teleport 7602 309 %p" />
+
+                    <item type="sendCommand" label="Herreros" command="teleport 7511 280 %p" />
+
+                    <item type="sendCommand" label="Escultores" command="teleport 7512 280 %p" />
+
+                    <item type="sendCommand" label="Manitas" command="teleport 12262 280 %p" />
+
+                    <item type="sendCommand" label="Alquimistas" command="teleport 7516 280 %p" />
+
+                    <item type="sendCommand" label="Panaderos" command="teleport 7510 280 %p" />
+
+                    <item type="sendCommand" label="Campecinos" command="teleport 7397 321 %p" />
+
+                    <item type="sendCommand" label="Lenadores" command="teleport 7289 337 %p" />
+
+                    <item type="sendCommand" label="Pescaderos" command="teleport 7501 280 %p" />
+
+                    <item type="sendCommand" label="Pescadores" command="teleport 7348 328 %p" />
+
+                    <item type="sendCommand" label="Cazadores" command="teleport 7350 264 %p" />
+
+                    <item type="sendCommand" label="Carniceros" command="teleport 7515 280 %p" />
+
+                    <item type="sendCommand" label="Mineros" command="teleport 7443 381 %p" />
+
+                    <item type="sendCommand" label="Recursos" command="teleport 7413 328 %p" />
+
+	                  </item>
+
+                    <item type="sendCommand" label="Zaap Astrub" command="teleport 7411 311 %p" />
+
+                    <item type="sendCommand" label="Banco Astrub" command="teleport 7549 367 %p" />
+
+                    <item type="sendCommand" label="Taberna Astrub" command="teleport 7573 338 %p" />
+
+                    <item type="sendCommand" label="Templo Gremios" command="teleport 2195 373 %p" />
+
+                    <item type="sendCommand" label="Campos de Astrub" command="teleport 7421 255 %p" />
+
+                    <item type="sendCommand" label="Bosque de Astrub" command="teleport 7371 367 %p" />
+
+                    <item type="sendCommand" label="Praderas de Astrub" command="teleport 8579 338 %p" />
+
+                    <item type="sendCommand" label="Explotacion Minera" command="teleport 8572 355 %p" />
+
+                    <item type="sendCommand" label="Playa de los Pischis" command="teleport 10183 287 %p" />
+
+                    <item type="sendCommand" label="Tainela (jalatos)" command="teleport 1856 312 %p" />
+
+	</item>
+
+
+                                 <item type="menu" label="Zonas Amakna">
+
+
+
+                          <item type="menu" label="Templos">
+
+                    <item type="sendCommand" label="Templo Sacrogrito" command="teleport 6949 212 %p" />
+
+                    <item type="sendCommand" label="Templo Anutrof" command="teleport 1470 215 %p" />
+
+                    <item type="sendCommand" label="Templo Zurcarak" command="teleport 1544 132 %p" />
+
+                    <item type="sendCommand" label="Templo Sram" command="teleport 6926 137 %p" />
+
+                    <item type="sendCommand" label="Templo Ocra" command="teleport 1558 279 %p" />
+
+                    <item type="sendCommand" label="Templo Yopuka" command="teleport 1549 251 %p" />
+
+                    <item type="sendCommand" label="Templo Xelor" command="teleport 1469 284 %p" />
+
+                    <item type="sendCommand" label="Templo Aniripsa" command="teleport 6928 122 %p" />
+
+                    <item type="sendCommand" label="Templo Osamodas" command="teleport 1546 271 %p" />
+
+                    <item type="sendCommand" label="Templo Feca" command="teleport 1554 355 %p" />
+
+                    <item type="sendCommand" label="Templo Sadida" command="teleport 1466 254 %p" />
+
+                    <item type="sendCommand" label="Templo Pandawa" command="teleport 8490 266 %p" />
+
+
+	                  </item>
+
+
+
+                    <item type="sendCommand" label="zaap Bonta" command="teleport 4263 171 %p" />
+
+                    <item type="sendCommand" label="zaap Brakmar" command="teleport 5295 488 %p" />
+
+                    <item type="sendCommand" label="Bosque Abraknidos" command="teleport 2181 210 %p" />
+
+                    <item type="sendCommand" label="Montana Crujidores (Kwaks)" command="teleport 2071 314 %p" />
+
+                    <item type="sendCommand" label="Escarahojas" command="teleport 1298 179 %p" />
+
+                    <item type="sendCommand" label="Gelatinas" command="teleport 1371 340 %p" />
+
+                    <item type="sendCommand" label="Porcos" command="teleport 1441 127 %p" />
+
+                    <item type="sendCommand" label="Drago Huevos" command="teleport 1407 295 %p" />
+
+                    <item type="sendCommand" label="Territorio Bandidos" command="teleport 1111 262 %p" />
+
+                    <item type="sendCommand" label="Campamento Bworks" command="teleport 1659 268 %p" />
+
+                    <item type="sendCommand" label="Bosque de caliptos" command="teleport 9137 278 %p" />
+
+                    <item type="sendCommand" label="Pantanos Sin Fondo" command="teleport 9104 441 %p" />
+
+                    <item type="sendCommand" label="Montana Koalaks" command="teleport 8910 368 %p" />
+
+                    <item type="sendCommand" label="Valle de la Muerte" command="teleport 9499 440 %p" />
+
+                    <item type="sendCommand" label="Landa Sidimote 1" command="teleport 4874 187 %p" />
+
+                    <item type="sendCommand" label="Landa Sidimote 2" command="teleport 4665 35 %p" />
+
+                    <item type="sendCommand" label="Cementerio Primitivo" command="teleport 9239 444 %p" />
+
+	</item>
+
+
+                                 <item type="menu" label="Acciones">
+
+	<item type="sendCommand" label="Ganar pelea" command="Winner 1" />
+
+	<item type="sendCommand" label="Ir donde" command="ir_donde %p" />
+
+	<item type="sendCommand" label="Traer" command="traer %p" />
+
+	<item type="sendCommand" label="KRALAMAR" command="teleport 11095 580 %p" />
+
+	<item type="sendCommand" label="Fenix" command="teleport 8534 327 %p" />
+
+	<item type="sendCommand" label="Taller forja magos" command="teleport 27160 693 %p" />
+
+	<item type="sendCommand" label="Refrescar Mobs" command="Hacer_accion %p 30" />
+
+	<item type="sendCommand" label="Recuper Vida" command="pdv 100 %p" />
+	
+	<item type="sendCommand" label="Renovar Llavero" command="hacer_accion %p 5 10207,-1;10207,1" />
+
+	</item>
+
+
+	                         <item type="menu" label="Advertir">
+
+
+		<item type="sendCommand" label="Info Donacion" command="a %p Para donaciones, te recomendamos visitar nustra pagina www.eratzo.com o contacta con uno de nuestros administradores" />
+
+		<item type="sendCommand" label="Aviso De mute 1" command="a %p Atencion! Este es Tu 1 Aviso Al 2 Seras Muteado 1 hora !" />
+
+		<item type="sendCommand" label="Aviso Sancion 1 dia" command="a %p Atencion Este es Tu 1 Aviso Al 2 Seras Sancionado 1 Dia !" />
+
+                <item type="sendCommand" label="Aviso De Baneo" command="a %p Atencion Este es Tu 1 Aviso Como Lo vuelvas A Repetir Seras Baneado Indinitidamente !" />
+
+                <item type="sendCommand" label="Aviso Insultos Comercio" command="a %p Porfavor Usa El Canal Comercio Para Comerciar O Negociar Y NO PARA INSULTAR !" />
+
+		<item type="sendCommand" label="Aviso Comercio Adecuado" command="a %p Porfavor Usa El Canal Comercio Para Comerciar O Negociar !" />
+
+		<item type="sendCommand" label="Aviso De Canal Canal Reclutamiento !" command="a %p Porfavor Usa El Canal Reclutamiento Para Reclutar o Pedir Ayuda Para Alguna Dung !" />
+
+	</item>
+
+
+	
+	                         <item type="menu" label="Seccion De Sanciones">
+
+
+		<item type="static" label="Sanciones Graves" />
+
+		   <item type="sendCommand" label="Enviar a La Prision De Astrub" command="TELEPORT 7601 199 %p" />
+
+		   <item type="sendCommand" label="Kickear Del Servidor" command="KICK %p" />
+
+		   <item type="sendCommand" label="Ban Permanente" command="banear %p 1440" />
+ 
+		   <item type="sendCommand" label="Ban IP" command="banear_ip %p" />
+
+
+
+		                   <item type="static" label="Silenciar" />
+
+
+		   <item type="sendCommand" label="1 minuto" command="MUTE %p 60 CASO OMISO" />
+
+		   <item type="sendCommand" label="3 Minutos" command="MUTE %p 180 CASO OMISO" />
+  
+		   <item type="sendCommand" label="10 Minutos" command="MUTE %p 600 CASO OMISO" />
+
+		   <item type="sendCommand" label="1 Hora" command="MUTE %p 3600 CASO OMISO" />
+
+		   <item type="sendCommand" label="Infinitivamente Asta Nuevo Aviso" command="MUTE %p 86400" />
+
+		   <!--item type="sendCommand" label="Has sido Muteado!" command="Mute %p %s" /><!--%s = nom du serv-->
+
+		   <item type="sendCommand" label="Desactivar El Silencio A un Jugador" command="DESMUTE %p" />
+
+		   <item type="static" label="Alagos" />
+
+		   <item type="sendChat" label="Anunciar Un Alago" command="Eres Un gran Jugador %p !" />
+
+		   <item type="sendChat" label="Alago De Gremio" command="Eres Muy Fuerte Lastima Que Ya Tengas Gremio %p !" />
+
+	</item>
+
+
+
+	                         <item type="menu" label="Aprender Oficios">
+
+		<!--@todo Donner l'item directement (batch) ?-->
+
+		<item type="menu" label="Aprender Un Oficio">
+
+
+			<item type="menu" label="Recolector">
+				<item type="sendCommand" label="Leñador" command="aprender_oficio 2 %p" />
+				<item type="sendCommand" label="Minero" command="aprender_oficio 24 %p" />
+				<item type="sendCommand" label="Campesino" command="aprender_oficio 28 %p" />
+				<item type="sendCommand" label="Pescador" command="aprender_oficio 36 %p" />
+				<item type="sendCommand" label="Cazador" command="aprender_oficio 41 %p" />
+			</item>
+
+			<item type="menu" label="Objetos Bonus">
+				<item type="sendCommand" label="Panadero" command="aprender_oficio 25 %p" />
+				<item type="sendCommand" label="Carnicero " command="aprender_oficio 56 %p" />
+				<item type="sendCommand" label="Pescadero" command="aprender_oficio 58 %p" />
+			        <item type="sendCommand" label="Alquimista" command="aprender_oficio 26 %p" />
+
+
+				<item type="static" label="Equipamento" />
+				<item type="sendCommand" label="Zapatero" command="aprender_oficio 15 %p" />
+				<item type="sendCommand" label="Joyero" command="aprender_oficio 16 %p" />
+				<item type="sendCommand" label="Sastre" command="aprender_oficio 27 %p" />
+
+
+				<item type="static" label="Otro" />
+				<item type="sendcommand" label="Manitas" command="aprender_oficio 65 %p" />
+
+
+				<item type="static" label="Forjadores" />
+				<item type="sendCommand" label="Espadas" command="aprender_oficio 11 %p" />
+				<item type="sendCommand" label="Martillos" command="aprender_oficio 14 %p" />
+				<item type="sendCommand" label="Dagas" command="aprender_oficio 17 %p" />
+				<item type="sendCommand" label="Palas" command="aprender_oficio 20 %p" />
+				<item type="sendCommand" label="Hachas" command="aprender_oficio 31 %p" />
+
+
+				<item type="static" label="Talleres" />
+				<item type="sendCommand" label="Forjador De Arcos" command="aprender_oficio 13 %p" />
+				<item type="sendCommand" label="Forjador de bastones" command="aprender_oficio 18 %p" />
+				<item type="sendCommand" label="Forjador de Varitas" command="aprender_oficio 19 %p" />
+			</item>
+
+
+			<item type="menu" label="Magos">
+
+				<item type="static" label="Equipement" />
+				<item type="sendCommand" label="zapatero mago - 7495" command="aprender_oficio 62 %p" />
+				<item type="sendCommand" label="Joyero mago - 7493" command="aprender_oficio 63 %p" />
+				<item type="sendCommand" label="sastre mago - 7494" command="aprender_oficio 64 %p" />
+
+				<item type="static" label="Forgemage" />
+				<item type="sendCommand" label="Forjamago De Dagas - 1520" command="aprender_oficio 43 %p" />
+				<item type="sendCommand" label="Forjamago De Espada - 1339" command="aprender_oficio 44 %p" />
+				<item type="sendCommand" label="Forjamago De Espada - 1561" command="aprender_oficio 45 %p" />
+				<item type="sendCommand" label="Forjamago De Palas - 1560" command="aprender_oficio 46 %p" />
+				<item type="sendCommand" label="Forjamago De Hachas - 1562" command="aprender_oficio 47 %p" />
+				<item type="static" label="Sculptemage" />
+				<item type="sendCommand" label="Escultomago de Arcos - 1561" command="aprender_oficio 48 %p" />
+				<item type="sendCommand" label="EScultomago de varitas - 1564" command="aprender_oficio 49 %p" />
+				<item type="sendCommand" label="Escultomago de baston - 1565" command="aprender_oficio 50 %p" />
+			</item>
+		</item>
+		
+		<!--item type="static" label="Objets" /> <!--@todo itemSelector & all ? Non, ITEM ne marche pas sur cible (Ancestra) ...-- >
+		<item type="menu" label="Faire la commande boutique">
+			<item type="sendCommand" label="Donner une dinde Squelette" command="ITEM XXX 1 %p" />
+		</item-->
+	</item>
+	<item type="menu" label="Transportar a Dung">
+		<item type="static" label="Mazmorras" />
+		<item type="sendCommand" label="Jalato Real Final (2083)" command="TELEPORT 2083 381 %p" />
+		<item type="sendCommand" label="Maxilubo final (9648)" command="TELEPORT 9648 268 %p" />
+		<item type="sendCommand" label="Ancestral Final (8721)" command="teleport 10234 252 %p" />
+		<item type="sendCommand" label="Roble Blando Final(9126)" command="TELEPORT 9126 %p" />
+		<item type="sendCommand" label="Bworker Final (9760)" command="TELEPORT 9760 425 %p" />
+		<item type="sendCommand" label="Kralmar Final (11095)" command="TELEPORT 11095 %p" />
+		<item type="sendCommand" label="Moon Final (1836)" command="TELEPORT 1836 %p" />
+		<item type="sendCommand" label="Dark Vlad Final (325)" command="TELEPORT 325 %p" />
+		<item type="sendCommand" label="Arca Otomai Final (11065)" command="TELEPORT 11065 %p" />
+		<item type="sendCommand" label="Ugat Final (11926)" command="TELEPORT 11926 %p" />
+		<item type="sendCommand" label="Kimbo Final (10441)" command="TELEPORT 10441 %p" />
+		<item type="sendCommand" label="Wabbit Final (1773)" command="TELEPORT 1773 %p" />
+		<item type="sendCommand" label="Tofu Real Final (9534)" command="TELEPORT 9534 %p" />
+		<item type="sendCommand" label="Santuario Final (8982)" command="TELEPORT 8982 %p" />
+		<item type="sendCommand" label="Chafer Final (2117)" command="TELEPORT 2117 %p" />
+	</item>
+	<item type="static" label="Herramientas" />
+
+	<item type="menu" label="Crear Items">
+
+		<item type="static" label="Interfaces" />
+
+		<item type="summoner" label="Item Summoner" />
+
+		<item type="sendCommand" label="Item Stats Maximos" command="ITEM #item %p Max" />
+	</item>
+	
+	<item type="menu" label="Advertir en mapa">
+		<item type="static" label="Moderation" />
+		<item type="sendChat" command="Atencion, no busquen sanciones, Respeto Porfavor !" label="Advertir Mapa" />
+	</item>
+	
+</commands>

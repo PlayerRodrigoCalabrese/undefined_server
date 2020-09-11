@@ -1,0 +1,27 @@
+<config>
+
+	<!--- NOMBRE DEL SERVER --->
+	<name nameServer="Legends"/>
+	<!--- BOTONES Y TEXTOS DEL LOGIN --->
+	<objects object="_txtNroVersion" visible="false"/>
+	<objects object="_txtVersion" visible="false"/>
+	<objects object="_btnIconsSpells" visible="false"/>
+	<objects object="_btnSkinsItems" visible="false"/>
+	<objects object="_btnStyleCore" visible="false"/>
+	<objects object="_btnRegistrar" visible="true"/>
+	<!--- CONSTANTES DE LA CORE, DIRECTORIOS DE LOS CLIPS --->
+	<constants constant="SPELLS_ICONS_PATH_1" value="" />
+	<constants constant="SPELLS_ICONS_PATH_2" value="" />
+	<constants constant="BANNER_BOTON_LOTERIA" boolean="false" />
+	<constants constant="BANNER_BOTON_RECURSO" boolean="false" />
+	<constants constant="BANNER_BOTON_TACTICO" boolean="true" />
+	<constants constant="BANNER_BOTON_ANTI_LAG" boolean="true" />
+	<constants constant="BANNER_BOTON_CRIATURA" boolean="true" />
+	<constants constant="BANNER_BOTON_CLEAR_CHAT" boolean="true" />
+	<constants constant="BANNER_BOTON_OGRINAS" boolean="true" />
+
+	<!--- VARIABLES GLOBALES --->
+	<!---<globals global="NO_CREDITOS" boolean="true" />-->
+	
+	
+</config>

@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="jep">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/recursos/librerias/jep.jar!/" />
+      <root url="jar://$PROJECT_DIR$/recursos/librerias/joda-time-1.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/recursos/librerias/mariadb-java-client-2.6.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
