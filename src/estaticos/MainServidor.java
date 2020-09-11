@@ -474,13 +474,13 @@ public class MainServidor {
 	// ADMIN_CHAT_COLOR = "FF00FF";
 	// VIP_CHAT_COLOR = "FF00FF";
 	public static void main(final String[] args) {
-		Runtime.getRuntime().addShutdownHook(new Thread(() -> cerrarServer()));
-		System.out.println("ELBUSTEMU " + Constantes.VERSION_EMULADOR);
-		System.out.println("Creado por Elbusta solo para Dofus");
-		System.out.println("Gracias Elbusta, % trabajo 256 MB = 1000 Mapas\n");
+		Runtime.getRuntime().addShutdownHook(new Thread(MainServidor::cerrarServer));
+		System.out.println("----------- UNDEFINED EMU - BASADO EN BUSTEMU ------------");
+		System.out.println("Modificado por Player-xD - http://privatedofus.net");
+		System.out.println("Gracias Elbusta");
+		System.out.println("----------- UNDEFINED EMU - BASADO EN BUSTEMU ------------");
 		// cargando la config
 		System.out.println("Cargando la configuración");
-		leyendoIpsPermitidas();
 		cargarConfiguracion(null);
 		while (!IP_MULTISERVIDOR.get(0).equalsIgnoreCase("127.0.0.1")) {
 			try {
@@ -516,26 +516,6 @@ public class MainServidor {
 			new Consola();
 		}
 		System.out.println("Esperando que los jugadores se conecten");
-	}
-	
-	private static void leyendoIpsPermitidas() {
-		final String url = "http://bustofus-fenix.com/clientes/ips.txt";
-		URL obj;
-		try {
-			obj = new URL(url);
-			final URLConnection con = obj.openConnection();
-			con.setRequestProperty("Content-type", "charset=Unicode");
-			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-			String inputLine;
-			Charset utf8charset = StandardCharsets.UTF_8;
-			while ((inputLine = in.readLine()) != null) {
-				String linea = new String(inputLine.getBytes(), utf8charset);
-				IP_PERMTIDAS.add(linea);
-			}
-			in.close();
-		} catch (Exception e) {
-			// e.printStackTrace();
-		}
 	}
 	
 	public static void modificarParam(String p, String v) {
