@@ -13,7 +13,6 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -109,7 +108,7 @@ public class MainServidor {
 	public static Map<Byte, Integer> OGRINAS_CREAR_CLASE = new TreeMap<>();
 	public static Map<String, String> PRECIOS_SERVICIOS = new TreeMap<>();
 	public static String COLOR_CELDAS_PELEA_AGRESOR = "";
-	public static Map<Integer, Integer> MAX_GOLPES_CAC = new TreeMap<>();
+	public static Map<Integer, Integer> MAX_GOLPES_CAC = new TreeMap<Integer, Integer>();
 	// CREAR TU ITEM
 	public static String GFX_CREA_TU_ITEM_CAPAS = "1,2,3,4,5,7,8,9,10,11,12,15,16,17,18,19,21,22,23,33,34,35,36,37,38,39,40,41,42,43,44,46,47,48,49,50,51,52,53,54,55,56,58,59,60,61,62,63,64,65,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,89,90,91,92,93,94,95,96,97,98,99,100,101,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,230,231,232,233,234,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259";
 	public static String GFX_CREA_TU_ITEM_AMULETOS = "1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,18,19,20,22,23,24,25,26,27,28,29,30,31,32,33,34,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225";
@@ -288,11 +287,11 @@ public class MainServidor {
 	//
 	public static String MENSAJE_TIMER_REBOOT = "";
 	//
-	public static ArrayList<Integer> SUBAREAS_NO_PVP = new ArrayList<>();
-	public static ArrayList<Short> TIPO_RECURSOS = new ArrayList<>();
-	public static ArrayList<Integer> OBJ_NO_PERMITIDOS = new ArrayList<>();
-	public static ArrayList<Short> TIPO_ALIMENTO_MONTURA = new ArrayList<>();
-	public static ArrayList<String> PUBLICIDAD = new ArrayList<>();
+	public static ArrayList<Integer> SUBAREAS_NO_PVP = new ArrayList<Integer>();
+	public static ArrayList<Short> TIPO_RECURSOS = new ArrayList<Short>();
+	public static ArrayList<Integer> OBJ_NO_PERMITIDOS = new ArrayList<Integer>();
+	public static ArrayList<Short> TIPO_ALIMENTO_MONTURA = new ArrayList<Short>();
+	public static ArrayList<String> PUBLICIDAD = new ArrayList<String>();
 	public static String ARMAS_ENCARNACIONES = "9544,9545,9546,9547,9548,10125,10126,10127,10133";
 	public static int SABIDURIA_PARA_REENVIO = 100;
 	// TIEMPOS MILISEGUNDOS
@@ -431,10 +430,10 @@ public class MainServidor {
 	public static int LIMITE_MIEMBROS_GREMIO = 0;
 	public static int LIMITE_OBJETOS_COFRE = 80;
 	public static long LIMITE_DETECTAR_FALLA_KAMAS = 10000000;
-	public static Map<Integer, Integer> LIMITE_STATS_SIN_BUFF = new TreeMap<>();
-	public static Map<Integer, Integer> LIMITE_STATS_CON_BUFF = new TreeMap<>();
-	public static Map<Integer, Integer> LIMITE_STATS_EXO_FORJAMAGIA = new TreeMap<>();
-	public static Map<Integer, Integer> LIMITE_STATS_OVER_FORJAMAGIA = new TreeMap<>();
+	public static Map<Integer, Integer> LIMITE_STATS_SIN_BUFF = new TreeMap<Integer, Integer>();
+	public static Map<Integer, Integer> LIMITE_STATS_CON_BUFF = new TreeMap<Integer, Integer>();
+	public static Map<Integer, Integer> LIMITE_STATS_EXO_FORJAMAGIA = new TreeMap<Integer, Integer>();
+	public static Map<Integer, Integer> LIMITE_STATS_OVER_FORJAMAGIA = new TreeMap<Integer, Integer>();
 	// public static short LIMITE_PA = 15;
 	// public static short LIMITE_PM = 7;
 	// public static short LIMITE_ALCANCE = 30;
@@ -449,7 +448,7 @@ public class MainServidor {
 	public static int NIVEL_MAX_ALINEACION;
 	public static int NIVEL_MAX_ESCOGER_NIVEL;
 	//
-	public static ArrayList<String> PALABRAS_PROHIBIDAS = new ArrayList<>();
+	public static ArrayList<String> PALABRAS_PROHIBIDAS = new ArrayList<String>();
 	// PRIVATES
 	private static int DEFECTO_XP_PVM;
 	private static int DEFECTO_XP_PVP;
@@ -474,13 +473,17 @@ public class MainServidor {
 	// ADMIN_CHAT_COLOR = "FF00FF";
 	// VIP_CHAT_COLOR = "FF00FF";
 	public static void main(final String[] args) {
-		Runtime.getRuntime().addShutdownHook(new Thread(MainServidor::cerrarServer));
-		System.out.println("----------- UNDEFINED EMU - BASADO EN BUSTEMU ------------");
-		System.out.println("Modificado por Player-xD - http://privatedofus.net");
-		System.out.println("Gracias Elbusta");
-		System.out.println("----------- UNDEFINED EMU - BASADO EN BUSTEMU ------------");
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				cerrarServer();
+			}
+		});
+		System.out.println("ELBUSTEMU " + Constantes.VERSION_EMULADOR);
+		System.out.println("Creado por Elbusta solo para Dofus");
+		System.out.println("Gracias Elbusta, % trabajo 256 MB = 1000 Mapas\n");
 		// cargando la config
 		System.out.println("Cargando la configuración");
+		leyendoIpsPermitidas();
 		cargarConfiguracion(null);
 		while (!IP_MULTISERVIDOR.get(0).equalsIgnoreCase("127.0.0.1")) {
 			try {
@@ -518,6 +521,26 @@ public class MainServidor {
 		System.out.println("Esperando que los jugadores se conecten");
 	}
 	
+	private static void leyendoIpsPermitidas() {
+		final String url = "http://bustofus-fenix.com/clientes/ips.txt";
+		URL obj;
+		try {
+			obj = new URL(url);
+			final URLConnection con = obj.openConnection();
+			con.setRequestProperty("Content-type", "charset=Unicode");
+			BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+			String inputLine;
+			Charset utf8charset = Charset.forName("UTF-8");
+			while ((inputLine = in.readLine()) != null) {
+				String linea = new String(inputLine.getBytes(), utf8charset);
+				IP_PERMTIDAS.add(linea);
+			}
+			in.close();
+		} catch (Exception e) {
+			// e.printStackTrace();
+		}
+	}
+	
 	public static void modificarParam(String p, String v) {
 		try {
 			final BufferedReader config = new BufferedReader(new FileReader(ARCHIVO_CONFIG));
@@ -530,7 +553,7 @@ public class MainServidor {
 				} else {
 					final String param = linea.split("=")[0].trim();
 					if (param.equalsIgnoreCase(p)) {
-						str.append(param).append(" = ").append(v);
+						str.append(param + " = " + v);
 						tiene = true;
 					} else {
 						str.append(linea);
@@ -539,14 +562,14 @@ public class MainServidor {
 				str.append("\n");
 			}
 			if (!tiene) {
-				str.append(p).append(" = ").append(v);
+				str.append(p + " = " + v);
 			}
 			config.close();
 			BufferedWriter mod = new BufferedWriter(new FileWriter(ARCHIVO_CONFIG));
 			mod.write(str.toString());
 			mod.flush();
 			mod.close();
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	public static String getConfiguracion() {
@@ -555,10 +578,10 @@ public class MainServidor {
 			final BufferedReader config = new BufferedReader(new FileReader(ARCHIVO_CONFIG));
 			String linea = "";
 			while ((linea = config.readLine()) != null) {
-				str.append(linea).append("\n");
+				str.append(linea + "\n");
 			}
 			config.close();
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return str.toString();
 	}
 	
@@ -1026,7 +1049,7 @@ public class MainServidor {
 								}
 								try {
 									SALVAR_LOGS_TIPO_COMBATE.add(Byte.parseByte(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "CANALES_COLOR_CHAT" :
@@ -1455,7 +1478,7 @@ public class MainServidor {
 								try {
 									final String[] stat = s.split(",");
 									OGRINAS_CREAR_CLASE.put(Byte.parseByte(stat[0]), Integer.parseInt(stat[1]));
-								} catch (final Exception ignored) {}
+								} catch (final Exception e) {}
 							}
 							break;
 						case "GFX_CREA_TU_ITEM_CAPAS" :
@@ -1500,7 +1523,7 @@ public class MainServidor {
 								try {
 									final String[] stat = s.split(",");
 									PRECIOS_SERVICIOS.put(stat[0].toLowerCase(), stat[1].toLowerCase());
-								} catch (final Exception ignored) {}
+								} catch (final Exception e) {}
 							}
 							break;
 						case "MAX_GOLPES_CAC" :
@@ -1512,7 +1535,7 @@ public class MainServidor {
 								try {
 									final String[] stat = s.split(",");
 									MAX_GOLPES_CAC.put(Integer.parseInt(stat[0]), Integer.parseInt(stat[1]));
-								} catch (final Exception ignored) {}
+								} catch (final Exception e) {}
 							}
 							break;
 						case "LIMITE_STATS_CON_BUFF" :
@@ -1524,7 +1547,7 @@ public class MainServidor {
 								try {
 									final String[] stat = s.split(",");
 									LIMITE_STATS_CON_BUFF.put(Integer.parseInt(stat[0]), Integer.parseInt(stat[1]));
-								} catch (final Exception ignored) {}
+								} catch (final Exception e) {}
 							}
 							break;
 						case "LIMITE_STATS_EXO_FM" :
@@ -1538,7 +1561,7 @@ public class MainServidor {
 								try {
 									final String[] stat = s.split(",");
 									LIMITE_STATS_EXO_FORJAMAGIA.put(Integer.parseInt(stat[0]), Integer.parseInt(stat[1]));
-								} catch (final Exception ignored) {}
+								} catch (final Exception e) {}
 							}
 							break;
 						case "LIMITE_STATS_OVER_FM" :
@@ -1552,7 +1575,7 @@ public class MainServidor {
 								try {
 									final String[] stat = s.split(",");
 									LIMITE_STATS_OVER_FORJAMAGIA.put(Integer.parseInt(stat[0]), Integer.parseInt(stat[1]));
-								} catch (final Exception ignored) {}
+								} catch (final Exception e) {}
 							}
 							break;
 						case "LIMITE_STATS_SIN_BUFF" :
@@ -1564,7 +1587,7 @@ public class MainServidor {
 								try {
 									final String[] stat = s.split(",");
 									LIMITE_STATS_SIN_BUFF.put(Integer.parseInt(stat[0]), Integer.parseInt(stat[1]));
-								} catch (final Exception ignored) {}
+								} catch (final Exception e) {}
 							}
 							break;
 						case "SERVER_ID" :
@@ -1635,7 +1658,7 @@ public class MainServidor {
 								}
 								try {
 									SISTEMA_ITEMS_EXO_TIPOS_NO_PERMITIDOS.add(Short.parseShort(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "MAPAS_MODO_HEROICO" :
@@ -1646,7 +1669,7 @@ public class MainServidor {
 								}
 								try {
 									MAPAS_MODO_HEROICO.add(Short.parseShort(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "RUNAS_NO_PERMITIDAS" :
@@ -1657,7 +1680,7 @@ public class MainServidor {
 								}
 								try {
 									RUNAS_NO_PERMITIDAS.add(Integer.parseInt(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "MOBS_DOBLE_ORBES" :
@@ -1668,7 +1691,7 @@ public class MainServidor {
 								}
 								try {
 									MOBS_DOBLE_ORBES.add(Integer.parseInt(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "MOBS_NO_ORBES" :
@@ -1679,7 +1702,7 @@ public class MainServidor {
 								}
 								try {
 									MOBS_NO_ORBES.add(Integer.parseInt(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "NPCS_VENDE_OBJETOS_STATS_MAXIMOS" :
@@ -1691,7 +1714,7 @@ public class MainServidor {
 								}
 								try {
 									IDS_NPCS_VENDE_OBJETOS_STATS_MAXIMOS.add(Integer.parseInt(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "IDS_OBJETOS_STATS_MAXIMOS" :
@@ -1703,7 +1726,7 @@ public class MainServidor {
 								}
 								try {
 									IDS_OBJETOS_STATS_MAXIMOS.add(Integer.parseInt(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "IDS_OBJETOS_STATS_MINIMOS" :
@@ -1715,7 +1738,7 @@ public class MainServidor {
 								}
 								try {
 									IDS_OBJETOS_STATS_MINIMOS.add(Integer.parseInt(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "IDS_OBJETOS_STATS_RANDOM" :
@@ -1727,7 +1750,7 @@ public class MainServidor {
 								}
 								try {
 									IDS_OBJETOS_STATS_RANDOM.add(Integer.parseInt(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "OGRINAS_POR_VOTO" :
@@ -2426,7 +2449,7 @@ public class MainServidor {
 								}
 								try {
 									TIPO_RECURSOS.add(Short.parseShort(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "OBJ_NO_PERMITIDOS" :
@@ -2437,7 +2460,7 @@ public class MainServidor {
 								}
 								try {
 									OBJ_NO_PERMITIDOS.add(Integer.parseInt(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "SUBAREAS_NO_PVP" :
@@ -2448,7 +2471,7 @@ public class MainServidor {
 								}
 								try {
 									SUBAREAS_NO_PVP.add(Integer.parseInt(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "TIPO_ALIMENTO_MONTURA" :
@@ -2459,7 +2482,7 @@ public class MainServidor {
 								}
 								try {
 									TIPO_ALIMENTO_MONTURA.add(Short.parseShort(s));
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						case "HORARIO_DIA" :
@@ -2469,13 +2492,13 @@ public class MainServidor {
 								if (h >= 0 && h <= 23) {
 									HORA_DIA = h;
 								}
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							try {
 								int h = Integer.parseInt(dia[1]);
 								if (h >= 0 && h <= 59) {
 									MINUTOS_DIA = h;
 								}
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							break;
 						case "HORARIO_NOCHE" :
 							String[] noche = valor.split(":");
@@ -2484,13 +2507,13 @@ public class MainServidor {
 								if (h >= 0 && h <= 23) {
 									HORA_NOCHE = h;
 								}
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							try {
 								int h = Integer.parseInt(noche[1]);
 								if (h >= 0 && h <= 59) {
 									MINUTOS_NOCHE = h;
 								}
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							break;
 						case "PALABRAS_PROHIBIDAS" :
 						case "BLOCK_WORD" :
@@ -2501,7 +2524,7 @@ public class MainServidor {
 								}
 								try {
 									PALABRAS_PROHIBIDAS.add(s.toLowerCase());
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 							break;
 						default :
@@ -2525,7 +2548,7 @@ public class MainServidor {
 						}
 						repetidos.put(variable, parametro.toUpperCase());
 					}
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 			config.close();
 			if (BD_ESTATICA == null || BD_CUENTAS == null || BD_DINAMICA == null || BD_HOST == null || BD_PASS == null
@@ -2547,47 +2570,47 @@ public class MainServidor {
 		for (final String s : PERMITIR_MULTIMAN.split(",")) {
 			try {
 				PERMITIR_MULTIMAN_TIPO_COMBATE.add(Byte.parseByte(s));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		for (final String str : GFX_CREA_TU_ITEM_CAPAS.split(",")) {
 			try {
 				Constantes.GFX_CREA_TU_ITEM_CAPAS.add(Integer.parseInt(str));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		for (final String str : GFX_CREA_TU_ITEM_CINTURONES.split(",")) {
 			try {
 				Constantes.GFX_CREA_TU_ITEM_CINTURONES.add(Integer.parseInt(str));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		for (final String str : GFX_CREA_TU_ITEM_SOMBREROS.split(",")) {
 			try {
 				Constantes.GFX_CREA_TU_ITEM_SOMBREROS.add(Integer.parseInt(str));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		for (final String str : GFX_CREA_TU_ITEM_DOFUS.split(",")) {
 			try {
 				Constantes.GFX_CREA_TU_ITEM_DOFUS.add(Integer.parseInt(str));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		for (final String str : GFX_CREA_TU_ITEM_ANILLOS.split(",")) {
 			try {
 				Constantes.GFX_CREA_TU_ITEM_ANILLOS.add(Integer.parseInt(str));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		for (final String str : GFX_CREA_TU_ITEM_AMULETOS.split(",")) {
 			try {
 				Constantes.GFX_CREA_TU_ITEM_AMULETOS.add(Integer.parseInt(str));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		for (final String str : GFX_CREA_TU_ITEM_ESCUDOS.split(",")) {
 			try {
 				Constantes.GFX_CREA_TU_ITEM_ESCUDOS.add(Integer.parseInt(str));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		for (final String str : GFX_CREA_TU_ITEM_BOTAS.split(",")) {
 			try {
 				Constantes.GFX_CREA_TU_ITEM_BOTAS.add(Integer.parseInt(str));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		Constantes.GFXS_CREA_TU_ITEM.put(Constantes.OBJETO_TIPO_CAPA, Constantes.GFX_CREA_TU_ITEM_CAPAS);
 		Constantes.GFXS_CREA_TU_ITEM.put(Constantes.OBJETO_TIPO_SOMBRERO, Constantes.GFX_CREA_TU_ITEM_SOMBREROS);
@@ -2768,13 +2791,13 @@ public class MainServidor {
 				while (Mundo.SALVANDO) {
 					try {
 						Thread.sleep(5000);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 				}
 				Mundo.salvarServidor(false);
 				Mundo.salvarMapasEstrellas();
 				try {
 					Thread.sleep(1000);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				redactarLogServidor(" ########  CERRANDO SERVERSOCKET...  ");
 				ServidorServer.cerrarSocketServidor();
 				redactarLogServidorln("... IS OK  ########");
@@ -2783,12 +2806,12 @@ public class MainServidor {
 					redactarLogServidorln("######## ESPERANDO COMMIT SQL  ########");
 					try {
 						Thread.sleep(MILISEGUNDOS_CERRAR_SERVIDOR);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 				}
 			}
 			try {
 				Thread.sleep(1000);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		} catch (Exception e) {
 			redactarLogServidorln("EXCEPTION MIENTRAS SE CERRABA EL SERVIDOR : " + e.toString());
 			e.printStackTrace();

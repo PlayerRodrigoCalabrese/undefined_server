@@ -25,7 +25,7 @@ public class Consola extends Thread {
 					String[] args = linea.split(" ", 2);
 					str = args[1];
 					linea = args[0];
-				} catch (final Exception ignored) {}
+				} catch (final Exception e2) {}
 				leerComandos(linea, str);
 			} catch (final Exception e) {
 				System.out.println("Error al ingresar texto a la consola");
@@ -117,9 +117,10 @@ public class Consola extends Thread {
 					final int minuto = (int) (enLinea / 60000L);
 					enLinea %= 60000L;
 					final int segundo = (int) (enLinea / 1000L);
-					System.out.println("================================================\n" + MainServidor.NOMBRE_SERVER + " (UndefinedEMU)\n\nOnline: " + dia + "d " + hora + "h " + minuto + "m " + segundo + "s\n" + "Jugadores en línea: "
+					System.out.println("===========\n" + MainServidor.NOMBRE_SERVER + " (ELBUSTEMU " + Constantes.VERSION_EMULADOR
+					+ ")\n\nEnLínea: " + dia + "d " + hora + "h " + minuto + "m " + segundo + "s\n" + "Jugadores en línea: "
 					+ ServidorServer.nroJugadoresLinea() + "\n" + "Record de conexión: " + ServidorServer.getRecordJugadores()
-					+ "\n" + "================================================");
+					+ "\n" + "===========");
 					break;
 				case "SAVE" :
 				case "GUARDAR" :
@@ -155,7 +156,7 @@ public class Consola extends Thread {
 					try {
 						MainServidor.ACCESO_ADMIN_MINIMO = Byte.parseByte(valor);
 						System.out.println("Se limito el acceso al server a rango " + MainServidor.ACCESO_ADMIN_MINIMO);
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					break;
 				case "ADMIN" :
 					try {
@@ -163,7 +164,7 @@ public class Consola extends Thread {
 						int id = -1;
 						try {
 							id = Integer.parseInt(infos[0]);
-						} catch (final Exception ignored) {}
+						} catch (final Exception e1) {}
 						if (id <= -1) {
 							System.out.println("Rango invalido");
 							return;

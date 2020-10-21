@@ -38,26 +38,25 @@ import estaticos.Mundo;
 // }
 // }
 public class Celda {
-	private final short _celdaID;
-	private final short _mapaID;
-	private final Mapa _mapa;
+	private short _celdaID;
+	private short _mapaID;
+	private Mapa _mapa;
 	private long _ultimoUsoTrigger;
 	private CopyOnWriteArrayList<Personaje> _personajes;
 	private CopyOnWriteArrayList<Trampa> _trampas;
 	private CopyOnWriteArrayList<Glifo> _glifos;
 	private ArrayList<Luchador> _luchadores;
 	private Map<Integer, Accion> _acciones;
-	private final boolean _activo;
-	private final boolean _esCaminableLevel;
+	private boolean _activo, _esCaminableLevel;
 	private boolean _lineaDeVista = true;
 	private boolean _conGDF = false;
-	private final byte _level;
+	private byte _level;
 	private byte _movimiento;
-	private final byte _coordX;
-	private final byte _coordY;
+	private byte _coordX;
+	private byte _coordY;
 	private byte _estadoCelda;
-	private final byte _movimientoInicial;
-	private final byte _slope;
+	private byte _movimientoInicial;
+	private byte _slope;
 	private final ObjetoInteractivo _objetoInterac;
 	private Objeto _objetoTirado;
 	
@@ -96,8 +95,8 @@ public class Celda {
 	}
 	
 	public void celdaNornmal() {
-		_personajes = new CopyOnWriteArrayList<>();
-		_acciones = new TreeMap<>();
+		_personajes = new CopyOnWriteArrayList<Personaje>();
+		_acciones = new TreeMap<Integer, Accion>();
 	}
 	
 	public Mapa getMapa() {
@@ -439,44 +438,47 @@ public class Celda {
 		if (_estadoCelda != Constantes.CI_ESTADO_LLENO) {
 			return;
 		}
-		Thread t = new Thread(() -> {
-			_movimiento = 4;// caminable
-			_conGDF = conGDF;
-			_estadoCelda = Constantes.CI_ESTADO_VACIANDO;
-			boolean[] permisos = new boolean[16];
-			int[] valores = new int[16];
-			permisos[11] = true;
-			valores[11] = _movimiento;
-			GestorSalida.ENVIAR_GDC_ACTUALIZAR_CELDA_MAPA(_mapa, _celdaID, Encriptador.stringParaGDC(permisos, valores),
-			false);
-			if (_conGDF) {
-				GestorSalida.ENVIAR_GDF_ESTADO_OBJETO_INTERACTIVO(_mapa, _mapa.getCelda(_celdaID));
-				try {
-					Thread.sleep(2000);
-				} catch (final Exception ignored) {}
-			}
-			if (milisegundos > 0) {
-				_estadoCelda = Constantes.CI_ESTADO_VACIO;
-				try {
-					Thread.sleep(milisegundos);// hace de timer;
-				} catch (final Exception ignored) {}
-				_movimiento = _movimientoInicial;
-				_estadoCelda = Constantes.CI_ESTADO_LLENANDO;
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				_movimiento = 4;// caminable
+				_conGDF = conGDF;
+				_estadoCelda = Constantes.CI_ESTADO_VACIANDO;
+				boolean[] permisos = new boolean[16];
+				int[] valores = new int[16];
+				permisos[11] = true;
+				valores[11] = _movimiento;
+				GestorSalida.ENVIAR_GDC_ACTUALIZAR_CELDA_MAPA(_mapa, _celdaID, Encriptador.stringParaGDC(permisos, valores),
+				false);
 				if (_conGDF) {
 					GestorSalida.ENVIAR_GDF_ESTADO_OBJETO_INTERACTIVO(_mapa, _mapa.getCelda(_celdaID));
 					try {
 						Thread.sleep(2000);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 				}
-				_estadoCelda = Constantes.CI_ESTADO_LLENO;
-				valores[11] = _movimiento;
-				GestorSalida.ENVIAR_GDC_ACTUALIZAR_CELDA_MAPA(_mapa, _celdaID, Encriptador.stringParaGDC(permisos, valores),
-				false);
-			} else {
-				_movimiento = _movimientoInicial;
-				_estadoCelda = Constantes.CI_ESTADO_LLENO;
-				if (_conGDF) {
-					GestorSalida.ENVIAR_GDF_ESTADO_OBJETO_INTERACTIVO(_mapa, _mapa.getCelda(_celdaID));
+				if (milisegundos > 0) {
+					_estadoCelda = Constantes.CI_ESTADO_VACIO;
+					try {
+						Thread.sleep(milisegundos);// hace de timer;
+					} catch (final Exception e) {}
+					_movimiento = _movimientoInicial;
+					_estadoCelda = Constantes.CI_ESTADO_LLENANDO;
+					if (_conGDF) {
+						GestorSalida.ENVIAR_GDF_ESTADO_OBJETO_INTERACTIVO(_mapa, _mapa.getCelda(_celdaID));
+						try {
+							Thread.sleep(2000);
+						} catch (final Exception e) {}
+					}
+					_estadoCelda = Constantes.CI_ESTADO_LLENO;
+					valores[11] = _movimiento;
+					GestorSalida.ENVIAR_GDC_ACTUALIZAR_CELDA_MAPA(_mapa, _celdaID, Encriptador.stringParaGDC(permisos, valores),
+					false);
+				} else {
+					_movimiento = _movimientoInicial;
+					_estadoCelda = Constantes.CI_ESTADO_LLENO;
+					if (_conGDF) {
+						GestorSalida.ENVIAR_GDF_ESTADO_OBJETO_INTERACTIVO(_mapa, _mapa.getCelda(_celdaID));
+					}
 				}
 			}
 		});
@@ -765,7 +767,7 @@ public class Celda {
 						break;
 				}
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		return true;
 	}
 	// public void destruir() {

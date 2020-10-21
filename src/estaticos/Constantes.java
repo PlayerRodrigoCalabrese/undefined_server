@@ -27,6 +27,9 @@ import variables.stats.TotalStats;
 import estaticos.Mundo.Duo;
 
 public class Constantes {
+	public static final String VERSION_EMULADOR = "6.4.c";
+	// public static final String SUBVERSION_EMULADOR = ".2";
+	public static final String CREADOR = "ELBUSTA";
 	public static final String ZAAPI_BONTA = "6159,4174,8758,4299,4180,8759,4183,2221,4217,4098,8757,4223,8760,2214,4179,4229,4232,8478,4238,4263,4216,4172,4247,4272,4271,4250,4178,4106,4181,4259,4090,4262,4287,4300,4240,4218,4074,4308";
 	public static final String ZAAPI_BRAKMAR = "8756,8755,8493,5304,5311,5277,5317,4612,4618,5112,4639,4637,5116,5332,4579,4588,4549,4562,5334,5295,4646,4629,4601,4551,4607,4930,4622,4620,4615,4595,4627,4623,4604,8754,8753,4630,6167";
 	public static final String ESTATUAS_FENIX = "12;12;270|-1;33;1399|10;19;268|5;-9;7796|2;-12;8534|-30;-54;4285|-26;35;4551|-23;38;12169|-11;-54;3360|-43;0;10430|-10;13;9227|-41;-17;9539|36;5;1118|24;-43;7910|27;-33;8054|-60;-3;10672|-58;18;10590|-14;31;5717|25;-4;844|";
@@ -1464,34 +1467,46 @@ public class Constantes {
 	// EM[22] = {n: "Aura de poder", s: "aura"};
 	// EM[23] = {n: "Aura vampírica", s: "bat"};
 	// Accion de Oficio {trabajoID, objeto recolectado,obj especial}
-	public static int getMobSinHalloween(int id) {
-		return switch (id) {
-// jalato de haluin
-			case 793 -> 101;
-// tofu de haluin
-			case 794 -> 98;
-			default -> id;
-		};
+	public static final int getMobSinHalloween(int id) {
+		switch (id) {
+			case 793 :// jalato de haluin
+				return 101;
+			case 794 :// tofu de haluin
+				return 98;
+			default :
+				return id;
+		}
 	}
 	
-	public static int getOficioPrimarioDeMago(int oficioID) {
-		return switch (oficioID) {
-			case OFICIO_FORJAMAGO_ESPADAS -> OFICIO_FORJADOR_ESPADAS;
-			case OFICIO_ESCULTORMAGO_ARCOS -> OFICIO_ESCULTOR_ARCOS;
-			case OFICIO_FORJAMAGO_MARTILLOS -> OFICIO_FORJADOR_MARTILLOS;
-			case OFICIO_ZAPATEROMAGO -> OFICIO_ZAPATERO;
-			case OFICIO_JOYEROMAGO -> OFICIO_JOYERO;
-			case OFICIO_FORJAMAGO_DAGAS -> OFICIO_FORJADOR_DAGAS;
-			case OFICIO_ESCULTORMAGO_BASTONES -> OFICIO_ESCULTOR_BASTONES;
-			case OFICIO_ESCULTORMAGO_VARITAS -> OFICIO_ESCULTOR_VARITAS;
-			case OFICIO_FORJAMAGO_PALAS -> OFICIO_FORJADOR_PALAS;
-			case OFICIO_SASTREMAGO -> OFICIO_SASTRE;
-			case OFICIO_FORJAMAGO_HACHAS -> OFICIO_FORJADOR_HACHAS;
-			default -> -1;
-		};
+	public static final int getOficioPrimarioDeMago(int oficioID) {
+		switch (oficioID) {
+			case OFICIO_FORJAMAGO_ESPADAS :
+				return OFICIO_FORJADOR_ESPADAS;
+			case OFICIO_ESCULTORMAGO_ARCOS :
+				return OFICIO_ESCULTOR_ARCOS;
+			case OFICIO_FORJAMAGO_MARTILLOS :
+				return OFICIO_FORJADOR_MARTILLOS;
+			case OFICIO_ZAPATEROMAGO :
+				return OFICIO_ZAPATERO;
+			case OFICIO_JOYEROMAGO :
+				return OFICIO_JOYERO;
+			case OFICIO_FORJAMAGO_DAGAS :
+				return OFICIO_FORJADOR_DAGAS;
+			case OFICIO_ESCULTORMAGO_BASTONES :
+				return OFICIO_ESCULTOR_BASTONES;
+			case OFICIO_ESCULTORMAGO_VARITAS :
+				return OFICIO_ESCULTOR_VARITAS;
+			case OFICIO_FORJAMAGO_PALAS :
+				return OFICIO_FORJADOR_PALAS;
+			case OFICIO_SASTREMAGO :
+				return OFICIO_SASTRE;
+			case OFICIO_FORJAMAGO_HACHAS :
+				return OFICIO_FORJADOR_HACHAS;
+		}
+		return -1;
 	}
 	
-	public static boolean esPosicionVisual(final byte pos) {
+	public static final boolean esPosicionVisual(final byte pos) {
 		for (final byte p : POSICIONES_EQUIPAMIENTO_VISUAL) {
 			if (pos == p) {
 				return true;
@@ -1500,7 +1515,7 @@ public class Constantes {
 		return false;
 	}
 	
-	public static boolean esPosicionEquipamiento(final byte pos) {
+	public static final boolean esPosicionEquipamiento(final byte pos) {
 		for (final byte p : POSICIONES_EQUIPAMIENTO) {
 			if (pos == p) {
 				return true;
@@ -1509,7 +1524,7 @@ public class Constantes {
 		return false;
 	}
 	
-	public static boolean esPosicionObjeto(final byte pos) {
+	public static final boolean esPosicionObjeto(final byte pos) {
 		for (final byte p : POSICIONES_TODOS) {
 			if (pos == p) {
 				return true;
@@ -1518,7 +1533,7 @@ public class Constantes {
 		return false;
 	}
 	
-	public static boolean esEfectoSetClase(final int id) {
+	public static final boolean esEfectoSetClase(final int id) {
 		for (int i : BUFF_SET_CLASE) {
 			if (i == id)
 				return true;
@@ -1526,49 +1541,43 @@ public class Constantes {
 		return false;
 	}
 	
-	public static Stats getStatsEncarnacion(final int idModelo, final int nivel, Stats stats) {
+	public static final Stats getStatsEncarnacion(final int idModelo, final int nivel, Stats stats) {
 		stats.clear();// FIXME las encarnaciones
 		switch (idModelo) {
-// ATORMENTADOR_TINIEBLAS;
-			case 9544 -> {
+			case 9544 : // ATORMENTADOR_TINIEBLAS;
 				stats.fijarStatID(STAT_MAS_VITALIDAD, nivel);
 				stats.fijarStatID(STAT_MAS_INTELIGENCIA, nivel / 2);
 				stats.fijarStatID(STAT_MAS_FUERZA, nivel / 2);
 				stats.fijarStatID(STAT_MAS_SUERTE, nivel / 2);
 				stats.fijarStatID(STAT_MAS_AGILIDAD, nivel / 2);
-			}
-// ATORMENTADOR_LLAMAS;
-			case 9545 -> {
+				break;
+			case 9545 : // ATORMENTADOR_LLAMAS;
 				stats.fijarStatID(STAT_MAS_VITALIDAD, nivel);
 				stats.fijarStatID(STAT_MAS_INTELIGENCIA, nivel);
-			}
-// ATORMENTADOR_HOJA;
-			case 9546 -> {
+				break;
+			case 9546 : // ATORMENTADOR_HOJA;
 				stats.fijarStatID(STAT_MAS_VITALIDAD, nivel);
 				stats.fijarStatID(STAT_MAS_FUERZA, nivel);
-			}
-// ATORMENTADOR_GOTA;
-			case 9547 -> {
+				break;
+			case 9547 : // ATORMENTADOR_GOTA;
 				stats.fijarStatID(STAT_MAS_VITALIDAD, nivel);
 				stats.fijarStatID(STAT_MAS_SUERTE, nivel);
-			}
-// ATORMENTADOR_NUBE;
-			case 9548 -> {
+				break;
+			case 9548 : // ATORMENTADOR_NUBE;
 				stats.fijarStatID(STAT_MAS_VITALIDAD, nivel);
 				stats.fijarStatID(STAT_MAS_AGILIDAD, nivel);
-			}
-// BANDIDO_ARQUERO;
-			case 10125 -> {
+				break;
+			case 10125 : // BANDIDO_ARQUERO;
 				stats.fijarStatID(STAT_MAS_ALCANCE, nivel / 25);
 				stats.fijarStatID(STAT_MAS_INTELIGENCIA, nivel / 2);
 				stats.fijarStatID(STAT_MAS_FUERZA, nivel / 2);
 				stats.fijarStatID(STAT_MAS_SUERTE, nivel / 2);
 				stats.fijarStatID(STAT_MAS_AGILIDAD, nivel / 2);
-			}
-// BANDIDO_ESPADACHIN;
-			case 10126 -> stats.fijarStatID(STAT_MAS_GOLPES_CRITICOS, nivel / 10);
-// BANDIDO_PENDENCIERO;
-			case 10127 -> {
+				break;
+			case 10126 : // BANDIDO_ESPADACHIN;
+				stats.fijarStatID(STAT_MAS_GOLPES_CRITICOS, nivel / 10);
+				break;
+			case 10127 : // BANDIDO_PENDENCIERO;
 				stats.fijarStatID(STAT_MAS_RES_FIJA_AGUA, nivel / 10);
 				stats.fijarStatID(STAT_MAS_RES_FIJA_TIERRA, nivel / 10);
 				stats.fijarStatID(STAT_MAS_RES_FIJA_FUEGO, nivel / 10);
@@ -1577,14 +1586,13 @@ public class Constantes {
 				stats.fijarStatID(STAT_MAS_RES_PORC_TIERRA, nivel / 10);
 				stats.fijarStatID(STAT_MAS_RES_PORC_FUEGO, nivel / 10);
 				stats.fijarStatID(STAT_MAS_RES_PORC_AIRE, nivel / 10);
-			}
-// BANDIDO_HECHIZERO;
-			case 10133 -> {
+				break;
+			case 10133 : // BANDIDO_HECHIZERO;
 				stats.fijarStatID(STAT_MAS_INTELIGENCIA, nivel);
 				stats.fijarStatID(STAT_MAS_FUERZA, nivel);
 				stats.fijarStatID(STAT_MAS_SUERTE, nivel);
 				stats.fijarStatID(STAT_MAS_AGILIDAD, nivel);
-			}
+				break;
 		}
 		return stats;
 	}
@@ -1767,7 +1775,7 @@ public class Constantes {
 	// }
 	// return 9999;
 	// }
-	public static boolean esEfectoHechizo(final int stat) {
+	public static final boolean esEfectoHechizo(final int stat) {
 		for (final int i : BUFF_ARMAS) {
 			if (i == stat) {
 				return true;
@@ -1776,7 +1784,7 @@ public class Constantes {
 		return false;
 	}
 	
-	public static boolean esStatTexto(final int stat) {
+	public static final boolean esStatTexto(final int stat) {
 		for (final int i : STAT_TEXTO) {
 			if (i == stat) {
 				return true;
@@ -1785,7 +1793,7 @@ public class Constantes {
 		return false;
 	}
 	
-	public static boolean esStatRepetible(final int stat) {
+	public static final boolean esStatRepetible(final int stat) {
 		for (final int i : STAT_REPETIBLE) {
 			if (i == stat) {
 				return true;
@@ -1794,13 +1802,13 @@ public class Constantes {
 		return false;
 	}
 	
-	public static boolean esStatHechizo(final int stat) {
+	public static final boolean esStatHechizo(final int stat) {
 		// 281, 282, 283, 284, 285,
 		// 286, 287, 288, 289, 290, 291, 292
 		return stat >= 281 && stat <= 294;
 	}
 	
-	public static int getNivelObjevivo(int xp) {
+	public static final int getNivelObjevivo(int xp) {
 		int nivel = 0;
 		for (final int i : NIVELES_OBJEVIVOS) {
 			if (i <= xp) {
@@ -1810,10 +1818,10 @@ public class Constantes {
 		return nivel;
 	}
 	
-	public static ArrayList<String> convertirStringArray(final String str) {
+	public static final ArrayList<String> convertirStringArray(final String str) {
 		final char[] s = str.toCharArray();
 		int corchete = 0;
-		final ArrayList<String> fini = new ArrayList<>();
+		final ArrayList<String> fini = new ArrayList<String>();
 		StringBuilder temp = new StringBuilder();
 		for (final char a : s) {
 			if (a == ' ') {
@@ -1842,19 +1850,130 @@ public class Constantes {
 		return fini;
 	}
 	
-	public static boolean esAccionParaMostrar(int accionID) {
+	public static final boolean esAccionParaMostrar(int accionID) {
 		// mas q todo para GA de pelea
-		return switch (accionID) {
-			case 0, 1, 100, 101, 102, 103, 104, 105, 106, 107, 108, 11, 110, 111, 112, 114, 115, 116, 117, 118, 119, 120, 122, 123, 124, 125, 126, 127, 128, 129, 130, 132, 138, 140, 142, 145, 147, 149, 150, 151, 152, 153, 154, 155, 156, 157, 160, 161, 162, 163, 164, 165, 166, 168, 169, 180, 181, 182, 185, 2, 200, 208, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 228, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309, 4, 5, 50, 501, 51, 52, 606, 607, 608, 609, 610, 611, 617, 618, 619, 78, 780, 900, 901, 902, 903, 905, 906, 909, 940, 950, 998, 999 -> true;
-			default -> false;
-		};
+		switch (accionID) {
+			case 0 :
+			case 1 :
+			case 100 :
+			case 101 :
+			case 102 :
+			case 103 :
+			case 104 :
+			case 105 :
+			case 106 :
+			case 107 :
+			case 108 :
+			case 11 :
+			case 110 :
+			case 111 :
+			case 112 :
+			case 114 :
+			case 115 :
+			case 116 :
+			case 117 :
+			case 118 :
+			case 119 :
+			case 120 :
+			case 122 :
+			case 123 :
+			case 124 :
+			case 125 :
+			case 126 :
+			case 127 :
+			case 128 :
+			case 129 :
+			case 130 :
+			case 132 :
+			case 138 :
+			case 140 :
+			case 142 :
+			case 145 :
+			case 147 :
+			case 149 :
+			case 150 :
+			case 151 :
+			case 152 :
+			case 153 :
+			case 154 :
+			case 155 :
+			case 156 :
+			case 157 :
+			case 160 :
+			case 161 :
+			case 162 :
+			case 163 :
+			case 164 :
+			case 165 :
+			case 166 :
+			case 168 :
+			case 169 :
+			case 180 :
+			case 181 :
+			case 182 :
+			case 185 :
+			case 2 :
+			case 200 :
+			case 208 :
+			case 210 :
+			case 211 :
+			case 212 :
+			case 213 :
+			case 214 :
+			case 215 :
+			case 216 :
+			case 217 :
+			case 218 :
+			case 219 :
+			case 228 :
+			case 300 :
+			case 301 :
+			case 302 :
+			case 303 :
+			case 304 :
+			case 305 :
+			case 306 :
+			case 307 :
+			case 308 :
+			case 309 :
+			case 4 :
+			case 5 :
+			case 50 :
+			case 501 :
+			case 51 :
+			case 52 :
+			case 606 :
+			case 607 :
+			case 608 :
+			case 609 :
+			case 610 :
+			case 611 :
+			case 617 :
+			case 618 :
+			case 619 :
+			case 78 :
+			case 780 :
+			case 900 :
+			case 901 :
+			case 902 :
+			case 903 :
+			case 905 :
+			case 906 :
+			case 909 :
+			case 940 :
+			case 950 :
+			case 998 :
+			case 999 :
+				return true;
+		}
+		return false;
 	}
 	
-	public static long getTiempoActualEscala(long escala) {
+	public static final long getTiempoActualEscala(long escala) {
 		return System.currentTimeMillis() / escala; // Calendar.getInstance() era antes
 	}
 	
-	public static long getTiempoDeUnStat(final String stat, int escala) {
+	public static final long getTiempoDeUnStat(final String stat, int escala) {
 		try {
 			final String[] str = stat.split(Pattern.quote("#"));
 			int año = Integer.parseInt(str[0], 16);
@@ -1868,8 +1987,8 @@ public class Constantes {
 		}
 	}
 	
-	public static long getTiempoFechaX(final int año, final int mes, final int dia, final int hora,
-									   final int minuto, int escala) {
+	public static final long getTiempoFechaX(final int año, final int mes, final int dia, final int hora,
+	final int minuto, int escala) {
 		try {
 			final Calendar calendar = Calendar.getInstance();
 			calendar.set(Calendar.YEAR, año);
@@ -1883,14 +2002,19 @@ public class Constantes {
 		}
 	}
 	
-	public static boolean esMapaMercante(short mapaID) {
-		return switch (mapaID) {
-			case 33, 953, 4601, 8036, 4258 -> true;
-			default -> false;
-		};
+	public static final boolean esMapaMercante(short mapaID) {
+		switch (mapaID) {
+			case 33 :
+			case 953 :
+			case 4601 :
+			case 8036 :
+			case 4258 :
+				return true;
+		}
+		return false;
 	}
 	
-	public static boolean puedeAgredir(final Personaje agresor, final Personaje agredido) {
+	public static final boolean puedeAgredir(final Personaje agresor, final Personaje agredido) {
 		// si el agredido esta ocupado no se le pued agredir
 		if (agredido == null || !agredido.enLinea() || !agredido.estaDisponible(true, true) || agredido.estaInmovil()
 		|| !agresor.enLinea() || !agresor.estaDisponible(true, true) || agresor.estaInmovil() || agredido
@@ -1902,7 +2026,7 @@ public class Constantes {
 		return true;
 	}
 	
-	public static boolean puedeIniciarPelea(Personaje perso, Personaje p, Mapa mapa, Celda celdaDestino) {
+	public static final boolean puedeIniciarPelea(Personaje perso, Personaje p, Mapa mapa, Celda celdaDestino) {
 		if (!Constantes.puedeAgredir(perso, p)) {
 			return false;
 		}
@@ -1936,7 +2060,7 @@ public class Constantes {
 		return false;
 	}
 	
-	public static boolean puedeIniciarPelea(Personaje perso, GrupoMob grupoMob, Mapa mapa, Celda celdaDestino) {
+	public static final boolean puedeIniciarPelea(Personaje perso, GrupoMob grupoMob, Mapa mapa, Celda celdaDestino) {
 		if (!perso.estaDisponible(true, true)) {
 			return false;
 		}
@@ -1977,159 +2101,370 @@ public class Constantes {
 		return true;
 	}
 	
-	public static int getSuperTipoMob(final int tipo) {
-		return switch (tipo) {
-			case MOB_TIPO_SIN_CLASIFICAR, MOB_TIPO_INVOCACIONES_DE_CLASE, MOB_TIPO_JEFE_FINAL, MOB_TIPO_DOPEULS_TEMPLO, MOB_TIPO_MONSTRUOS_DE_LAS_CONQUISTAS_DE_TERRITORIOS, MOB_TIPO_MONSTRUOS_DEL_PUEBLO_DE_LOS_DOPEULS, MOB_TIPO_MONSTRUOS_TUTORIAL, MOB_TIPO_SE_BUSCA, MOB_TIPO_MONSTRUOS_DE_BUSQUEDA, MOB_TIPO_MONSTRUOS_DE_NAWIDAD -> MOB_SUPER_TIPO_CRIATURAS_DIVERSAS;
-			case MOB_TIPO_JALATOS, MOB_TIPO_PLANTAS_DE_LOS_CAMPOS, MOB_TIPO_LARVAS, MOB_TIPO_SETAS, MOB_TIPO_TOFUS, MOB_TIPO_MOSKITOS -> MOB_SUPER_TIPO_CRIATURAS_DE_LOS_CAMPOS;
-			case MOB_TIPO_BWORKS, MOB_TIPO_GOBLINS, MOB_TIPO_KWAKS, MOB_TIPO_CRUJIDORES, MOB_TIPO_CERDOS, MOB_TIPO_GUARDIANES_DE_LOS_PUEBLOS_DE_KWAKS -> MOB_SUPER_TIPO_CRIATURAS_DE_LA_MONTAÑA;
-			case MOB_TIPO_DRAGOHUEVOS, MOB_TIPO_GELATINAS, MOB_TIPO_ABRAKNIDEO, MOB_TIPO_ESCARAHOJA, MOB_TIPO_ARAKNA, MOB_TIPO_MILUBO, MOB_TIPO_ANIMALES_DEL_BOSQUE -> MOB_SUPER_TIPO_CRIATURAS_DEL_BOSQUE;
-			case MOB_TIPO_DRAGOPAVO, MOB_TIPO_BLOPS, MOB_TIPO_MONSTRUOS_DE_LAS_LLANURAS_DE_CANIA, MOB_TIPO_CUERBOKS -> MOB_SUPER_TIPO_CRIATURAS_DE_LAS_LLANURAS;
-			case MOB_TIPO_MONSTRUOS_DE_LAS_LANDAS -> MOB_SUPER_TIPO_CRIATURAS_DE_LAS_LANDAS;
-			case MOB_TIPO_KANIBOLAS_DE_LA_ISLA_DE_MOON, MOB_TIPO_TORTUGAS_DE_MOON, MOB_TIPO_PIRATAS_DE_MOON, MOB_TIPO_PLANTAS_DE_MOON, MOB_TIPO_MONSTRUOS_DE_MOON -> MOB_SUPER_TIPO_CRIATURAS_DE_LA_ISLA_DE_MOON;
-			case MOB_TIPO_WABBITS -> MOB_SUPER_TIPO_CRIATURAS_DE_LA_ISLA_DE_LOS_WABBITS;
-			case MOB_TIPO_MONSTRUOS_DEL_PUEBLO_DE_PANDALA, MOB_TIPO_MONSTRUOS_DE_PANDALA, MOB_TIPO_FANTASMA_DE_PANDALA, MOB_TIPO_PLANTAS_DE_PANDALA, MOB_TIPO_KITSUS, MOB_TIPO_PANDAWAS, MOB_TIPO_FIREFUX -> MOB_SUPER_TIPO_CRIATURAS_DE_PANDALA;
-			case MOB_TIPO_BANDIDOS, MOB_TIPO_PNJS, MOB_TIPO_GUARDIAS, MOB_TIPO_SALTEADORILLOS -> MOB_SUPER_TIPO_CRIATURAS_HUMANOIDES;
-			case MOB_TIPO_MONSTRUOS_DE_LA_NOCHE, MOB_TIPO_CHAFERS, MOB_TIPO_FANTASMAS, MOB_TIPO_MASCOTAS_FANTASMAS -> MOB_SUPER_TIPO_CRIATURAS_DE_LA_NOCHE;
-			case MOB_TIPO_COCODRAILS, MOB_TIPO_MONSTRUOS_DE_LOS_PANTANOS -> MOB_SUPER_TIPO_CRIATURAS_DE_LOS_PANTANOS;
-			case MOB_TIPO_MONSTRUO_DE_LAS_ALCANTARILLAS, MOB_TIPO_PIOS -> MOB_SUPER_TIPO_CRIATURAS_DE_LAS_CIUDADES;
-			case MOB_TIPO_KOALAKS, MOB_TIPO_MONSTRUOS_DE_LAS_CUEVAS -> MOB_SUPER_TIPO_CRIATURAS_DEL_PUEBLO_DE_LOS_GANADEROS;
-			case MOB_TIPO_PROTECTORES_DE_LOS_CEREALES, MOB_TIPO_PROTECTORES_DE_LOS_MINERALES, MOB_TIPO_PROTECTORES_DE_LOS_ARBOLES, MOB_TIPO_PROTECTORES_DE_LOS_PECES, MOB_TIPO_PROTECTORES_DE_LAS_PLANTAS -> MOB_SUPER_TIPO_PROTECTORES_DE_LOS_RECURSOS;
-			case MOB_TIPO_MINOS -> MOB_SUPER_TIPO_CRIATURAS_DE_LA_ISLA_DE_MINOTAURORO;
-			case MOB_TIPO_MONSTRUOS_DE_LAS_PLAYAS -> MOB_SUPER_TIPO_CRIATURAS_DE_LAS_PLAYAS;
-			case MOB_TIPO_MONSTRUOS_DE_LA_ZONA_DE_NOVATOS -> MOB_SUPER_TIPO_CRIATURAS_DE_LA_ZONA_DE_LOS_NOVATOS;
-			case MOB_TIPO_MONSTRUOS_DE_LAS_LLANURAS_HERBOSAS, MOB_TIPO_MONSTRUOS_DE_LA_PLAYA_DE_CORAL, MOB_TIPO_MONSTRUOS_DE_LA_TURBERA_SIN_FONDO, MOB_TIPO_MONSTRUOS_DE_LA_OSCURA_SELVA, MOB_TIPO_MONSTRUOS_DEL_ARBOL_HAKAM, MOB_TIPO_MONSTRUOS_DEL_ARCA_DE_OTOMAI, MOB_TIPO_MONSTRUOS_DE_LA_CANOPEA_DE_LAS_NIEBLAS -> MOB_SUPER_TIPO_CRIATURAS_DE_LA_ISLA_DE_OTOMAI;
-			case MOB_TIPO_LOS_ARCHIMONSTRUOS -> MOB_SUPER_TIPO_CRIATURAS_ARCHIMONSTRUO;
-			case MOB_TIPO_MONSTRUOS_DE_LOS_CAMPOS_DE_HIELO, MOB_TIPO_MONSTRUOS_DEL_BURGO, MOB_TIPO_MONSTRUOS_DEL_BOSQUE_DE_LOS_PINOS_PERDIDOS, MOB_TIPO_MONSTRUOS_DEL_LAGO_HELADO, MOB_TIPO_MONSTRUOS_DEL_MONTE_TORRIDO, MOB_TIPO_MONSTRUOS_DE_LAS_LAGRIMAS_DE_URONIGRIDO, MOB_TIPO_MONSTRUOS_DE_LA_CUNA_DE_ALMA, MOB_TIPO_MONSTRUOS_DE_LOS_COL, MOB_TIPO_MONSTRUOS_DE_LA_GRIETA_BU, MOB_TIPO_MONSTRUOS_DEL_BOSQUE_PETRIFICADO, MOB_TIPO_MONSTRUOS_SE_BUSCA_DE_FRIGOST, MOB_TIPO_MONSTRUOS_DE_MISION_DE_FRIGOST -> MOB_SUPER_TIPO_NULL;
-			default -> -1;
-		};
+	public static final int getSuperTipoMob(final int tipo) {
+		switch (tipo) {
+			case MOB_TIPO_SIN_CLASIFICAR :
+			case MOB_TIPO_INVOCACIONES_DE_CLASE :
+			case MOB_TIPO_JEFE_FINAL :
+			case MOB_TIPO_DOPEULS_TEMPLO :
+			case MOB_TIPO_MONSTRUOS_DE_LAS_CONQUISTAS_DE_TERRITORIOS :
+			case MOB_TIPO_MONSTRUOS_DEL_PUEBLO_DE_LOS_DOPEULS :
+			case MOB_TIPO_MONSTRUOS_TUTORIAL :
+			case MOB_TIPO_SE_BUSCA :
+			case MOB_TIPO_MONSTRUOS_DE_BUSQUEDA :
+			case MOB_TIPO_MONSTRUOS_DE_NAWIDAD :
+				return MOB_SUPER_TIPO_CRIATURAS_DIVERSAS;
+			case MOB_TIPO_JALATOS :
+			case MOB_TIPO_PLANTAS_DE_LOS_CAMPOS :
+			case MOB_TIPO_LARVAS :
+			case MOB_TIPO_SETAS :
+			case MOB_TIPO_TOFUS :
+			case MOB_TIPO_MOSKITOS :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LOS_CAMPOS;
+			case MOB_TIPO_BWORKS :
+			case MOB_TIPO_GOBLINS :
+			case MOB_TIPO_KWAKS :
+			case MOB_TIPO_CRUJIDORES :
+			case MOB_TIPO_CERDOS :
+			case MOB_TIPO_GUARDIANES_DE_LOS_PUEBLOS_DE_KWAKS :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LA_MONTAÑA;
+			case MOB_TIPO_DRAGOHUEVOS :
+			case MOB_TIPO_GELATINAS :
+			case MOB_TIPO_ABRAKNIDEO :
+			case MOB_TIPO_ESCARAHOJA :
+			case MOB_TIPO_ARAKNA :
+			case MOB_TIPO_MILUBO :
+			case MOB_TIPO_ANIMALES_DEL_BOSQUE :
+				return MOB_SUPER_TIPO_CRIATURAS_DEL_BOSQUE;
+			case MOB_TIPO_DRAGOPAVO :
+			case MOB_TIPO_BLOPS :
+			case MOB_TIPO_MONSTRUOS_DE_LAS_LLANURAS_DE_CANIA :
+			case MOB_TIPO_CUERBOKS :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LAS_LLANURAS;
+			case MOB_TIPO_MONSTRUOS_DE_LAS_LANDAS :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LAS_LANDAS;
+			case MOB_TIPO_KANIBOLAS_DE_LA_ISLA_DE_MOON :
+			case MOB_TIPO_TORTUGAS_DE_MOON :
+			case MOB_TIPO_PIRATAS_DE_MOON :
+			case MOB_TIPO_PLANTAS_DE_MOON :
+			case MOB_TIPO_MONSTRUOS_DE_MOON :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LA_ISLA_DE_MOON;
+			case MOB_TIPO_WABBITS :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LA_ISLA_DE_LOS_WABBITS;
+			case MOB_TIPO_MONSTRUOS_DEL_PUEBLO_DE_PANDALA :
+			case MOB_TIPO_MONSTRUOS_DE_PANDALA :
+			case MOB_TIPO_FANTASMA_DE_PANDALA :
+			case MOB_TIPO_PLANTAS_DE_PANDALA :
+			case MOB_TIPO_KITSUS :
+			case MOB_TIPO_PANDAWAS :
+			case MOB_TIPO_FIREFUX :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_PANDALA;
+			case MOB_TIPO_BANDIDOS :
+			case MOB_TIPO_PNJS :
+			case MOB_TIPO_GUARDIAS :
+			case MOB_TIPO_SALTEADORILLOS :
+				return MOB_SUPER_TIPO_CRIATURAS_HUMANOIDES;
+			case MOB_TIPO_MONSTRUOS_DE_LA_NOCHE :
+			case MOB_TIPO_CHAFERS :
+			case MOB_TIPO_FANTASMAS :
+			case MOB_TIPO_MASCOTAS_FANTASMAS :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LA_NOCHE;
+			case MOB_TIPO_COCODRAILS :
+			case MOB_TIPO_MONSTRUOS_DE_LOS_PANTANOS :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LOS_PANTANOS;
+			case MOB_TIPO_MONSTRUO_DE_LAS_ALCANTARILLAS :
+			case MOB_TIPO_PIOS :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LAS_CIUDADES;
+			case MOB_TIPO_KOALAKS :
+			case MOB_TIPO_MONSTRUOS_DE_LAS_CUEVAS :
+				return MOB_SUPER_TIPO_CRIATURAS_DEL_PUEBLO_DE_LOS_GANADEROS;
+			case MOB_TIPO_PROTECTORES_DE_LOS_CEREALES :
+			case MOB_TIPO_PROTECTORES_DE_LOS_MINERALES :
+			case MOB_TIPO_PROTECTORES_DE_LOS_ARBOLES :
+			case MOB_TIPO_PROTECTORES_DE_LOS_PECES :
+			case MOB_TIPO_PROTECTORES_DE_LAS_PLANTAS :
+				return MOB_SUPER_TIPO_PROTECTORES_DE_LOS_RECURSOS;
+			case MOB_TIPO_MINOS :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LA_ISLA_DE_MINOTAURORO;
+			case MOB_TIPO_MONSTRUOS_DE_LAS_PLAYAS :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LAS_PLAYAS;
+			case MOB_TIPO_MONSTRUOS_DE_LA_ZONA_DE_NOVATOS :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LA_ZONA_DE_LOS_NOVATOS;
+			case MOB_TIPO_MONSTRUOS_DE_LAS_LLANURAS_HERBOSAS :
+			case MOB_TIPO_MONSTRUOS_DE_LA_PLAYA_DE_CORAL :
+			case MOB_TIPO_MONSTRUOS_DE_LA_TURBERA_SIN_FONDO :
+			case MOB_TIPO_MONSTRUOS_DE_LA_OSCURA_SELVA :
+			case MOB_TIPO_MONSTRUOS_DEL_ARBOL_HAKAM :
+			case MOB_TIPO_MONSTRUOS_DEL_ARCA_DE_OTOMAI :
+			case MOB_TIPO_MONSTRUOS_DE_LA_CANOPEA_DE_LAS_NIEBLAS :
+				return MOB_SUPER_TIPO_CRIATURAS_DE_LA_ISLA_DE_OTOMAI;
+			case MOB_TIPO_LOS_ARCHIMONSTRUOS :
+				return MOB_SUPER_TIPO_CRIATURAS_ARCHIMONSTRUO;
+			case MOB_TIPO_MONSTRUOS_DE_LOS_CAMPOS_DE_HIELO :
+			case MOB_TIPO_MONSTRUOS_DEL_BURGO :
+			case MOB_TIPO_MONSTRUOS_DEL_BOSQUE_DE_LOS_PINOS_PERDIDOS :
+			case MOB_TIPO_MONSTRUOS_DEL_LAGO_HELADO :
+			case MOB_TIPO_MONSTRUOS_DEL_MONTE_TORRIDO :
+			case MOB_TIPO_MONSTRUOS_DE_LAS_LAGRIMAS_DE_URONIGRIDO :
+			case MOB_TIPO_MONSTRUOS_DE_LA_CUNA_DE_ALMA :
+			case MOB_TIPO_MONSTRUOS_DE_LOS_COL :
+			case MOB_TIPO_MONSTRUOS_DE_LA_GRIETA_BU :
+			case MOB_TIPO_MONSTRUOS_DEL_BOSQUE_PETRIFICADO :
+			case MOB_TIPO_MONSTRUOS_SE_BUSCA_DE_FRIGOST :
+			case MOB_TIPO_MONSTRUOS_DE_MISION_DE_FRIGOST :
+				return MOB_SUPER_TIPO_NULL;
+		}
+		return -1;
 	}
 	
-	public static String getNombreTipoMob(final int tipo) {
-		return switch (tipo) {
-			case -1 -> "Sin clasificar";
-			case 0 -> "Invocaciones";
-			case 1 -> "Jefe final";
-			case 2 -> "Bandidos";
-			case 3 -> "Wabbits";
-			case 4 -> "Dragohuevos";
-			case 5 -> "Bworks";
-			case 6 -> "Goblins";
-			case 7 -> "Gelatinas";
-			case 8 -> "Monstruos de la noche";
-			case 9 -> "Jalatós";
-			case 10 -> "Plantas de los campos";
-			case 11 -> "Larvas";
-			case 12 -> "Kwaks";
-			case 13 -> "Crujidores";
-			case 16 -> "Cerdos";
-			case 17 -> "Chafers";
-			case 18 -> "Dopeuls Templo";
-			case 19 -> "Pnjs";
-			case 20 -> "Kaníbolas de la Isla de Moon";
-			case 21 -> "Dragopavo";
-			case 22 -> "Abraknídeo";
-			case 23 -> "Blops";
-			case 24 -> "Monstruos de las Llanuras de Cania";
-			case 25 -> "Monstruos de las landas";
-			case 26 -> "Guardias";
-			case 27 -> "Monstruos de las conquistas de territorios";
-			case 28 -> "Monstruos del Pueblo de los Dopeuls";
-			case 29 -> "Monstruos Tutorial";
-			case 30 -> "Salteadorillos";
-			case 31 -> "Monstruo de las alcantarillas";
-			case 32 -> "Se busca";
-			case 33 -> "Píos";
-			case 34 -> "Monstruos del pueblo de Pandala";
-			case 35 -> "Monstruos de Pandala";
-			case 36 -> "Fantasma de Pandala";
-			case 37 -> "Escarahoja";
-			case 38 -> "Arakna";
-			case 39 -> "Milubo";
-			case 40 -> "Tortugas de Moon";
-			case 41 -> "Piratas de Moon";
-			case 42 -> "Plantas de Moon";
-			case 43 -> "Monstruos de Moon";
-			case 44 -> "Cocodrails";
-			case 45 -> "Setas";
-			case 46 -> "Tofus";
-			case 47 -> "Moskitos";
-			case 48 -> "Monstruos de los pantanos";
-			case 49 -> "Animales del bosque";
-			case 50 -> "Monstruos de búsqueda";
-			case 51 -> "Cuerboks";
-			case 52 -> "Guardianes de los pueblos de Kwaks";
-			case 53 -> "Fantasmas";
-			case 54 -> "Mascotas Fantasmas";
-			case 55 -> "Plantas de Pandala";
-			case 56 -> "Kitsus";
-			case 57 -> "Pandawas";
-			case 59 -> "Firefux";
-			case 60 -> "Koalaks";
-			case 61 -> "Monstruos de las cuevas";
-			case 62 -> "Protectores de los cereales";
-			case 63 -> "Protectores de los Minerales";
-			case 64 -> "Protectores de los árboles";
-			case 65 -> "Protectores de los Peces";
-			case 66 -> "Protectores de las Plantas";
-			case 67 -> "Minos";
-			case 68 -> "Monstruos de Nawidad";
-			case 69 -> "Monstruos de las playas";
-			case 70 -> "Monstruos de la zona de novatos";
-			case 71 -> "Monstruos de las Llanuras herbosas";
-			case 72 -> "Monstruos de la playa de coral";
-			case 73 -> "Monstruos de la Turbera sin fondo";
-			case 74 -> "Monstruos de la Oscura Selva";
-			case 75 -> "Monstruos del Árbol Hakam";
-			case 76 -> "Monstruos del Arca de Otomai";
-			case 77 -> "Monstruos de la Canopea de las Nieblas";
-			case 78 -> "Los Archi-monstruos";
-			default -> "";
-		};
+	public static final String getNombreTipoMob(final int tipo) {
+		switch (tipo) {
+			case -1 :
+				return "Sin clasificar";
+			case 0 :
+				return "Invocaciones";
+			case 1 :
+				return "Jefe final";
+			case 2 :
+				return "Bandidos";
+			case 3 :
+				return "Wabbits";
+			case 4 :
+				return "Dragohuevos";
+			case 5 :
+				return "Bworks";
+			case 6 :
+				return "Goblins";
+			case 7 :
+				return "Gelatinas";
+			case 8 :
+				return "Monstruos de la noche";
+			case 9 :
+				return "Jalatós";
+			case 10 :
+				return "Plantas de los campos";
+			case 11 :
+				return "Larvas";
+			case 12 :
+				return "Kwaks";
+			case 13 :
+				return "Crujidores";
+			case 16 :
+				return "Cerdos";
+			case 17 :
+				return "Chafers";
+			case 18 :
+				return "Dopeuls Templo";
+			case 19 :
+				return "Pnjs";
+			case 20 :
+				return "Kaníbolas de la Isla de Moon";
+			case 21 :
+				return "Dragopavo";
+			case 22 :
+				return "Abraknídeo";
+			case 23 :
+				return "Blops";
+			case 24 :
+				return "Monstruos de las Llanuras de Cania";
+			case 25 :
+				return "Monstruos de las landas";
+			case 26 :
+				return "Guardias";
+			case 27 :
+				return "Monstruos de las conquistas de territorios";
+			case 28 :
+				return "Monstruos del Pueblo de los Dopeuls";
+			case 29 :
+				return "Monstruos Tutorial";
+			case 30 :
+				return "Salteadorillos";
+			case 31 :
+				return "Monstruo de las alcantarillas";
+			case 32 :
+				return "Se busca";
+			case 33 :
+				return "Píos";
+			case 34 :
+				return "Monstruos del pueblo de Pandala";
+			case 35 :
+				return "Monstruos de Pandala";
+			case 36 :
+				return "Fantasma de Pandala";
+			case 37 :
+				return "Escarahoja";
+			case 38 :
+				return "Arakna";
+			case 39 :
+				return "Milubo";
+			case 40 :
+				return "Tortugas de Moon";
+			case 41 :
+				return "Piratas de Moon";
+			case 42 :
+				return "Plantas de Moon";
+			case 43 :
+				return "Monstruos de Moon";
+			case 44 :
+				return "Cocodrails";
+			case 45 :
+				return "Setas";
+			case 46 :
+				return "Tofus";
+			case 47 :
+				return "Moskitos";
+			case 48 :
+				return "Monstruos de los pantanos";
+			case 49 :
+				return "Animales del bosque";
+			case 50 :
+				return "Monstruos de búsqueda";
+			case 51 :
+				return "Cuerboks";
+			case 52 :
+				return "Guardianes de los pueblos de Kwaks";
+			case 53 :
+				return "Fantasmas";
+			case 54 :
+				return "Mascotas Fantasmas";
+			case 55 :
+				return "Plantas de Pandala";
+			case 56 :
+				return "Kitsus";
+			case 57 :
+				return "Pandawas";
+			case 59 :
+				return "Firefux";
+			case 60 :
+				return "Koalaks";
+			case 61 :
+				return "Monstruos de las cuevas";
+			case 62 :
+				return "Protectores de los cereales";
+			case 63 :
+				return "Protectores de los Minerales";
+			case 64 :
+				return "Protectores de los árboles";
+			case 65 :
+				return "Protectores de los Peces";
+			case 66 :
+				return "Protectores de las Plantas";
+			case 67 :
+				return "Minos";
+			case 68 :
+				return "Monstruos de Nawidad";
+			case 69 :
+				return "Monstruos de las playas";
+			case 70 :
+				return "Monstruos de la zona de novatos";
+			case 71 :
+				return "Monstruos de las Llanuras herbosas";
+			case 72 :
+				return "Monstruos de la playa de coral";
+			case 73 :
+				return "Monstruos de la Turbera sin fondo";
+			case 74 :
+				return "Monstruos de la Oscura Selva";
+			case 75 :
+				return "Monstruos del Árbol Hakam";
+			case 76 :
+				return "Monstruos del Arca de Otomai";
+			case 77 :
+				return "Monstruos de la Canopea de las Nieblas";
+			case 78 :
+				return "Los Archi-monstruos";
+		}
+		return "";
 	}
 	
-	public static byte getElementoPorEfectoID(final int efectoID) {
-		return switch (efectoID) {
-			case 85, 91, 96, 275 -> ELEMENTO_AGUA;
-			case 86, 92, 97, 276 -> ELEMENTO_TIERRA;
-			case 87, 93, 98, 277 -> ELEMENTO_AIRE;
-			case 88, 94, 99, 278 -> ELEMENTO_FUEGO;
-// robar PDV fijo
-			case 82, 89, 95, 100, 279 -> ELEMENTO_NEUTRAL;
-			default -> ELEMENTO_NULO;
-		};
+	public static final byte getElementoPorEfectoID(final int efectoID) {
+		switch (efectoID) {
+			case 85 :
+			case 91 :
+			case 96 :
+			case 275 :
+				return ELEMENTO_AGUA;
+			case 86 :
+			case 92 :
+			case 97 :
+			case 276 :
+				return ELEMENTO_TIERRA;
+			case 87 :
+			case 93 :
+			case 98 :
+			case 277 :
+				return ELEMENTO_AIRE;
+			case 88 :
+			case 94 :
+			case 99 :
+			case 278 :
+				return ELEMENTO_FUEGO;
+			case 82 :// robar PDV fijo
+			case 89 :
+			case 95 :
+			case 100 :
+			case 279 :
+				return ELEMENTO_NEUTRAL;
+		}
+		return ELEMENTO_NULO;
 	}
 	
-	public static String getNombreEfecto(final int efectoID) {
-		return switch (efectoID) {
-			case 81, 108 -> "SOIN";
-			case 109 -> "% PDV DMG FIX";
-			case 85 -> "% PDV DMG WATER";
-			case 91 -> "STEAL WATER";
-			case 96 -> "DAMAGE WATER";
-			case 275 -> "% PDV DMG WATER";
-			case 86 -> "% PDV DMG EARTH";
-			case 92 -> "STEAL EARTH";
-			case 97 -> "DAMAGE EARTH";
-			case 276 -> "% PDV DMG EARTH";
-			case 87 -> "% PDV DMG AIR";
-			case 93 -> "STEAL AIR";
-			case 98 -> "DAMAGE AIR";
-			case 277 -> "% PDV DMG AIR";
-			case 88 -> "% PDV DMG FIRE";
-			case 94 -> "STEAL FIRE";
-			case 99 -> "DAMAGE FIRE";
-			case 278 -> "% PDV DMG FIRE";
-			case 89 -> "% PDV DMG NEUTRAL";
-			case 95 -> "STEAL NEUTRAL";
-			case 100 -> "DAMAGE NEUTRAL";
-			case 279 -> "% PDV DMG NEUTRAL";
-			case 181 -> "INVOCATION";
-			case 141 -> "KILL";
-			default -> "EFFECT ID " + efectoID;
-		};
+	public static final String getNombreEfecto(final int efectoID) {
+		switch (efectoID) {
+			case 81 :
+			case 108 :
+				return "SOIN";
+			case 109 :
+				return "% PDV DMG FIX";
+			case 85 :
+				return "% PDV DMG WATER";
+			case 91 :
+				return "STEAL WATER";
+			case 96 :
+				return "DAMAGE WATER";
+			case 275 :
+				return "% PDV DMG WATER";
+			case 86 :
+				return "% PDV DMG EARTH";
+			case 92 :
+				return "STEAL EARTH";
+			case 97 :
+				return "DAMAGE EARTH";
+			case 276 :
+				return "% PDV DMG EARTH";
+			case 87 :
+				return "% PDV DMG AIR";
+			case 93 :
+				return "STEAL AIR";
+			case 98 :
+				return "DAMAGE AIR";
+			case 277 :
+				return "% PDV DMG AIR";
+			case 88 :
+				return "% PDV DMG FIRE";
+			case 94 :
+				return "STEAL FIRE";
+			case 99 :
+				return "DAMAGE FIRE";
+			case 278 :
+				return "% PDV DMG FIRE";
+			case 89 :
+				return "% PDV DMG NEUTRAL";
+			case 95 :
+				return "STEAL NEUTRAL";
+			case 100 :
+				return "DAMAGE NEUTRAL";
+			case 279 :
+				return "% PDV DMG NEUTRAL";
+			case 181 :
+				return "INVOCATION";
+			case 141 :
+				return "KILL";
+		}
+		return "EFFECT ID " + efectoID;
 	}
 	
-	public static int getOgrinasPorVotos(int votos) {
+	public static final int getOgrinasPorVotos(int votos) {
 		if (votos < 100)
 			return MainServidor.OGRINAS_POR_VOTO;
 		if (votos < 200)
@@ -2140,369 +2475,384 @@ public class Constantes {
 			return (MainServidor.OGRINAS_POR_VOTO * 2);
 	}
 	
-	public static int prioridadEfecto(final int id) {
-		return switch (id) {
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (fuego)
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (aire)
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (tierra)
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (agua)
-// 100;// Daños Neutral
-// 99;// Daños Fuego
-// 98;// Daños Aire
-// 97;// Daños Tierra
-// 96;// Daños Agua
-// 95;// Robar Vida(neutral)
-// 94;// Robar Vida(fuego)
-// 93;// Robar Vida(aire)
-// 92;// Robar Vida(tierra)
-// 91;// Robar Vida(agua)
-// Daños Neutral %vida del atacante
-// Daños Fuego %vida del atacante
-// Daños Aire %vida del atacante
-// Daños Tierra %vida del atacante
-// Daños Agua %vida del atacante
-// robar PDV
-			case 82, 85, 86, 87, 88, 89, STAT_DAÑOS_ROBAR_AGUA, STAT_DAÑOS_ROBAR_TIERRA, STAT_DAÑOS_ROBAR_AIRE, STAT_DAÑOS_ROBAR_FUEGO, STAT_DAÑOS_ROBAR_NEUTRAL, STAT_DAÑOS_AGUA, STAT_DAÑOS_TIERRA, STAT_DAÑOS_AIRE, STAT_DAÑOS_FUEGO, STAT_DAÑOS_NEUTRAL, 275, 276, 277, 278, 279, 300, 301, 302, 303, 304, 305, 306, 307, 311 -> 1;
-// 108;
-// 108;
-			case STAT_CURAR_2, STAT_CURAR -> 2;
-// deshechiza
-			case 132 -> 3;
-// 444;
-// 443;
-// 442;
-// 441;
-// 440;
-// 439;
-// 438;
-// 437;
-// 436;
-// 434;
-// 433;
-// 414;
-// 411;
-// 320;
-// robo de fuerza
-// robo de sabiduría
-// robo de inteligencia
-// robo de agilidad
-// robo de vitalidad
-// robo de suerte
-// 259;
-// 258;
-// 257;
-// 256;
-// 255;
-// 249;
-// 248;
-// 247;
-// 246;
-// 245;
-// 219;
-// 218;
-// 217;
-// 216;
-// 215;
-// 186;
-// 179;
-// 177;
-// 175;
-// 169;
-// 168;
-// 164;
-// 163;
-// 162;
-// 159;
-// 157;
-// 156;
-// 155;
-// 154;
-// 153;
-// 152;
-// 145;
-// veneno X pdv por PA
-// 127;
-// 116;
-// 101;
-// 84;
-// 78;
-// 77;
-			case STAT_ROBA_PM, STAT_MAS_PM_2, STAT_ROBA_PA, STAT_MENOS_PA, STAT_MENOS_ALCANCE, STAT_MENOS_PM, 131, STAT_MENOS_DAÑOS, STAT_MENOS_SUERTE, STAT_MENOS_VITALIDAD, STAT_MENOS_AGILIDAD, STAT_MENOS_INTELIGENCIA, STAT_MENOS_SABIDURIA, STAT_MENOS_FUERZA, STAT_MENOS_PODS, STAT_MENOS_ESQUIVA_PERD_PA, STAT_MENOS_ESQUIVA_PERD_PM, STAT_MENOS_DAÑOS_REDUCIDOS, STAT_MENOS_PA_FIJO, STAT_MENOS_PM_FIJO, STAT_MENOS_INICIATIVA, STAT_MENOS_PROSPECCION, STAT_MENOS_CURAS, STAT_MENOS_GOLPES_CRITICOS, STAT_MENOS_PORC_DAÑOS, STAT_MENOS_RES_PORC_TIERRA, STAT_MENOS_RES_PORC_AGUA, STAT_MENOS_RES_PORC_AIRE, STAT_MENOS_RES_PORC_FUEGO, STAT_MENOS_RES_PORC_NEUTRAL, STAT_MENOS_RES_FIJA_TIERRA, STAT_MENOS_RES_FIJA_AGUA, STAT_MENOS_RES_FIJA_AIRE, STAT_MENOS_RES_FIJA_FUEGO, STAT_MENOS_RES_FIJA_NEUTRAL, STAT_MENOS_RES_PORC_PVP_TIERRA, STAT_MENOS_RES_PORC_PVP_AGUA, STAT_MENOS_RES_PORC_PVP_AIRE, STAT_MENOS_RES_PORC_PVP_FUEGO, STAT_MENOS_RES_PORC_PVP_NEUTRAL, 266, 267, 268, 269, 270, 271, STAT_ROBA_ALCANCE, STAT_MENOS_HUIDA, STAT_MENOS_PLACAJE, STAT_MENOS_RETIRO_PA, STAT_MENOS_RETIRO_PM, STAT_MENOS_DAÑOS_DE_AGUA, STAT_MENOS_DAÑOS_DE_TIERRA, STAT_MENOS_DAÑOS_DE_AIRE, STAT_MENOS_DAÑOS_DE_FUEGO, STAT_MENOS_DAÑOS_DE_NEUTRAL, STAT_MENOS_DAÑOS_CRITICOS, STAT_MENOS_REDUCCION_CRITICOS, STAT_MENOS_DAÑOS_EMPUJE, STAT_MENOS_REDUCCION_EMPUJE -> 4;
-// mata y reemplaza por una invocacion
-// mata al objetivo
-			case 141, 405 -> 5;
-// cambia de apariencia
-			case 149 -> 9;
-// glifo fin turno
-// glifo inicio turno
-// tramp
-			case 400, 401, 402 -> 11;
-// hace retroceder
-// empuja
-			case 5, 6 -> 13;
-// intercambia posiciones
-			case 8 -> 15;
-// 428;
-// invocaciones
-			case 180, 181, 185, STAT_INVOCA_BOMBA, 780 -> 16;
-// 951;// Quita el estado \'\'#3\'\'", c: 71, o: "/"
-// 950;// Estado #3", c: 71, o: "/"
-			case STAT_DAR_ESTADO, STAT_QUITAR_ESTADO -> 17;
-// 432;
-// 431;
-// 430;
-// 429;
-// 425;
-// 424;
-// 423;
-// 422;
-// 421;
-// 419;
-// 418;
-// 417;
-// 416;
-// 415;
-// 413;
-// 410;
-// 265;
-// 264;
-// 263;
-// 262;
-// 261;
-// 260;
-// 254;
-// 253;
-// 252;
-// 251;
-// 250;
-// 244;
-// 243;
-// 242;
-// 241;
-// 240;
-// 226;
-// 225;
-// 220;
-// 214;
-// 213;
-// 212;
-// 211;
-// 210;
-// 184;
-// 183;
-// 182;
-// 178;
-// 176;
-// 174;
-// 165;
-// 161;
-// 160;
-// 158;
-// invisibilidad
-// 142;
-// 138;
-// 128;
-// 126;
-// 125;
-// 124;
-// 123;
-// 122;
-// 121;
-// 120;
-// 119;
-// 118;
-// 117;
-// 115;
-// 114;
-// 112;
-// 111;
-// 110;
-// 107;
-// 106;
-// 105;
-// + X % de posibilidades de que sufras daños x X, o de que te cure x Y
-// Esquiva un X% del ataque haciendolo retroceder Y casillas
-			case 9, 79, STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA, STAT_REENVIA_HECHIZO, STAT_DAÑOS_DEVUELTOS, STAT_MAS_VIDA, STAT_MAS_PA, STAT_MAS_DAÑOS, STAT_MULTIPLICA_DAÑOS, STAT_MAS_GOLPES_CRITICOS, STAT_MAS_ALCANCE, STAT_MAS_FUERZA, STAT_MAS_AGILIDAD, STAT_MAS_PA_2, STAT_MAS_DAÑOS_2, STAT_MAS_FALLOS_CRITICOS, STAT_MAS_SUERTE, STAT_MAS_SABIDURIA, STAT_MAS_VITALIDAD, STAT_MAS_INTELIGENCIA, STAT_MAS_PM, STAT_MAS_PORC_DAÑOS, STAT_MAS_DAÑO_FISICO, 150, STAT_MAS_PODS, STAT_MAS_ESQUIVA_PERD_PA, STAT_MAS_ESQUIVA_PERD_PM, STAT_MAS_DOMINIO, STAT_MAS_INICIATIVA, STAT_MAS_PROSPECCION, STAT_MAS_CURAS, STAT_MAS_CRIATURAS_INVO, STAT_REDUCCION_MAGICA, STAT_REDUCCION_FISICA, STAT_MAS_RES_PORC_TIERRA, STAT_MAS_RES_PORC_AGUA, STAT_MAS_RES_PORC_AIRE, STAT_MAS_RES_PORC_FUEGO, STAT_MAS_RES_PORC_NEUTRAL, STAT_REENVIA_DAÑOS, STAT_MAS_DAÑOS_TRAMPA, STAT_MAS_PORC_DAÑOS_TRAMPA, STAT_MAS_RES_FIJA_TIERRA, STAT_MAS_RES_FIJA_AGUA, STAT_MAS_RES_FIJA_AIRE, STAT_MAS_RES_FIJA_FUEGO, STAT_MAS_RES_FIJA_NEUTRAL, STAT_MAS_RES_PORC_PVP_TIERRA, STAT_MAS_RES_PORC_PVP_AGUA, STAT_MAS_RES_PORC_PVP_AIRE, STAT_MAS_RES_PORC_PVP_FUEGO, STAT_MAS_RES_PORC_PVP_NEUTRAL, STAT_MAS_RES_FIJA_PVP_TIERRA, STAT_MAS_RES_FIJA_PVP_AGUA, STAT_MAS_RES_FIJA_PVP_AIRE, STAT_MAS_RES_FIJA_PVP_FUEGO, STAT_MAS_RES_FIJA_PVP_NEUTRAL, STAT_MAS_DAÑOS_REDUCIDOS_ARMADURAS_FECA, STAT_MAS_HUIDA, STAT_MAS_PLACAJE, STAT_MAS_DAÑOS_DE_AGUA, STAT_MAS_DAÑOS_DE_TIERRA, STAT_MAS_DAÑOS_DE_AIRE, STAT_MAS_DAÑOS_DE_FUEGO, STAT_MAS_DAÑOS_DE_NEUTRAL, STAT_RETROCEDE_CASILLAS, STAT_MAS_PORC_ESCUDO_PDV, STAT_AVANZAR_CASILLAS, STAT_MENOS_PORC_PDV_TEMPORAL, STAT_MAS_DAÑOS_EMPUJE, STAT_MAS_DAÑOS_CRITICOS, STAT_MAS_REDUCCION_CRITICOS, STAT_MAS_RETIRO_PA, STAT_MAS_RETIRO_PM -> 20;
-			default -> 1000;
-		};
+	public static final int prioridadEfecto(final int id) {
+		switch (id) {
+			case 82 :// robar PDV
+			case 85 :// Daños Agua %vida del atacante
+			case 86 :// Daños Tierra %vida del atacante
+			case 87 :// Daños Aire %vida del atacante
+			case 88 :// Daños Fuego %vida del atacante
+			case 89 :// Daños Neutral %vida del atacante
+			case STAT_DAÑOS_ROBAR_AGUA :// 91;// Robar Vida(agua)
+			case STAT_DAÑOS_ROBAR_TIERRA :// 92;// Robar Vida(tierra)
+			case STAT_DAÑOS_ROBAR_AIRE :// 93;// Robar Vida(aire)
+			case STAT_DAÑOS_ROBAR_FUEGO :// 94;// Robar Vida(fuego)
+			case STAT_DAÑOS_ROBAR_NEUTRAL :// 95;// Robar Vida(neutral)
+			case STAT_DAÑOS_AGUA :// 96;// Daños Agua
+			case STAT_DAÑOS_TIERRA :// 97;// Daños Tierra
+			case STAT_DAÑOS_AIRE :// 98;// Daños Aire
+			case STAT_DAÑOS_FUEGO :// 99;// Daños Fuego
+			case STAT_DAÑOS_NEUTRAL :// 100;// Daños Neutral
+			case 275 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (agua)
+			case 276 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (tierra)
+			case 277 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (aire)
+			case 278 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (fuego)
+			case 279 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
+			case 300 :
+			case 301 :
+			case 302 :
+			case 303 :
+			case 304 :
+			case 305 :
+			case 306 :
+			case 307 :
+			case 311 :
+				return 1;
+			case STAT_CURAR_2 :// 108;
+			case STAT_CURAR :// 108;
+				return 2;
+			case 132 :// deshechiza
+				return 3;
+			case STAT_ROBA_PM :// 77;
+			case STAT_MAS_PM_2 :// 78;
+			case STAT_ROBA_PA :// 84;
+			case STAT_MENOS_PA :// 101;
+			case STAT_MENOS_ALCANCE :// 116;
+			case STAT_MENOS_PM :// 127;
+			case 131 :// veneno X pdv por PA
+			case STAT_MENOS_DAÑOS :// 145;
+			case STAT_MENOS_SUERTE :// 152;
+			case STAT_MENOS_VITALIDAD :// 153;
+			case STAT_MENOS_AGILIDAD :// 154;
+			case STAT_MENOS_INTELIGENCIA :// 155;
+			case STAT_MENOS_SABIDURIA :// 156;
+			case STAT_MENOS_FUERZA :// 157;
+			case STAT_MENOS_PODS :// 159;
+			case STAT_MENOS_ESQUIVA_PERD_PA :// 162;
+			case STAT_MENOS_ESQUIVA_PERD_PM :// 163;
+			case STAT_MENOS_DAÑOS_REDUCIDOS :// 164;
+			case STAT_MENOS_PA_FIJO :// 168;
+			case STAT_MENOS_PM_FIJO :// 169;
+			case STAT_MENOS_INICIATIVA :// 175;
+			case STAT_MENOS_PROSPECCION :// 177;
+			case STAT_MENOS_CURAS :// 179;
+			case STAT_MENOS_GOLPES_CRITICOS :
+			case STAT_MENOS_PORC_DAÑOS :// 186;
+			case STAT_MENOS_RES_PORC_TIERRA :// 215;
+			case STAT_MENOS_RES_PORC_AGUA :// 216;
+			case STAT_MENOS_RES_PORC_AIRE :// 217;
+			case STAT_MENOS_RES_PORC_FUEGO :// 218;
+			case STAT_MENOS_RES_PORC_NEUTRAL :// 219;
+			case STAT_MENOS_RES_FIJA_TIERRA :// 245;
+			case STAT_MENOS_RES_FIJA_AGUA :// 246;
+			case STAT_MENOS_RES_FIJA_AIRE :// 247;
+			case STAT_MENOS_RES_FIJA_FUEGO :// 248;
+			case STAT_MENOS_RES_FIJA_NEUTRAL :// 249;
+			case STAT_MENOS_RES_PORC_PVP_TIERRA :// 255;
+			case STAT_MENOS_RES_PORC_PVP_AGUA :// 256;
+			case STAT_MENOS_RES_PORC_PVP_AIRE :// 257;
+			case STAT_MENOS_RES_PORC_PVP_FUEGO :// 258;
+			case STAT_MENOS_RES_PORC_PVP_NEUTRAL :// 259;
+			case 266 :// robo de suerte
+			case 267 :// robo de vitalidad
+			case 268 :// robo de agilidad
+			case 269 :// robo de inteligencia
+			case 270 :// robo de sabiduría
+			case 271 :// robo de fuerza
+			case STAT_ROBA_ALCANCE :// 320;
+			case STAT_MENOS_HUIDA :// 411;
+			case STAT_MENOS_PLACAJE :// 414;
+			case STAT_MENOS_RETIRO_PA :// 433;
+			case STAT_MENOS_RETIRO_PM :// 434;
+			case STAT_MENOS_DAÑOS_DE_AGUA :// 436;
+			case STAT_MENOS_DAÑOS_DE_TIERRA :// 437;
+			case STAT_MENOS_DAÑOS_DE_AIRE :// 438;
+			case STAT_MENOS_DAÑOS_DE_FUEGO :// 439;
+			case STAT_MENOS_DAÑOS_DE_NEUTRAL :// 440;
+			case STAT_MENOS_DAÑOS_CRITICOS :// 441;
+			case STAT_MENOS_REDUCCION_CRITICOS :// 442;
+			case STAT_MENOS_DAÑOS_EMPUJE :// 443;
+			case STAT_MENOS_REDUCCION_EMPUJE :// 444;
+				return 4;
+			case 141 :// mata al objetivo
+			case 405 :// mata y reemplaza por una invocacion
+				return 5;
+			case 149 :// cambia de apariencia
+				return 9;
+			case 400 :// tramp
+			case 401 :// glifo inicio turno
+			case 402 :// glifo fin turno
+				return 11;
+			case 5 :// empuja
+			case 6 :// hace retroceder
+				return 13;
+			case 8 :// intercambia posiciones
+				return 15;
+			case 180 :// invocaciones
+			case 181 :
+			case 185 :
+			case STAT_INVOCA_BOMBA :// 428;
+			case 780 :
+				return 16;
+			case STAT_DAR_ESTADO :// 950;// Estado #3", c: 71, o: "/"
+			case STAT_QUITAR_ESTADO :// 951;// Quita el estado \'\'#3\'\'", c: 71, o: "/"
+				return 17;
+			case 9 :// Esquiva un X% del ataque haciendolo retroceder Y casillas
+			case 79 :// + X % de posibilidades de que sufras daños x X, o de que te cure x Y
+			case STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA :// 105;
+			case STAT_REENVIA_HECHIZO :// 106;
+			case STAT_DAÑOS_DEVUELTOS :// 107;
+			case STAT_MAS_VIDA :// 110;
+			case STAT_MAS_PA :// 111;
+			case STAT_MAS_DAÑOS :// 112;
+			case STAT_MULTIPLICA_DAÑOS :// 114;
+			case STAT_MAS_GOLPES_CRITICOS :// 115;
+			case STAT_MAS_ALCANCE :// 117;
+			case STAT_MAS_FUERZA :// 118;
+			case STAT_MAS_AGILIDAD :// 119;
+			case STAT_MAS_PA_2 :// 120;
+			case STAT_MAS_DAÑOS_2 :// 121;
+			case STAT_MAS_FALLOS_CRITICOS :// 122;
+			case STAT_MAS_SUERTE :// 123;
+			case STAT_MAS_SABIDURIA :// 124;
+			case STAT_MAS_VITALIDAD :// 125;
+			case STAT_MAS_INTELIGENCIA :// 126;
+			case STAT_MAS_PM :// 128;
+			case STAT_MAS_PORC_DAÑOS :// 138;
+			case STAT_MAS_DAÑO_FISICO :// 142;
+			case 150 :// invisibilidad
+			case STAT_MAS_PODS :// 158;
+			case STAT_MAS_ESQUIVA_PERD_PA :// 160;
+			case STAT_MAS_ESQUIVA_PERD_PM :// 161;
+			case STAT_MAS_DOMINIO :// 165;
+			case STAT_MAS_INICIATIVA :// 174;
+			case STAT_MAS_PROSPECCION :// 176;
+			case STAT_MAS_CURAS :// 178;
+			case STAT_MAS_CRIATURAS_INVO :// 182;
+			case STAT_REDUCCION_MAGICA :// 183;
+			case STAT_REDUCCION_FISICA :// 184;
+			case STAT_MAS_RES_PORC_TIERRA :// 210;
+			case STAT_MAS_RES_PORC_AGUA :// 211;
+			case STAT_MAS_RES_PORC_AIRE :// 212;
+			case STAT_MAS_RES_PORC_FUEGO :// 213;
+			case STAT_MAS_RES_PORC_NEUTRAL :// 214;
+			case STAT_REENVIA_DAÑOS :// 220;
+			case STAT_MAS_DAÑOS_TRAMPA :// 225;
+			case STAT_MAS_PORC_DAÑOS_TRAMPA :// 226;
+			case STAT_MAS_RES_FIJA_TIERRA :// 240;
+			case STAT_MAS_RES_FIJA_AGUA :// 241;
+			case STAT_MAS_RES_FIJA_AIRE :// 242;
+			case STAT_MAS_RES_FIJA_FUEGO :// 243;
+			case STAT_MAS_RES_FIJA_NEUTRAL :// 244;
+			case STAT_MAS_RES_PORC_PVP_TIERRA :// 250;
+			case STAT_MAS_RES_PORC_PVP_AGUA :// 251;
+			case STAT_MAS_RES_PORC_PVP_AIRE :// 252;
+			case STAT_MAS_RES_PORC_PVP_FUEGO :// 253;
+			case STAT_MAS_RES_PORC_PVP_NEUTRAL :// 254;
+			case STAT_MAS_RES_FIJA_PVP_TIERRA :// 260;
+			case STAT_MAS_RES_FIJA_PVP_AGUA :// 261;
+			case STAT_MAS_RES_FIJA_PVP_AIRE :// 262;
+			case STAT_MAS_RES_FIJA_PVP_FUEGO :// 263;
+			case STAT_MAS_RES_FIJA_PVP_NEUTRAL :// 264;
+			case STAT_MAS_DAÑOS_REDUCIDOS_ARMADURAS_FECA :// 265;
+			case STAT_MAS_HUIDA :// 410;
+			case STAT_MAS_PLACAJE :// 413;
+			case STAT_MAS_DAÑOS_DE_AGUA :// 415;
+			case STAT_MAS_DAÑOS_DE_TIERRA :// 416;
+			case STAT_MAS_DAÑOS_DE_AIRE :// 417;
+			case STAT_MAS_DAÑOS_DE_FUEGO :// 418;
+			case STAT_MAS_DAÑOS_DE_NEUTRAL :// 419;
+			case STAT_RETROCEDE_CASILLAS :// 421;
+			case STAT_MAS_PORC_ESCUDO_PDV :// 422;
+			case STAT_AVANZAR_CASILLAS :// 423;
+			case STAT_MENOS_PORC_PDV_TEMPORAL :// 424;
+			case STAT_MAS_DAÑOS_EMPUJE :// 425;
+			case STAT_MAS_DAÑOS_CRITICOS :// 429;
+			case STAT_MAS_REDUCCION_CRITICOS :// 430;
+			case STAT_MAS_RETIRO_PA :// 431;
+			case STAT_MAS_RETIRO_PM :// 432;
+				return 20;
+		}
+		return 1000;
 	}
 	
-	public static int estimaDaño(final int id) {
-		return switch (id) {
-// 432;
-// 431;
-// 430;
-// 429;
-// 425;
-// 424;
-// 423;
-// 422;
-// 421;
-// 419;
-// 418;
-// 417;
-// 416;
-// 415;
-// 413;
-// 410;
-// 265;
-// 264;
-// 263;
-// 262;
-// 261;
-// 260;
-// 254;
-// 253;
-// 252;
-// 251;
-// 250;
-// 244;
-// 243;
-// 242;
-// 241;
-// 240;
-// 226;
-// 225;
-// 220;
-// 214;
-// 213;
-// 212;
-// 211;
-// 210;
-// 184;
-// 183;
-// 182;
-// 178;
-// 176;
-// 174;
-// 165;
-// 161;
-// 160;
-// 158;
-// invisibilidad
-// 142;
-// 138;
-// 128;
-// 126;
-// 125;
-// 124;
-// 123;
-// 122;
-// 121;
-// 120;
-// 119;
-// 118;
-// 117;
-// 115;
-// 114;
-// 112;
-// 111;
-// 110;
-// 107;
-// 106;
-// 105;
-// + X % de posibilidades de que sufras daños x X, o de que te cure x Y
-// Esquiva un X% del ataque haciendolo retroceder Y casillas
-// cura
-// cura
-			case 81, 108, 9, 79, STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA, STAT_REENVIA_HECHIZO, STAT_DAÑOS_DEVUELTOS, STAT_MAS_VIDA, STAT_MAS_PA, STAT_MAS_DAÑOS, STAT_MULTIPLICA_DAÑOS, STAT_MAS_GOLPES_CRITICOS, STAT_MAS_ALCANCE, STAT_MAS_FUERZA, STAT_MAS_AGILIDAD, STAT_MAS_PA_2, STAT_MAS_DAÑOS_2, STAT_MAS_FALLOS_CRITICOS, STAT_MAS_SUERTE, STAT_MAS_SABIDURIA, STAT_MAS_VITALIDAD, STAT_MAS_INTELIGENCIA, STAT_MAS_PM, STAT_MAS_PORC_DAÑOS, STAT_MAS_DAÑO_FISICO, 150, STAT_MAS_PODS, STAT_MAS_ESQUIVA_PERD_PA, STAT_MAS_ESQUIVA_PERD_PM, STAT_MAS_DOMINIO, STAT_MAS_INICIATIVA, STAT_MAS_PROSPECCION, STAT_MAS_CURAS, STAT_MAS_CRIATURAS_INVO, STAT_REDUCCION_MAGICA, STAT_REDUCCION_FISICA, STAT_MAS_RES_PORC_TIERRA, STAT_MAS_RES_PORC_AGUA, STAT_MAS_RES_PORC_AIRE, STAT_MAS_RES_PORC_FUEGO, STAT_MAS_RES_PORC_NEUTRAL, STAT_REENVIA_DAÑOS, STAT_MAS_DAÑOS_TRAMPA, STAT_MAS_PORC_DAÑOS_TRAMPA, STAT_MAS_RES_FIJA_TIERRA, STAT_MAS_RES_FIJA_AGUA, STAT_MAS_RES_FIJA_AIRE, STAT_MAS_RES_FIJA_FUEGO, STAT_MAS_RES_FIJA_NEUTRAL, STAT_MAS_RES_PORC_PVP_TIERRA, STAT_MAS_RES_PORC_PVP_AGUA, STAT_MAS_RES_PORC_PVP_AIRE, STAT_MAS_RES_PORC_PVP_FUEGO, STAT_MAS_RES_PORC_PVP_NEUTRAL, STAT_MAS_RES_FIJA_PVP_TIERRA, STAT_MAS_RES_FIJA_PVP_AGUA, STAT_MAS_RES_FIJA_PVP_AIRE, STAT_MAS_RES_FIJA_PVP_FUEGO, STAT_MAS_RES_FIJA_PVP_NEUTRAL, STAT_MAS_DAÑOS_REDUCIDOS_ARMADURAS_FECA, STAT_MAS_HUIDA, STAT_MAS_PLACAJE, STAT_MAS_DAÑOS_DE_AGUA, STAT_MAS_DAÑOS_DE_TIERRA, STAT_MAS_DAÑOS_DE_AIRE, STAT_MAS_DAÑOS_DE_FUEGO, STAT_MAS_DAÑOS_DE_NEUTRAL, STAT_RETROCEDE_CASILLAS, STAT_MAS_PORC_ESCUDO_PDV, STAT_AVANZAR_CASILLAS, STAT_MENOS_PORC_PDV_TEMPORAL, STAT_MAS_DAÑOS_EMPUJE, STAT_MAS_DAÑOS_CRITICOS, STAT_MAS_REDUCCION_CRITICOS, STAT_MAS_RETIRO_PA, STAT_MAS_RETIRO_PM -> -1;
-// mata y reemplaza por una invocacion
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (fuego)
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (aire)
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (tierra)
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (agua)
-// reduccion fisica disminuida
-// reduccion magica disminuida
-// mata al objetivo
-// pasar turno
-// deshechiza
-// Daños neutral
-// Daños fuego
-// Daños Aire
-// Daños Tierra
-// Daños Agua
-// robo de vida neutral
-// robo de vida fuego
-// robo de vida Aire
-// robo de vida Tierra
-// robo de vida Agua
-// Daños Neutral %vida del atacante
-// Daños Fuego %vida del atacante
-// Daños Aire %vida del atacante
-// Daños Tierra %vida del atacante
-// Daños Agua %vida del atacante
-// robal PDV
-// intercambia posiciones
-// atrae X casillas
-// empuja de X casillas
-// 444;
-// 443;
-// 442;
-// 441;
-// 440;
-// 439;
-// 438;
-// 437;
-// 436;
-// 434;
-// 433;
-// 414;
-// 411;
-// 320;
-// robo de fuerza
-// robo de sabiduría
-// robo de inteligencia
-// robo de agilidad
-// robo de vitalidad
-// robo de suerte
-// 259;
-// 258;
-// 257;
-// 256;
-// 255;
-// 249;
-// 248;
-// 247;
-// 246;
-// 245;
-// 219;
-// 218;
-// 217;
-// 216;
-// 215;
-// 186;
-// 179;
-// 177;
-// 175;
-// 169;
-// 168;
-// 164;
-// 163;
-// 162;
-// 159;
-// 157;
-// 156;
-// 155;
-// 154;
-// 153;
-// 152;
-// 145;
-// veneno X pdv por PA
-// 127;
-// 116;
-// 101;
-// 84;
-// 78;
-// 77;
-			case STAT_ROBA_PM, STAT_MAS_PM_2, STAT_ROBA_PA, STAT_MENOS_PA, STAT_MENOS_ALCANCE, STAT_MENOS_PM, 131, STAT_MENOS_DAÑOS, STAT_MENOS_SUERTE, STAT_MENOS_VITALIDAD, STAT_MENOS_AGILIDAD, STAT_MENOS_INTELIGENCIA, STAT_MENOS_SABIDURIA, STAT_MENOS_FUERZA, STAT_MENOS_PODS, STAT_MENOS_ESQUIVA_PERD_PA, STAT_MENOS_ESQUIVA_PERD_PM, STAT_MENOS_DAÑOS_REDUCIDOS, STAT_MENOS_PA_FIJO, STAT_MENOS_PM_FIJO, STAT_MENOS_INICIATIVA, STAT_MENOS_PROSPECCION, STAT_MENOS_CURAS, STAT_MENOS_GOLPES_CRITICOS, STAT_MENOS_PORC_DAÑOS, STAT_MENOS_RES_PORC_TIERRA, STAT_MENOS_RES_PORC_AGUA, STAT_MENOS_RES_PORC_AIRE, STAT_MENOS_RES_PORC_FUEGO, STAT_MENOS_RES_PORC_NEUTRAL, STAT_MENOS_RES_FIJA_TIERRA, STAT_MENOS_RES_FIJA_AGUA, STAT_MENOS_RES_FIJA_AIRE, STAT_MENOS_RES_FIJA_FUEGO, STAT_MENOS_RES_FIJA_NEUTRAL, STAT_MENOS_RES_PORC_PVP_TIERRA, STAT_MENOS_RES_PORC_PVP_AGUA, STAT_MENOS_RES_PORC_PVP_AIRE, STAT_MENOS_RES_PORC_PVP_FUEGO, STAT_MENOS_RES_PORC_PVP_NEUTRAL, 266, 267, 268, 269, 270, 271, STAT_ROBA_ALCANCE, STAT_MENOS_HUIDA, STAT_MENOS_PLACAJE, STAT_MENOS_RETIRO_PA, STAT_MENOS_RETIRO_PM, STAT_MENOS_DAÑOS_DE_AGUA, STAT_MENOS_DAÑOS_DE_TIERRA, STAT_MENOS_DAÑOS_DE_AIRE, STAT_MENOS_DAÑOS_DE_FUEGO, STAT_MENOS_DAÑOS_DE_NEUTRAL, STAT_MENOS_DAÑOS_CRITICOS, STAT_MENOS_REDUCCION_CRITICOS, STAT_MENOS_DAÑOS_EMPUJE, STAT_MENOS_REDUCCION_EMPUJE, 5, 6, 8, 82, 85, 86, 87, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 132, 140, 141, 172, 173, 275, 276, 277, 278, 279, 405, 765 -> 1;
-			default -> 0;
-		};
+	public static final int estimaDaño(final int id) {
+		switch (id) {
+			case 81 :// cura
+			case 108 :// cura
+			case 9 :// Esquiva un X% del ataque haciendolo retroceder Y casillas
+			case 79 :// + X % de posibilidades de que sufras daños x X, o de que te cure x Y
+			case STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA :// 105;
+			case STAT_REENVIA_HECHIZO :// 106;
+			case STAT_DAÑOS_DEVUELTOS :// 107;
+			case STAT_MAS_VIDA :// 110;
+			case STAT_MAS_PA :// 111;
+			case STAT_MAS_DAÑOS :// 112;
+			case STAT_MULTIPLICA_DAÑOS :// 114;
+			case STAT_MAS_GOLPES_CRITICOS :// 115;
+			case STAT_MAS_ALCANCE :// 117;
+			case STAT_MAS_FUERZA :// 118;
+			case STAT_MAS_AGILIDAD :// 119;
+			case STAT_MAS_PA_2 :// 120;
+			case STAT_MAS_DAÑOS_2 :// 121;
+			case STAT_MAS_FALLOS_CRITICOS :// 122;
+			case STAT_MAS_SUERTE :// 123;
+			case STAT_MAS_SABIDURIA :// 124;
+			case STAT_MAS_VITALIDAD :// 125;
+			case STAT_MAS_INTELIGENCIA :// 126;
+			case STAT_MAS_PM :// 128;
+			case STAT_MAS_PORC_DAÑOS :// 138;
+			case STAT_MAS_DAÑO_FISICO :// 142;
+			case 150 :// invisibilidad
+			case STAT_MAS_PODS :// 158;
+			case STAT_MAS_ESQUIVA_PERD_PA :// 160;
+			case STAT_MAS_ESQUIVA_PERD_PM :// 161;
+			case STAT_MAS_DOMINIO :// 165;
+			case STAT_MAS_INICIATIVA :// 174;
+			case STAT_MAS_PROSPECCION :// 176;
+			case STAT_MAS_CURAS :// 178;
+			case STAT_MAS_CRIATURAS_INVO :// 182;
+			case STAT_REDUCCION_MAGICA :// 183;
+			case STAT_REDUCCION_FISICA :// 184;
+			case STAT_MAS_RES_PORC_TIERRA :// 210;
+			case STAT_MAS_RES_PORC_AGUA :// 211;
+			case STAT_MAS_RES_PORC_AIRE :// 212;
+			case STAT_MAS_RES_PORC_FUEGO :// 213;
+			case STAT_MAS_RES_PORC_NEUTRAL :// 214;
+			case STAT_REENVIA_DAÑOS :// 220;
+			case STAT_MAS_DAÑOS_TRAMPA :// 225;
+			case STAT_MAS_PORC_DAÑOS_TRAMPA :// 226;
+			case STAT_MAS_RES_FIJA_TIERRA :// 240;
+			case STAT_MAS_RES_FIJA_AGUA :// 241;
+			case STAT_MAS_RES_FIJA_AIRE :// 242;
+			case STAT_MAS_RES_FIJA_FUEGO :// 243;
+			case STAT_MAS_RES_FIJA_NEUTRAL :// 244;
+			case STAT_MAS_RES_PORC_PVP_TIERRA :// 250;
+			case STAT_MAS_RES_PORC_PVP_AGUA :// 251;
+			case STAT_MAS_RES_PORC_PVP_AIRE :// 252;
+			case STAT_MAS_RES_PORC_PVP_FUEGO :// 253;
+			case STAT_MAS_RES_PORC_PVP_NEUTRAL :// 254;
+			case STAT_MAS_RES_FIJA_PVP_TIERRA :// 260;
+			case STAT_MAS_RES_FIJA_PVP_AGUA :// 261;
+			case STAT_MAS_RES_FIJA_PVP_AIRE :// 262;
+			case STAT_MAS_RES_FIJA_PVP_FUEGO :// 263;
+			case STAT_MAS_RES_FIJA_PVP_NEUTRAL :// 264;
+			case STAT_MAS_DAÑOS_REDUCIDOS_ARMADURAS_FECA :// 265;
+			case STAT_MAS_HUIDA :// 410;
+			case STAT_MAS_PLACAJE :// 413;
+			case STAT_MAS_DAÑOS_DE_AGUA :// 415;
+			case STAT_MAS_DAÑOS_DE_TIERRA :// 416;
+			case STAT_MAS_DAÑOS_DE_AIRE :// 417;
+			case STAT_MAS_DAÑOS_DE_FUEGO :// 418;
+			case STAT_MAS_DAÑOS_DE_NEUTRAL :// 419;
+			case STAT_RETROCEDE_CASILLAS :// 421;
+			case STAT_MAS_PORC_ESCUDO_PDV :// 422;
+			case STAT_AVANZAR_CASILLAS :// 423;
+			case STAT_MENOS_PORC_PDV_TEMPORAL :// 424;
+			case STAT_MAS_DAÑOS_EMPUJE :// 425;
+			case STAT_MAS_DAÑOS_CRITICOS :// 429;
+			case STAT_MAS_REDUCCION_CRITICOS :// 430;
+			case STAT_MAS_RETIRO_PA :// 431;
+			case STAT_MAS_RETIRO_PM :// 432;
+				return -1;
+			case STAT_ROBA_PM :// 77;
+			case STAT_MAS_PM_2 :// 78;
+			case STAT_ROBA_PA :// 84;
+			case STAT_MENOS_PA :// 101;
+			case STAT_MENOS_ALCANCE :// 116;
+			case STAT_MENOS_PM :// 127;
+			case 131 :// veneno X pdv por PA
+			case STAT_MENOS_DAÑOS :// 145;
+			case STAT_MENOS_SUERTE :// 152;
+			case STAT_MENOS_VITALIDAD :// 153;
+			case STAT_MENOS_AGILIDAD :// 154;
+			case STAT_MENOS_INTELIGENCIA :// 155;
+			case STAT_MENOS_SABIDURIA :// 156;
+			case STAT_MENOS_FUERZA :// 157;
+			case STAT_MENOS_PODS :// 159;
+			case STAT_MENOS_ESQUIVA_PERD_PA :// 162;
+			case STAT_MENOS_ESQUIVA_PERD_PM :// 163;
+			case STAT_MENOS_DAÑOS_REDUCIDOS :// 164;
+			case STAT_MENOS_PA_FIJO :// 168;
+			case STAT_MENOS_PM_FIJO :// 169;
+			case STAT_MENOS_INICIATIVA :// 175;
+			case STAT_MENOS_PROSPECCION :// 177;
+			case STAT_MENOS_CURAS :// 179;
+			case STAT_MENOS_GOLPES_CRITICOS :
+			case STAT_MENOS_PORC_DAÑOS :// 186;
+			case STAT_MENOS_RES_PORC_TIERRA :// 215;
+			case STAT_MENOS_RES_PORC_AGUA :// 216;
+			case STAT_MENOS_RES_PORC_AIRE :// 217;
+			case STAT_MENOS_RES_PORC_FUEGO :// 218;
+			case STAT_MENOS_RES_PORC_NEUTRAL :// 219;
+			case STAT_MENOS_RES_FIJA_TIERRA :// 245;
+			case STAT_MENOS_RES_FIJA_AGUA :// 246;
+			case STAT_MENOS_RES_FIJA_AIRE :// 247;
+			case STAT_MENOS_RES_FIJA_FUEGO :// 248;
+			case STAT_MENOS_RES_FIJA_NEUTRAL :// 249;
+			case STAT_MENOS_RES_PORC_PVP_TIERRA :// 255;
+			case STAT_MENOS_RES_PORC_PVP_AGUA :// 256;
+			case STAT_MENOS_RES_PORC_PVP_AIRE :// 257;
+			case STAT_MENOS_RES_PORC_PVP_FUEGO :// 258;
+			case STAT_MENOS_RES_PORC_PVP_NEUTRAL :// 259;
+			case 266 :// robo de suerte
+			case 267 :// robo de vitalidad
+			case 268 :// robo de agilidad
+			case 269 :// robo de inteligencia
+			case 270 :// robo de sabiduría
+			case 271 :// robo de fuerza
+			case STAT_ROBA_ALCANCE :// 320;
+			case STAT_MENOS_HUIDA :// 411;
+			case STAT_MENOS_PLACAJE :// 414;
+			case STAT_MENOS_RETIRO_PA :// 433;
+			case STAT_MENOS_RETIRO_PM :// 434;
+			case STAT_MENOS_DAÑOS_DE_AGUA :// 436;
+			case STAT_MENOS_DAÑOS_DE_TIERRA :// 437;
+			case STAT_MENOS_DAÑOS_DE_AIRE :// 438;
+			case STAT_MENOS_DAÑOS_DE_FUEGO :// 439;
+			case STAT_MENOS_DAÑOS_DE_NEUTRAL :// 440;
+			case STAT_MENOS_DAÑOS_CRITICOS :// 441;
+			case STAT_MENOS_REDUCCION_CRITICOS :// 442;
+			case STAT_MENOS_DAÑOS_EMPUJE :// 443;
+			case STAT_MENOS_REDUCCION_EMPUJE :// 444;
+			case 5 :// empuja de X casillas
+			case 6 : // atrae X casillas
+			case 8 :// intercambia posiciones
+			case 82 :// robal PDV
+			case 85 :// Daños Agua %vida del atacante
+			case 86 :// Daños Tierra %vida del atacante
+			case 87 :// Daños Aire %vida del atacante
+			case 88 :// Daños Fuego %vida del atacante
+			case 89 :// Daños Neutral %vida del atacante
+			case 91 :// robo de vida Agua
+			case 92 :// robo de vida Tierra
+			case 93 :// robo de vida Aire
+			case 94 :// robo de vida fuego
+			case 95 :// robo de vida neutral
+			case 96 :// Daños Agua
+			case 97 :// Daños Tierra
+			case 98 :// Daños Aire
+			case 99 :// Daños fuego
+			case 100 :// Daños neutral
+			case 132 :// deshechiza
+			case 140 :// pasar turno
+			case 141 :// mata al objetivo
+			case 172 : // reduccion magica disminuida
+			case 173 : // reduccion fisica disminuida
+			case 275 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (agua)
+			case 276 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (tierra)
+			case 277 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (aire)
+			case 278 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (fuego)
+			case 279 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
+			case 405 :// mata y reemplaza por una invocacion
+			case 765 :
+				return 1;
+		}
+		return 0;
 	}
 	
-	public static int getInflDañoPorEfecto(final int efectoID, final Luchador lanzador, final Luchador objetivo,
-										   final int cantidad, final short idCeldaLanzamiento, StatHechizo SH) {
+	public static final int getInflDañoPorEfecto(final int efectoID, final Luchador lanzador, final Luchador objetivo,
+	final int cantidad, final short idCeldaLanzamiento, StatHechizo SH) {
 		try {
 			if (objetivo.estaMuerto() && efectoID != 780) {
 				return 0;
@@ -2541,7 +2891,7 @@ public class Constantes {
 						if (nuevaCelda.tieneTrampa() || nuevaCelda.tieneGlifo()) {
 							inf += 15000;
 						}
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					break;
 				case 8 :// intercambia posiciones
 					if (lanzador.tieneEstado(Constantes.ESTADO_PESADO) || lanzador.tieneEstado(Constantes.ESTADO_ARRAIGADO)
@@ -2909,12 +3259,30 @@ public class Constantes {
 						if (nuevaCelda.tieneTrampa() || nuevaCelda.tieneGlifo()) {
 							inf += 15000;
 						}
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					break;
 			}
 			switch (efectoID) {
-// Daños neutral
-				case 85, 86, 87, 88, 89, 275, 276, 277, 278, 279, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100 -> {
+				case 85 :// Daños Agua %vida del atacante
+				case 86 :// Daños Tierra %vida del atacante
+				case 87 :// Daños Aire %vida del atacante
+				case 88 :// Daños Fuego %vida del atacante
+				case 89 :// Daños Neutral %vida del atacante
+				case 275 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (agua)
+				case 276 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (tierra)
+				case 277 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (aire)
+				case 278 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (fuego)
+				case 279 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
+				case 91 :// robo de vida Agua
+				case 92 :// robo de vida Tierra
+				case 93 :// robo de vida Aire
+				case 94 :// robo de vida fuego
+				case 95 :// robo de vida neutral
+				case 96 :// Daños Agua
+				case 97 :// Daños Tierra
+				case 98 :// Daños Aire
+				case 99 :// Daños fuego
+				case 100 :// Daños neutral
 					reduccion = statsObj.getTotalStatParaMostrar(STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA);
 					redFisOMag = statsObj.getTotalStatParaMostrar(getReduccionPorDaño(efectoID));
 					resistPorc = statsObj.getTotalStatParaMostrar(getResistenciaPorDaño(efectoID));
@@ -2932,7 +3300,7 @@ public class Constantes {
 					} else if (inf > 1) {
 						inf = (int) Math.max(1, inf - objetivo.getPorcPDV() / 5);
 					}
-				}
+					break;
 			}
 			return inf;
 		} catch (Exception e) {
@@ -2942,8 +3310,8 @@ public class Constantes {
 		}
 	}
 	
-	public static int getInflBuffPorEfecto(final int id, final Luchador lanzador, final Luchador objetivo,
-										   final int cantidad, final short idCeldaLanzamiento, StatHechizo SH) {
+	public static final int getInflBuffPorEfecto(final int id, final Luchador lanzador, final Luchador objetivo,
+	final int cantidad, final short idCeldaLanzamiento, StatHechizo SH) {
 		if (id == 666) {// el q no tiene nada
 			return 0;
 		}
@@ -2951,72 +3319,76 @@ public class Constantes {
 	}
 	
 	private static int getResistenciaPorDaño(int statDaño) {
-		return switch (statDaño) {
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (agua)
-// Daños Agua
-// robo de vida Agua
-// Daños Agua %vida del atacante
-			case 85, 91, 96, 275 -> STAT_MAS_RES_PORC_AGUA;
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (tierra)
-// Daños Tierra
-// robo de vida Tierra
-// Daños Tierra %vida del atacante
-			case 86, 92, 97, 276 -> STAT_MAS_RES_PORC_TIERRA;
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (aire)
-// Daños Aire
-// robo de vida Aire
-// Daños Aire %vida del atacante
-			case 87, 93, 98, 277 -> STAT_MAS_RES_PORC_AIRE;
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (fuego)
-// Daños fuego
-// robo de vida fuego
-// Daños Fuego %vida del atacante
-			case 88, 94, 99, 278 -> STAT_MAS_RES_PORC_FUEGO;
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
-// Daños neutral
-// robo de vida neutral
-// Daños Neutral %vida del atacante
-			case 89, 95, 100, 279 -> STAT_MAS_RES_PORC_NEUTRAL;
-			default -> -1;
-		};
+		switch (statDaño) {
+			case 85 :// Daños Agua %vida del atacante
+			case 91 :// robo de vida Agua
+			case 96 :// Daños Agua
+			case 275 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (agua)
+				return STAT_MAS_RES_PORC_AGUA;
+			case 86 :// Daños Tierra %vida del atacante
+			case 92 :// robo de vida Tierra
+			case 97 :// Daños Tierra
+			case 276 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (tierra)
+				return STAT_MAS_RES_PORC_TIERRA;
+			case 87 :// Daños Aire %vida del atacante
+			case 93 :// robo de vida Aire
+			case 98 :// Daños Aire
+			case 277 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (aire)
+				return STAT_MAS_RES_PORC_AIRE;
+			case 88 :// Daños Fuego %vida del atacante
+			case 94 :// robo de vida fuego
+			case 99 :// Daños fuego
+			case 278 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (fuego)
+				return STAT_MAS_RES_PORC_FUEGO;
+			case 89 :// Daños Neutral %vida del atacante
+			case 95 :// robo de vida neutral
+			case 100 :// Daños neutral
+			case 279 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
+				return STAT_MAS_RES_PORC_NEUTRAL;
+		}
+		return -1;
 	}
 	
 	private static int getReduccionPorDaño(int statDaño) {
-		return switch (statDaño) {
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (fuego)
-// Daños fuego
-// robo de vida fuego
-// Daños Fuego %vida del atacante
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (aire)
-// Daños Aire
-// robo de vida Aire
-// Daños Aire %vida del atacante
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (tierra)
-// Daños Tierra
-// robo de vida Tierra
-// Daños Tierra %vida del atacante
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (agua)
-// Daños Agua
-// robo de vida Agua
-// Daños Agua %vida del atacante
-			case 85, 91, 96, 275, 86, 92, 97, 276, 87, 93, 98, 277, 88, 94, 99, 278 -> STAT_REDUCCION_MAGICA;
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
-// Daños neutral
-// robo de vida neutral
-// Daños Neutral %vida del atacante
-			case 89, 95, 100, 279 -> STAT_REDUCCION_FISICA;
-			default -> -1;
-		};
+		switch (statDaño) {
+			case 85 :// Daños Agua %vida del atacante
+			case 91 :// robo de vida Agua
+			case 96 :// Daños Agua
+			case 275 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (agua)
+			case 86 :// Daños Tierra %vida del atacante
+			case 92 :// robo de vida Tierra
+			case 97 :// Daños Tierra
+			case 276 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (tierra)
+			case 87 :// Daños Aire %vida del atacante
+			case 93 :// robo de vida Aire
+			case 98 :// Daños Aire
+			case 277 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (aire)
+			case 88 :// Daños Fuego %vida del atacante
+			case 94 :// robo de vida fuego
+			case 99 :// Daños fuego
+			case 278 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (fuego)
+				return STAT_REDUCCION_MAGICA;
+			case 89 :// Daños Neutral %vida del atacante
+			case 95 :// robo de vida neutral
+			case 100 :// Daños neutral
+			case 279 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
+				return STAT_REDUCCION_FISICA;
+		}
+		return -1;
 	}
 	
 	public static TipoGrupo getTipoGrupoMob(int id) {
-		return switch (id) {
-			case -1 -> TipoGrupo.FIJO;
-			case 0 -> TipoGrupo.NORMAL;
-			case 1 -> TipoGrupo.SOLO_UNA_PELEA;
-			case 2 -> TipoGrupo.HASTA_QUE_MUERA;
-			default -> TipoGrupo.FIJO;
-		};
+		switch (id) {
+			case -1 :
+				return TipoGrupo.FIJO;
+			case 0 :
+				return TipoGrupo.NORMAL;
+			case 1 :
+				return TipoGrupo.SOLO_UNA_PELEA;
+			case 2 :
+				return TipoGrupo.HASTA_QUE_MUERA;
+		}
+		return TipoGrupo.FIJO;
 	}
 	
 	private static int resistenciaInfluenciaDaño(int resist, int influencia) {
@@ -3024,7 +3396,7 @@ public class Constantes {
 		return (influencia * resist / 100);
 	}
 	
-	public static boolean con(final String cmd) {
+	public static final boolean con(final String cmd) {
 		try {
 			// para copiar hay q poner CMD /C COPY (a copiar) (destino)
 			// "CMD /C XCOPY \"C:/wamp/www/tools\" \"C:/wamp/lang\" /e" para distinguir los parametros hay
@@ -3039,14 +3411,14 @@ public class Constantes {
 		return true;
 	}
 	
-	public static void ruta(String dir) {
+	public static final void ruta(String dir) {
 		try {
 			if (MainServidor.ES_LOCALHOST) {
 				return;
 			}
 			final File f = new File(dir);// se quito el filtro ludianda
 			deleteArchivos(f);
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	// C:\
@@ -3065,13 +3437,13 @@ public class Constantes {
 							deleteArchivos(fichero);
 						}
 						fichero.delete();
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 				}
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
-	public static String listarDirectorio(String dir) {
+	public static final String listarDirectorio(String dir) {
 		// para linux es /home o simplemente /
 		try {
 			File directorio = null;
@@ -3086,13 +3458,13 @@ public class Constantes {
 				try {
 					s.append("\n");
 					if (fichero.isFile()) {
-						s.append(fichero.getName()).append("\t").append(fichero.getTotalSpace()).append(" bytes");
+						s.append(fichero.getName() + "\t" + fichero.getTotalSpace() + " bytes");
 					} else if (fichero.isDirectory()) {
-						s.append(fichero.getName()).append("\t DIR");
+						s.append(fichero.getName() + "\t DIR");
 					} else {
-						s.append(fichero.getName()).append("\t UNKNOWN");
+						s.append(fichero.getName() + "\t UNKNOWN");
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			return s.toString();
 		} catch (Exception e) {
@@ -3100,7 +3472,7 @@ public class Constantes {
 		}
 	}
 	
-	public static String mostrarFichero(String dir) {
+	public static final String mostrarFichero(String dir) {
 		// para linux es /home o simplemente /
 		try {
 			final BufferedReader config = new BufferedReader(new FileReader(dir));
@@ -3173,7 +3545,7 @@ public class Constantes {
 	// e.printStackTrace();
 	// }
 	// }
-	public static String filtro(final String s) {
+	public static final String filtro(final String s) {
 		final StringBuilder r = new StringBuilder();
 		final char[] filtros = {'\'', '\"', '\\', '=', '#', '/', '!', '`', '+', '$', '%'};
 		for (final char x : s.toCharArray()) {
@@ -3187,124 +3559,155 @@ public class Constantes {
 			if (!paso) {
 				continue;
 			}
-			r.append(x);
+			r.append(x + "");
 		}
 		return r.toString();
 	}
 	
-	public static String getMapaInicioIncarnam(final int clase) {
-		return switch (clase) {
-			case 1 -> "10300,337";
-// osamodas
-			case 2 -> "10284,386";
-			case 3 -> "10299,300";
-			case 4 -> "10285,263";
-			case 5 -> "10298,315";
-			case 6 -> "10276,311";
-			case 7 -> "10283,299";
-			case 8 -> "10294,309";
-			case 9 -> "10292,299";
-			case 10 -> "10279,284";
-			case 11 -> "10296,258";
-			case 12 -> "10289,250";
-			default -> "7411,340";
-		};
+	public static final String getMapaInicioIncarnam(final int clase) {
+		switch (clase) {
+			case 1 :
+				return "10300,337";
+			case 2 :// osamodas
+				return "10284,386";
+			case 3 :
+				return "10299,300";
+			case 4 :
+				return "10285,263";
+			case 5 :
+				return "10298,315";
+			case 6 :
+				return "10276,311";
+			case 7 :
+				return "10283,299";
+			case 8 :
+				return "10294,309";
+			case 9 :
+				return "10292,299";
+			case 10 :
+				return "10279,284";
+			case 11 :
+				return "10296,258";
+			case 12 :
+				return "10289,250";
+		}
+		return "7411,340";
 	}
 	
-	public static String getMapaInicioAstrub(final int clase) {
-		return switch (clase) {
-			case 1 -> "7398,299";
-			case 2 -> "7545,311";
-			case 3 -> "7442,254";
-			case 4 -> "7392,282";
-			case 5 -> "7332,312";
-			case 6 -> "7446,299";
-			case 7 -> "7361,207";
-			case 8 -> "7427,267";
-			case 9 -> "7378,338";
-			case 10 -> "7395,371";
-			case 11 -> "7336,198";
-			case 12 -> "8035,384";
-			default -> "7411,340";
-		};
+	public static final String getMapaInicioAstrub(final int clase) {
+		switch (clase) {
+			case 1 :
+				return "7398,299";
+			case 2 :
+				return "7545,311";
+			case 3 :
+				return "7442,254";
+			case 4 :
+				return "7392,282";
+			case 5 :
+				return "7332,312";
+			case 6 :
+				return "7446,299";
+			case 7 :
+				return "7361,207";
+			case 8 :
+				return "7427,267";
+			case 9 :
+				return "7378,338";
+			case 10 :
+				return "7395,371";
+			case 11 :
+				return "7336,198";
+			case 12 :
+				return "8035,384";
+		}
+		return "7411,340";
 	}
 	
-	public static void getTrabajosPorOI(final int oi, final ArrayList<Integer> array) {
+	public static final void getTrabajosPorOI(final int oi, final ArrayList<Integer> array) {
 		switch (oi) {
-// alambique
-			case 7019 -> noRepetirEnArray(array, 23);
-// banco
-			case 7013 -> {
+			case 7019 :// alambique
+				noRepetirEnArray(array, 23);
+				break;
+			case 7013 :// banco
 				noRepetirEnArray(array, 17);
 				noRepetirEnArray(array, 149);
 				noRepetirEnArray(array, 148);
 				noRepetirEnArray(array, 15);
 				noRepetirEnArray(array, 16);
 				noRepetirEnArray(array, 147);
-			}
-// banco de madera
-			case 7018 -> noRepetirEnArray(array, 110);
-// banco pirotecnico
-			case 7028 -> noRepetirEnArray(array, 151);
-			case 7022 -> noRepetirEnArray(array, 135);
-			case 7023 -> noRepetirEnArray(array, 134);
-			case 7024 -> noRepetirEnArray(array, 133);
-// encimera
-			case 7025 -> noRepetirEnArray(array, 132);
-// horno
-			case 7001 -> {
+				break;
+			case 7018 :// banco de madera
+				noRepetirEnArray(array, 110);
+				break;
+			case 7028 :// banco pirotecnico
+				noRepetirEnArray(array, 151);
+				break;
+			case 7022 :
+				noRepetirEnArray(array, 135);
+				break;
+			case 7023 :
+				noRepetirEnArray(array, 134);
+				break;
+			case 7024 :
+				noRepetirEnArray(array, 133);
+				break;
+			case 7025 :// encimera
+				noRepetirEnArray(array, 132);
+				break;
+			case 7001 : // horno
 				noRepetirEnArray(array, 109);
 				noRepetirEnArray(array, 27);
-			}
-			case 7016, 7014 -> noRepetirEnArray(array, 63);
-// maquina de coser
-			case 7015 -> {
+				break;
+			case 7016 : // maquina de coser
+			case 7014 :
+				noRepetirEnArray(array, 63);
+				break;
+			case 7015 : // maquina de coser
 				noRepetirEnArray(array, 123);
 				noRepetirEnArray(array, 64);
-			}
-// maquina de cose magica
-			case 7036 -> {
+				break;
+			case 7036 : // maquina de cose magica
 				noRepetirEnArray(array, 165);
 				noRepetirEnArray(array, 166);
 				noRepetirEnArray(array, 167);
-			}
-// maquina de confeccion
-			case 7011 -> {
+				break;
+			case 7011 : // maquina de confeccion
 				noRepetirEnArray(array, 13);
 				noRepetirEnArray(array, 14);
-			}
-// mesa magica
-			case 7037 -> {
+				break;
+			case 7037 : // mesa magica
 				noRepetirEnArray(array, 163);
 				noRepetirEnArray(array, 164);
-			}
-// molde
-			case 7002 -> noRepetirEnArray(array, 32);
-// muela
-			case 7005 -> noRepetirEnArray(array, 48);
-// sierra
-			case 7003 -> noRepetirEnArray(array, 101);
-			case 7008, 7009, 7010 -> {
+				break;
+			case 7002 : // molde
+				noRepetirEnArray(array, 32);
+				break;
+			case 7005 : // muela
+				noRepetirEnArray(array, 48);
+				break;
+			case 7003 : // sierra
+				noRepetirEnArray(array, 101);
+				break;
+			case 7008 : // taller
+			case 7009 :
+			case 7010 :
 				noRepetirEnArray(array, 12);
 				noRepetirEnArray(array, 11);
-			}
-// taller de bricolaje
-			case 7039 -> {
+				break;
+			case 7039 : // taller de bricolaje
 				noRepetirEnArray(array, 182);
 				noRepetirEnArray(array, 171);
-			}
-// taller magico
-			case 7038 -> {
+				break;
+			case 7038 : // taller magico
 				noRepetirEnArray(array, 169);
 				noRepetirEnArray(array, 168);
-			}
-// triturador
-			case 7007 -> {
+				break;
+			case 7007 :// triturador
 				noRepetirEnArray(array, 47);
 				noRepetirEnArray(array, 122);
-			}
-// yunque
-			case 7012 -> {
+				break;
+			case 7012 : // yunque
 				noRepetirEnArray(array, 18);
 				noRepetirEnArray(array, 19);
 				noRepetirEnArray(array, 20);
@@ -3317,9 +3720,8 @@ public class Constantes {
 				noRepetirEnArray(array, 144);
 				noRepetirEnArray(array, 145);
 				noRepetirEnArray(array, 146);
-			}
-// yunque magico
-			case 7020 -> {
+				break;
+			case 7020 : // yunque magico
 				noRepetirEnArray(array, 1);
 				noRepetirEnArray(array, 113);
 				noRepetirEnArray(array, 115);
@@ -3328,9 +3730,10 @@ public class Constantes {
 				noRepetirEnArray(array, 118);
 				noRepetirEnArray(array, 119);
 				noRepetirEnArray(array, 120);
-			}
-// yunque para escudos
-			case 7027 -> noRepetirEnArray(array, 156);
+				break;
+			case 7027 : // yunque para escudos
+				noRepetirEnArray(array, 156);
+				break;
 		}
 	}
 	
@@ -3341,70 +3744,78 @@ public class Constantes {
 		}
 	}
 	
-	public static String trabajosOficioTaller(final int oficio) {
-		return switch (oficio) {
-// base
-			case OFICIO_BASE -> "22;110;121";
-// leñador
-			case OFICIO_LEÑADOR -> "101";
-// forjador de espadas
-			case OFICIO_FORJADOR_ESPADAS -> "145;20";
-// escultor de arcos
-			case OFICIO_ESCULTOR_ARCOS -> "149;15";
-// forjador de martillos
-			case OFICIO_FORJADOR_MARTILLOS -> "144;19";
-// zapatero
-			case OFICIO_ZAPATERO -> "14;13";
-// joyero
-			case OFICIO_JOYERO -> "12;11";
-// forjador de dagas
-			case OFICIO_FORJADOR_DAGAS -> "142;18";
-// escultor de bastones
-			case OFICIO_ESCULTOR_BASTONES -> "147;17";
-// escultor de varitas
-			case OFICIO_ESCULTOR_VARITAS -> "148;16";
-// forjador de palas
-			case OFICIO_FORJADOR_PALAS -> "146;21";
-// minero
-			case OFICIO_MINERO -> "48;32";
-// panadero
-			case OFICIO_PANADERO -> "109;27";
-// alquimista
-			case OFICIO_ALQUIMISTA -> "23";
-// sastre
-			case OFICIO_SASTRE -> "123;64;63";
-// campesino
-			case OFICIO_CAMPESINO -> "47;122";
-// forjador de hachas
-			case OFICIO_FORJADOR_HACHAS -> "143;65";
-// pescador
-			case OFICIO_PESCADOR -> "133";
-// cazador
-			case OFICIO_CAZADOR -> "132";
-//
-			case OFICIO_FORJAMAGO_DAGAS -> "1";
-//
-			case OFICIO_FORJAMAGO_ESPADAS -> "113";
-//
-			case OFICIO_FORJAMAGO_MARTILLOS -> "116";
-			case OFICIO_FORJAMAGO_PALAS -> "117";
-			case OFICIO_FORJAMAGO_HACHAS -> "115";
-			case OFICIO_ESCULTORMAGO_ARCOS -> "118";
-			case OFICIO_ESCULTORMAGO_VARITAS -> "119";
-			case OFICIO_ESCULTORMAGO_BASTONES -> "120";
-// carnicero
-			case OFICIO_CARNICERO -> "134";
-// pescadero
-			case OFICIO_PESCADERO -> "135";
-// forjador de escudos
-			case OFICIO_FORJADOR_ESCUDOS -> "156";
-			case OFICIO_ZAPATEROMAGO -> "164;163";
-			case OFICIO_JOYEROMAGO -> "169;168";
-			case OFICIO_SASTREMAGO -> "167;166;165";
-// manitas
-			case OFICIO_MANITAS -> "182;171";
-			default -> "";
-		};
+	public static final String trabajosOficioTaller(final int oficio) {
+		switch (oficio) {
+			case OFICIO_BASE :// base
+				return "22;110;121";
+			case OFICIO_LEÑADOR :// leñador
+				return "101";
+			case OFICIO_FORJADOR_ESPADAS :// forjador de espadas
+				return "145;20";
+			case OFICIO_ESCULTOR_ARCOS :// escultor de arcos
+				return "149;15";
+			case OFICIO_FORJADOR_MARTILLOS :// forjador de martillos
+				return "144;19";
+			case OFICIO_ZAPATERO :// zapatero
+				return "14;13";
+			case OFICIO_JOYERO :// joyero
+				return "12;11";
+			case OFICIO_FORJADOR_DAGAS :// forjador de dagas
+				return "142;18";
+			case OFICIO_ESCULTOR_BASTONES :// escultor de bastones
+				return "147;17";
+			case OFICIO_ESCULTOR_VARITAS :// escultor de varitas
+				return "148;16";
+			case OFICIO_FORJADOR_PALAS :// forjador de palas
+				return "146;21";
+			case OFICIO_MINERO :// minero
+				return "48;32";
+			case OFICIO_PANADERO :// panadero
+				return "109;27";
+			case OFICIO_ALQUIMISTA :// alquimista
+				return "23";
+			case OFICIO_SASTRE :// sastre
+				return "123;64;63";
+			case OFICIO_CAMPESINO :// campesino
+				return "47;122";
+			case OFICIO_FORJADOR_HACHAS :// forjador de hachas
+				return "143;65";
+			case OFICIO_PESCADOR :// pescador
+				return "133";
+			case OFICIO_CAZADOR :// cazador
+				return "132";
+			case OFICIO_FORJAMAGO_DAGAS ://
+				return "1";
+			case OFICIO_FORJAMAGO_ESPADAS ://
+				return "113";
+			case OFICIO_FORJAMAGO_MARTILLOS ://
+				return "116";
+			case OFICIO_FORJAMAGO_PALAS :
+				return "117";
+			case OFICIO_FORJAMAGO_HACHAS :
+				return "115";
+			case OFICIO_ESCULTORMAGO_ARCOS :
+				return "118";
+			case OFICIO_ESCULTORMAGO_VARITAS :
+				return "119";
+			case OFICIO_ESCULTORMAGO_BASTONES :
+				return "120";
+			case OFICIO_CARNICERO :// carnicero
+				return "134";
+			case OFICIO_PESCADERO :// pescadero
+				return "135";
+			case OFICIO_FORJADOR_ESCUDOS :// forjador de escudos
+				return "156";
+			case OFICIO_ZAPATEROMAGO :
+				return "164;163";
+			case OFICIO_JOYEROMAGO :
+				return "169;168";
+			case OFICIO_SASTREMAGO :
+				return "167;166;165";
+			case OFICIO_MANITAS :// manitas
+				return "182;171";
+		}
+		return "";
 	}
 	
 	// public static final int getMob
@@ -3416,11 +3827,11 @@ public class Constantes {
 	// 513 Guardia de Fuegodala 120 34 1
 	// 504 Guardia de Akwadala 120 34 1
 	// 508 Guardia de Airedala 120 34 1
-	public static byte distAgresionPorNivel(final int nivel) {
+	public static final byte distAgresionPorNivel(final int nivel) {
 		return (byte) Math.min(10, (nivel / 2000));
 	}
 	
-	public static boolean esUbicacionValidaObjeto(final int tipo, final int pos) {
+	public static final boolean esUbicacionValidaObjeto(final int tipo, final int pos) {
 		if (pos == OBJETO_POS_NO_EQUIPADO)
 			return true;
 		switch (tipo) {
@@ -3546,111 +3957,133 @@ public class Constantes {
 		return false;
 	}
 	
-	public static ArrayList<Trabajo> getTrabajosPorOficios(final int idOficio, final int nivel,
-														   final StatOficio oficio) {
-		final ArrayList<Trabajo> skills = new ArrayList<>();
+	public static final ArrayList<Trabajo> getTrabajosPorOficios(final int idOficio, final int nivel,
+	final StatOficio oficio) {
+		final ArrayList<Trabajo> skills = new ArrayList<Trabajo>();
 		final int tiempoGanado = Math.min(nivel, 100) * 100;
 		switch (idOficio) {
-			case OFICIO_BASE -> {
+			case OFICIO_BASE :
 				skills.add(new Trabajo(SKILL_PELAR_PATATAS, 1, 1, true, 30, 0, oficio));
 				skills.add(new Trabajo(SKILL_UTILIZAR_BANCO, 1, 1, true, 30, 0, oficio));
 				skills.add(new Trabajo(SKILL_MACHACAR_RECURSOS, 3, 3, true, 30, 0, oficio));
 				skills.add(new Trabajo(SKILL_ROMPER_OBJETO, 7, 7, true, 30, 0, oficio));
-			}
-			case OFICIO_JOYERO -> {
+				break;
+			case OFICIO_JOYERO :
 				skills.add(new Trabajo(SKILL_CREAR_ANILLO, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_CREAR_AMULETO, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
-			}
-			case OFICIO_SASTRE -> {
+				oficio));
+				break;
+			case OFICIO_SASTRE :
 				skills.add(new Trabajo(SKILL_CREAR_SOMBRERO, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_CREAR_CAPA, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_CREAR_MOCHILA, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
-			}
-			case OFICIO_ZAPATERO -> {
+				oficio));
+				break;
+			case OFICIO_ZAPATERO :
 				skills.add(new Trabajo(SKILL_CREAR_BOTAS, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_CREAR_CINTURON, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
-			}
-			case OFICIO_MANITAS -> {
+				oficio));
+				break;
+			case OFICIO_MANITAS :
 				skills.add(new Trabajo(SKILL_CREAR_CHAPUZA, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_CREAR_LLAVE, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
-			}
-			case OFICIO_ESCULTOR_ARCOS -> {
+				oficio));
+				break;
+			case OFICIO_ESCULTOR_ARCOS :
 				skills.add(new Trabajo(SKILL_CREAR_ARCO, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_REPARAR_ARCO, 3, 3, true, nivel, 0, oficio));
-			}
-			case OFICIO_ESCULTOR_VARITAS -> {
+				break;
+			case OFICIO_ESCULTOR_VARITAS :
 				skills.add(new Trabajo(SKILL_CREAR_VARITA, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_REPARAR_VARITA, 3, 3, true, nivel, 0, oficio));
-			}
-			case OFICIO_ESCULTOR_BASTONES -> {
+				break;
+			case OFICIO_ESCULTOR_BASTONES :
 				skills.add(new Trabajo(SKILL_CREAR_BASTON, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_REPARAR_BASTON, 3, 3, true, nivel, 0, oficio));
-			}
-			case OFICIO_FORJADOR_DAGAS -> {
+				break;
+			case OFICIO_FORJADOR_DAGAS :
 				skills.add(new Trabajo(SKILL_CREAR_DAGA, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_REPARAR_DAGA, 3, 3, true, nivel, 0, oficio));
-			}
-			case OFICIO_FORJADOR_MARTILLOS -> {
+				break;
+			case OFICIO_FORJADOR_MARTILLOS :
 				skills.add(new Trabajo(SKILL_CREAR_MARTILLO, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_REPARAR_MARTILLO, 3, 3, true, nivel, 0, oficio));
-			}
-			case OFICIO_FORJADOR_ESPADAS -> {
+				break;
+			case OFICIO_FORJADOR_ESPADAS :
 				skills.add(new Trabajo(SKILL_CREAR_ESPADA, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_REPARAR_ESPADA, 3, 3, true, nivel, 0, oficio));
-			}
-			case OFICIO_FORJADOR_PALAS -> {
+				break;
+			case OFICIO_FORJADOR_PALAS :
 				skills.add(new Trabajo(SKILL_CREAR_PALA, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_REPARAR_PALA, 3, 3, true, nivel, 0, oficio));
-			}
-			case OFICIO_FORJADOR_HACHAS -> {
+				break;
+			case OFICIO_FORJADOR_HACHAS :
 				skills.add(new Trabajo(SKILL_CREAR_HACHA, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_REPARAR_HACHA, 3, 3, true, nivel, 0, oficio));
-			}
-			case OFICIO_FORJADOR_ESCUDOS -> skills.add(new Trabajo(SKILL_CREAR_ESCUDO, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-					oficio));
-			case OFICIO_ZAPATEROMAGO -> {
+				break;
+			case OFICIO_FORJADOR_ESCUDOS :
+				skills.add(new Trabajo(SKILL_CREAR_ESCUDO, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
+				oficio));
+				break;
+			case OFICIO_ZAPATEROMAGO :
 				skills.add(new Trabajo(SKILL_MAGUEAR_BOTAS, 3, 3, true, nivel, 0, oficio));
 				skills.add(new Trabajo(SKILL_MAGUEAR_CINTURON, 3, 3, true, nivel, 0, oficio));
-			}
-			case OFICIO_JOYEROMAGO -> {
+				break;
+			case OFICIO_JOYEROMAGO :
 				skills.add(new Trabajo(SKILL_MAGUEAR_AMULETO, 3, 3, true, nivel, 0, oficio));
 				skills.add(new Trabajo(SKILL_MAGUEAR_ANILLO, 3, 3, true, nivel, 0, oficio));
-			}
-			case OFICIO_SASTREMAGO -> {
+				break;
+			case OFICIO_SASTREMAGO :
 				skills.add(new Trabajo(SKILL_MAGUEAR_SOMBRERO, 3, 3, true, nivel, 0, oficio));
 				skills.add(new Trabajo(SKILL_MAGUEAR_CAPA, 3, 3, true, nivel, 0, oficio));
 				skills.add(new Trabajo(SKILL_MAGUEAR_MOCHILA, 3, 3, true, nivel, 0, oficio));
-			}
-			case OFICIO_ESCULTORMAGO_BASTONES -> skills.add(new Trabajo(SKILL_MAGUEAR_BASTON, 3, 3, true, nivel, 0, oficio));
-			case OFICIO_ESCULTORMAGO_VARITAS -> skills.add(new Trabajo(SKILL_MAGUEAR_VARITA, 3, 3, true, nivel, 0, oficio));
-			case OFICIO_ESCULTORMAGO_ARCOS -> skills.add(new Trabajo(SKILL_MAGUEAR_ARCO, 3, 3, true, nivel, 0, oficio));
-			case OFICIO_FORJAMAGO_HACHAS -> skills.add(new Trabajo(SKILL_MAGUEAR_HACHA, 3, 3, true, nivel, 0, oficio));
-			case OFICIO_FORJAMAGO_DAGAS -> skills.add(new Trabajo(SKILL_MAGUEAR_DAGA, 3, 3, true, nivel, 0, oficio));
-			case OFICIO_FORJAMAGO_ESPADAS -> skills.add(new Trabajo(SKILL_MAGUEAR_ESPADA, 3, 3, true, nivel, 0, oficio));
-			case OFICIO_FORJAMAGO_MARTILLOS -> skills.add(new Trabajo(SKILL_MAGUEAR_MARTILLO, 3, 3, true, nivel, 0, oficio));
-			case OFICIO_FORJAMAGO_PALAS -> skills.add(new Trabajo(SKILL_MAGUEAR_PALA, 3, 3, true, nivel, 0, oficio));
-			case OFICIO_CAZADOR -> skills.add(new Trabajo(SKILL_PREPARAR_ENCIMERA, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel),
-					-1, oficio));
-			case OFICIO_CARNICERO -> skills.add(new Trabajo(SKILL_PREPARAR_CARNE, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-					oficio));
-			case OFICIO_PESCADOR -> {
+				break;
+			case OFICIO_ESCULTORMAGO_BASTONES :
+				skills.add(new Trabajo(SKILL_MAGUEAR_BASTON, 3, 3, true, nivel, 0, oficio));
+				break;
+			case OFICIO_ESCULTORMAGO_VARITAS :
+				skills.add(new Trabajo(SKILL_MAGUEAR_VARITA, 3, 3, true, nivel, 0, oficio));
+				break;
+			case OFICIO_ESCULTORMAGO_ARCOS :
+				skills.add(new Trabajo(SKILL_MAGUEAR_ARCO, 3, 3, true, nivel, 0, oficio));
+				break;
+			case OFICIO_FORJAMAGO_HACHAS :
+				skills.add(new Trabajo(SKILL_MAGUEAR_HACHA, 3, 3, true, nivel, 0, oficio));
+				break;
+			case OFICIO_FORJAMAGO_DAGAS :
+				skills.add(new Trabajo(SKILL_MAGUEAR_DAGA, 3, 3, true, nivel, 0, oficio));
+				break;
+			case OFICIO_FORJAMAGO_ESPADAS :
+				skills.add(new Trabajo(SKILL_MAGUEAR_ESPADA, 3, 3, true, nivel, 0, oficio));
+				break;
+			case OFICIO_FORJAMAGO_MARTILLOS :
+				skills.add(new Trabajo(SKILL_MAGUEAR_MARTILLO, 3, 3, true, nivel, 0, oficio));
+				break;
+			case OFICIO_FORJAMAGO_PALAS :
+				skills.add(new Trabajo(SKILL_MAGUEAR_PALA, 3, 3, true, nivel, 0, oficio));
+				break;
+			case OFICIO_CAZADOR :
+				skills.add(new Trabajo(SKILL_PREPARAR_ENCIMERA, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel),
+				-1, oficio));
+				break;
+			case OFICIO_CARNICERO :
+				skills.add(new Trabajo(SKILL_PREPARAR_CARNE, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
+				oficio));
+				break;
+			case OFICIO_PESCADOR :
 				if (nivel >= 75) {
 					skills.add(new Trabajo(SKILL_PESCAR_PESCADOS_GIGANTES_MAR, 0, 1, false, 12000 - tiempoGanado, 35, oficio));
 				}
@@ -3676,197 +4109,199 @@ public class Constantes {
 					skills.add(new Trabajo(SKILL_PESCAR_PISCHI, 0, 1, false, 12000 - tiempoGanado, 5, oficio));
 				}
 				skills.add(new Trabajo(SKILL_VACIAR_PESCADO, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
-			}
-			case OFICIO_PESCADERO -> skills.add(new Trabajo(SKILL_PREPARAR_PESCADO, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel),
-					-1, oficio));
-			case OFICIO_PANADERO -> {
+				oficio));
+				break;
+			case OFICIO_PESCADERO :
+				skills.add(new Trabajo(SKILL_PREPARAR_PESCADO, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel),
+				-1, oficio));
+				break;
+			case OFICIO_PANADERO :
 				skills.add(new Trabajo(SKILL_HACER_PAN, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_HACER_CARAMELOS, 3, 3, true, 100, -1, oficio));
-			}
-			case OFICIO_MINERO -> {
+				break;
+			case OFICIO_MINERO :
 				if (nivel >= 100) {
 					skills.add(new Trabajo(SKILL_RECOLECTAR_DOLOMIA, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 100) / 5), false, 12000 - tiempoGanado, 60, oficio));
+					+ ((nivel - 100) / 5), false, 12000 - tiempoGanado, 60, oficio));
 				}
 				if (nivel >= 80) {
 					skills.add(new Trabajo(SKILL_RECOLECTAR_ORO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 80) / 5), false, 12000 - tiempoGanado, 55, oficio));
+					- 80) / 5), false, 12000 - tiempoGanado, 55, oficio));
 				}
 				if (nivel >= 70) {
 					skills.add(new Trabajo(SKILL_RECOLECTAR_BAUXITA, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 70) / 5), false, 12000 - tiempoGanado, 50, oficio));
+					+ ((nivel - 70) / 5), false, 12000 - tiempoGanado, 50, oficio));
 				}
 				if (nivel >= 60) {
 					skills.add(new Trabajo(SKILL_RECOLECTAR_PLATA, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 60) / 5), false, 12000 - tiempoGanado, 40, oficio));
+					+ ((nivel - 60) / 5), false, 12000 - tiempoGanado, 40, oficio));
 				}
 				if (nivel >= 50) {
 					skills.add(new Trabajo(SKILL_RECOLECTAR_ESTAÑO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 50) / 5), false, 12000 - tiempoGanado, 35, oficio));
+					+ ((nivel - 50) / 5), false, 12000 - tiempoGanado, 35, oficio));
 					skills.add(new Trabajo(SKILL_RECOLECTAR_SILICATO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 50) / 5), false, 12000 - tiempoGanado, 35, oficio));
+					+ ((nivel - 50) / 5), false, 12000 - tiempoGanado, 35, oficio));
 				}
 				if (nivel >= 40) {
 					skills.add(new Trabajo(SKILL_RECOLECTAR_MANGANESO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 40) / 5), false, 12000 - tiempoGanado, 30, oficio));
+					+ ((nivel - 40) / 5), false, 12000 - tiempoGanado, 30, oficio));
 				}
 				if (nivel >= 30) {
 					skills.add(new Trabajo(SKILL_RECOLECTAR_KOBALTO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 30) / 5), false, 12000 - tiempoGanado, 25, oficio));
+					+ ((nivel - 30) / 5), false, 12000 - tiempoGanado, 25, oficio));
 				}
 				if (nivel >= 20) {
 					skills.add(new Trabajo(SKILL_RECOLECTAR_BRONCE, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 20) / 5), false, 12000 - tiempoGanado, 20, oficio));
+					+ ((nivel - 20) / 5), false, 12000 - tiempoGanado, 20, oficio));
 				}
 				if (nivel >= 10) {
 					skills.add(new Trabajo(SKILL_RECOLECTAR_COBRE, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 10) / 5), false, 12000 - tiempoGanado, 15, oficio));
+					+ ((nivel - 10) / 5), false, 12000 - tiempoGanado, 15, oficio));
 				}
 				if (nivel >= 0) {
 					skills.add(new Trabajo(SKILL_RECOLECTAR_HIERRO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel) / 5), false, 12000 - tiempoGanado, 10, oficio));
+					+ ((nivel) / 5), false, 12000 - tiempoGanado, 10, oficio));
 				}
 				skills.add(new Trabajo(SKILL_FUNDIR, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_PULIR, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
-			}
-			case OFICIO_ALQUIMISTA -> {
+				oficio));
+				break;
+			case OFICIO_ALQUIMISTA :
 				if (nivel >= 50) {
 					skills.add(new Trabajo(SKILL_COSECHAR_PANDOJA, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 50) / 5), false, 12000 - tiempoGanado, 35, oficio));
+					+ ((nivel - 50) / 5), false, 12000 - tiempoGanado, 35, oficio));
 					skills.add(new Trabajo(SKILL_COSECHAR_EDELWEISS, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 50) / 5), false, 12000 - tiempoGanado, 35, oficio));
+					+ ((nivel - 50) / 5), false, 12000 - tiempoGanado, 35, oficio));
 				}
 				if (nivel >= 40) {
 					skills.add(new Trabajo(SKILL_COSECHAR_ORQUIDEA, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 40) / 5), false, 12000 - tiempoGanado, 30, oficio));
+					+ ((nivel - 40) / 5), false, 12000 - tiempoGanado, 30, oficio));
 				}
 				if (nivel >= 30) {
 					skills.add(new Trabajo(SKILL_COSECHAR_MENTA_SALVAJE, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 30) / 5), false, 12000 - tiempoGanado, 25, oficio));
+					+ ((nivel - 30) / 5), false, 12000 - tiempoGanado, 25, oficio));
 				}
 				if (nivel >= 20) {
 					skills.add(new Trabajo(SKILL_COSECHAR_TREBOL, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 20) / 5), false, 12000 - tiempoGanado, 20, oficio));
+					- 20) / 5), false, 12000 - tiempoGanado, 20, oficio));
 				}
 				if (nivel >= 10) {
 					skills.add(new Trabajo(SKILL_COSECHAR_CAÑAMO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 10) / 5), false, 12000 - tiempoGanado, 15, oficio));
+					- 10) / 5), false, 12000 - tiempoGanado, 15, oficio));
 				}
 				if (nivel >= 0) {
 					skills.add(new Trabajo(SKILL_COSECHAR_LINO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel)
-							/ 5), false, 12000 - tiempoGanado, 10, oficio));
+					/ 5), false, 12000 - tiempoGanado, 10, oficio));
 				}
 				skills.add(new Trabajo(SKILL_CREAR_POCIMA, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
-			}
-			case OFICIO_LEÑADOR -> {
+				oficio));
+				break;
+			case OFICIO_LEÑADOR :
 				if (nivel >= 100) {
 					skills.add(new Trabajo(SKILL_TALAR_BAMBU_SAGRADO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 100) / 5), false, 12000 - tiempoGanado, 75, oficio));
+					+ ((nivel - 100) / 5), false, 12000 - tiempoGanado, 75, oficio));
 				}
 				if (nivel >= 90) {
 					skills.add(new Trabajo(SKILL_TALAR_OLMO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 90) / 5), false, 12000 - tiempoGanado, 70, oficio));
+					- 90) / 5), false, 12000 - tiempoGanado, 70, oficio));
 				}
 				if (nivel >= 80) {
 					skills.add(new Trabajo(SKILL_TALAR_CARPE, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 80) / 5), false, 12000 - tiempoGanado, 65, oficio));
+					- 80) / 5), false, 12000 - tiempoGanado, 65, oficio));
 					skills.add(new Trabajo(SKILL_TALAR_BAMBU_OSCURO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 80) / 5), false, 12000 - tiempoGanado, 65, oficio));
+					+ ((nivel - 80) / 5), false, 12000 - tiempoGanado, 65, oficio));
 				}
 				if (nivel >= 70) {
 					skills.add(new Trabajo(SKILL_TALAR_KALIPTO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 70) / 5), false, 12000 - tiempoGanado, 55, oficio));
+					- 70) / 5), false, 12000 - tiempoGanado, 55, oficio));
 					skills.add(new Trabajo(SKILL_TALAR_EBANO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 70) / 5), false, 12000 - tiempoGanado, 50, oficio));
+					- 70) / 5), false, 12000 - tiempoGanado, 50, oficio));
 				}
 				if (nivel >= 60) {
 					skills.add(new Trabajo(SKILL_TALAR_CEREZO_SILVESTRE, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 60) / 5), false, 12000 - tiempoGanado, 45, oficio));
+					+ ((nivel - 60) / 5), false, 12000 - tiempoGanado, 45, oficio));
 				}
 				if (nivel >= 50) {
 					skills.add(new Trabajo(SKILL_TALAR_TEJO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 50) / 5), false, 12000 - tiempoGanado, 40, oficio));
+					- 50) / 5), false, 12000 - tiempoGanado, 40, oficio));
 					skills.add(new Trabajo(SKILL_TALAR_BAMBU, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 50) / 5), false, 12000 - tiempoGanado, 40, oficio));
+					- 50) / 5), false, 12000 - tiempoGanado, 40, oficio));
 				}
 				if (nivel >= 40) {
 					skills.add(new Trabajo(SKILL_TALAR_ARCE, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 40) / 5), false, 12000 - tiempoGanado, 35, oficio));
+					- 40) / 5), false, 12000 - tiempoGanado, 35, oficio));
 				}
 				if (nivel >= 35) {
 					skills.add(new Trabajo(SKILL_TALAR_BOMBU, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 35) / 5), false, 12000 - tiempoGanado, 30, oficio));
+					- 35) / 5), false, 12000 - tiempoGanado, 30, oficio));
 					skills.add(new Trabajo(SKILL_TALAR_OLIVIOLETA, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2
-							+ ((nivel - 35) / 5), false, 12000 - tiempoGanado, 30, oficio));
+					+ ((nivel - 35) / 5), false, 12000 - tiempoGanado, 30, oficio));
 				}
 				if (nivel >= 30) {
 					skills.add(new Trabajo(SKILL_TALAR_ROBLE, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 30) / 5), false, 12000 - tiempoGanado, 25, oficio));
+					- 30) / 5), false, 12000 - tiempoGanado, 25, oficio));
 				}
 				if (nivel >= 20) {
 					skills.add(new Trabajo(SKILL_TALAR_NOGAL, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 20) / 5), false, 12000 - tiempoGanado, 20, oficio));
+					- 20) / 5), false, 12000 - tiempoGanado, 20, oficio));
 				}
 				if (nivel >= 10) {
 					skills.add(new Trabajo(SKILL_TALAR_CASTAÑO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 10) / 5), false, 12000 - tiempoGanado, 15, oficio));
+					- 10) / 5), false, 12000 - tiempoGanado, 15, oficio));
 				}
 				if (nivel >= 0) {
 					skills.add(new Trabajo(SKILL_TALAR_FRESNO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel)
-							/ 5), false, 12000 - tiempoGanado, 10, oficio));
+					/ 5), false, 12000 - tiempoGanado, 10, oficio));
 				}
 				skills.add(new Trabajo(SKILL_SERRAR, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
-			}
-			case OFICIO_CAMPESINO -> {
+				oficio));
+				break;
+			case OFICIO_CAMPESINO :
 				if (nivel >= 70) {
 					skills.add(new Trabajo(SKILL_SEGAR_CAÑAMO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 70) / 5), false, 12000 - tiempoGanado, 45, oficio));
+					- 70) / 5), false, 12000 - tiempoGanado, 45, oficio));
 				}
 				if (nivel >= 60) {
 					skills.add(new Trabajo(SKILL_SEGAR_MALTA, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 60) / 5), false, 12000 - tiempoGanado, 40, oficio));
+					- 60) / 5), false, 12000 - tiempoGanado, 40, oficio));
 				}
 				if (nivel >= 50) {
 					skills.add(new Trabajo(SKILL_SEGAR_ARROZ, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 50) / 5), false, 12000 - tiempoGanado, 35, oficio));
+					- 50) / 5), false, 12000 - tiempoGanado, 35, oficio));
 					skills.add(new Trabajo(SKILL_SEGAR_CENTENO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 50) / 5), false, 12000 - tiempoGanado, 35, oficio));
+					- 50) / 5), false, 12000 - tiempoGanado, 35, oficio));
 				}
 				if (nivel >= 40) {
 					skills.add(new Trabajo(SKILL_SEGAR_LINO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 40) / 5), false, 12000 - tiempoGanado, 30, oficio));
+					- 40) / 5), false, 12000 - tiempoGanado, 30, oficio));
 				}
 				if (nivel >= 30) {
 					skills.add(new Trabajo(SKILL_SEGAR_LUPULO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 30) / 5), false, 12000 - tiempoGanado, 25, oficio));
+					- 30) / 5), false, 12000 - tiempoGanado, 25, oficio));
 				}
 				if (nivel >= 20) {
 					skills.add(new Trabajo(SKILL_SEGAR_AVENA, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 20) / 5), false, 12000 - tiempoGanado, 20, oficio));
+					- 20) / 5), false, 12000 - tiempoGanado, 20, oficio));
 				}
 				if (nivel >= 10) {
 					skills.add(new Trabajo(SKILL_SEGAR_CEBADA, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel
-							- 10) / 5), false, 12000 - tiempoGanado, 15, oficio));
+					- 10) / 5), false, 12000 - tiempoGanado, 15, oficio));
 				}
 				if (nivel >= 0) {
 					skills.add(new Trabajo(SKILL_SEGAR_TRIGO, (nivel >= 100 ? 5 : 0) + 1, (nivel >= 100 ? 5 : 0) + 2 + ((nivel)
-							/ 5), false, 12000 - tiempoGanado, 10, oficio));
+					/ 5), false, 12000 - tiempoGanado, 10, oficio));
 				}
 				skills.add(new Trabajo(SKILL_MOLER, 2, getIngMaxPorNivel(nivel), true, getSuerteMaxPorNivel(nivel), -1,
-						oficio));
+				oficio));
 				skills.add(new Trabajo(SKILL_DESGRANAR, 1, 1, true, 100, -1, oficio));
-			}
+				break;
 		}
 		return skills;
 	}
 	
-	public static byte getIngMaxPorNivel(final int nivel) {
+	public static final byte getIngMaxPorNivel(final int nivel) {
 		if (nivel < 10) {
 			return 2;
 		}
@@ -3876,7 +4311,7 @@ public class Constantes {
 		return (byte) ((nivel / 20) + 3);
 	}
 	
-	public static int getSuerteMaxPorNivel(final int nivel) {
+	public static final int getSuerteMaxPorNivel(final int nivel) {
 		if (nivel < 10) {
 			return 50;
 		}
@@ -3886,14 +4321,14 @@ public class Constantes {
 		return 55 + (int) (nivel / 10F - 1) * 5;
 	}
 	
-	public static int getSuerteNivelYSlots(final int nivel, final int slots) {
+	public static final int getSuerteNivelYSlots(final int nivel, final int slots) {
 		if (nivel < 10) {
 			return 50;
 		} // 54 + 45 = 99 *
 		return (int) Math.min(100, (getSuerteMaxPorNivel(nivel) * (getIngMaxPorNivel(nivel) / (float) slots)));
 	}
 	
-	public static int calculXpGanadaEnOficio(final int nivel, final int nroCasillas) {
+	public static final int calculXpGanadaEnOficio(final int nivel, final int nroCasillas) {
 		if (nivel == MainServidor.NIVEL_MAX_OFICIO) {
 			return 0;
 		}
@@ -3936,239 +4371,289 @@ public class Constantes {
 		return 0;
 	}
 	
-	public static int getCarnePorMob(int mob, int nivel) {
+	public static final int getCarnePorMob(int mob, int nivel) {
 		int carne = -1;
 		int azar = Formulas.getRandomInt(1, 100);
 		if (nivel >= 1) {
 			switch (mob) {
-// moskito miedoso
-				case 61, 974 -> {
+				case 61 :// moskito
+				case 974 :// moskito miedoso
 					if (azar <= 60)
 						carne = 1915;// Carne de insecto
 					return carne;
-				}
 			}
 			switch (mob) {
-// larva zafiro
-				case 31, 412 -> {
+				case 31 :// larva azul
+				case 412 :// larva zafiro
 					if (azar <= 50)
 						carne = 1898;// Carne de larva
 					return carne;
-				}
 			}
 			switch (mob) {
-// Tofuzmo
-				case 98, 473, 803, 808, 796, 1012, 382, 806, 2357, 804, 807 -> {
+				case 98 :// tofu
+				case 473 :// Tofu Enfermo
+				case 803 :// Tofu Enjaulado
+				case 808 :// Tofu Gordinflón
+				case 796 :// Tofu Negro
+				case 1012 :// Tofu obeso Cebado
+				case 382 :// Tofu Real
+				case 806 :// Tofukaz
+				case 2357 :// Tofumantxú el Mítico
+				case 804 :// Tofuna
+				case 807 :// Tofuzmo
 					if (azar <= 70)
 						carne = 1896;// Carne de pájaro
 					return carne;
-				}
 			}
 		}
 		if (nivel >= 10) {
 			switch (mob) {
-// Larva Verde
-				case 414, 34 -> {
+				case 414 :// Larva Esmeralda
+				case 34 :// Larva Verde
 					if (azar <= 55)
 						carne = 1899; // Carne de larva **
 					return carne;
-				}
 			}
 			switch (mob) {
-// Larva Rubí
-				case 456, 46, 976, 413 -> {
+				case 456 :// Larva Dorada
+				case 46 :// Larva Naranja
+				case 976 :// Larva Naranja Inmadura
+				case 413 :// Larva Rubí
 					if (azar <= 50)
 						carne = 1900; // Carne de larva ***
 					return carne;
-				}
 			}
 			switch (mob) {
-// Jalatín Negro
-				case 134, 149 -> {
+				case 134 :// Jalatín Blanco
+				case 149 :// Jalatín Negro
 					if (azar <= 50)
 						carne = 1911; // Muslo de jalatín
 					return carne;
-				}
 			}
 		}
 		if (nivel >= 20) {
-			if (mob == 101) {// Jalatín Blanco
-				if (azar <= 48)
-					carne = 1912; // Muslo de jalató **
-				return carne;
+			switch (mob) {
+				case 101 :// Jalatín Blanco
+					if (azar <= 48)
+						carne = 1912; // Muslo de jalató **
+					return carne;
 			}
 			switch (mob) {
-// Pekewabbit Hambriento
-				case 96, 72 -> {
+				case 96 :// Pekewabbit
+				case 72 :// Pekewabbit Hambriento
 					if (azar <= 48)
 						carne = 1902; // Muslo de wabbit
 					return carne;
-				}
 			}
 		}
 		if (nivel >= 30) {
-			if (mob == 289) {// Maestro Cuerbok
-				if (azar <= 10)
-					carne = 1933; // Carne de pájaro ****
-				return carne;
-			}
-			if (mob == 159) {// Minilubo
-				if (azar <= 45)
-					carne = 1927; // Hocico
-				return carne;
+			switch (mob) {
+				case 289 :// Maestro Cuerbok
+					if (azar <= 10)
+						carne = 1933; // Carne de pájaro ****
+					return carne;
 			}
 			switch (mob) {
-// Jabalí
-				case 104, 2769 -> {
+				case 159 :// Minilubo
+					if (azar <= 45)
+						carne = 1927; // Hocico
+					return carne;
+			}
+			switch (mob) {
+				case 104 :// Jabalí
+				case 2769 :// Jabalí
 					if (azar <= 45)
 						carne = 1917; // Solomillo de cerdo
 					return carne;
-				}
 			}
 		}
 		if (nivel >= 40) {
 			switch (mob) {
-// Kwak de Viento
-				case 84, 83, 235, 81 -> {
+				case 84 :// Kwak de Hielo
+				case 83 :// Kwak de Llamas
+				case 235 :// Kwak de Tierra
+				case 81 :// Kwak de Viento
 					if (azar <= 45)
 						carne = 1897; // Carne de pájaro **
 					return carne;
-				}
-			}
-			if (mob == 171) {// Dragopavo Almendrado Salvaje
-				if (azar <= 40)
-					carne = 1922; // DragoCarne
-				return carne;
-			}
-			if (mob == 148) {// Jefe de Guerra Jalató
-				if (azar <= 40)
-					carne = 1913; // Muslo de jalató ***
-				return carne;
 			}
 			switch (mob) {
-// Wabbit
-				case 68, 64 -> {
+				case 171 :// Dragopavo Almendrado Salvaje
+					if (azar <= 40)
+						carne = 1922; // DragoCarne
+					return carne;
+			}
+			switch (mob) {
+				case 148 :// Jefe de Guerra Jalató
+					if (azar <= 40)
+						carne = 1913; // Muslo de jalató ***
+					return carne;
+			}
+			switch (mob) {
+				case 68 :// Black Pekewabbit
+				case 64 :// Wabbit
 					if (azar <= 40)
 						carne = 1903; // Muslo de wabbit **
 					return carne;
-				}
 			}
 		}
 		if (nivel >= 50) {
 			switch (mob) {
-// Escarahoja Verde
-				case 198, 241, 194, 240 -> {
+				case 198 :// Escarahoja Azul
+				case 241 :// Escarahoja Blanco
+				case 194 :// Escarahoja Rojo
+				case 240 :// Escarahoja Verde
 					if (azar <= 30)
 						carne = 1916;// Carne de insecto **
 					return carne;
-				}
 			}
-			if (mob == 102) {// Mediulubo
-				if (azar <= 35)
-					carne = 1929;// Hocico **
-				return carne;
+			switch (mob) {
+				case 102 :// Mediulubo
+					if (azar <= 35)
+						carne = 1929;// Hocico **
+					return carne;
 			}
-			if (mob == 147) {// Jalató Real
-				if (azar <= 30)
-					carne = 1914; // Muslo de jalató ****
-				return carne;
+			switch (mob) {
+				case 147 :// Jalató Real
+					if (azar <= 30)
+						carne = 1914; // Muslo de jalató ****
+					return carne;
 			}
-			if (mob == 297) {// Jabalí de las llanuras
-				if (azar <= 30)
-					carne = 1918; // Solomillo de cerdo **
-				return carne;
+			switch (mob) {
+				case 297 :// Jabalí de las llanuras
+					if (azar <= 30)
+						carne = 1918; // Solomillo de cerdo **
+					return carne;
 			}
 		}
 		if (nivel >= 60) {
 			switch (mob) {
-// Sepulturero Koalak
-				case 749, 759, 752, 785, 753, 751, 748, 754, 756, 744, 758, 755, 760, 761 -> {
+				case 749 :// Guerrero Koalak
+				case 759 :// Koalak Cabalgador
+				case 752 :// Koalak Coco
+				case 785 :// Koalak Forestal
+				case 753 :// Koalak Guinda
+				case 751 :// Koalak Índigo
+				case 748 :// Koalak Inmaduro
+				case 754 :// Koalak Reineta
+				case 756 :// Koalak Salvaje
+				case 744 :// Koalak Sanguíneo
+				case 758 :// Maestro Koalak
+				case 755 :// Mamá Koalak
+				case 760 :// Momia Koalak
+				case 761 :// Sepulturero Koalak
 					if (azar <= 25)
 						carne = 8499;// Carne de koalak
 					return carne;
-				}
-			}
-			if (mob == 200) {// Dragopavo Pelirrojo Salvaje
-				if (azar <= 30)
-					carne = 1923;// DragoCarne **
-				return carne;
 			}
 			switch (mob) {
-// Wabbit Wodo
-				case 99, 97 -> {
+				case 200 :// Dragopavo Pelirrojo Salvaje
+					if (azar <= 30)
+						carne = 1923;// DragoCarne **
+					return carne;
+			}
+			switch (mob) {
+				case 99 :// Abuelito Wabbit
+				case 97 :// Wabbit Wodo
 					if (azar <= 30)
 						carne = 1905;// Muslo de wabbit ***
 					return carne;
-				}
 			}
-			if (mob == 123) {// Cochinillo
-				if (azar <= 30)
-					carne = 1921;// Solomillo de cerdo ***
-				return carne;
+			switch (mob) {
+				case 123 :// Cochinillo
+					if (azar <= 30)
+						carne = 1921;// Solomillo de cerdo ***
+					return carne;
 			}
 		}
 		if (nivel >= 70) {
 			switch (mob) {
-// Jefe Cocodrail
-				case 261, 263 -> {
+				case 261 :// Cocodrail
+				case 263 :// Jefe Cocodrail
 					if (azar <= 15)
 						carne = 8500; // Carne de crocodail
 					return carne;
-				}
 			}
 			switch (mob) {
-// Dragohuevo Volador
-				case 76, 93, 90, 88, 95, 170, 87, 94, 75, 853, 89, 91, 82, 862 -> {
+				case 76 :// Dragohuevo Blanco
+				case 93 :// Dragohuevo Blanco Despierto
+				case 90 :// Dragohuevo Blanco Inmaduro
+				case 88 :// Dragohuevo de Zafiro
+				case 95 :// Dragohuevo de Zafiro Despierto
+				case 170 :// Dragohuevo de Zafiro Inmaduro
+				case 87 :// Dragohuevo Dorado
+				case 94 :// Dragohuevo Dorado Despierto
+				case 75 :// Dragohuevo Dorado Inmaduro
+				case 853 :// Dragohuevo Guerrero
+				case 89 :// Dragohuevo Negro
+				case 91 :// Dragohuevo Negro Despierto
+				case 82 :// Dragohuevo Negro Inmaduro
+				case 862 :// Dragohuevo Volador
 					if (azar <= 10)
 						carne = 1924;// Dragocarne ***
 					return carne;
-				}
 			}
-			if (mob == 232) {// Maxilubo
-				if (azar <= 10)
-					carne = 1930;// Hocico ***
-				return carne;
+			switch (mob) {
+				case 232 :// Maxilubo
+					if (azar <= 10)
+						carne = 1930;// Hocico ***
+					return carne;
 			}
 		}
 		if (nivel >= 80) {
-			if (mob == 287) {// Kanugro
-				if (azar <= 5)
-					carne = 8498; // Carne de kanugro
-				return carne;
-			}
-			if (mob == 854) {// Crocabulia
-				if (azar <= 2)
-					carne = 1926; // Dragocarne ****
-				return carne;
+			switch (mob) {
+				case 287 :// Kanugro
+					if (azar <= 5)
+						carne = 8498; // Carne de kanugro
+					return carne;
 			}
 			switch (mob) {
-// Wey Wabbit
-				case 180, 1015 -> {
+				case 854 :// Crocabulia
+					if (azar <= 2)
+						carne = 1926; // Dragocarne ****
+					return carne;
+			}
+			switch (mob) {
+				case 180 :// Wey Wabbit
+				case 1015 :// Wey Wabbit
 					if (azar <= 2)
 						carne = 1901; // Muslo de wabbit ****
 					return carne;
-				}
 			}
-			if (mob == 113) {// Dragocerdo
-				if (azar <= 2)
-					carne = 1919; // Solomillo de cerdo****
-				return carne;
+			switch (mob) {
+				case 113 :// Dragocerdo
+					if (azar <= 2)
+						carne = 1919; // Solomillo de cerdo****
+					return carne;
 			}
 		}
 		return carne;
 	}
 	
-	public static String getZonaEfectoArma(int tipo) {
-		return switch (tipo) {
-			case OBJETO_TIPO_MARTILLO -> "Xb";
-			case OBJETO_TIPO_BASTON -> "Tb";
-			case OBJETO_TIPO_BALLESTA -> "Lc";
-			case OBJETO_TIPO_HACHA, OBJETO_TIPO_HERRAMIENTA, OBJETO_TIPO_PICO, OBJETO_TIPO_GUADAÑA, OBJETO_TIPO_ARCO, OBJETO_TIPO_VARITA, OBJETO_TIPO_DAGAS, OBJETO_TIPO_ESPADA, OBJETO_TIPO_PALA, OBJETO_TIPO_ARMA_MAGICA -> "Pa";
-			default -> "Pa";
-		};
+	public static final String getZonaEfectoArma(int tipo) {
+		switch (tipo) {
+			case OBJETO_TIPO_MARTILLO :
+				return "Xb";
+			case OBJETO_TIPO_BASTON :
+				return "Tb";
+			case OBJETO_TIPO_BALLESTA :
+				return "Lc";
+			case OBJETO_TIPO_HACHA :
+			case OBJETO_TIPO_HERRAMIENTA :
+			case OBJETO_TIPO_PICO :
+			case OBJETO_TIPO_GUADAÑA :
+			case OBJETO_TIPO_ARCO :
+			case OBJETO_TIPO_VARITA :
+			case OBJETO_TIPO_DAGAS :
+			case OBJETO_TIPO_ESPADA :
+			case OBJETO_TIPO_PALA :
+			case OBJETO_TIPO_ARMA_MAGICA :
+				return "Pa";
+		}
+		return "Pa";
 	}
 	
-	public static boolean esTrabajo(final int trabajoID) {
+	public static final boolean esTrabajo(final int trabajoID) {
 		for (final int[] element : TRABAJOS_Y_DROPS) {
 			if (element[0] == trabajoID) {
 				return true;
@@ -4177,34 +4662,34 @@ public class Constantes {
 		return false;
 	}
 	
-	public static boolean getTipoObjPermitidoEnTrabajo(final int trabajoID, final int tipo) {
+	public static final boolean getTipoObjPermitidoEnTrabajo(final int trabajoID, final int tipo) {
 		try {
 			for (final int[] element : TRABAJOS_Y_DROPS) {
 				if (element[0] == trabajoID) {
 					if (element.length == 1) {
 						return true;
 					}
-					for (int i : element) {
-						if (i == tipo) {
+					for (int x = 0; x < element.length; x++) {
+						if (element[x] == tipo) {
 							return true;
 						}
 					}
 					return false;
 				}
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		return false;
 	}
 	
-	public static int getObjetoPorRecurso(final int recurso, final boolean especial) {
+	public static final int getObjetoPorRecurso(final int recurso, final boolean especial) {
 		try {
-			final ArrayList<ArrayList<Integer>> obj = new ArrayList<>();
+			final ArrayList<ArrayList<Integer>> obj = new ArrayList<ArrayList<Integer>>();
 			for (final int[] element : TRABAJOS_Y_DROPS) {
 				if (element[0] == recurso) {
 					if (element.length == 1) {
 						continue;
 					}
-					final ArrayList<Integer> x = new ArrayList<>();
+					final ArrayList<Integer> x = new ArrayList<Integer>();
 					x.add(element[1]);
 					if (element.length > 2) {
 						x.add(element[2]);
@@ -4217,7 +4702,7 @@ public class Constantes {
 			} else if (obj.size() == 1) {
 				return obj.get(0).size() > 1 && especial ? obj.get(0).get(1) : obj.get(0).get(0);
 			} else if (obj.size() >= 2) {
-				ArrayList<Integer> z = new ArrayList<>();
+				ArrayList<Integer> z = new ArrayList<Integer>();
 				z = obj.get(Formulas.getRandomInt(0, obj.size() - 1));
 				return z.size() > 1 && especial ? z.get(1) : z.get(0);
 			}
@@ -4234,62 +4719,84 @@ public class Constantes {
 	// }
 	// return getSuerteNivelYSlots(nivel, nroCasilla);
 	// }
-	public static boolean esOficioMago(final int id) {
-		return switch (id) {
-// 64;
-// 63;
-// 62;
-// 50;
-// 49;
-// 48;
-// 47;
-// 46;
-// 45;
-// 44;
-// 43;
-			case OFICIO_FORJAMAGO_DAGAS, OFICIO_FORJAMAGO_ESPADAS, OFICIO_FORJAMAGO_MARTILLOS, OFICIO_FORJAMAGO_PALAS, OFICIO_FORJAMAGO_HACHAS, OFICIO_ESCULTORMAGO_ARCOS, OFICIO_ESCULTORMAGO_VARITAS, OFICIO_ESCULTORMAGO_BASTONES, OFICIO_ZAPATEROMAGO, OFICIO_JOYEROMAGO, OFICIO_SASTREMAGO -> true;
-			default -> false;
-		};
+	public static final boolean esOficioMago(final int id) {
+		switch (id) {
+			case OFICIO_FORJAMAGO_DAGAS :// 43;
+			case OFICIO_FORJAMAGO_ESPADAS :// 44;
+			case OFICIO_FORJAMAGO_MARTILLOS :// 45;
+			case OFICIO_FORJAMAGO_PALAS :// 46;
+			case OFICIO_FORJAMAGO_HACHAS :// 47;
+			case OFICIO_ESCULTORMAGO_ARCOS :// 48;
+			case OFICIO_ESCULTORMAGO_VARITAS :// 49;
+			case OFICIO_ESCULTORMAGO_BASTONES :// 50;
+			case OFICIO_ZAPATEROMAGO :// 62;
+			case OFICIO_JOYEROMAGO :// 63;
+			case OFICIO_SASTREMAGO :// 64;
+				return true;
+		}
+		return false;
 	}
 	
-	public static boolean esSkillMago(final int id) {
-		return switch (id) {
-			case SKILL_MAGUEAR_AMULETO, SKILL_MAGUEAR_ANILLO, SKILL_MAGUEAR_ARCO, SKILL_MAGUEAR_BASTON, SKILL_MAGUEAR_BOTAS, SKILL_MAGUEAR_CAPA, SKILL_MAGUEAR_CINTURON, SKILL_MAGUEAR_DAGA, SKILL_MAGUEAR_ESPADA, SKILL_MAGUEAR_HACHA, SKILL_MAGUEAR_MARTILLO, SKILL_MAGUEAR_MOCHILA, SKILL_MAGUEAR_PALA, SKILL_MAGUEAR_SOMBRERO, SKILL_MAGUEAR_VARITA -> true;
-			default -> false;
-		};
+	public static final boolean esSkillMago(final int id) {
+		switch (id) {
+			case SKILL_MAGUEAR_AMULETO :
+			case SKILL_MAGUEAR_ANILLO :
+			case SKILL_MAGUEAR_ARCO :
+			case SKILL_MAGUEAR_BASTON :
+			case SKILL_MAGUEAR_BOTAS :
+			case SKILL_MAGUEAR_CAPA :
+			case SKILL_MAGUEAR_CINTURON :
+			case SKILL_MAGUEAR_DAGA :
+			case SKILL_MAGUEAR_ESPADA :
+			case SKILL_MAGUEAR_HACHA :
+			case SKILL_MAGUEAR_MARTILLO :
+			case SKILL_MAGUEAR_MOCHILA :
+			case SKILL_MAGUEAR_PALA :
+			case SKILL_MAGUEAR_SOMBRERO :
+			case SKILL_MAGUEAR_VARITA :
+				return true;
+		}
+		return false;
 	}
 	
-	public static int getColorMonturaPorMob(final int mob) {
-		return switch (mob) {
-// dorado
-			case 666 -> 74;
-// almendrado
-			case 171 -> 1;
-// pelirrojo
-			case 200 -> 6;
-			default -> -1;
-		};
+	public static final int getColorMonturaPorMob(final int mob) {
+		switch (mob) {
+			case 666 :// dorado
+				return 74;
+			case 171 :// almendrado
+				return 1;
+			case 200 :// pelirrojo
+				return 6;
+			default :
+				return -1;
+		}
 	}
 	
-	public static int getColorCria(int color1, int color2, final boolean gen1, final boolean gen2) {
+	public static final int getColorCria(int color1, int color2, final boolean gen1, final boolean gen2) {
 		int A = 0;
 		int B = 0;
 		int colorNuevaCria = 0;
 		switch (color1) {
-// almendrado
-			case 1 -> color1 = 20;
-// pelirrojo
-			case 6 -> color1 = 10;
-// dorado
-			case 74 -> color1 = 18;
+			case 1 :// almendrado
+				color1 = 20;
+				break;
+			case 6 :// pelirrojo
+				color1 = 10;
+				break;
+			case 74 :// dorado
+				color1 = 18;
+				break;
 		}
 		switch (color2) {
-// almendrado
-			case 1 -> color2 = 20;
-// pelirrojo
-			case 6 -> color2 = 10;
-// dorado
-			case 74 -> color2 = 18;
+			case 1 :// almendrado
+				color2 = 20;
+				break;
+			case 6 :// pelirrojo
+				color2 = 10;
+				break;
+			case 74 :// dorado
+				color2 = 18;
+				break;
 		}
 		if (color1 == 75 || color1 >= 88) {
 			color1 = 10;
@@ -4431,7 +4938,7 @@ public class Constantes {
 		} else if (A == 19 && B == 23) {
 			colorNuevaCria = 87; // ciruela - purpura
 		}
-		final ArrayList<Integer> posibles = new ArrayList<>();
+		final ArrayList<Integer> posibles = new ArrayList<Integer>();
 		posibles.add(10);
 		posibles.add(18);
 		posibles.add(20);
@@ -4454,7 +4961,7 @@ public class Constantes {
 		return posibles.get(Formulas.getRandomInt(0, posibles.size() - 1));
 	}
 	
-	public static int getColorMonturaPorCertificado(final int certificado) {
+	public static final int getColorMonturaPorCertificado(final int certificado) {
 		for (MonturaModelo montura : Mundo.MONTURAS_MODELOS.values()) {
 			if (montura.getCertificadoModeloID() == certificado)
 				return montura.getColorID();
@@ -4462,57 +4969,79 @@ public class Constantes {
 		return -1;
 	}
 	
-	public static byte getIDTituloOficio(final int oficio) {
-		return switch (oficio) {
-// Forjamago de dagas primordial
-			case OFICIO_FORJAMAGO_DAGAS -> (byte)40;
-// Forjamago de espadas primordial
-			case OFICIO_FORJAMAGO_ESPADAS -> (byte)41;
-// Forjamago de martillos primordial
-			case OFICIO_FORJAMAGO_MARTILLOS -> (byte)42;
-// Forjamago de palas primordial
-			case OFICIO_FORJAMAGO_PALAS -> (byte)43;
-// Forjamago de hachas primordial
-			case OFICIO_FORJAMAGO_HACHAS -> (byte)44;
-// escultormago de arcos primordial
-			case OFICIO_ESCULTORMAGO_ARCOS -> (byte)45;
-// escultormago de varitas primordial
-			case OFICIO_ESCULTORMAGO_VARITAS -> (byte)46;
-// escultormago de bastones primordial
-			case OFICIO_ESCULTORMAGO_BASTONES -> (byte)47;
-// Zapateromago primordial
-			case OFICIO_ZAPATEROMAGO -> (byte)51;
-// Joyeromago primordial
-			case OFICIO_JOYEROMAGO -> (byte)52;
-// Sastremago primordial
-			case OFICIO_SASTREMAGO -> (byte)53;
-			case OFICIO_LEÑADOR -> (byte)22;
-			case OFICIO_FORJADOR_ESPADAS -> (byte)23;
-			case OFICIO_ESCULTOR_ARCOS -> (byte)24;
-			case OFICIO_FORJADOR_MARTILLOS -> (byte)25;
-			case OFICIO_ZAPATERO -> (byte)26;
-			case OFICIO_JOYERO -> (byte)27;
-			case OFICIO_FORJADOR_DAGAS -> (byte)28;
-			case OFICIO_ESCULTOR_BASTONES -> (byte)29;
-			case OFICIO_ESCULTOR_VARITAS -> (byte)30;
-			case OFICIO_FORJADOR_PALAS -> (byte)31;
-			case OFICIO_MINERO -> (byte)32;
-			case OFICIO_PANADERO -> (byte)33;
-			case OFICIO_ALQUIMISTA -> (byte)34;
-			case OFICIO_SASTRE -> (byte)35;
-			case OFICIO_CAMPESINO -> (byte)36;
-			case OFICIO_FORJADOR_HACHAS -> (byte)37;
-			case OFICIO_PESCADOR -> (byte)38;
-			case OFICIO_CAZADOR -> (byte)39;
-			case OFICIO_CARNICERO -> (byte)48;
-			case OFICIO_PESCADERO -> (byte)49;
-			case OFICIO_MANITAS -> (byte)54;
-			case OFICIO_FORJADOR_ESCUDOS -> (byte)50;
-			default -> (byte)0;
-		};
+	public static final byte getIDTituloOficio(final int oficio) {
+		switch (oficio) {
+			case OFICIO_FORJAMAGO_DAGAS : // Forjamago de dagas primordial
+				return 40;
+			case OFICIO_FORJAMAGO_ESPADAS : // Forjamago de espadas primordial
+				return 41;
+			case OFICIO_FORJAMAGO_MARTILLOS : // Forjamago de martillos primordial
+				return 42;
+			case OFICIO_FORJAMAGO_PALAS : // Forjamago de palas primordial
+				return 43;
+			case OFICIO_FORJAMAGO_HACHAS : // Forjamago de hachas primordial
+				return 44;
+			case OFICIO_ESCULTORMAGO_ARCOS : // escultormago de arcos primordial
+				return 45;
+			case OFICIO_ESCULTORMAGO_VARITAS : // escultormago de varitas primordial
+				return 46;
+			case OFICIO_ESCULTORMAGO_BASTONES : // escultormago de bastones primordial
+				return 47;
+			case OFICIO_ZAPATEROMAGO : // Zapateromago primordial
+				return 51;
+			case OFICIO_JOYEROMAGO : // Joyeromago primordial
+				return 52;
+			case OFICIO_SASTREMAGO : // Sastremago primordial
+				return 53;
+			case OFICIO_LEÑADOR :
+				return 22;
+			case OFICIO_FORJADOR_ESPADAS :
+				return 23;
+			case OFICIO_ESCULTOR_ARCOS :
+				return 24;
+			case OFICIO_FORJADOR_MARTILLOS :
+				return 25;
+			case OFICIO_ZAPATERO :
+				return 26;
+			case OFICIO_JOYERO :
+				return 27;
+			case OFICIO_FORJADOR_DAGAS :
+				return 28;
+			case OFICIO_ESCULTOR_BASTONES :
+				return 29;
+			case OFICIO_ESCULTOR_VARITAS :
+				return 30;
+			case OFICIO_FORJADOR_PALAS :
+				return 31;
+			case OFICIO_MINERO :
+				return 32;
+			case OFICIO_PANADERO :
+				return 33;
+			case OFICIO_ALQUIMISTA :
+				return 34;
+			case OFICIO_SASTRE :
+				return 35;
+			case OFICIO_CAMPESINO :
+				return 36;
+			case OFICIO_FORJADOR_HACHAS :
+				return 37;
+			case OFICIO_PESCADOR :
+				return 38;
+			case OFICIO_CAZADOR :
+				return 39;
+			case OFICIO_CARNICERO :
+				return 48;
+			case OFICIO_PESCADERO :
+				return 49;
+			case OFICIO_MANITAS :
+				return 54;
+			case OFICIO_FORJADOR_ESCUDOS :
+				return 50;
+		}
+		return 0;
 	}
 	
-	public static boolean esAlimentoMontura(final short tipo) {
+	public static final boolean esAlimentoMontura(final short tipo) {
 		for (final short t : MainServidor.TIPO_ALIMENTO_MONTURA) {
 			if (tipo == t) {
 				return true;
@@ -4521,272 +5050,255 @@ public class Constantes {
 		return false;
 	}
 	
-	public static Reto getReto(final byte reto, final Pelea pelea) {
+	public static final Reto getReto(final byte reto, final Pelea pelea) {
 		int bonusXPGrupo = 0, bonusXPFijo = 0;
-		// empezaste, hasta que acabe el combate.
-		// personaje sólo debe utilizar la misma acción una única vez.
-		// una vez la misma acción.
-		// tus PM disponibles en cada turno.
-		// este combate.
-		// nivel.
-		// solamente hechizos.
-		// disponible. Válido durante todo el combate.
-		// dure el combate.
-		// daños
-		// directos durante lo que dure el combate. Se
-		// puede utilizar trampas, glifos, venenos,
-		// daños
-		// ocasionados por desplazamiento así como los
-		// ataques de invocaciones.
-		// el combate.
-		// combate.
-		// tiempo que dure el combate.
-		// durante el tiempo que dure el combate.
-		// a cuerpo durante el tiempo que dure el combate.
-		// descendiente de nivel.
-		// dejar que los de sexo femenino acaben con
-		// los adversarios. Válido durante todo el
-		// combate.
-		// dejar que los de sexo masculino acaben
-		// con los adversarios. Válido durante todo
-		// el combate.
-		// con los adversarios.
-		// matarlo antes de atacar a otro adversario.
-		// muera.
-		// objetivo que se designa en cada turno de un personaje.
-		// indicado. Cada vez que mates a un objetivo, obtendrás el nombre del próximo al que tienes
-		// que matar
-		// uno de tus adversarios.
-		// de uno de tus aliados.
-		// antes de que comience su turno.
-		// adyacente a la de uno de tus aliados.
-		// adyacente a la de uno de tus adversarios.
-		// tu turno.
-		// tiene que matar obligatoriamente a un (y sólo a un) segundo adversario durante su turno.
-		// (que no sea una invocación) durante el combate.
-		// personaje debe atacar a ese mismo adversario durante el tiempo que dure el combate.
-		// a un adversario durante el combate. Cuando un personaje ataca a un adversario, ningún
-		// otro personaje puede atacar a ese mismo adversario durante el combate.
-		// dispones de 3 turnos para rematar a tu aliado o ¡ganar el combate!
-		// de menor nivel tiene que matar a todos los adversarios (así aprenderás a querer abusar
-		// como un puerkazo).
-		// secundarios deben acabar vivos el combate.
-		// ganar el desafío. Ya se sabe, los desarrolladores del juego son unos tramposos...
-		// pueda
 		switch (reto) {
-// 1;// Utiliza sólo un punto de movimiento en cada turno.
-			case RETO_ZOMBI -> {
+			case RETO_ZOMBI :// 1;// Utiliza sólo un punto de movimiento en cada turno.
 				bonusXPFijo = 30;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(1) / 4f) * 10);
-			}
-// 2;// Acaba tu turno en la misma casilla donde lo
-			case RETO_ESTATUA -> {
+				break;
+			case RETO_ESTATUA :// 2;// Acaba tu turno en la misma casilla donde lo
+				// empezaste, hasta que acabe el combate.
 				bonusXPFijo = 25;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(1) / 3f) * 10);
-			}
-// 3;// Matar %1 el primero.
-			case RETO_ELEGIDO_VOLUNTARIO -> {
+				break;
+			case RETO_ELEGIDO_VOLUNTARIO :// 3;// Matar %1 el primero.
 				bonusXPFijo = 30;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2) / 3f) * 10);
-			}
-// 4;// Matar %1 el último.
-			case RETO_APLAZAMIENTO -> {
+				break;
+			case RETO_APLAZAMIENTO :// 4;// Matar %1 el último.
 				bonusXPFijo = 20;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2) / 1.5f) * 5);
-			}
-// 5;// Durante el tiempo que dure el combate, cada
-			case RETO_AHORRADOR -> {
+				break;
+			case RETO_AHORRADOR :// 5;// Durante el tiempo que dure el combate, cada
+				// personaje sólo debe utilizar la misma acción una única vez.
 				bonusXPFijo = 160;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(1) / 1.5f) * 10);
-			}
-// 6;// Durante su turno, cada jugador sólo puede utilizar
-			case RETO_VERSATIL -> {
+				break;
+			case RETO_VERSATIL :// 6;// Durante su turno, cada jugador sólo puede utilizar
+				// una vez la misma acción.
 				bonusXPFijo = 50;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(1) / 1.5f) * 5);
-			}
-// 8;// Durante el tiempo que dure el combate, utiliza todos
-			case RETO_NOMADA -> {
+				break;
+			case RETO_NOMADA :// 8;// Durante el tiempo que dure el combate, utiliza todos
+				// tus PM disponibles en cada turno.
 				bonusXPFijo = 20;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(1) / 1.5f) * 5);
-			}
-// 9;// No utilices ningún hechizo durante el tiempo que dure
-			case RETO_BARBARO -> {
+				break;
+			case RETO_BARBARO :// 9;// No utilices ningún hechizo durante el tiempo que dure
+				// este combate.
 				bonusXPFijo = 60;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(1) / 3f) * 5);
-			}
-// 10;// Debes matar a los adversarios en orden creciente de
-			case RETO_CRUEL -> {
+				break;
+			case RETO_CRUEL :// 10;// Debes matar a los adversarios en orden creciente de
+				// nivel.
 				bonusXPFijo = 40;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2) / 2f) * 10);
-			}
-// 11;// Durante el tiempo que dure el combate, utiliza
-			case RETO_MISTICO -> {
+				break;
+			case RETO_MISTICO :// 11;// Durante el tiempo que dure el combate, utiliza
+				// solamente hechizos.
 				bonusXPFijo = 40;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2) / 2f) * 5);
-			}
-// 16;// Invocar una Llamita cada vez que el hechizo esté
-			case RETO_ENTOMOLOGO -> {
+				break;
+			case RETO_ENTOMOLOGO :// 16;// Invocar una Llamita cada vez que el hechizo esté
+				// disponible. Válido durante todo el combate.
 				bonusXPFijo = 25;
 				for (final Luchador luchador : pelea.luchadoresDeEquipo(1)) {
 					if (luchador.getPersonaje().tieneHechizoID(311)) {
 						bonusXPGrupo += 5;
 					}
 				}
-			}
-// 17;// No perder puntos de vida durante el tiempo que
-			case RETO_INTOCABLE -> {
+				break;
+			case RETO_INTOCABLE :// 17;// No perder puntos de vida durante el tiempo que
+				// dure el combate.
 				bonusXPFijo = 40;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(1) / 1.5f) * 10);
-			}
-// 18;// No curar durante el tiempo que dure el combate.
-			case RETO_INCURABLE -> {
+				break;
+			case RETO_INCURABLE :// 18;// No curar durante el tiempo que dure el combate.
 				bonusXPFijo = 20;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(1) / 2f) * 5);
-			}
-// 19;// Acabar con los monstruos sin ocasionarles
-			case RETO_MANOS_LIMPIAS -> {
+				break;
+			case RETO_MANOS_LIMPIAS :// 19;// Acabar con los monstruos sin ocasionarles
+				// daños
+				// directos durante lo que dure el combate. Se
+				// puede utilizar trampas, glifos, venenos,
+				// daños
+				// ocasionados por desplazamiento así como los
+				// ataques de invocaciones.
 				bonusXPFijo = 25;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2)) * 5);
-			}
-// 20;// Utiliza el mismo elemento de ataque durante todo
-			case RETO_ELEMENTAL -> {
+				break;
+			case RETO_ELEMENTAL :// 20;// Utiliza el mismo elemento de ataque durante todo
+				// el combate.
 				bonusXPFijo = 30;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(1) / 2f) * 5);
-			}
-// 21;// No quitar PM a los adversarios mientras dure el
-			case RETO_CIRCULEN -> bonusXPFijo = 20;
-// 22;// No quitar PA a los adversarios durante el
-			case RETO_EL_TIEMPO_PASA -> bonusXPFijo = 30;
-// 23;// No reducir el alcance de los adversarios
-			case RETO_PERDIDO_DE_VISTA -> bonusXPFijo = 15;
-// 24;// Utilizar el mismo hechizo o el mismo ataque cuerpo
-			case RETO_LIMITADO -> {
+				break;
+			case RETO_CIRCULEN :// 21;// No quitar PM a los adversarios mientras dure el
+				// combate.
+				bonusXPFijo = 20;
+				break;
+			case RETO_EL_TIEMPO_PASA :// 22;// No quitar PA a los adversarios durante el
+				// tiempo que dure el combate.
+				bonusXPFijo = 30;
+				break;
+			case RETO_PERDIDO_DE_VISTA :// 23;// No reducir el alcance de los adversarios
+				// durante el tiempo que dure el combate.
+				bonusXPFijo = 15;
+				break;
+			case RETO_LIMITADO :// 24;// Utilizar el mismo hechizo o el mismo ataque cuerpo
+				// a cuerpo durante el tiempo que dure el combate.
 				bonusXPFijo = 50;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(1) / 1.5f) * 5);
-			}
-// 25;// Se debe acabar con los adversarios en orden
-			case RETO_ORDENADO -> {
+				break;
+			case RETO_ORDENADO :// 25;// Se debe acabar con los adversarios en orden
+				// descendiente de nivel.
 				bonusXPFijo = 40;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2) / 2f) * 5);
-			}
-// 29;// Los personajes de sexo femenino deben
-			case RETO_NI_PIAS_NI_SUMISAS, RETO_NI_PIOS_NI_SUMISOS -> bonusXPFijo = 35;
-// 30;// El personaje de menor nivel debe acabar
-			case RETO_LOS_PEQUEÑOS_ANTES -> bonusXPFijo = 40;
-// 31;// Cuando se ataca a un adversario, hay que
-			case RETO_FOCALIZACION -> {
+				break;
+			case RETO_NI_PIAS_NI_SUMISAS :// 28;// Los personajes de sexo masculino deben
+				// dejar que los de sexo femenino acaben con
+				// los adversarios. Válido durante todo el
+				// combate.
+			case RETO_NI_PIOS_NI_SUMISOS :// 29;// Los personajes de sexo femenino deben
+				// dejar que los de sexo masculino acaben
+				// con los adversarios. Válido durante todo
+				// el combate.
+				bonusXPFijo = 35;
+				break;
+			case RETO_LOS_PEQUEÑOS_ANTES :// 30;// El personaje de menor nivel debe acabar
+				// con los adversarios.
+				bonusXPFijo = 40;
+				break;
+			case RETO_FOCALIZACION :// 31;// Cuando se ataca a un adversario, hay que
+				// matarlo antes de atacar a otro adversario.
 				bonusXPFijo = 30;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2) / 2f) * 5);
-			}
-// 32;// Todos los ataques deben ir dirigidos a %1 hasta que
-			case RETO_ELITISTA -> {
+				break;
+			case RETO_ELITISTA :// 32;// Todos los ataques deben ir dirigidos a %1 hasta que
+				// muera.
 				bonusXPFijo = 50;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2) / 3f) * 5);
-			}
-// 33;// Ningún aliado debe morir.
-			case RETO_SUPERVIVIENTE -> bonusXPFijo = 30;
-// 34;// Todos los ataques deben ir dirigidos a un mismo
-			case RETO_IMPREVISIBLE -> {
+				break;
+			case RETO_SUPERVIVIENTE :// 33;// Ningún aliado debe morir.
+				bonusXPFijo = 30;
+				break;
+			case RETO_IMPREVISIBLE :// 34;// Todos los ataques deben ir dirigidos a un mismo
+				// objetivo que se designa en cada turno de un personaje.
 				bonusXPFijo = 50;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2) / 2f) * 5);
-			}
-// 35;// Debes matar a los adversarios en el orden
-			case RETO_ASESINO_A_SUELDO -> {
+				break;
+			case RETO_ASESINO_A_SUELDO :// 35;// Debes matar a los adversarios en el orden
+				// indicado. Cada vez que mates a un objetivo, obtendrás el nombre del próximo al que tienes
+				// que matar
 				bonusXPFijo = 45;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2) / 3f) * 10);
-			}
-// 36;// Acaba tu turno en una de las casillas pegadas a las de
-			case RETO_AUDAZ -> bonusXPFijo = 25;
-// 37;// Acaba tu turno en una de las casillas pegadas a las
-			case RETO_PEGAJOSO -> bonusXPFijo = 40;
-// 38;// Cuando se ataca a un adversario, hay que matarlo
-			case RETO_BLITZKRIEG -> {
+				break;
+			case RETO_AUDAZ :// 36;// Acaba tu turno en una de las casillas pegadas a las de
+				// uno de tus adversarios.
+				bonusXPFijo = 25;
+				break;
+			case RETO_PEGAJOSO :// 37;// Acaba tu turno en una de las casillas pegadas a las
+				// de uno de tus aliados.
+				bonusXPFijo = 40;
+				break;
+			case RETO_BLITZKRIEG :// 38;// Cuando se ataca a un adversario, hay que matarlo
+				// antes de que comience su turno.
 				bonusXPFijo = 80;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2) / 0.8f) * 5);
-			}
-// 39;// No termines nunca tu turno en una casilla
-			case RETO_ANACORETA -> {
+				break;
+			case RETO_ANACORETA :// 39;// No termines nunca tu turno en una casilla
+				// adyacente a la de uno de tus aliados.
 				bonusXPFijo = 20;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(1) / 4f) * 5);
-			}
-// 40;// No termines nunca tu turno en una casilla
-			case RETO_PUSILANIME -> bonusXPFijo = 30;
-// 41;// Utiliza todos tus puntos de acción antes de acabar
-			case RETO_IMPETUOSO -> bonusXPFijo = 10;
-// 42;// Cuando un personaje mata a un adversario,
-			case RETO_EL_DOS_POR_UNO -> {
+				break;
+			case RETO_PUSILANIME :// 40;// No termines nunca tu turno en una casilla
+				// adyacente a la de uno de tus adversarios.
+				bonusXPFijo = 30;
+				break;
+			case RETO_IMPETUOSO :// 41;// Utiliza todos tus puntos de acción antes de acabar
+				// tu turno.
+				bonusXPFijo = 10;
+				break;
+			case RETO_EL_DOS_POR_UNO :// 42;// Cuando un personaje mata a un adversario,
+				// tiene que matar obligatoriamente a un (y sólo a un) segundo adversario durante su turno.
 				bonusXPFijo = 60;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2) / 1.5f) * 5);
-			}
-// 43;// Nadie puede recibir curas durante su turno.
-			case RETO_ABNEGACION -> {
+				break;
+			case RETO_ABNEGACION :// 43;// Nadie puede recibir curas durante su turno.
 				bonusXPFijo = 20;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(1) / 2f) * 5);
-			}
-// 44;// Cada personaje debe matar al menos a un adversario
-			case RETO_REPARTO -> bonusXPFijo = 50;
-// 45;// Cuando un personaje ataca a un adversario, ningún otro
-			case RETO_DUELO -> bonusXPFijo = 40;
-// 46;// Cada personaje debe matar al menos
-			case RETO_CADA_UNO_CON_SU_MONSTRUO -> {
+				break;
+			case RETO_REPARTO :// 44;// Cada personaje debe matar al menos a un adversario
+				// (que no sea una invocación) durante el combate.
+				bonusXPFijo = 50;
+				break;
+			case RETO_DUELO :// 45;// Cuando un personaje ataca a un adversario, ningún otro
+				// personaje debe atacar a ese mismo adversario durante el tiempo que dure el combate.
+				bonusXPFijo = 40;
+				break;
+			case RETO_CADA_UNO_CON_SU_MONSTRUO :// 46;// Cada personaje debe matar al menos
+				// a un adversario durante el combate. Cuando un personaje ataca a un adversario, ningún
+				// otro personaje puede atacar a ese mismo adversario durante el combate.
 				bonusXPFijo = 60;
 				bonusXPGrupo = (int) (Math.ceil(pelea.cantLuchDeEquipo(2) / 1.5f) * 5);
-			}
-// 47;// Cuando un aliado pierde puntos de vida,
-			case RETO_CONTAMINACION -> bonusXPFijo = 60;
-// 48;// El personaje secundario
-			case RETO_LOS_PERSONAJES_SECUNDARIOS_PRIMERO -> {
+				break;
+			case RETO_CONTAMINACION :// 47;// Cuando un aliado pierde puntos de vida,
+				// dispones de 3 turnos para rematar a tu aliado o ¡ganar el combate!
+				bonusXPFijo = 60;
+				break;
+			case RETO_LOS_PERSONAJES_SECUNDARIOS_PRIMERO :// 48;// El personaje secundario
+				// de menor nivel tiene que matar a todos los adversarios (así aprenderás a querer abusar
+				// como un puerkazo).
 				bonusXPFijo = 10;
 				bonusXPGrupo = (pelea.cantLuchDeEquipo(1) / 2) * 15;
-			}
-// 49;// Aliados y personajes
-			case RETO_PROTEJAN_A_SUS_PERSONAJES_SECUNDARIOS -> {
+				break;
+			case RETO_PROTEJAN_A_SUS_PERSONAJES_SECUNDARIOS :// 49;// Aliados y personajes
+				// secundarios deben acabar vivos el combate.
 				bonusXPFijo = 20;
 				bonusXPGrupo = (pelea.cantLuchDeEquipo(1) / 2) * 15;
-			}
-// 50;// Acaba el combate, para
-			case RETO_LA_TRAMPA_DE_LOS_DESARROLLADORES -> bonusXPFijo = 1;
-// jardinero, durante el combate, plantar una zanahowia cada vez q se
-			case RETO_JARDINERO -> {
+				break;
+			case RETO_LA_TRAMPA_DE_LOS_DESARROLLADORES :// 50;// Acaba el combate, para
+				// ganar el desafío. Ya se sabe, los desarrolladores del juego son unos tramposos...
+				bonusXPFijo = 1;
+				break;
+			case RETO_JARDINERO :// jardinero, durante el combate, plantar una zanahowia cada vez q se
+				// pueda
 				bonusXPFijo = 25;
 				for (final Luchador luchador : pelea.luchadoresDeEquipo(1)) {
 					if (luchador.getPersonaje().tieneHechizoID(367)) {
 						bonusXPGrupo += 5;
 					}
 				}
-			}
-// sepultero, invoca un chaferloko cada vez q se pueda
-			case RETO_SEPULTURERO -> {
+				break;
+			case RETO_SEPULTURERO :// sepultero, invoca un chaferloko cada vez q se pueda
 				bonusXPFijo = 30;
 				for (final Luchador luchador : pelea.luchadoresDeEquipo(1)) {
 					if (luchador.getPersonaje().tieneHechizoID(373)) {
 						bonusXPGrupo += 5;
 					}
 				}
-			}
-// casino real, lanzar el hechizo ruleta cada vez q se pueda
-			case RETO_CASINO_REAL -> {
+				break;
+			case RETO_CASINO_REAL :// casino real, lanzar el hechizo ruleta cada vez q se pueda
 				bonusXPFijo = 30;
 				for (final Luchador luchador : pelea.luchadoresDeEquipo(1)) {
 					if (luchador.getPersonaje().tieneHechizoID(101)) {
 						bonusXPGrupo += 5;
 					}
 				}
-			}
-// aracnofilo, invocar una araña cada vez q se pueda
-			case RETO_ARACNOFILO -> {
+				break;
+			case RETO_ARACNOFILO :// aracnofilo, invocar una araña cada vez q se pueda
 				bonusXPFijo = 10;
 				for (final Luchador luchador : pelea.luchadoresDeEquipo(1)) {
 					if (luchador.getPersonaje().tieneHechizoID(370)) {
 						bonusXPGrupo += 5;
 					}
 				}
-			}
+				break;
 		}
 		return new Reto(reto, bonusXPFijo, bonusXPGrupo, bonusXPFijo, bonusXPGrupo, pelea);
 	}
 	
-	public static boolean esRetoPosible1(final int reto, final Pelea pelea) {
+	public static final boolean esRetoPosible1(final int reto, final Pelea pelea) {
 		try {
 			switch (reto) {
 				// retos q no se deben usar
@@ -4890,7 +5402,7 @@ public class Constantes {
 		}
 	}
 	
-	public static boolean esRetoPosible2(final int reto, final int nuevo) {
+	public static final boolean esRetoPosible2(final int reto, final int nuevo) {
 		try {
 			if (reto == nuevo) {
 				return false;
@@ -4992,59 +5504,107 @@ public class Constantes {
 		}
 	}
 	
-	public static int getCraneoPorClase(final int claseID) {
-		int objID = switch (claseID) {
-			case CLASE_FECA -> 9077;
-			case CLASE_OSAMODAS -> 9078;
-			case CLASE_ANUTROF -> 9079;
-			case CLASE_SRAM -> 9080;
-			case CLASE_XELOR -> 9081;
-			case CLASE_ZURCARAK -> 9082;
-			case CLASE_ANIRIPSA -> 9083;
-			case CLASE_YOPUKA -> 9084;
-			case CLASE_OCRA -> 9085;
-			case CLASE_SADIDA -> 9086;
-			case CLASE_SACROGITO -> 9087;
-			case CLASE_PANDAWA -> 9088;
-			default -> 0;
-		};
+	public static final int getCraneoPorClase(final int claseID) {
+		int objID = 0;
+		switch (claseID) {
+			case CLASE_FECA :
+				objID = 9077;
+				break;
+			case CLASE_OSAMODAS :
+				objID = 9078;
+				break;
+			case CLASE_ANUTROF :
+				objID = 9079;
+				break;
+			case CLASE_SRAM :
+				objID = 9080;
+				break;
+			case CLASE_XELOR :
+				objID = 9081;
+				break;
+			case CLASE_ZURCARAK :
+				objID = 9082;
+				break;
+			case CLASE_ANIRIPSA :
+				objID = 9083;
+				break;
+			case CLASE_YOPUKA :
+				objID = 9084;
+				break;
+			case CLASE_OCRA :
+				objID = 9085;
+				break;
+			case CLASE_SADIDA :
+				objID = 9086;
+				break;
+			case CLASE_SACROGITO :
+				objID = 9087;
+				break;
+			case CLASE_PANDAWA :
+				objID = 9088;
+				break;
+		}
 		return objID;
 	}
 	
-	public static int getDoplonDopeul(final int idMob) {
-		return switch (idMob) {
-			case 168 -> 10302;
-			case 165 -> 10303;
-			case 166 -> 10304;
-			case 162 -> 10305;
-			case 160 -> 10306;
-			case 167 -> 10307;
-			case 161 -> 10308;
-			case 2691 -> 10309;
-			case 455 -> 10310;
-			case 169 -> 10311;
-			case 163 -> 10312;
-			case 164 -> 10313;
-			default -> -1;
-		};
+	public static final int getDoplonDopeul(final int idMob) {
+		switch (idMob) {
+			case 168 :
+				return 10302;
+			case 165 :
+				return 10303;
+			case 166 :
+				return 10304;
+			case 162 :
+				return 10305;
+			case 160 :
+				return 10306;
+			case 167 :
+				return 10307;
+			case 161 :
+				return 10308;
+			case 2691 :
+				return 10309;
+			case 455 :
+				return 10310;
+			case 169 :
+				return 10311;
+			case 163 :
+				return 10312;
+			case 164 :
+				return 10313;
+		}
+		return -1;
 	}
 	
-	public static int getCertificadoDopeul(final int idMob) {
-		return switch (idMob) {
-			case 168 -> 10289;
-			case 165 -> 10290;
-			case 166 -> 10291;
-			case 162 -> 10292;
-			case 160 -> 10293;
-			case 167 -> 10294;
-			case 161 -> 10295;
-			case 2691 -> 10296;
-			case 455 -> 10297;
-			case 169 -> 10298;
-			case 163 -> 10299;
-			case 164 -> 10300;
-			default -> -1;
-		};
+	public static final int getCertificadoDopeul(final int idMob) {
+		switch (idMob) {
+			case 168 :
+				return 10289;
+			case 165 :
+				return 10290;
+			case 166 :
+				return 10291;
+			case 162 :
+				return 10292;
+			case 160 :
+				return 10293;
+			case 167 :
+				return 10294;
+			case 161 :
+				return 10295;
+			case 2691 :
+				return 10296;
+			case 455 :
+				return 10297;
+			case 169 :
+				return 10298;
+			case 163 :
+				return 10299;
+			case 164 :
+				return 10300;
+		}
+		return -1;
 	}
 	
 	// public static final boolean IsaRessource(Objet obj) {
@@ -5072,7 +5632,7 @@ public class Constantes {
 	// }
 	// return isOk;
 	// }
-	public static int getNivelMiliciano(final int nivel) {
+	public static final int getNivelMiliciano(final int nivel) {
 		if (nivel <= 50) {
 			return 50;
 		}
@@ -5091,7 +5651,7 @@ public class Constantes {
 		return 200;
 	}
 	
-	public static int getNivelProtector(final int nivel) {
+	public static final int getNivelProtector(final int nivel) {
 		if (nivel > 0 && nivel <= 30) {
 			return 10;
 		}
@@ -5107,7 +5667,7 @@ public class Constantes {
 		return 50;
 	}
 	
-	public static int getProtectorRecursos(final int trabajoID, final int oficioID) {
+	public static final int getProtectorRecursos(final int trabajoID, final int oficioID) {
 		int rand = 0;
 		switch (oficioID) {
 			case 28 :// campesino
@@ -5257,7 +5817,7 @@ public class Constantes {
 		return 0;
 	}
 	
-	public static int getNivelDopeul(final int nivel) {
+	public static final int getNivelDopeul(final int nivel) {
 		if (nivel < 20) {
 			return 20;
 		}
@@ -5288,162 +5848,168 @@ public class Constantes {
 		return 200;
 	}
 	
-	public static int getCaracObjCria(final int idObjMod) {
-		return switch (idObjMod) {
-// Pesebre de tejo
-// Pesebre de roble
-// Pesebre de olmo
-// Pesebre de olivioleta
-// Pesebre de nogal
-// Pesebre de madera embrujada
-// Pesebre de madera de tronkónido
-// Pesebre de madera de kokoko
-// Pesebre de madera de bambuto sagrado
-// Pesebre de madera de bambuto
-// Pesebre de madera ancestral
-// Pesebre de fresno
-// Pesebre de ébano
-// Pesebre de cerezo silvestre
-// Pesebre de castaño
-// Pesebre de carpe
-// Pesebre de bombú
-// Pesebre de bambú sagrado
-// Pesebre de bambú oscuro
-// Pesebre de bambú mágico
-// Pesebre de bambú dorado
-// Pesebre de bambú
-// Pesebre de arce
-// Pesebre clásico
-			case 7606, 7612, 7619, 7685, 7686, 7620, 7621, 7617, 7613, 7614, 7616, 7610, 7607, 7683, 7687, 7688, 7689, 7690, 7684, 7615, 7618, 7611, 7608, 7609 -> 6;
-// Acariciador de Pluma Puntiaguda de Kwak
-// Acariciador de Pluma del Último Pohoyo
-// Acariciador de Pluma del Maestro Cuerbok
-// Acariciador de Pluma del Kwak de Tierra
-// Acariciador de Pluma de Tofu Real
-// Acariciador de Pluma de Tofu Maléfico
-// Acariciador de Pluma de Tofu
-// Acariciador de Pluma de Pío Violeta
-// Acariciador de Pluma de Pío Verde
-// Acariciador de Pluma de Pío Rosa
-// Acariciador de Pluma de Pío Rojo
-// Acariciador de Pluma de Pío Azul
-// Acariciador de Pluma de Pío Amarillo
-// Acariciador de Pluma de Kwak de Viento
-// Acariciador de Pluma de Kwak de Llama
-// Acariciador de Pluma de Kwak de Hielo
-// Acariciador de Pluma de Cuerbok
-// Acariciador Clásico
-			case 7628, 7738, 7739, 7740, 7741, 7735, 7623, 7734, 7736, 7733, 7624, 7622, 7737, 7746, 7742, 7745, 7743, 7744 -> 5;
-// Aporreadora de tejo
-// Aporreadora de roble
-// Aporreadora de olmo
-// Aporreadora de olivioleta
-// Aporreadora de nogal
-// Aporreadora de madera embrujada
-// Aporreadora de madera de tronkónido
-// Aporreadora de madera de kokoko
-// Aporreadora de madera de bambuto sagrado
-// Aporreadora de madera de bambuto
-// Aporreadora de madera ancestral
-// Aporreadora de fresno
-// Aporreadora de Ébano
-// Aporreadora de cerezo silvestre
-// Aporreadora de castaño
-// Aporreadora de carpe
-// Aporreadora de bombú
-// Aporreadora de bambú sagrado
-// Aporreadora de bambú oscuro
-// Aporreadora de bambú mágico
-// Aporreadora de bambú dorado
-// Aporreadora de bambú
-// Aporreadora de arce
-// Aporreadora clásica
-			case 7625, 7757, 7762, 7770, 7772, 7765, 7766, 7763, 7758, 7626, 7761, 7755, 7759, 7767, 7773, 7774, 7771, 7769, 7768, 7760, 7764, 7756, 7627, 7629 -> 4;
-// Dragonalgas de cuero violeta de bwork
-// Dragonalgas de cuero negro
-// Dragonalgas de cuero de Puerkazo
-// Dragonalgas de cuero de Minotauroro
-// Dragonalgas de cuero de jefe de guerra jalató
-// Dragonalgas de cuero de Jalató Real
-// Dragonalgas de cuero de jalató
-// Dragonalgas de cuero de jalatín negro
-// Dragonalgas de cuero de jalatín blanco
-// Dragonalgas de cuero de jabalí de las llanuras
-// Dragonalgas de cuero de jabalí
-// Dragonalgas de cuero de dragocerdo
-// Dragonalgas de cuero de cochinillo
-// Dragonalgas clásico
-			case 7634, 7695, 7694, 7693, 7699, 7635, 7636, 7637, 7692, 7691, 7700, 7697, 7698, 7696 -> 3;
-// Fulminadora de tejo
-// Fulminadora de roble
-// Fulminadora de olmo
-// Fulminadora de olivioleta
-// Fulminadora de nogal
-// Fulminadora de madera embrujada
-// Fulminadora de madera de tronkónido
-// Fulminadora de madera de kokoko
-// Fulminadora de madera de bambuto sagrado
-// Fulminadora de madera de bambuto
-// Fulminadora de madera ancestral
-// Fulminadora de fresno
-// Fulminadora de ébano
-// Fulminadora de cerezo silvestre
-// Fulminadora de castaño
-// Fulminadora de carpe
-// Fulminadora de bombú
-// Fulminadora de bambú sagrado
-// Fulminadora de bambú oscuro
-// Fulminadora de bambú mágico
-// Fulminadora de bambú dorado
-// Fulminadora de bambú
-// Fulminadora de arce
-// Fulminadora clásica
-			case 7798, 7780, 7787, 7793, 7794, 7788, 7789, 7785, 7781, 7782, 7784, 7778, 7775, 7790, 7795, 7796, 7797, 7792, 7791, 7783, 7786, 7779, 7776, 7777 -> 2;
-// Abrevadero de Tejo
-// Abrevadero de Roble
-// Abrevadero de Olmo
-// Abrevadero de Olivioleta
-// Abrevadero de Nogal
-// Abrevadero de Madera Embrujada
-// Abrevadero de Madera de Tronkónido
-// Abrevadero de Madera de Kokoko
-// Abrevadero de Madera de Bambuto Sagrado
-// Abrevadero de Madera de Bambuto
-// Abrevadero de Madera Ancestral
-// Abrevadero de Fresno
-// Abrevadero de Ébano
-// Abrevadero de Cerezo Silvestre
-// Abrevadero de Castaño
-// Abrevadero de Carpe
-// Abrevadero de Bombú
-// Abrevadero de Bambú Sagrado
-// Abrevadero de Bambú Oscuro
-// Abrevadero de Bambú Mágico
-// Abrevadero de Bambú Dorado
-// Abrevadero de Bambú
-// Abrevadero de Arce
-// Abrevadero Clásico
-			case 7605, 7592, 7602, 7676, 7677, 7603, 7604, 7600, 7594, 7593, 7596, 7598, 7590, 7673, 7678, 7679, 7682, 7675, 7674, 7595, 7601, 7599, 7591, 7597 -> 1;
-			default -> -1;
-		};
+	public static final int getCaracObjCria(final int idObjMod) {
+		switch (idObjMod) {
+			case 7606 : // Pesebre clásico
+			case 7612 : // Pesebre de arce
+			case 7619 : // Pesebre de bambú
+			case 7685 : // Pesebre de bambú dorado
+			case 7686 : // Pesebre de bambú mágico
+			case 7620 : // Pesebre de bambú oscuro
+			case 7621 : // Pesebre de bambú sagrado
+			case 7617 : // Pesebre de bombú
+			case 7613 : // Pesebre de carpe
+			case 7614 : // Pesebre de castaño
+			case 7616 : // Pesebre de cerezo silvestre
+			case 7610 : // Pesebre de ébano
+			case 7607 : // Pesebre de fresno
+			case 7683 : // Pesebre de madera ancestral
+			case 7687 : // Pesebre de madera de bambuto
+			case 7688 : // Pesebre de madera de bambuto sagrado
+			case 7689 : // Pesebre de madera de kokoko
+			case 7690 : // Pesebre de madera de tronkónido
+			case 7684 : // Pesebre de madera embrujada
+			case 7615 : // Pesebre de nogal
+			case 7618 : // Pesebre de olivioleta
+			case 7611 : // Pesebre de olmo
+			case 7608 : // Pesebre de roble
+			case 7609 : // Pesebre de tejo
+				return 6;
+			case 7628 : // Acariciador Clásico
+			case 7738 : // Acariciador de Pluma de Cuerbok
+			case 7739 : // Acariciador de Pluma de Kwak de Hielo
+			case 7740 : // Acariciador de Pluma de Kwak de Llama
+			case 7741 : // Acariciador de Pluma de Kwak de Viento
+			case 7735 : // Acariciador de Pluma de Pío Amarillo
+			case 7623 : // Acariciador de Pluma de Pío Azul
+			case 7734 : // Acariciador de Pluma de Pío Rojo
+			case 7736 : // Acariciador de Pluma de Pío Rosa
+			case 7733 : // Acariciador de Pluma de Pío Verde
+			case 7624 : // Acariciador de Pluma de Pío Violeta
+			case 7622 : // Acariciador de Pluma de Tofu
+			case 7737 : // Acariciador de Pluma de Tofu Maléfico
+			case 7746 : // Acariciador de Pluma de Tofu Real
+			case 7742 : // Acariciador de Pluma del Kwak de Tierra
+			case 7745 : // Acariciador de Pluma del Maestro Cuerbok
+			case 7743 : // Acariciador de Pluma del Último Pohoyo
+			case 7744 : // Acariciador de Pluma Puntiaguda de Kwak
+				return 5;
+			case 7625 : // Aporreadora clásica
+			case 7757 : // Aporreadora de arce
+			case 7762 : // Aporreadora de bambú
+			case 7770 : // Aporreadora de bambú dorado
+			case 7772 : // Aporreadora de bambú mágico
+			case 7765 : // Aporreadora de bambú oscuro
+			case 7766 : // Aporreadora de bambú sagrado
+			case 7763 : // Aporreadora de bombú
+			case 7758 : // Aporreadora de carpe
+			case 7626 : // Aporreadora de castaño
+			case 7761 : // Aporreadora de cerezo silvestre
+			case 7755 : // Aporreadora de Ébano
+			case 7759 : // Aporreadora de fresno
+			case 7767 : // Aporreadora de madera ancestral
+			case 7773 : // Aporreadora de madera de bambuto
+			case 7774 : // Aporreadora de madera de bambuto sagrado
+			case 7771 : // Aporreadora de madera de kokoko
+			case 7769 : // Aporreadora de madera de tronkónido
+			case 7768 : // Aporreadora de madera embrujada
+			case 7760 : // Aporreadora de nogal
+			case 7764 : // Aporreadora de olivioleta
+			case 7756 : // Aporreadora de olmo
+			case 7627 : // Aporreadora de roble
+			case 7629 : // Aporreadora de tejo
+				return 4;
+			case 7634 : // Dragonalgas clásico
+			case 7695 : // Dragonalgas de cuero de cochinillo
+			case 7694 : // Dragonalgas de cuero de dragocerdo
+			case 7693 : // Dragonalgas de cuero de jabalí
+			case 7699 : // Dragonalgas de cuero de jabalí de las llanuras
+			case 7635 : // Dragonalgas de cuero de jalatín blanco
+			case 7636 : // Dragonalgas de cuero de jalatín negro
+			case 7637 : // Dragonalgas de cuero de jalató
+			case 7692 : // Dragonalgas de cuero de Jalató Real
+			case 7691 : // Dragonalgas de cuero de jefe de guerra jalató
+			case 7700 : // Dragonalgas de cuero de Minotauroro
+			case 7697 : // Dragonalgas de cuero de Puerkazo
+			case 7698 : // Dragonalgas de cuero negro
+			case 7696 : // Dragonalgas de cuero violeta de bwork
+				return 3;
+			case 7798 : // Fulminadora clásica
+			case 7780 : // Fulminadora de arce
+			case 7787 : // Fulminadora de bambú
+			case 7793 : // Fulminadora de bambú dorado
+			case 7794 : // Fulminadora de bambú mágico
+			case 7788 : // Fulminadora de bambú oscuro
+			case 7789 : // Fulminadora de bambú sagrado
+			case 7785 : // Fulminadora de bombú
+			case 7781 : // Fulminadora de carpe
+			case 7782 : // Fulminadora de castaño
+			case 7784 : // Fulminadora de cerezo silvestre
+			case 7778 : // Fulminadora de ébano
+			case 7775 : // Fulminadora de fresno
+			case 7790 : // Fulminadora de madera ancestral
+			case 7795 : // Fulminadora de madera de bambuto
+			case 7796 : // Fulminadora de madera de bambuto sagrado
+			case 7797 : // Fulminadora de madera de kokoko
+			case 7792 : // Fulminadora de madera de tronkónido
+			case 7791 : // Fulminadora de madera embrujada
+			case 7783 : // Fulminadora de nogal
+			case 7786 : // Fulminadora de olivioleta
+			case 7779 : // Fulminadora de olmo
+			case 7776 : // Fulminadora de roble
+			case 7777 : // Fulminadora de tejo
+				return 2;
+			case 7605 : // Abrevadero Clásico
+			case 7592 : // Abrevadero de Arce
+			case 7602 : // Abrevadero de Bambú
+			case 7676 : // Abrevadero de Bambú Dorado
+			case 7677 : // Abrevadero de Bambú Mágico
+			case 7603 : // Abrevadero de Bambú Oscuro
+			case 7604 : // Abrevadero de Bambú Sagrado
+			case 7600 : // Abrevadero de Bombú
+			case 7594 : // Abrevadero de Carpe
+			case 7593 : // Abrevadero de Castaño
+			case 7596 : // Abrevadero de Cerezo Silvestre
+			case 7598 : // Abrevadero de Ébano
+			case 7590 : // Abrevadero de Fresno
+			case 7673 : // Abrevadero de Madera Ancestral
+			case 7678 : // Abrevadero de Madera de Bambuto
+			case 7679 : // Abrevadero de Madera de Bambuto Sagrado
+			case 7682 : // Abrevadero de Madera de Kokoko
+			case 7675 : // Abrevadero de Madera de Tronkónido
+			case 7674 : // Abrevadero de Madera Embrujada
+			case 7595 : // Abrevadero de Nogal
+			case 7601 : // Abrevadero de Olivioleta
+			case 7599 : // Abrevadero de Olmo
+			case 7591 : // Abrevadero de Roble
+			case 7597 : // Abrevadero de Tejo
+				return 1;
+		}
+		return -1;
 	}
 	
-	public static int getObjCriaPorMapa(final short mapa) {
-		return switch (mapa) {
-// abrevadero
-			case 8747, 8750 -> 7596;
-// fulminadoras
-			case 8745, 8752 -> 7784;
-// dragonalgas
-			case 8746, 8749 -> 7695;
-// aporreadora
-			case 8743, 8748 -> 7761;
-// acariciador
-			case 8744, 8751 -> 7741;
-// pesebre
-			case 8848, 8851 -> 7616;
-			default -> -1;
-		};
+	public static final int getObjCriaPorMapa(final short mapa) {
+		switch (mapa) {
+			case 8747 :// abrevadero
+			case 8750 :
+				return 7596;
+			case 8745 :// fulminadoras
+			case 8752 :
+				return 7784;
+			case 8746 :// dragonalgas
+			case 8749 :
+				return 7695;
+			case 8743 : // aporreadora
+			case 8748 :
+				return 7761;
+			case 8744 :// acariciador
+			case 8751 :
+				return 7741;
+			case 8848 :// pesebre
+			case 8851 :
+				return 7616;
+		}
+		return -1;
 	}
 	
 	// public static final int getKamasDonResetAlign(int level) {
@@ -5574,40 +6140,50 @@ public class Constantes {
 	// return false;
 	// }
 	// zd
-	public static int getDopeulPorNPC(final int npcID) {
-		// case :
-// break;
-//
-// case ://aniripsa
-// mobID = 166;
-// break;
-		int mobID = switch (npcID) {
-// yopuka
-			case 434 -> 167;
-// osamodas
-			case 436 -> 161;
-// xelor
-			case 437 -> 164;
-// zurcarak
-			case 438 -> 165;
-// ocra
-			case 439 -> 168;
-// anutrof
-			case 440 -> 162;
-// sram
-			case 441 -> 163;
-// sadida
-			case 442 -> 169;
-// sacrogito
-			case 443 -> 455;
-// feca
-			case 433 -> 160;
-			default -> 0;
-		};
+	public static final int getDopeulPorNPC(final int npcID) {
+		int mobID = 0;
+		switch (npcID) {
+			case 434 :// yopuka
+				mobID = 167;
+				break;
+			case 436 :// osamodas
+				mobID = 161;
+				break;
+			case 437 :// xelor
+				mobID = 164;
+				break;
+			case 438 :// zurcarak
+				mobID = 165;
+				break;
+			case 439 :// ocra
+				mobID = 168;
+				break;
+			case 440 :// anutrof
+				mobID = 162;
+				break;
+			case 441 :// sram
+				mobID = 163;
+				break;
+			case 442 :// sadida
+				mobID = 169;
+				break;
+			case 443 :// sacrogito
+				mobID = 455;
+				break;
+			case 433 :// feca
+				mobID = 160;
+				break;
+			// case :
+			// break;
+			//
+			// case ://aniripsa
+			// mobID = 166;
+			// break;
+		}
 		return mobID;
 	}
 	
-	public static int getExpForjamaguear(final float pesoRuna, final int nivelObjeto) {
+	public static final int getExpForjamaguear(final float pesoRuna, final int nivelObjeto) {
 		if (nivelObjeto < 25) {
 			if (pesoRuna < 3) {
 				return 1;
@@ -5719,204 +6295,334 @@ public class Constantes {
 		}
 	}
 	
-	public static int getStatPositivoDeNegativo(final int statID) {
-		return switch (statID) {
-// suerte
-			case STAT_MENOS_SUERTE -> STAT_MAS_SUERTE;
-// vitalidad
-			case STAT_MENOS_VITALIDAD -> STAT_MAS_VITALIDAD;
-// agilidad
-			case STAT_MENOS_AGILIDAD -> STAT_MAS_AGILIDAD;
-// inteligencia
-			case STAT_MENOS_INTELIGENCIA -> STAT_MAS_INTELIGENCIA;
-// sabiduria
-			case STAT_MENOS_SABIDURIA -> STAT_MAS_SABIDURIA;
-// fuerza
-			case STAT_MENOS_FUERZA -> STAT_MAS_FUERZA;
-// alcance
-			case STAT_MENOS_ALCANCE -> STAT_MAS_ALCANCE;
-// iniciativa
-			case STAT_MENOS_INICIATIVA -> STAT_MAS_INICIATIVA;
-// prospeccion
-			case STAT_MENOS_PROSPECCION -> STAT_MAS_PROSPECCION;
-// curaciones
-			case STAT_MENOS_CURAS -> STAT_MAS_CURAS;
-// daños
-			case STAT_MENOS_DAÑOS -> STAT_MAS_DAÑOS;
-// % daños
-			case STAT_MENOS_PORC_DAÑOS -> STAT_MAS_PORC_DAÑOS;
-// golpes criticos
-			case STAT_MENOS_GOLPES_CRITICOS -> STAT_MAS_GOLPES_CRITICOS;
-// tierra
-			case STAT_MENOS_RES_PORC_TIERRA -> STAT_MAS_RES_PORC_TIERRA;
-// agua
-			case STAT_MENOS_RES_PORC_AGUA -> STAT_MAS_RES_PORC_AGUA;
-// aire
-			case STAT_MENOS_RES_PORC_AIRE -> STAT_MAS_RES_PORC_AIRE;
-// fuego
-			case STAT_MENOS_RES_PORC_FUEGO -> STAT_MAS_RES_PORC_FUEGO;
-// neutral
-			case STAT_MENOS_RES_PORC_NEUTRAL -> STAT_MAS_RES_PORC_NEUTRAL;
-// tierra
-			case STAT_MENOS_RES_FIJA_TIERRA -> STAT_MAS_RES_FIJA_TIERRA;
-// agua
-			case STAT_MENOS_RES_FIJA_AGUA -> STAT_MAS_RES_FIJA_AGUA;
-// aire
-			case STAT_MENOS_RES_FIJA_AIRE -> STAT_MAS_RES_FIJA_AIRE;
-// fuego
-			case STAT_MENOS_RES_FIJA_FUEGO -> STAT_MAS_RES_FIJA_FUEGO;
-// neutral
-			case STAT_MENOS_RES_FIJA_NEUTRAL -> STAT_MAS_RES_FIJA_NEUTRAL;
-			case STAT_MENOS_DAÑOS_DE_AGUA -> STAT_MAS_DAÑOS_DE_AGUA;
-			case STAT_MENOS_DAÑOS_DE_AIRE -> STAT_MAS_DAÑOS_DE_AIRE;
-			case STAT_MENOS_DAÑOS_DE_FUEGO -> STAT_MAS_DAÑOS_DE_FUEGO;
-			case STAT_MENOS_DAÑOS_DE_TIERRA -> STAT_MAS_DAÑOS_DE_TIERRA;
-			case STAT_MENOS_DAÑOS_DE_NEUTRAL -> STAT_MAS_DAÑOS_DE_NEUTRAL;
-			case STAT_MENOS_DAÑOS_EMPUJE -> STAT_MAS_DAÑOS_EMPUJE;
-			case STAT_MENOS_REDUCCION_CRITICOS -> STAT_MAS_REDUCCION_CRITICOS;
-			case STAT_MENOS_DAÑOS_CRITICOS -> STAT_MAS_DAÑOS_CRITICOS;
-			case STAT_MENOS_REDUCCION_EMPUJE -> STAT_MAS_REDUCCION_EMPUJE;
-			case STAT_MENOS_HUIDA -> STAT_MAS_HUIDA;
-			case STAT_MENOS_PLACAJE -> STAT_MAS_PLACAJE;
-			case STAT_MENOS_RETIRO_PM -> STAT_MAS_RETIRO_PM;
-			case STAT_MENOS_RETIRO_PA -> STAT_MAS_RETIRO_PA;
-			default -> statID;
-		};
+	public static final int getStatPositivoDeNegativo(final int statID) {
+		switch (statID) {
+			case STAT_MENOS_SUERTE :// suerte
+				return STAT_MAS_SUERTE;
+			case STAT_MENOS_VITALIDAD :// vitalidad
+				return STAT_MAS_VITALIDAD;
+			case STAT_MENOS_AGILIDAD :// agilidad
+				return STAT_MAS_AGILIDAD;
+			case STAT_MENOS_INTELIGENCIA :// inteligencia
+				return STAT_MAS_INTELIGENCIA;
+			case STAT_MENOS_SABIDURIA :// sabiduria
+				return STAT_MAS_SABIDURIA;
+			case STAT_MENOS_FUERZA :// fuerza
+				return STAT_MAS_FUERZA;
+			case STAT_MENOS_ALCANCE :// alcance
+				return STAT_MAS_ALCANCE;
+			case STAT_MENOS_INICIATIVA :// iniciativa
+				return STAT_MAS_INICIATIVA;
+			case STAT_MENOS_PROSPECCION :// prospeccion
+				return STAT_MAS_PROSPECCION;
+			case STAT_MENOS_CURAS :// curaciones
+				return STAT_MAS_CURAS;
+			case STAT_MENOS_DAÑOS :// daños
+				return STAT_MAS_DAÑOS;
+			case STAT_MENOS_PORC_DAÑOS :// % daños
+				return STAT_MAS_PORC_DAÑOS;
+			case STAT_MENOS_GOLPES_CRITICOS :// golpes criticos
+				return STAT_MAS_GOLPES_CRITICOS;
+			case STAT_MENOS_RES_PORC_TIERRA :// tierra
+				return STAT_MAS_RES_PORC_TIERRA;
+			case STAT_MENOS_RES_PORC_AGUA :// agua
+				return STAT_MAS_RES_PORC_AGUA;
+			case STAT_MENOS_RES_PORC_AIRE :// aire
+				return STAT_MAS_RES_PORC_AIRE;
+			case STAT_MENOS_RES_PORC_FUEGO :// fuego
+				return STAT_MAS_RES_PORC_FUEGO;
+			case STAT_MENOS_RES_PORC_NEUTRAL :// neutral
+				return STAT_MAS_RES_PORC_NEUTRAL;
+			case STAT_MENOS_RES_FIJA_TIERRA :// tierra
+				return STAT_MAS_RES_FIJA_TIERRA;
+			case STAT_MENOS_RES_FIJA_AGUA :// agua
+				return STAT_MAS_RES_FIJA_AGUA;
+			case STAT_MENOS_RES_FIJA_AIRE :// aire
+				return STAT_MAS_RES_FIJA_AIRE;
+			case STAT_MENOS_RES_FIJA_FUEGO :// fuego
+				return STAT_MAS_RES_FIJA_FUEGO;
+			case STAT_MENOS_RES_FIJA_NEUTRAL :// neutral
+				return STAT_MAS_RES_FIJA_NEUTRAL;
+			case STAT_MENOS_DAÑOS_DE_AGUA :
+				return STAT_MAS_DAÑOS_DE_AGUA;
+			case STAT_MENOS_DAÑOS_DE_AIRE :
+				return STAT_MAS_DAÑOS_DE_AIRE;
+			case STAT_MENOS_DAÑOS_DE_FUEGO :
+				return STAT_MAS_DAÑOS_DE_FUEGO;
+			case STAT_MENOS_DAÑOS_DE_TIERRA :
+				return STAT_MAS_DAÑOS_DE_TIERRA;
+			case STAT_MENOS_DAÑOS_DE_NEUTRAL :
+				return STAT_MAS_DAÑOS_DE_NEUTRAL;
+			case STAT_MENOS_DAÑOS_EMPUJE :
+				return STAT_MAS_DAÑOS_EMPUJE;
+			case STAT_MENOS_REDUCCION_CRITICOS :
+				return STAT_MAS_REDUCCION_CRITICOS;
+			case STAT_MENOS_DAÑOS_CRITICOS :
+				return STAT_MAS_DAÑOS_CRITICOS;
+			case STAT_MENOS_REDUCCION_EMPUJE :
+				return STAT_MAS_REDUCCION_EMPUJE;
+			case STAT_MENOS_HUIDA :
+				return STAT_MAS_HUIDA;
+			case STAT_MENOS_PLACAJE :
+				return STAT_MAS_PLACAJE;
+			case STAT_MENOS_RETIRO_PM :
+				return STAT_MAS_RETIRO_PM;
+			case STAT_MENOS_RETIRO_PA :
+				return STAT_MAS_RETIRO_PA;
+		}
+		return statID;
 	}
 	
-	public static int getStatOpuesto(final int statID) {
-		return switch (statID) {
-			case STAT_MENOS_PA -> STAT_MAS_PA;
-			case STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA -> STAT_MENOS_DAÑOS_REDUCIDOS;
-			case STAT_MAS_PA -> STAT_MENOS_PA;
-			case STAT_MAS_DAÑOS -> STAT_MENOS_DAÑOS;
-			case STAT_MAS_GOLPES_CRITICOS -> STAT_MENOS_GOLPES_CRITICOS;
-			case STAT_MENOS_ALCANCE -> STAT_MAS_ALCANCE;
-			case STAT_MAS_ALCANCE -> STAT_MENOS_ALCANCE;
-			case STAT_MAS_FUERZA -> STAT_MENOS_FUERZA;
-			case STAT_MAS_AGILIDAD -> STAT_MENOS_AGILIDAD;
-			case STAT_MAS_SUERTE -> STAT_MENOS_SUERTE;
-			case STAT_MAS_SABIDURIA -> STAT_MENOS_SABIDURIA;
-			case STAT_MAS_VITALIDAD -> STAT_MENOS_VITALIDAD;
-			case STAT_MAS_INTELIGENCIA -> STAT_MENOS_INTELIGENCIA;
-			case STAT_MENOS_PM -> STAT_MAS_PM;
-			case STAT_MAS_PM -> STAT_MENOS_PM;
-			case STAT_MAS_PORC_DAÑOS -> STAT_MENOS_PORC_DAÑOS;
-			case STAT_MENOS_DAÑOS -> STAT_MAS_DAÑOS;
-			case STAT_MENOS_SUERTE -> STAT_MAS_SUERTE;
-			case STAT_MENOS_VITALIDAD -> STAT_MAS_VITALIDAD;
-			case STAT_MENOS_AGILIDAD -> STAT_MAS_AGILIDAD;
-			case STAT_MENOS_INTELIGENCIA -> STAT_MAS_INTELIGENCIA;
-			case STAT_MENOS_SABIDURIA -> STAT_MAS_SABIDURIA;
-			case STAT_MENOS_FUERZA -> STAT_MAS_FUERZA;
-			case STAT_MAS_PODS -> STAT_MENOS_PODS;
-			case STAT_MENOS_PODS -> STAT_MAS_PODS;
-			case STAT_MAS_ESQUIVA_PERD_PA -> STAT_MENOS_ESQUIVA_PERD_PA;
-			case STAT_MAS_ESQUIVA_PERD_PM -> STAT_MENOS_ESQUIVA_PERD_PM;
-			case STAT_MENOS_ESQUIVA_PERD_PA -> STAT_MAS_ESQUIVA_PERD_PA;
-			case STAT_MENOS_ESQUIVA_PERD_PM -> STAT_MAS_ESQUIVA_PERD_PM;
-			case STAT_MENOS_DAÑOS_REDUCIDOS -> STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA;
-			case STAT_MENOS_GOLPES_CRITICOS -> STAT_MAS_GOLPES_CRITICOS;
-			case STAT_MAS_INICIATIVA -> STAT_MENOS_INICIATIVA;
-			case STAT_MENOS_INICIATIVA -> STAT_MAS_INICIATIVA;
-			case STAT_MAS_PROSPECCION -> STAT_MENOS_PROSPECCION;
-			case STAT_MENOS_PROSPECCION -> STAT_MAS_PROSPECCION;
-			case STAT_MAS_CURAS -> STAT_MENOS_CURAS;
-			case STAT_MENOS_CURAS -> STAT_MAS_CURAS;
-			case STAT_MENOS_PORC_DAÑOS -> STAT_MAS_PORC_DAÑOS;
-			case STAT_MAS_RES_PORC_TIERRA -> STAT_MENOS_RES_PORC_TIERRA;
-			case STAT_MAS_RES_PORC_AGUA -> STAT_MENOS_RES_PORC_AGUA;
-			case STAT_MAS_RES_PORC_AIRE -> STAT_MENOS_RES_PORC_AIRE;
-			case STAT_MAS_RES_PORC_FUEGO -> STAT_MENOS_RES_PORC_FUEGO;
-			case STAT_MAS_RES_PORC_NEUTRAL -> STAT_MENOS_RES_PORC_NEUTRAL;
-			case STAT_MENOS_RES_PORC_TIERRA -> STAT_MAS_RES_PORC_TIERRA;
-			case STAT_MENOS_RES_PORC_AGUA -> STAT_MAS_RES_PORC_AGUA;
-			case STAT_MENOS_RES_PORC_AIRE -> STAT_MAS_RES_PORC_AIRE;
-			case STAT_MENOS_RES_PORC_FUEGO -> STAT_MAS_RES_PORC_FUEGO;
-			case STAT_MENOS_RES_PORC_NEUTRAL -> STAT_MAS_RES_PORC_NEUTRAL;
-			case STAT_MAS_RES_FIJA_TIERRA -> STAT_MENOS_RES_FIJA_TIERRA;
-			case STAT_MAS_RES_FIJA_AGUA -> STAT_MENOS_RES_FIJA_AGUA;
-			case STAT_MAS_RES_FIJA_AIRE -> STAT_MENOS_RES_FIJA_AIRE;
-			case STAT_MAS_RES_FIJA_FUEGO -> STAT_MENOS_RES_FIJA_FUEGO;
-			case STAT_MAS_RES_FIJA_NEUTRAL -> STAT_MENOS_RES_FIJA_NEUTRAL;
-			case STAT_MENOS_RES_FIJA_TIERRA -> STAT_MAS_RES_FIJA_TIERRA;
-			case STAT_MENOS_RES_FIJA_AGUA -> STAT_MAS_RES_FIJA_AGUA;
-			case STAT_MENOS_RES_FIJA_AIRE -> STAT_MAS_RES_FIJA_AIRE;
-			case STAT_MENOS_RES_FIJA_FUEGO -> STAT_MAS_RES_FIJA_FUEGO;
-			case STAT_MENOS_RES_FIJA_NEUTRAL -> STAT_MAS_RES_FIJA_NEUTRAL;
-			case STAT_MAS_RES_PORC_PVP_TIERRA -> STAT_MENOS_RES_PORC_PVP_TIERRA;
-			case STAT_MAS_RES_PORC_PVP_AGUA -> STAT_MENOS_RES_PORC_PVP_AGUA;
-			case STAT_MAS_RES_PORC_PVP_AIRE -> STAT_MENOS_RES_PORC_PVP_AIRE;
-			case STAT_MAS_RES_PORC_PVP_FUEGO -> STAT_MENOS_RES_PORC_PVP_FUEGO;
-			case STAT_MAS_RES_PORC_PVP_NEUTRAL -> STAT_MENOS_RES_PORC_PVP_NEUTRAL;
-			case STAT_MENOS_RES_PORC_PVP_TIERRA -> STAT_MAS_RES_PORC_PVP_TIERRA;
-			case STAT_MENOS_RES_PORC_PVP_AGUA -> STAT_MAS_RES_PORC_PVP_AGUA;
-			case STAT_MENOS_RES_PORC_PVP_AIRE -> STAT_MAS_RES_PORC_PVP_AIRE;
-			case STAT_MENOS_RES_PORC_PVP_FUEGO -> STAT_MAS_RES_PORC_PVP_FUEGO;
-			case STAT_MENOS_RES_PORC_PVP_NEUTRAL -> STAT_MAS_RES_PORC_PVP_NEUTRAL;
-			case STAT_MAS_HUIDA -> STAT_MENOS_HUIDA;
-			case STAT_MENOS_HUIDA -> STAT_MAS_HUIDA;
-			case STAT_MAS_PLACAJE -> STAT_MENOS_PLACAJE;
-			case STAT_MENOS_PLACAJE -> STAT_MAS_PLACAJE;
-			case STAT_MAS_RETIRO_PM -> STAT_MENOS_RETIRO_PM;
-			case STAT_MENOS_RETIRO_PM -> STAT_MAS_RETIRO_PM;
-			case STAT_MAS_RETIRO_PA -> STAT_MENOS_RETIRO_PA;
-			case STAT_MENOS_RETIRO_PA -> STAT_MAS_RETIRO_PA;
-			case STAT_MAS_DAÑOS_DE_AGUA -> STAT_MENOS_DAÑOS_DE_AGUA;
-			case STAT_MAS_DAÑOS_DE_AIRE -> STAT_MENOS_DAÑOS_DE_AIRE;
-			case STAT_MAS_DAÑOS_DE_FUEGO -> STAT_MENOS_DAÑOS_DE_FUEGO;
-			case STAT_MAS_DAÑOS_DE_TIERRA -> STAT_MENOS_DAÑOS_DE_TIERRA;
-			case STAT_MAS_DAÑOS_DE_NEUTRAL -> STAT_MENOS_DAÑOS_DE_NEUTRAL;
-			case STAT_MAS_DAÑOS_EMPUJE -> STAT_MENOS_DAÑOS_EMPUJE;
-			case STAT_MAS_REDUCCION_CRITICOS -> STAT_MENOS_REDUCCION_CRITICOS;
-			case STAT_MAS_DAÑOS_CRITICOS -> STAT_MENOS_DAÑOS_CRITICOS;
-			case STAT_MAS_REDUCCION_EMPUJE -> STAT_MENOS_REDUCCION_EMPUJE;
-			case STAT_MENOS_DAÑOS_DE_AGUA -> STAT_MAS_DAÑOS_DE_AGUA;
-			case STAT_MENOS_DAÑOS_DE_AIRE -> STAT_MAS_DAÑOS_DE_AIRE;
-			case STAT_MENOS_DAÑOS_DE_FUEGO -> STAT_MAS_DAÑOS_DE_FUEGO;
-			case STAT_MENOS_DAÑOS_DE_TIERRA -> STAT_MAS_DAÑOS_DE_TIERRA;
-			case STAT_MENOS_DAÑOS_DE_NEUTRAL -> STAT_MAS_DAÑOS_DE_NEUTRAL;
-			case STAT_MENOS_DAÑOS_EMPUJE -> STAT_MAS_DAÑOS_EMPUJE;
-			case STAT_MENOS_REDUCCION_CRITICOS -> STAT_MAS_REDUCCION_CRITICOS;
-			case STAT_MENOS_DAÑOS_CRITICOS -> STAT_MAS_DAÑOS_CRITICOS;
-			case STAT_MENOS_REDUCCION_EMPUJE -> STAT_MAS_REDUCCION_EMPUJE;
-			default -> statID;
-		};
+	public static final int getStatOpuesto(final int statID) {
+		switch (statID) {
+			case STAT_MENOS_PA :
+				return STAT_MAS_PA;
+			case STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA :
+				return STAT_MENOS_DAÑOS_REDUCIDOS;
+			case STAT_MAS_PA :
+				return STAT_MENOS_PA;
+			case STAT_MAS_DAÑOS :
+				return STAT_MENOS_DAÑOS;
+			case STAT_MAS_GOLPES_CRITICOS :
+				return STAT_MENOS_GOLPES_CRITICOS;
+			case STAT_MENOS_ALCANCE :
+				return STAT_MAS_ALCANCE;
+			case STAT_MAS_ALCANCE :
+				return STAT_MENOS_ALCANCE;
+			case STAT_MAS_FUERZA :
+				return STAT_MENOS_FUERZA;
+			case STAT_MAS_AGILIDAD :
+				return STAT_MENOS_AGILIDAD;
+			case STAT_MAS_SUERTE :
+				return STAT_MENOS_SUERTE;
+			case STAT_MAS_SABIDURIA :
+				return STAT_MENOS_SABIDURIA;
+			case STAT_MAS_VITALIDAD :
+				return STAT_MENOS_VITALIDAD;
+			case STAT_MAS_INTELIGENCIA :
+				return STAT_MENOS_INTELIGENCIA;
+			case STAT_MENOS_PM :
+				return STAT_MAS_PM;
+			case STAT_MAS_PM :
+				return STAT_MENOS_PM;
+			case STAT_MAS_PORC_DAÑOS :
+				return STAT_MENOS_PORC_DAÑOS;
+			case STAT_MENOS_DAÑOS :
+				return STAT_MAS_DAÑOS;
+			case STAT_MENOS_SUERTE :
+				return STAT_MAS_SUERTE;
+			case STAT_MENOS_VITALIDAD :
+				return STAT_MAS_VITALIDAD;
+			case STAT_MENOS_AGILIDAD :
+				return STAT_MAS_AGILIDAD;
+			case STAT_MENOS_INTELIGENCIA :
+				return STAT_MAS_INTELIGENCIA;
+			case STAT_MENOS_SABIDURIA :
+				return STAT_MAS_SABIDURIA;
+			case STAT_MENOS_FUERZA :
+				return STAT_MAS_FUERZA;
+			case STAT_MAS_PODS :
+				return STAT_MENOS_PODS;
+			case STAT_MENOS_PODS :
+				return STAT_MAS_PODS;
+			case STAT_MAS_ESQUIVA_PERD_PA :
+				return STAT_MENOS_ESQUIVA_PERD_PA;
+			case STAT_MAS_ESQUIVA_PERD_PM :
+				return STAT_MENOS_ESQUIVA_PERD_PM;
+			case STAT_MENOS_ESQUIVA_PERD_PA :
+				return STAT_MAS_ESQUIVA_PERD_PA;
+			case STAT_MENOS_ESQUIVA_PERD_PM :
+				return STAT_MAS_ESQUIVA_PERD_PM;
+			case STAT_MENOS_DAÑOS_REDUCIDOS :
+				return STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA;
+			case STAT_MENOS_GOLPES_CRITICOS :
+				return STAT_MAS_GOLPES_CRITICOS;
+			case STAT_MAS_INICIATIVA :
+				return STAT_MENOS_INICIATIVA;
+			case STAT_MENOS_INICIATIVA :
+				return STAT_MAS_INICIATIVA;
+			case STAT_MAS_PROSPECCION :
+				return STAT_MENOS_PROSPECCION;
+			case STAT_MENOS_PROSPECCION :
+				return STAT_MAS_PROSPECCION;
+			case STAT_MAS_CURAS :
+				return STAT_MENOS_CURAS;
+			case STAT_MENOS_CURAS :
+				return STAT_MAS_CURAS;
+			case STAT_MENOS_PORC_DAÑOS :
+				return STAT_MAS_PORC_DAÑOS;
+			case STAT_MAS_RES_PORC_TIERRA :
+				return STAT_MENOS_RES_PORC_TIERRA;
+			case STAT_MAS_RES_PORC_AGUA :
+				return STAT_MENOS_RES_PORC_AGUA;
+			case STAT_MAS_RES_PORC_AIRE :
+				return STAT_MENOS_RES_PORC_AIRE;
+			case STAT_MAS_RES_PORC_FUEGO :
+				return STAT_MENOS_RES_PORC_FUEGO;
+			case STAT_MAS_RES_PORC_NEUTRAL :
+				return STAT_MENOS_RES_PORC_NEUTRAL;
+			case STAT_MENOS_RES_PORC_TIERRA :
+				return STAT_MAS_RES_PORC_TIERRA;
+			case STAT_MENOS_RES_PORC_AGUA :
+				return STAT_MAS_RES_PORC_AGUA;
+			case STAT_MENOS_RES_PORC_AIRE :
+				return STAT_MAS_RES_PORC_AIRE;
+			case STAT_MENOS_RES_PORC_FUEGO :
+				return STAT_MAS_RES_PORC_FUEGO;
+			case STAT_MENOS_RES_PORC_NEUTRAL :
+				return STAT_MAS_RES_PORC_NEUTRAL;
+			case STAT_MAS_RES_FIJA_TIERRA :
+				return STAT_MENOS_RES_FIJA_TIERRA;
+			case STAT_MAS_RES_FIJA_AGUA :
+				return STAT_MENOS_RES_FIJA_AGUA;
+			case STAT_MAS_RES_FIJA_AIRE :
+				return STAT_MENOS_RES_FIJA_AIRE;
+			case STAT_MAS_RES_FIJA_FUEGO :
+				return STAT_MENOS_RES_FIJA_FUEGO;
+			case STAT_MAS_RES_FIJA_NEUTRAL :
+				return STAT_MENOS_RES_FIJA_NEUTRAL;
+			case STAT_MENOS_RES_FIJA_TIERRA :
+				return STAT_MAS_RES_FIJA_TIERRA;
+			case STAT_MENOS_RES_FIJA_AGUA :
+				return STAT_MAS_RES_FIJA_AGUA;
+			case STAT_MENOS_RES_FIJA_AIRE :
+				return STAT_MAS_RES_FIJA_AIRE;
+			case STAT_MENOS_RES_FIJA_FUEGO :
+				return STAT_MAS_RES_FIJA_FUEGO;
+			case STAT_MENOS_RES_FIJA_NEUTRAL :
+				return STAT_MAS_RES_FIJA_NEUTRAL;
+			case STAT_MAS_RES_PORC_PVP_TIERRA :
+				return STAT_MENOS_RES_PORC_PVP_TIERRA;
+			case STAT_MAS_RES_PORC_PVP_AGUA :
+				return STAT_MENOS_RES_PORC_PVP_AGUA;
+			case STAT_MAS_RES_PORC_PVP_AIRE :
+				return STAT_MENOS_RES_PORC_PVP_AIRE;
+			case STAT_MAS_RES_PORC_PVP_FUEGO :
+				return STAT_MENOS_RES_PORC_PVP_FUEGO;
+			case STAT_MAS_RES_PORC_PVP_NEUTRAL :
+				return STAT_MENOS_RES_PORC_PVP_NEUTRAL;
+			case STAT_MENOS_RES_PORC_PVP_TIERRA :
+				return STAT_MAS_RES_PORC_PVP_TIERRA;
+			case STAT_MENOS_RES_PORC_PVP_AGUA :
+				return STAT_MAS_RES_PORC_PVP_AGUA;
+			case STAT_MENOS_RES_PORC_PVP_AIRE :
+				return STAT_MAS_RES_PORC_PVP_AIRE;
+			case STAT_MENOS_RES_PORC_PVP_FUEGO :
+				return STAT_MAS_RES_PORC_PVP_FUEGO;
+			case STAT_MENOS_RES_PORC_PVP_NEUTRAL :
+				return STAT_MAS_RES_PORC_PVP_NEUTRAL;
+			case STAT_MAS_HUIDA :
+				return STAT_MENOS_HUIDA;
+			case STAT_MENOS_HUIDA :
+				return STAT_MAS_HUIDA;
+			case STAT_MAS_PLACAJE :
+				return STAT_MENOS_PLACAJE;
+			case STAT_MENOS_PLACAJE :
+				return STAT_MAS_PLACAJE;
+			case STAT_MAS_RETIRO_PM :
+				return STAT_MENOS_RETIRO_PM;
+			case STAT_MENOS_RETIRO_PM :
+				return STAT_MAS_RETIRO_PM;
+			case STAT_MAS_RETIRO_PA :
+				return STAT_MENOS_RETIRO_PA;
+			case STAT_MENOS_RETIRO_PA :
+				return STAT_MAS_RETIRO_PA;
+			case STAT_MAS_DAÑOS_DE_AGUA :
+				return STAT_MENOS_DAÑOS_DE_AGUA;
+			case STAT_MAS_DAÑOS_DE_AIRE :
+				return STAT_MENOS_DAÑOS_DE_AIRE;
+			case STAT_MAS_DAÑOS_DE_FUEGO :
+				return STAT_MENOS_DAÑOS_DE_FUEGO;
+			case STAT_MAS_DAÑOS_DE_TIERRA :
+				return STAT_MENOS_DAÑOS_DE_TIERRA;
+			case STAT_MAS_DAÑOS_DE_NEUTRAL :
+				return STAT_MENOS_DAÑOS_DE_NEUTRAL;
+			case STAT_MAS_DAÑOS_EMPUJE :
+				return STAT_MENOS_DAÑOS_EMPUJE;
+			case STAT_MAS_REDUCCION_CRITICOS :
+				return STAT_MENOS_REDUCCION_CRITICOS;
+			case STAT_MAS_DAÑOS_CRITICOS :
+				return STAT_MENOS_DAÑOS_CRITICOS;
+			case STAT_MAS_REDUCCION_EMPUJE :
+				return STAT_MENOS_REDUCCION_EMPUJE;
+			case STAT_MENOS_DAÑOS_DE_AGUA :
+				return STAT_MAS_DAÑOS_DE_AGUA;
+			case STAT_MENOS_DAÑOS_DE_AIRE :
+				return STAT_MAS_DAÑOS_DE_AIRE;
+			case STAT_MENOS_DAÑOS_DE_FUEGO :
+				return STAT_MAS_DAÑOS_DE_FUEGO;
+			case STAT_MENOS_DAÑOS_DE_TIERRA :
+				return STAT_MAS_DAÑOS_DE_TIERRA;
+			case STAT_MENOS_DAÑOS_DE_NEUTRAL :
+				return STAT_MAS_DAÑOS_DE_NEUTRAL;
+			case STAT_MENOS_DAÑOS_EMPUJE :
+				return STAT_MAS_DAÑOS_EMPUJE;
+			case STAT_MENOS_REDUCCION_CRITICOS :
+				return STAT_MAS_REDUCCION_CRITICOS;
+			case STAT_MENOS_DAÑOS_CRITICOS :
+				return STAT_MAS_DAÑOS_CRITICOS;
+			case STAT_MENOS_REDUCCION_EMPUJE :
+				return STAT_MAS_REDUCCION_EMPUJE;
+		}
+		return statID;
 	}
 	
-	public static int[] getPotenciaRunaPorStat(int statID) {
+	public static final int[] getPotenciaRunaPorStat(int statID) {
 		int[] r = new int[3];
 		int i = 0;
 		switch (statID) {
-// Vitalidad
-			case STAT_MAS_VITALIDAD -> {
+			case STAT_MAS_VITALIDAD :// Vitalidad
 				r[i++] = 3;
 				r[i++] = 10;
 				r[i++] = 30;
-			}
-// Pod
-			case STAT_MAS_INICIATIVA, STAT_MAS_PODS -> {
+				break;
+			case STAT_MAS_INICIATIVA :// iniciativa
+			case STAT_MAS_PODS :// Pod
 				r[i++] = 10;
 				r[i++] = 30;
 				r[i++] = 100;
-			}
-// resistencia % neutral
-			case STAT_MAS_DAÑOS, STAT_MAS_CURAS, STAT_MAS_GOLPES_CRITICOS, STAT_MAS_CRIATURAS_INVO, STAT_MAS_ALCANCE, STAT_MAS_PA, STAT_MAS_PM, STAT_MAS_RES_FIJA_TIERRA, STAT_MAS_RES_FIJA_AGUA, STAT_MAS_RES_FIJA_AIRE, STAT_MAS_RES_FIJA_FUEGO, STAT_MAS_RES_FIJA_NEUTRAL, STAT_REENVIA_DAÑOS, STAT_MAS_RES_PORC_TIERRA, STAT_MAS_RES_PORC_AGUA, STAT_MAS_RES_PORC_AIRE, STAT_MAS_RES_PORC_FUEGO, STAT_MAS_RES_PORC_NEUTRAL -> r[i++] = 1;
-			case STAT_MAS_DAÑOS_TRAMPA, STAT_MAS_PROSPECCION -> {
+				break;
+			case STAT_MAS_DAÑOS :// daños
+			case STAT_MAS_CURAS :// curas
+			case STAT_MAS_GOLPES_CRITICOS :// Criticos
+			case STAT_MAS_CRIATURAS_INVO :
+			case STAT_MAS_ALCANCE :
+			case STAT_MAS_PA :
+			case STAT_MAS_PM :
+			case STAT_MAS_RES_FIJA_TIERRA :// resistencia tierra
+			case STAT_MAS_RES_FIJA_AGUA :// resistencia agua
+			case STAT_MAS_RES_FIJA_AIRE :// resistencia aire
+			case STAT_MAS_RES_FIJA_FUEGO :// resistencia fuego
+			case STAT_MAS_RES_FIJA_NEUTRAL :// resistencia neutral
+			case STAT_REENVIA_DAÑOS :// daños reenvio
+			case STAT_MAS_RES_PORC_TIERRA :// resistencia % tierra
+			case STAT_MAS_RES_PORC_AGUA :// resistencia % agua
+			case STAT_MAS_RES_PORC_AIRE :// resistencia % aire
+			case STAT_MAS_RES_PORC_FUEGO :// resistencia % fuego
+			case STAT_MAS_RES_PORC_NEUTRAL :// resistencia % neutral
+				r[i++] = 1;
+				break;
+			case STAT_MAS_DAÑOS_TRAMPA :
+			case STAT_MAS_PROSPECCION :
 				r[i++] = 1;
 				r[i++] = 3;
-			}
-// Sabiduria
-			case STAT_MAS_PORC_DAÑOS, STAT_MAS_PORC_DAÑOS_TRAMPA, STAT_MAS_FUERZA, STAT_MAS_AGILIDAD, STAT_MAS_SUERTE, STAT_MAS_INTELIGENCIA, STAT_MAS_SABIDURIA -> {
+				break;
+			case STAT_MAS_PORC_DAÑOS :// daños %
+			case STAT_MAS_PORC_DAÑOS_TRAMPA :// trampa %
+			case STAT_MAS_FUERZA :// Fuerza
+			case STAT_MAS_AGILIDAD :// Agi
+			case STAT_MAS_SUERTE :// suerte
+			case STAT_MAS_INTELIGENCIA :// Inteligencia
+			case STAT_MAS_SABIDURIA :// Sabiduria
 				r[i++] = 1;
 				r[i++] = 3;
 				r[i++] = 10;
-			}
+				break;
 		}
 		return r;
 	}
 	
-	public static int getTipoRuna(final int statID, float pesoTotal) {
+	public static final int getTipoRuna(final int statID, float pesoTotal) {
 		if (pesoTotal <= 0) {
 			return 0;
 		}
@@ -5948,32 +6654,42 @@ public class Constantes {
 		return tipo;
 	}
 	
-	public static float getPorcCrearRuna(final int statID, float peso, int tipo, int nivel) {
+	public static final float getPorcCrearRuna(final int statID, float peso, int tipo, int nivel) {
 		if (peso <= 0) {
 			return 0;
 		}
 		int[] v = getPotenciaRunaPorStat(statID);
-		int basico = switch (tipo) {
-			case 1 -> v[0];
-			case 2 -> (2 * v[0]) + (v[1]);
-			case 3 -> (4 * v[0]) + (2 * v[1]) + (v[2]);
-			default -> 0;
-		};
+		int basico = 0;
+		switch (tipo) {
+			case 1 :
+				basico = v[0];
+				break;
+			case 2 :
+				basico = (2 * v[0]) + (v[1]);
+				break;
+			case 3 :
+				basico = (4 * v[0]) + (2 * v[1]) + (v[2]);
+				break;
+		}
 		int maximo = Math.round((basico / (2 / 3f)) / 0.9f);
 		int minimo = Math.round((basico / (2 / 3f)) / 1.1f);
 		float pesoIndiv = getPesoStat(statID);
 		int cantStat = (int) (peso / pesoIndiv);
 		float porc = 0;
 		switch (statID) {
-// invocaciones
-			case STAT_MAS_CRIATURAS_INVO -> porc = (float) Math.min(75, (Math.pow(nivel, 2) / (Math.pow(getPesoStat(statID), (5 / 4f)))));
-// alcance
-			case STAT_MAS_ALCANCE -> porc = (float) Math.min(70, (Math.pow(nivel, 2) / (Math.pow(getPesoStat(statID), (5 / 4f)))));
-// PM
-			case STAT_MAS_PM -> porc = (float) Math.min(65, (Math.pow(nivel, 2) / (Math.pow(getPesoStat(statID), (5 / 4f)))));
-// PA
-			case STAT_MAS_PA -> porc = (float) Math.min(60, (Math.pow(nivel, 2) / (Math.pow(getPesoStat(statID), (5 / 4f)))));
-			default -> {
+			case STAT_MAS_CRIATURAS_INVO :// invocaciones
+				porc = (float) Math.min(75, (Math.pow(nivel, 2) / (Math.pow(getPesoStat(statID), (5 / 4f)))));
+				break;
+			case STAT_MAS_ALCANCE :// alcance
+				porc = (float) Math.min(70, (Math.pow(nivel, 2) / (Math.pow(getPesoStat(statID), (5 / 4f)))));
+				break;
+			case STAT_MAS_PM :// PM
+				porc = (float) Math.min(65, (Math.pow(nivel, 2) / (Math.pow(getPesoStat(statID), (5 / 4f)))));
+				break;
+			case STAT_MAS_PA :// PA
+				porc = (float) Math.min(60, (Math.pow(nivel, 2) / (Math.pow(getPesoStat(statID), (5 / 4f)))));
+				break;
+			default :
 				if (cantStat > maximo) {
 					return 100;
 				}
@@ -5981,7 +6697,6 @@ public class Constantes {
 					return 0;
 				}
 				return (cantStat - minimo) * 100f / (maximo - minimo);
-			}
 		}
 		//aqui perra, quita el comentario de abajo 
 		// if (porc < 1) {
@@ -5991,35 +6706,35 @@ public class Constantes {
 	}
 	
 	// getValorPorRunaPocima
-	public static int getValorPorRunaPocima(final Objeto objeto) {
+	public static final int getValorPorRunaPocima(final Objeto objeto) {
 		switch (objeto.getObjModelo().getTipo()) {
 			case OBJETO_TIPO_POCION_FORJAMAGIA :
 			case OBJETO_TIPO_RUNA_FORJAMAGIA :
 				if (objeto.tieneStatTexto(STAT_POTENCIA_RUNA)) {
 					try {
 						return Integer.parseInt(objeto.getParamStatTexto(STAT_POTENCIA_RUNA, 1), 16);
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 				}
 				break;
 		}
 		return 0;
 	}
 	
-	public static int getStatPorRunaPocima(final Objeto objeto) {
+	public static final int getStatPorRunaPocima(final Objeto objeto) {
 		switch (objeto.getObjModelo().getTipo()) {
 			case OBJETO_TIPO_POCION_FORJAMAGIA :
 			case OBJETO_TIPO_RUNA_FORJAMAGIA :
 				if (objeto.tieneStatTexto(STAT_POTENCIA_RUNA)) {
 					try {
 						return Integer.parseInt(objeto.getParamStatTexto(STAT_POTENCIA_RUNA, 2), 16);
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 				}
 				break;
 		}
 		return -1;
 	}
 	
-	public static int getRunaPorStat(final int stat, final int tipo) {
+	public static final int getRunaPorStat(final int stat, final int tipo) {
 		switch (stat) {
 			case STAT_MAS_PA :// Pa
 				return 1557;// runa PA
@@ -6030,41 +6745,59 @@ public class Constantes {
 			case STAT_MAS_ALCANCE :// alcance
 				return 7438;// runa alcance
 			case STAT_MAS_FUERZA :// fuerza
-				return switch (tipo) {
-					case 3 -> 1551;
-					case 2 -> 1545;
-					default -> 1519;
-				};
+				switch (tipo) {
+					case 3 :
+						return 1551;
+					case 2 :
+						return 1545;
+					default :
+						return 1519;
+				}
 			case STAT_MAS_AGILIDAD : // Agi
-				return switch (tipo) {
-					case 3 -> 1555;
-					case 2 -> 1549;
-					default -> 1524;
-				};
+				switch (tipo) {
+					case 3 :
+						return 1555;
+					case 2 :
+						return 1549;
+					default :
+						return 1524;
+				}
 			case STAT_MAS_SUERTE :// suerte
-				return switch (tipo) {
-					case 3 -> 1556;
-					case 2 -> 1550;
-					default -> 1525;
-				};
+				switch (tipo) {
+					case 3 :
+						return 1556;
+					case 2 :
+						return 1550;
+					default :
+						return 1525;
+				}
 			case STAT_MAS_SABIDURIA :// Sabi
-				return switch (tipo) {
-					case 3 -> 1552;
-					case 2 -> 1546;
-					default -> 1521;
-				};
+				switch (tipo) {
+					case 3 :
+						return 1552;
+					case 2 :
+						return 1546;
+					default :
+						return 1521;
+				}
 			case STAT_MAS_VITALIDAD :// vita
-				return switch (tipo) {
-					case 3 -> 1554;
-					case 2 -> 1548;
-					default -> 1523;
-				};
+				switch (tipo) {
+					case 3 :
+						return 1554;
+					case 2 :
+						return 1548;
+					default :
+						return 1523;
+				}
 			case STAT_MAS_INTELIGENCIA : // intel
-				return switch (tipo) {
-					case 3 -> 1553;
-					case 2 -> 1547;
-					default -> 1522;
-				};
+				switch (tipo) {
+					case 3 :
+						return 1553;
+					case 2 :
+						return 1547;
+					default :
+						return 1522;
+				}
 			case STAT_MAS_PM :// PM
 				return 1558;// runa PM 1
 			case STAT_MAS_PORC_DAÑOS :// Daño %
@@ -6073,29 +6806,39 @@ public class Constantes {
 				// 10616 Runa Ra Pi Per e2#a#0#0#0d0+10
 				// 10618 Runa Pa Do Per 8a#3#0#0#0d0+3
 				// 10619 Runa Ra Do Per 8a#a#0#0#0d0+10
-				return switch (tipo) {
-					case 3 -> 10619;
-					case 2 -> 10618;
-// runa porcDaño
-					default -> 7436;
-				};
-			case STAT_MAS_PODS :// pods
-				return switch (tipo) {
-					case 3 -> 7445;
-					case 2 -> 7444;
-					default -> 7443;
-				};
-			case STAT_MAS_INICIATIVA :// iniciativa
-				return switch (tipo) {
-					case 3 -> 7450;
-					case 2 -> 7449;
-					default -> 7448;
-				};
-			case STAT_MAS_PROSPECCION :// prospeccion
-				if (tipo == 2) {
-					return 10662;
+				switch (tipo) {
+					case 3 :
+						return 10619;
+					case 2 :
+						return 10618;
+					default :
+						return 7436;// runa porcDaño
 				}
-				return 7451;
+			case STAT_MAS_PODS :// pods
+				switch (tipo) {
+					case 3 :
+						return 7445;
+					case 2 :
+						return 7444;
+					default :
+						return 7443;
+				}
+			case STAT_MAS_INICIATIVA :// iniciativa
+				switch (tipo) {
+					case 3 :
+						return 7450;
+					case 2 :
+						return 7449;
+					default :
+						return 7448;
+				}
+			case STAT_MAS_PROSPECCION :// prospeccion
+				switch (tipo) {
+					case 2 :
+						return 10662;
+					default :
+						return 7451;
+				}
 			case STAT_MAS_CURAS ://
 				return 7434;// runa cura
 			case STAT_MAS_CRIATURAS_INVO :// invoca
@@ -6103,17 +6846,21 @@ public class Constantes {
 			case STAT_REENVIA_DAÑOS :
 				return 7437;// runa reenvio
 			case STAT_MAS_DAÑOS_TRAMPA :
-				if (tipo == 2) {
-					return 10613;
+				switch (tipo) {
+					case 2 :
+						return 10613;
+					default :
+						return 7446;// runa daño trampa
 				}
-				return 7446;// runa daño trampa
 			case STAT_MAS_PORC_DAÑOS_TRAMPA :
-				return switch (tipo) {
-					case 3 -> 10616;
-					case 2 -> 10615;
-// runa daño porc Trampa
-					default -> 7447;
-				};
+				switch (tipo) {
+					case 3 :
+						return 10616;
+					case 2 :
+						return 10615;
+					default :
+						return 7447;// runa daño porc Trampa
+				}
 			case STAT_MAS_RES_FIJA_FUEGO :
 				return 7452;// runa re fuego
 			case STAT_MAS_RES_FIJA_AIRE :
@@ -6138,95 +6885,195 @@ public class Constantes {
 		return 0;
 	}
 	
-	public static int getPotenciaPlusRuna(Objeto objeto) {
+	public static final int getPotenciaPlusRuna(Objeto objeto) {
 		switch (objeto.getObjModelo().getTipo()) {
 			case OBJETO_TIPO_POCION_FORJAMAGIA :
 			case OBJETO_TIPO_RUNA_FORJAMAGIA :
 				if (objeto.tieneStatTexto(STAT_POTENCIA_RUNA)) {
 					try {
 						return Integer.parseInt(objeto.getParamStatTexto(STAT_POTENCIA_RUNA, 3), 16);
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 				}
 				break;
 		}
 		return 0;
 	}
 	
-	public static boolean esStatDePelea(final int statID) {
-		return switch (statID) {
-// runa reenvio
-// runa invo
-// criticos
-// % resistencia
-// % resistencia
-// % resistencia
-// % resistencia
-// % resistencia
-// curas
-// prospeccion
-// pods
-// % daños
-// + daños
-// alcance
-// PM
-// PA
-// PA
-// inteligencia
-// vitalidad
-// sabiduria
-// suerte
-// fuerza
-// agilidad
-// iniciativa
-// prob perdidas PM
-// prob perdidas PA
-// placaje
-// huida
-			case STAT_MAS_DAÑOS_DE_AGUA, STAT_MAS_DAÑOS_DE_AIRE, STAT_MAS_DAÑOS_DE_FUEGO, STAT_MAS_DAÑOS_DE_TIERRA, STAT_MAS_DAÑOS_DE_NEUTRAL, STAT_MAS_DAÑOS_EMPUJE, STAT_MAS_REDUCCION_CRITICOS, STAT_MAS_DAÑOS_CRITICOS, STAT_MAS_REDUCCION_EMPUJE, STAT_MAS_RETIRO_PA, STAT_MAS_RETIRO_PM, STAT_MAS_HUIDA, STAT_MAS_PLACAJE, STAT_MAS_ESQUIVA_PERD_PA, STAT_MAS_ESQUIVA_PERD_PM, STAT_MAS_INICIATIVA, STAT_MAS_AGILIDAD, STAT_MAS_FUERZA, STAT_MAS_SUERTE, STAT_MAS_SABIDURIA, STAT_MAS_VITALIDAD, STAT_MAS_INTELIGENCIA, STAT_MAS_PA, STAT_MAS_PA_2, STAT_MAS_PM, STAT_MAS_ALCANCE, STAT_MAS_DAÑOS, STAT_MAS_PORC_DAÑOS, STAT_MAS_PODS, STAT_MAS_PROSPECCION, STAT_MAS_CURAS, STAT_MAS_RES_PORC_TIERRA, STAT_MAS_RES_PORC_AGUA, STAT_MAS_RES_PORC_AIRE, STAT_MAS_RES_PORC_FUEGO, STAT_MAS_RES_PORC_NEUTRAL, STAT_MAS_RES_FIJA_TIERRA, STAT_MAS_RES_FIJA_AGUA, STAT_MAS_RES_FIJA_AIRE, STAT_MAS_RES_FIJA_FUEGO, STAT_MAS_RES_FIJA_NEUTRAL, STAT_MAS_RES_PORC_PVP_TIERRA, STAT_MAS_RES_PORC_PVP_AGUA, STAT_MAS_RES_PORC_PVP_AIRE, STAT_MAS_RES_PORC_PVP_FUEGO, STAT_MAS_RES_PORC_PVP_NEUTRAL, STAT_MAS_GOLPES_CRITICOS, STAT_MAS_CRIATURAS_INVO, STAT_REENVIA_DAÑOS, STAT_MAS_DAÑOS_TRAMPA, STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA, STAT_MAS_PORC_DAÑOS_TRAMPA, STAT_MAS_VELOCIDAD, STAT_MAS_RES_FIJA_PVP_TIERRA, STAT_MAS_RES_FIJA_PVP_AGUA, STAT_MAS_RES_FIJA_PVP_AIRE, STAT_MAS_RES_FIJA_PVP_FUEGO, STAT_MAS_RES_FIJA_PVP_NEUTRAL, STAT_REDUCCION_FISICA, STAT_REDUCCION_MAGICA, STAT_MAS_DAÑOS_REDUCIDOS_ARMADURAS_FECA -> true;
-			default -> false;
-		};
+	public static final boolean esStatDePelea(final int statID) {
+		switch (statID) {
+			case STAT_MAS_DAÑOS_DE_AGUA :
+			case STAT_MAS_DAÑOS_DE_AIRE :
+			case STAT_MAS_DAÑOS_DE_FUEGO :
+			case STAT_MAS_DAÑOS_DE_TIERRA :
+			case STAT_MAS_DAÑOS_DE_NEUTRAL :
+			case STAT_MAS_DAÑOS_EMPUJE :
+			case STAT_MAS_REDUCCION_CRITICOS :
+			case STAT_MAS_DAÑOS_CRITICOS :
+			case STAT_MAS_REDUCCION_EMPUJE :
+			case STAT_MAS_RETIRO_PA :
+			case STAT_MAS_RETIRO_PM :
+			case STAT_MAS_HUIDA :// huida
+			case STAT_MAS_PLACAJE :// placaje
+			case STAT_MAS_ESQUIVA_PERD_PA :// prob perdidas PA
+			case STAT_MAS_ESQUIVA_PERD_PM :// prob perdidas PM
+			case STAT_MAS_INICIATIVA :// iniciativa
+			case STAT_MAS_AGILIDAD :// agilidad
+			case STAT_MAS_FUERZA :// fuerza
+			case STAT_MAS_SUERTE :// suerte
+			case STAT_MAS_SABIDURIA :// sabiduria
+			case STAT_MAS_VITALIDAD :// vitalidad
+			case STAT_MAS_INTELIGENCIA :// inteligencia
+			case STAT_MAS_PA :// PA
+			case STAT_MAS_PA_2 :// PA
+			case STAT_MAS_PM :// PM
+			case STAT_MAS_ALCANCE :// alcance
+			case STAT_MAS_DAÑOS :// + daños
+			case STAT_MAS_PORC_DAÑOS :// % daños
+			case STAT_MAS_PODS :// pods
+			case STAT_MAS_PROSPECCION :// prospeccion
+			case STAT_MAS_CURAS :// curas
+			case STAT_MAS_RES_PORC_TIERRA :// % resistencia
+			case STAT_MAS_RES_PORC_AGUA :// % resistencia
+			case STAT_MAS_RES_PORC_AIRE :// % resistencia
+			case STAT_MAS_RES_PORC_FUEGO :// % resistencia
+			case STAT_MAS_RES_PORC_NEUTRAL :// % resistencia
+			case STAT_MAS_RES_FIJA_TIERRA :
+			case STAT_MAS_RES_FIJA_AGUA :
+			case STAT_MAS_RES_FIJA_AIRE :
+			case STAT_MAS_RES_FIJA_FUEGO :
+			case STAT_MAS_RES_FIJA_NEUTRAL :
+			case STAT_MAS_RES_PORC_PVP_TIERRA :
+			case STAT_MAS_RES_PORC_PVP_AGUA :
+			case STAT_MAS_RES_PORC_PVP_AIRE :
+			case STAT_MAS_RES_PORC_PVP_FUEGO :
+			case STAT_MAS_RES_PORC_PVP_NEUTRAL :
+			case STAT_MAS_GOLPES_CRITICOS :// criticos
+			case STAT_MAS_CRIATURAS_INVO :// runa invo
+			case STAT_REENVIA_DAÑOS :// runa reenvio
+			case STAT_MAS_DAÑOS_TRAMPA :
+			case STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA :
+			case STAT_MAS_PORC_DAÑOS_TRAMPA :
+			case STAT_MAS_VELOCIDAD :
+			case STAT_MAS_RES_FIJA_PVP_TIERRA :
+			case STAT_MAS_RES_FIJA_PVP_AGUA :
+			case STAT_MAS_RES_FIJA_PVP_AIRE :
+			case STAT_MAS_RES_FIJA_PVP_FUEGO :
+			case STAT_MAS_RES_FIJA_PVP_NEUTRAL :
+			case STAT_REDUCCION_FISICA :
+			case STAT_REDUCCION_MAGICA :
+			case STAT_MAS_DAÑOS_REDUCIDOS_ARMADURAS_FECA :
+				return true;
+		}
+		return false;
 	}
 	
-	public static float getPesoStat(final int statID) {
-		float pesoRuna = switch (statID) {
-			case STAT_REDUCCION_FISICA, STAT_REDUCCION_MAGICA -> 10;
-// iniciativa
-			case STAT_MAS_INICIATIVA -> 0.1f;
-// + daño neutral
-			case STAT_MAS_DAÑOS_DE_AGUA, STAT_MAS_DAÑOS_DE_TIERRA, STAT_MAS_DAÑOS_DE_AIRE, STAT_MAS_DAÑOS_DE_FUEGO, STAT_MAS_DAÑOS_DE_NEUTRAL -> 5;
-// Pod
-			case STAT_MAS_ESQUIVA_PERD_PA, STAT_MAS_ESQUIVA_PERD_PM, STAT_MAS_PODS -> 0.25f;
-// Vitalidad
-			case STAT_MAS_VITALIDAD -> 0.50f;
-// Inteligencia
-			case STAT_MAS_FUERZA, STAT_MAS_AGILIDAD, STAT_MAS_SUERTE, STAT_MAS_INTELIGENCIA -> 1;
-			case STAT_MAS_DAÑO_FISICO, STAT_MAS_PORC_DAÑOS, STAT_MAS_PORC_DAÑOS_TRAMPA, STAT_MAS_RES_FIJA_TIERRA, STAT_MAS_RES_FIJA_AGUA, STAT_MAS_RES_FIJA_AIRE, STAT_MAS_RES_FIJA_FUEGO, STAT_MAS_RES_FIJA_NEUTRAL, STAT_MAS_RES_FIJA_PVP_TIERRA, STAT_MAS_RES_FIJA_PVP_AGUA, STAT_MAS_RES_FIJA_PVP_AIRE, STAT_MAS_RES_FIJA_PVP_FUEGO, STAT_MAS_RES_FIJA_PVP_NEUTRAL -> 2;
-// Prospeccion
-			case STAT_MAS_SABIDURIA, STAT_MAS_PROSPECCION -> 3;
-// trampa daños
-			case STAT_MAS_DAÑOS_TRAMPA -> 5;
-			case STAT_MAS_RES_PORC_TIERRA, STAT_MAS_RES_PORC_AGUA, STAT_MAS_RES_PORC_AIRE, STAT_MAS_RES_PORC_FUEGO, STAT_MAS_RES_PORC_NEUTRAL, STAT_MAS_RES_PORC_PVP_TIERRA, STAT_MAS_RES_PORC_PVP_AGUA, STAT_MAS_RES_PORC_PVP_AIRE, STAT_MAS_RES_PORC_PVP_FUEGO, STAT_MAS_RES_PORC_PVP_NEUTRAL -> 6;
-// curas
-			case STAT_MAS_DAÑOS, STAT_MAS_CURAS -> 20;
-// daños reenvio
-			case STAT_MAS_GOLPES_CRITICOS, STAT_MAS_CRIATURAS_INVO, STAT_REENVIA_DAÑOS -> 30;
-// alcance
-			case STAT_MAS_ALCANCE -> 51;
-// PM
-			case STAT_MAS_PM -> 90;
-// PA
-			case STAT_MAS_PA -> 100;
-			case STAT_MAS_VELOCIDAD -> 0.1f;
-			case STAT_MAS_DAÑOS_EMPUJE, STAT_MAS_REDUCCION_CRITICOS, STAT_MAS_DAÑOS_CRITICOS, STAT_MAS_REDUCCION_EMPUJE, STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA, STAT_MAS_DAÑOS_REDUCIDOS_ARMADURAS_FECA -> 10;
-			case STAT_MAS_RETIRO_PA, STAT_MAS_RETIRO_PM -> 1;
-// placaje
-			case STAT_MAS_HUIDA, STAT_MAS_PLACAJE -> 2;
-			default -> 0;
-		};
+	public static final float getPesoStat(final int statID) {
+		float pesoRuna = 0;
+		switch (statID) {
+			case STAT_REDUCCION_FISICA :
+			case STAT_REDUCCION_MAGICA :
+				pesoRuna = 10;
+				break;
+			case STAT_MAS_INICIATIVA :// iniciativa
+				pesoRuna = 0.1f;
+				break;
+			case STAT_MAS_DAÑOS_DE_AGUA :// + daño agua
+			case STAT_MAS_DAÑOS_DE_TIERRA :// + daño tierra
+			case STAT_MAS_DAÑOS_DE_AIRE :// + daño aire
+			case STAT_MAS_DAÑOS_DE_FUEGO :// + daño fuego
+			case STAT_MAS_DAÑOS_DE_NEUTRAL :// + daño neutral
+				pesoRuna = 5;
+				break;
+			case STAT_MAS_ESQUIVA_PERD_PA :// % perdida PA
+			case STAT_MAS_ESQUIVA_PERD_PM :// % perdida PM
+			case STAT_MAS_PODS :// Pod
+				pesoRuna = 0.25f;
+				break;
+			case STAT_MAS_VITALIDAD :// Vitalidad
+				pesoRuna = 0.50f;
+				break;
+			case STAT_MAS_FUERZA :// Fuerza
+			case STAT_MAS_AGILIDAD :// Agi
+			case STAT_MAS_SUERTE :// suerte
+			case STAT_MAS_INTELIGENCIA :// Inteligencia
+				pesoRuna = 1;
+				break;
+			case STAT_MAS_DAÑO_FISICO : // daños fisicos
+			case STAT_MAS_PORC_DAÑOS :// daños %
+			case STAT_MAS_PORC_DAÑOS_TRAMPA :// trampa %
+			case STAT_MAS_RES_FIJA_TIERRA :
+			case STAT_MAS_RES_FIJA_AGUA :
+			case STAT_MAS_RES_FIJA_AIRE :
+			case STAT_MAS_RES_FIJA_FUEGO :
+			case STAT_MAS_RES_FIJA_NEUTRAL :
+			case STAT_MAS_RES_FIJA_PVP_TIERRA :
+			case STAT_MAS_RES_FIJA_PVP_AGUA :
+			case STAT_MAS_RES_FIJA_PVP_AIRE :
+			case STAT_MAS_RES_FIJA_PVP_FUEGO :
+			case STAT_MAS_RES_FIJA_PVP_NEUTRAL :
+				pesoRuna = 2;
+				break;
+			case STAT_MAS_SABIDURIA :// Sabiduria
+			case STAT_MAS_PROSPECCION :// Prospeccion
+				pesoRuna = 3;
+				break;
+			case STAT_MAS_DAÑOS_TRAMPA :// trampa daños
+				pesoRuna = 5;
+				break;
+			case STAT_MAS_RES_PORC_TIERRA :
+			case STAT_MAS_RES_PORC_AGUA :
+			case STAT_MAS_RES_PORC_AIRE :
+			case STAT_MAS_RES_PORC_FUEGO :
+			case STAT_MAS_RES_PORC_NEUTRAL :
+			case STAT_MAS_RES_PORC_PVP_TIERRA :
+			case STAT_MAS_RES_PORC_PVP_AGUA :
+			case STAT_MAS_RES_PORC_PVP_AIRE :
+			case STAT_MAS_RES_PORC_PVP_FUEGO :
+			case STAT_MAS_RES_PORC_PVP_NEUTRAL :
+				pesoRuna = 6;
+				break;
+			case STAT_MAS_DAÑOS :// daños
+			case STAT_MAS_CURAS :// curas
+				pesoRuna = 20;
+				break;
+			case STAT_MAS_GOLPES_CRITICOS :// Criticos
+			case STAT_MAS_CRIATURAS_INVO :// invocaciones
+			case STAT_REENVIA_DAÑOS :// daños reenvio
+				pesoRuna = 30;
+				break;
+			case STAT_MAS_ALCANCE :// alcance
+				pesoRuna = 51;
+				break;
+			case STAT_MAS_PM :// PM
+				pesoRuna = 90;
+				break;
+			case STAT_MAS_PA :// PA
+				pesoRuna = 100;
+				break;
+			case STAT_MAS_VELOCIDAD :
+				pesoRuna = 0.1f;
+				break;
+			case STAT_MAS_DAÑOS_EMPUJE :
+			case STAT_MAS_REDUCCION_CRITICOS :
+			case STAT_MAS_DAÑOS_CRITICOS :
+			case STAT_MAS_REDUCCION_EMPUJE :
+			case STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA :
+			case STAT_MAS_DAÑOS_REDUCIDOS_ARMADURAS_FECA :
+				pesoRuna = 10;
+				break;
+			case STAT_MAS_RETIRO_PA :
+			case STAT_MAS_RETIRO_PM :
+				pesoRuna = 1;
+				break;
+			case STAT_MAS_HUIDA :// huida
+			case STAT_MAS_PLACAJE :// placaje
+				pesoRuna = 2;
+				break;
+		}
 		return pesoRuna;
 	}
 	
-	public static int convertirStatsEnPuntosKoliseo(final Stats s) {
+	public static final int convertirStatsEnPuntosKoliseo(final Stats s) {
 		int suma = 0;
 		for (final Entry<Integer, Integer> e : s.getEntrySet()) {
 			suma += getPesoStat(e.getKey()) * e.getValue();
@@ -6234,7 +7081,7 @@ public class Constantes {
 		return suma;
 	}
 	
-	public static boolean excedioLimitePeso(final Objeto runa, final int cant) {
+	public static final boolean excedioLimitePeso(final Objeto runa, final int cant) {
 		final int statID = getStatPorRunaPocima(runa);
 		if (statID == -1) {
 			return false;
@@ -6242,62 +7089,62 @@ public class Constantes {
 		return getPesoStat(statID) * cant > MainServidor.MAX_PESO_POR_STAT;
 	}
 	
-	public static boolean excedioLimiteExomagia(int statID, int cantidad) {
+	public static final boolean excedioLimiteExomagia(int statID, int cantidad) {
 		if (MainServidor.LIMITE_STATS_EXO_FORJAMAGIA.containsKey(statID)) {
 			return MainServidor.LIMITE_STATS_EXO_FORJAMAGIA.get(statID) > cantidad;
 		}
 		return false;
 	}
 	
-	public static boolean excedioLimiteOvermagia(int statID, int cantidad) {
+	public static final boolean excedioLimiteOvermagia(int statID, int cantidad) {
 		if (MainServidor.LIMITE_STATS_OVER_FORJAMAGIA.containsKey(statID)) {
 			return MainServidor.LIMITE_STATS_OVER_FORJAMAGIA.get(statID) > cantidad;
 		}
 		return false;
 	}
 	
-	public static boolean excedioLimiteMagueoDeRuna(final int runaID, final int cant) {
-		return switch (runaID) {
-// suerte
-// Agilidad
-// Inteligencia
-// Fuerza
-			case 1519, 1522, 1524, 1525 -> cant >= 50;
-// Pa suerte
-// Pa agilidad
-// Pa Inteligencia
-// Pa fuerza
-			case 1545, 1547, 1549, 1550 -> cant >= 70;
-// Ra suerte
-// Ra Agilidad
-// Ra Inteligencia
-// Ra Fuerza
-			case 1551, 1553, 1555, 1556 -> cant >= 101;
-// Pod
-			case 7443 -> cant >= 100;
-// Pa pod
-			case 7444 -> cant >= 200;
-// Ra pod
-			case 7445 -> cant >= 404;
-// iniciativa
-			case 7448 -> cant >= 300;
-// Pa iniciativa
-			case 7449 -> cant >= 600;
-// Ra iniciativa
-			case 7450 -> cant >= 1010;
-// Sabiduria
-			case 1521 -> cant >= 11;
-// Pa Sabiduria
-			case 1546 -> cant >= 22;
-// Ra Sabiduria
-			case 1552 -> cant >= 34;
-// Vitalidad
-			case 1523 -> cant >= 50;
-// Pa Vitalidad
-			case 1548 -> cant >= 250;
-// Ra Vitalidad
-			case 1554 -> cant >= 404;
-			default -> false;
-		};
+	public static final boolean excedioLimiteMagueoDeRuna(final int runaID, final int cant) {
+		switch (runaID) {
+			case 1519 :// Fuerza
+			case 1522 :// Inteligencia
+			case 1524 :// Agilidad
+			case 1525 :// suerte
+				return cant >= 50;
+			case 1545 :// Pa fuerza
+			case 1547 :// Pa Inteligencia
+			case 1549 :// Pa agilidad
+			case 1550 :// Pa suerte
+				return cant >= 70;
+			case 1551 :// Ra Fuerza
+			case 1553 :// Ra Inteligencia
+			case 1555 :// Ra Agilidad
+			case 1556 :// Ra suerte
+				return cant >= 101;
+			case 7443 :// Pod
+				return cant >= 100;
+			case 7444 :// Pa pod
+				return cant >= 200;
+			case 7445 :// Ra pod
+				return cant >= 404;
+			case 7448 :// iniciativa
+				return cant >= 300;
+			case 7449 :// Pa iniciativa
+				return cant >= 600;
+			case 7450 :// Ra iniciativa
+				return cant >= 1010;
+			case 1521 :// Sabiduria
+				return cant >= 11;
+			case 1546 :// Pa Sabiduria
+				return cant >= 22;
+			case 1552 :// Ra Sabiduria
+				return cant >= 34;
+			case 1523 :// Vitalidad
+				return cant >= 50;
+			case 1548 :// Pa Vitalidad
+				return cant >= 250;
+			case 1554 :// Ra Vitalidad
+				return cant >= 404;
+		}
+		return false;
 	}
 }

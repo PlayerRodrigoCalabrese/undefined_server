@@ -244,17 +244,37 @@ public class Formulas {
 		} else if (coefNivel < 0.8f) {
 			coefNivel = 0.8f;
 		}
-		float coefMult = switch (ratioLuch) {
-			case 0 -> 0.5f;
-			case 1 -> 1;
-			case 2 -> 1.1f;
-			case 3 -> 1.5f;
-			case 4 -> 2.3f;
-			case 5 -> 3.1f;
-			case 6 -> 3.6f;
-			case 7 -> 4.2f;
-			default -> 4.7f;
-		};
+		float coefMult = 0;
+		switch (ratioLuch) {
+			case 0 :
+				coefMult = 0.5f;
+				break;
+			case 1 :
+				coefMult = 1;
+				break;
+			case 2 :
+				coefMult = 1.1f;
+				break;
+			case 3 :
+				coefMult = 1.5f;
+				break;
+			case 4 :
+				coefMult = 2.3f;
+				break;
+			case 5 :
+				coefMult = 3.1f;
+				break;
+			case 6 :
+				coefMult = 3.6f;
+				break;
+			case 7 :
+				coefMult = 4.2f;
+				break;
+			case 8 :
+			default :
+				coefMult = 4.7f;
+				break;
+		}
 		long baseXp = sumaExpMobs;
 		if (!esRecaudador) {
 			baseXp = (long) (baseXp * coefMult * coefMobLuch * coefNivel);
@@ -405,8 +425,8 @@ public class Formulas {
 		int totalNivLuchGanador = 0, totalNivLuchPerdedor = 0;
 		byte cantGanadores = 0, cantPerdedores = 0;
 		ArrayList<String> ips = new ArrayList<>(16);
-		ArrayList<Luchador> oGanadores = new ArrayList<>();
-		ArrayList<Luchador> oPerdedores = new ArrayList<>();
+		ArrayList<Luchador> oGanadores = new ArrayList<Luchador>();
+		ArrayList<Luchador> oPerdedores = new ArrayList<Luchador>();
 		while (oGanadores.size() < ganadores.size()) {
 			int mayor = -1;
 			Luchador lTemp = null;

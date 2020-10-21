@@ -19,12 +19,11 @@ import estaticos.Mundo;
 public class Cofre implements Exchanger {
 	private final short _mapaID, _celdaID;
 	private final int _id, _casaID;
-	private int _persoID;
-	private final int _limite;
+	private int _persoID, _limite;
 	private long _kamas;
 	private String _clave = "-";
-	private final Map<Integer, Objeto> _objetos = new HashMap<>();
-	private final ArrayList<Personaje> _consultores = new ArrayList<>();
+	private final Map<Integer, Objeto> _objetos = new HashMap<Integer, Objeto>();
+	private ArrayList<Personaje> _consultores = new ArrayList<>();
 	
 	public Cofre(final int id, final int casaID, final short mapaID, final short celdaID, int limite) {
 		_id = id;
@@ -50,7 +49,7 @@ public class Cofre implements Exchanger {
 					continue;
 				}
 				_objetos.put(objetoID, objeto);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		addKamas(kamas, null);
 		_clave = clave;
@@ -183,10 +182,10 @@ public class Cofre implements Exchanger {
 			if (objeto == null) {
 				continue;
 			}
-			packet.append("O").append(objeto.stringObjetoConGuiño());
+			packet.append("O" + objeto.stringObjetoConGuiño());
 		}
 		if (_kamas > 0) {
-			packet.append("G").append(getKamas());
+			packet.append("G" + getKamas());
 		}
 		return packet.toString();
 	}

@@ -2,7 +2,7 @@
 MODO_PVP = true
 MODO_ANKALIKE = false
 MODO_HEROICO = false
-MODO_DEBUG = true
+MODO_DEBUG = false
 RECIBIDOS = true
 ENVIADOS = true
 

@@ -15,7 +15,7 @@ public class MiembroGremio {
 	private long _xpDonada;
 	private final Gremio _gremio;
 	private final Personaje _perso;
-	private final Map<Integer, Boolean> _tieneDerecho = new TreeMap<>();
+	private final Map<Integer, Boolean> _tieneDerecho = new TreeMap<Integer, Boolean>();
 	
 	public MiembroGremio(final int id, final Gremio gremio, final int rango, final long xpDonada, final byte porcXp,
 	final int derechos) {

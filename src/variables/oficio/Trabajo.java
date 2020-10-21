@@ -227,10 +227,15 @@ public class Trabajo implements Runnable, Exchanger {
 			GestorSalida.ENVIAR_cs_CHAT_MENSAJE(perso, "<b>LA RUNA O POCIMA ES NULO</b>", Constantes.COLOR_ROJO);
 			return;
 		}
-		float pesoRuna = switch (statMagueo) {
-			case 96, 97, 98, 99 -> 1;
-			default -> Constantes.getPesoStat(statMagueo);
-		};
+		float pesoRuna = Constantes.getPesoStat(statMagueo);
+		switch (statMagueo) {
+			case 96 :
+			case 97 :
+			case 98 :
+			case 99 :
+				pesoRuna = 1;
+				break;
+		}
 		if (pesoRuna <= 0) {
 			GestorSalida.ENVIAR_cs_CHAT_MENSAJE(perso, "<b>RUNA FORJAMAGIA INCORRECTA</b>", Constantes.COLOR_ROJO);
 			return;
@@ -277,15 +282,13 @@ public class Trabajo implements Runnable, Exchanger {
 		} else if (nivelOficio < 0) {
 			nivelOficio = 0;
 		}
-		// if (Bustemu.RATE_FM != 1) {///
-		// cantStMax *= Bustemu.RATE_FM;
-		// pesoStMax *= Bustemu.RATE_FM;
-		// pesoGlMax *= Bustemu.RATE_FM;
-		// }
 		switch (statMagueo) {
-			case 96, 97, 98, 99 -> {
+			case 96 :
+			case 97 :
+			case 98 :
+			case 99 :
 				int suerte = objModelo.getProbabilidadGC() * objModelo.getCostePA() / (objModelo.getBonusGC() + objMaguear
-						.getDañoPromedioNeutral());
+				.getDañoPromedioNeutral());
 				suerte += cantAumRuna + nivelOficio;
 				if (suerte > 100) {
 					suerte = 100;
@@ -296,8 +299,8 @@ public class Trabajo implements Runnable, Exchanger {
 				probabilidades[1] = 0;
 				probabilidades[2] = (100 - suerte);
 				probabilidades[3] = 0;
-			}
-			default -> {
+				break;
+			default :
 				int pozoResidual = 0;
 				if (MainServidor.PARAM_FM_CON_POZO_RESIDUAL) {
 					pozoResidual += objMaguear.getStats().getStatParaMostrar(Constantes.STAT_POZO_RESIDUAL);
@@ -362,6 +365,11 @@ public class Trabajo implements Runnable, Exchanger {
 					pesoGlMin += Constantes.getPesoStat(statID) * statMin;
 					pesoGlMax += Constantes.getPesoStat(statID) * statMax;
 				}
+				// if (Bustemu.RATE_FM != 1) {///
+				// cantStMax *= Bustemu.RATE_FM;
+				// pesoStMax *= Bustemu.RATE_FM;
+				// pesoGlMax *= Bustemu.RATE_FM;
+				// }
 				byte tipoMagueo = MAGUEO_EXO;
 				if (pesoStMax != 0) {
 					tipoMagueo = MAGUEO_NORMAL;// 0
@@ -375,9 +383,9 @@ public class Trabajo implements Runnable, Exchanger {
 					System.out.println("cantAumRuna: " + cantAumRuna + " , pesoRuna: " + pesoRuna);
 					System.out.println("cantStMax: " + cantStMax + " , cantStActual: " + cantStActual);
 					System.out.println("pesoGlMax: " + pesoGlMax + " , pesoGlMin: " + pesoGlMin + " , pesoGlActual: "
-							+ pesoGlActual);
+					+ pesoGlActual);
 					System.out.println("pesoStMax: " + pesoStMax + " , pesoStMin: " + pesoStMin + " , pesoStActual: "
-							+ pesoStActual);
+					+ pesoStActual);
 				}
 				boolean puede = true;
 				if (pesoGlMax == 0) {
@@ -391,7 +399,7 @@ public class Trabajo implements Runnable, Exchanger {
 					puede = false;
 				}
 				switch (tipoMagueo) {
-					case MAGUEO_EXO:
+					case MAGUEO_EXO :
 						if (pesoGlActual < 0 && pesoGlMax < 0) {
 							if (MainServidor.MODO_DEBUG) {
 								System.out.println("fallo en 1");
@@ -414,7 +422,7 @@ public class Trabajo implements Runnable, Exchanger {
 							puede = false;
 						}
 						break;
-					case MAGUEO_OVER:
+					case MAGUEO_OVER :
 						if (pesoStActual + pesoRuna > pesoStMax * 2) {
 							if (MainServidor.MODO_DEBUG) {
 								System.out.println("fallo en 5");
@@ -424,7 +432,7 @@ public class Trabajo implements Runnable, Exchanger {
 						if (Constantes.excedioLimiteOvermagia(statMagueo, cantStActual + cantAumRuna)) {
 							puede = false;
 						}
-					case MAGUEO_NORMAL:
+					case MAGUEO_NORMAL :
 						if (cantStMin < 0 && (cantStActual >= 0 || cantStActual >= cantStMax)) {
 							if (MainServidor.MODO_DEBUG) {
 								System.out.println("fallo en 7");
@@ -500,19 +508,25 @@ public class Trabajo implements Runnable, Exchanger {
 					int porcMaxExito = 0;
 					int EC = 0, EN = 0, FN = 0, FC = 0;
 					switch (tipoMagueo) {
-						case MAGUEO_EXO -> porcMaxExito = 11 - (pesoRuna / 10);
-						case MAGUEO_OVER -> porcMaxExito = 50 - (pesoRuna / 2);
-						case MAGUEO_NORMAL -> porcMaxExito = 100;
+						case MAGUEO_EXO :
+							porcMaxExito = 11 - (pesoRuna / 10);
+							break;
+						case MAGUEO_OVER :
+							porcMaxExito = 50 - (pesoRuna / 2);
+							break;
+						case MAGUEO_NORMAL :
+							porcMaxExito = 100;
+							break;
 					}
 					switch (tipoMagueo) {
-						case MAGUEO_EXO -> {
+						case MAGUEO_EXO :
 							if (pesoRuna + (pesoExo * 3) + (pesoExcesoOver * 2) >= pesoGlMax) {
 								pG = 0;
 							}
 							pS = 0;
 							EN = pG / 2;// puede ser maximo 50
-						}
-						case MAGUEO_OVER -> {
+							break;
+						case MAGUEO_OVER :
 							if (pesoRuna + (pesoExo * 3) + (pesoExcesoOver * 2) >= pesoGlMax) {
 								pG = 0;
 							} else if (pesoExo > 0) {
@@ -521,8 +535,8 @@ public class Trabajo implements Runnable, Exchanger {
 								}
 							}
 							EN = pSG + pS;// pS aqui es negativo
-						}
-						case MAGUEO_NORMAL -> {
+							break;
+						case MAGUEO_NORMAL :
 							if (pesoExo > 0) {
 								if (pesoExo > pesoRuna) {
 									pG -= (pesoExo / pesoRuna);
@@ -537,7 +551,7 @@ public class Trabajo implements Runnable, Exchanger {
 								pS = (int) Math.sqrt(pS);
 							}
 							EN = pS;
-						}
+							break;
 					}
 					if (MainServidor.MODO_DEBUG) {
 						System.out.println("Despues-> porcGlobal: " + porcGlobal + " , porcStat: " + porcStat);
@@ -552,13 +566,13 @@ public class Trabajo implements Runnable, Exchanger {
 						System.out.println("Despues-> EN: " + EN);
 					}
 					switch (tipoMagueo) {
-						case MAGUEO_EXO:
+						case MAGUEO_EXO :
 							EC = (int) Math.ceil(EN / 2f);
 							EN = 0;
 							break;
-						case MAGUEO_OVER:
+						case MAGUEO_OVER :
 							break;
-						case MAGUEO_NORMAL:
+						case MAGUEO_NORMAL :
 							int critico = 0;
 							if (pG <= 0) {
 								critico = (int) ((pS + pSG) / 2);
@@ -592,7 +606,6 @@ public class Trabajo implements Runnable, Exchanger {
 					probabilidades[2] = FN;
 					probabilidades[3] = FC;
 				}
-			}
 		}
 		return probabilidades;
 	}
@@ -681,14 +694,15 @@ public class Trabajo implements Runnable, Exchanger {
 							Thread.sleep(speedCraft ? 25 : 1000);
 						}
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				switch (_interrumpir) {
-					case MENSAJE_RECETA_NO_FUNCIONA, MENSAJE_FALTA_RECURSOS -> {
+					case MENSAJE_RECETA_NO_FUNCIONA :
+					case MENSAJE_FALTA_RECURSOS :
 						if (!_esForjaMagia) {
 							GestorSalida.ENVIAR_Ec_RESULTADO_RECETA(_artesano, "EI");
 						}
 						GestorSalida.ENVIAR_IO_ICONO_OBJ_INTERACTIVO(_artesano.getMapa(), _artesano.getID(), "-");
-					}
+						break;
 				}
 				if (_cuantasRepeticiones > 1 || _interrumpir > 1) {
 					GestorSalida.ENVIAR_Ea_MENSAJE_RECETAS(_artesano, _interrumpir);
@@ -697,7 +711,7 @@ public class Trabajo implements Runnable, Exchanger {
 				// recolecta
 				try {
 					Thread.sleep(_tiempoRecoleccion);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				_statOficio.finalizarTrabajo(_artesano);
 			}
 		} catch (Exception e) {
@@ -726,8 +740,8 @@ public class Trabajo implements Runnable, Exchanger {
 	
 	private void trabajoCraftear(boolean esSpeedCraft) {
 		try {
-			final Map<Integer, Integer> ingredientesModelo = new TreeMap<>();
-			final Map<Integer, Integer> runasModelo = new TreeMap<>();
+			final Map<Integer, Integer> ingredientesModelo = new TreeMap<Integer, Integer>();
+			final Map<Integer, Integer> runasModelo = new TreeMap<Integer, Integer>();
 			for (final Entry<Integer, Integer> ingrediente : _ingredientes.entrySet()) {
 				final int objetoID = ingrediente.getKey();
 				final int cantObjeto = ingrediente.getValue();
@@ -777,11 +791,20 @@ public class Trabajo implements Runnable, Exchanger {
 				_interrumpir = MENSAJE_RECETA_NO_FUNCIONA;
 				return;
 			}
-			int suerte = switch (_skillID) {
-				case Constantes.SKILL_PELAR_PATATAS, Constantes.SKILL_UTILIZAR_BANCO, Constantes.SKILL_MACHACAR_RECURSOS -> 100;
-				case Constantes.SKILL_ROMPER_OBJETO -> 99;
-				default -> Constantes.getSuerteNivelYSlots(_statOficio.getNivel(), ingredientesModelo.size());
-			};
+			int suerte = 100;
+			switch (_skillID) {
+				case Constantes.SKILL_PELAR_PATATAS :
+				case Constantes.SKILL_UTILIZAR_BANCO :
+				case Constantes.SKILL_MACHACAR_RECURSOS :
+					suerte = 100;
+					break;
+				case Constantes.SKILL_ROMPER_OBJETO :
+					suerte = 99;
+					break;
+				default :
+					suerte = Constantes.getSuerteNivelYSlots(_statOficio.getNivel(), ingredientesModelo.size());
+					break;
+			}
 			final boolean exito = MainServidor.PARAM_CRAFT_SIEMPRE_EXITOSA || suerte == 100 || (suerte >= Formulas
 			.getRandomInt(1, 100));
 			if (exito) {
@@ -794,7 +817,7 @@ public class Trabajo implements Runnable, Exchanger {
 							if (st.length() > 0) {
 								st.append(",");
 							}
-							st.append("1f4#").append(Integer.toHexString(entry.getKey())).append("#").append(Integer.toHexString(entry.getValue()));
+							st.append("1f4#" + Integer.toHexString(entry.getKey()) + "#" + Integer.toHexString(entry.getValue()));
 						}
 					}
 					objCreado.convertirStringAStats(st.toString());
@@ -871,7 +894,28 @@ public class Trabajo implements Runnable, Exchanger {
 				} else {
 					final int tipo = ing.getObjModelo().getTipo();
 					switch (tipo) {
-						case Constantes.OBJETO_TIPO_AMULETO, Constantes.OBJETO_TIPO_ARCO, Constantes.OBJETO_TIPO_VARITA, Constantes.OBJETO_TIPO_BASTON, Constantes.OBJETO_TIPO_DAGAS, Constantes.OBJETO_TIPO_ESPADA, Constantes.OBJETO_TIPO_MARTILLO, Constantes.OBJETO_TIPO_PALA, Constantes.OBJETO_TIPO_ANILLO, Constantes.OBJETO_TIPO_CINTURON, Constantes.OBJETO_TIPO_BOTAS, Constantes.OBJETO_TIPO_SOMBRERO, Constantes.OBJETO_TIPO_CAPA, Constantes.OBJETO_TIPO_HACHA, Constantes.OBJETO_TIPO_HERRAMIENTA, Constantes.OBJETO_TIPO_PICO, Constantes.OBJETO_TIPO_GUADAÑA, Constantes.OBJETO_TIPO_MOCHILA, Constantes.OBJETO_TIPO_BALLESTA, Constantes.OBJETO_TIPO_ARMA_MAGICA -> objAMaguear = ing;
+						case Constantes.OBJETO_TIPO_AMULETO :
+						case Constantes.OBJETO_TIPO_ARCO :
+						case Constantes.OBJETO_TIPO_VARITA :
+						case Constantes.OBJETO_TIPO_BASTON :
+						case Constantes.OBJETO_TIPO_DAGAS :
+						case Constantes.OBJETO_TIPO_ESPADA :
+						case Constantes.OBJETO_TIPO_MARTILLO :
+						case Constantes.OBJETO_TIPO_PALA :
+						case Constantes.OBJETO_TIPO_ANILLO :
+						case Constantes.OBJETO_TIPO_CINTURON :
+						case Constantes.OBJETO_TIPO_BOTAS :
+						case Constantes.OBJETO_TIPO_SOMBRERO :
+						case Constantes.OBJETO_TIPO_CAPA :
+						case Constantes.OBJETO_TIPO_HACHA :
+						case Constantes.OBJETO_TIPO_HERRAMIENTA :
+						case Constantes.OBJETO_TIPO_PICO :
+						case Constantes.OBJETO_TIPO_GUADAÑA :
+						case Constantes.OBJETO_TIPO_MOCHILA :
+						case Constantes.OBJETO_TIPO_BALLESTA :
+						case Constantes.OBJETO_TIPO_ARMA_MAGICA :
+							objAMaguear = ing;
+							break;
 					}
 				}
 			}
@@ -879,10 +923,15 @@ public class Trabajo implements Runnable, Exchanger {
 				_interrumpir = MENSAJE_FALTA_RECURSOS;
 				return null;
 			}
-			float pesoRuna = switch (statMagueo) {
-				case 96, 97, 98, 99 -> 1;
-				default -> Constantes.getPesoStat(statMagueo);
-			};
+			float pesoRuna = Constantes.getPesoStat(statMagueo);
+			switch (statMagueo) {
+				case 96 :
+				case 97 :
+				case 98 :
+				case 99 :
+					pesoRuna = 1;
+					break;
+			}
 			if (pesoRuna <= 0) {
 				GestorSalida.ENVIAR_cs_CHAT_MENSAJE(_artesano, "<b>RUNA FORJAMAGIA INCORRECTA</b>", Constantes.COLOR_ROJO);
 				return null;
@@ -956,13 +1005,21 @@ public class Trabajo implements Runnable, Exchanger {
 				}
 			}
 			if (MainServidor.MODO_DEBUG) {
-				String res = switch (r) {
-					case RESULTADO_EXITO_CRITICO -> "RESULTADO_EXITO_CRITICO";
-					case RESULTADO_EXITO_NORMAL -> "RESULTADO_EXITO_NORMAL";
-					case RESULTADO_FALLO_NORMAL -> "RESULTADO_FALLO_NORMAL";
-					case RESULTADO_FALLO_CRITICO -> "RESULTADO_FALLO_CRITICO";
-					default -> "NADA";
-				};
+				String res = "NADA";
+				switch (r) {
+					case RESULTADO_EXITO_CRITICO :
+						res = "RESULTADO_EXITO_CRITICO";
+						break;
+					case RESULTADO_EXITO_NORMAL :
+						res = "RESULTADO_EXITO_NORMAL";
+						break;
+					case RESULTADO_FALLO_NORMAL :
+						res = "RESULTADO_FALLO_NORMAL";
+						break;
+					case RESULTADO_FALLO_CRITICO :
+						res = "RESULTADO_FALLO_CRITICO";
+						break;
+				}
 				System.out.println("Resultado: " + res);
 			}
 			boolean exito = false;
@@ -1021,7 +1078,7 @@ public class Trabajo implements Runnable, Exchanger {
 		try {
 			Objeto nuevoObj = null;
 			int r = RESULTADO_FALLO_NORMAL;
-			final Map<Integer, Integer> ingredientesPorModelo = new TreeMap<>();
+			final Map<Integer, Integer> ingredientesPorModelo = new TreeMap<Integer, Integer>();
 			for (final Entry<Integer, Integer> ingrediente : _ingredientes.entrySet()) {
 				final int objetoID = ingrediente.getKey();
 				final int cantObjeto = ingrediente.getValue();
@@ -1097,19 +1154,21 @@ public class Trabajo implements Runnable, Exchanger {
 			GestorSalida.ENVIAR_Ow_PODS_DEL_PJ(_artesano);
 			GestorSalida.ENVIAR_Ow_PODS_DEL_PJ(_cliente);
 			switch (r) {
-				case RESULTADO_EXITO_NORMAL, RESULTADO_EXITO_CRITICO -> {
+				case RESULTADO_EXITO_NORMAL :
+				case RESULTADO_EXITO_CRITICO :
 					final String statsNuevoObj = nuevoObj.convertirStatsAString(false);
 					final String todaInfo = nuevoObj.stringObjetoConPalo(nuevoObj.getCantidad());
 					GestorSalida.ENVIAR_ErK_RESULTADO_TRABAJO(_artesano, "O", "+", todaInfo);
 					GestorSalida.ENVIAR_ErK_RESULTADO_TRABAJO(_cliente, "O", "+", todaInfo);
 					_artesano.setForjaEc("K;" + recetaID + ";T" + _cliente.getNombre() + ";" + statsNuevoObj);
 					_cliente.setForjaEc("K;" + recetaID + ";B" + _artesano.getNombre() + ";" + statsNuevoObj);
-				}
-				case RESULTADO_FALLO_NORMAL, RESULTADO_FALLO_CRITICO -> {
+					break;
+				case RESULTADO_FALLO_NORMAL :
+				case RESULTADO_FALLO_CRITICO :
 					GestorSalida.ENVIAR_Im_INFORMACION(_artesano, "0118");
 					_artesano.setForjaEc("EF");
 					_cliente.setForjaEc("EF");
-				}
+					break;
 			}
 			int exp = Constantes.calculXpGanadaEnOficio(_statOficio.getNivel(), ingredientesPorModelo.size());
 			_statOficio.addExperiencia(_artesano, preExp(exp), Constantes.OFICIO_EXP_TIPO_CRAFT);
@@ -1144,7 +1203,26 @@ public class Trabajo implements Runnable, Exchanger {
 				} else {
 					final int tipo = ing.getObjModelo().getTipo();
 					switch (tipo) {
-						case Constantes.OBJETO_TIPO_AMULETO, Constantes.OBJETO_TIPO_ARCO, Constantes.OBJETO_TIPO_VARITA, Constantes.OBJETO_TIPO_BASTON, Constantes.OBJETO_TIPO_DAGAS, Constantes.OBJETO_TIPO_ESPADA, Constantes.OBJETO_TIPO_MARTILLO, Constantes.OBJETO_TIPO_PALA, Constantes.OBJETO_TIPO_ANILLO, Constantes.OBJETO_TIPO_CINTURON, Constantes.OBJETO_TIPO_BOTAS, Constantes.OBJETO_TIPO_SOMBRERO, Constantes.OBJETO_TIPO_CAPA, Constantes.OBJETO_TIPO_HACHA, Constantes.OBJETO_TIPO_HERRAMIENTA, Constantes.OBJETO_TIPO_PICO, Constantes.OBJETO_TIPO_GUADAÑA, Constantes.OBJETO_TIPO_MOCHILA, Constantes.OBJETO_TIPO_BALLESTA, Constantes.OBJETO_TIPO_ARMA_MAGICA -> {
+						case Constantes.OBJETO_TIPO_AMULETO :
+						case Constantes.OBJETO_TIPO_ARCO :
+						case Constantes.OBJETO_TIPO_VARITA :
+						case Constantes.OBJETO_TIPO_BASTON :
+						case Constantes.OBJETO_TIPO_DAGAS :
+						case Constantes.OBJETO_TIPO_ESPADA :
+						case Constantes.OBJETO_TIPO_MARTILLO :
+						case Constantes.OBJETO_TIPO_PALA :
+						case Constantes.OBJETO_TIPO_ANILLO :
+						case Constantes.OBJETO_TIPO_CINTURON :
+						case Constantes.OBJETO_TIPO_BOTAS :
+						case Constantes.OBJETO_TIPO_SOMBRERO :
+						case Constantes.OBJETO_TIPO_CAPA :
+						case Constantes.OBJETO_TIPO_HACHA :
+						case Constantes.OBJETO_TIPO_HERRAMIENTA :
+						case Constantes.OBJETO_TIPO_PICO :
+						case Constantes.OBJETO_TIPO_GUADAÑA :
+						case Constantes.OBJETO_TIPO_MOCHILA :
+						case Constantes.OBJETO_TIPO_BALLESTA :
+						case Constantes.OBJETO_TIPO_ARMA_MAGICA :
 							objAMaguear = ing;
 							int nuevaCantidad = objAMaguear.getCantidad() - 1;
 							if (nuevaCantidad >= 1) {
@@ -1154,7 +1232,7 @@ public class Trabajo implements Runnable, Exchanger {
 								objAMaguear.setCantidad(1);
 								GestorSalida.ENVIAR_OQ_CAMBIA_CANTIDAD_DEL_OBJETO(modificado, objAMaguear);
 							}
-						}
+							break;
 					}
 				}
 			}
@@ -1229,15 +1307,17 @@ public class Trabajo implements Runnable, Exchanger {
 			GestorSalida.ENVIAR_ErK_RESULTADO_TRABAJO(_artesano, "O", "+", todaInfo);
 			GestorSalida.ENVIAR_ErK_RESULTADO_TRABAJO(_cliente, "O", "+", todaInfo);
 			switch (r) {
-				case RESULTADO_EXITO_NORMAL, RESULTADO_EXITO_CRITICO -> {
+				case RESULTADO_EXITO_NORMAL :
+				case RESULTADO_EXITO_CRITICO :
 					final String statsNuevoObj = objAMaguear.convertirStatsAString(false);
 					_artesano.setForjaEc("K;" + objModeloID + ";T" + _cliente.getNombre() + ";" + statsNuevoObj);
 					_cliente.setForjaEc("K;" + objModeloID + ";B" + _artesano.getNombre() + ";" + statsNuevoObj);
-				}
-				case RESULTADO_FALLO_NORMAL, RESULTADO_FALLO_CRITICO -> {
+					break;
+				case RESULTADO_FALLO_NORMAL :
+				case RESULTADO_FALLO_CRITICO :
 					_artesano.setForjaEc("EF");
 					_cliente.setForjaEc("EF");
-				}
+					break;
 			}
 			int exp = Constantes.getExpForjamaguear(Constantes.getPesoStat(statMagueo) * valorRuna, objAMaguear.getObjModelo()
 			.getNivel());
@@ -1283,7 +1363,7 @@ public class Trabajo implements Runnable, Exchanger {
 				_interrumpir = MENSAJE_SIN_RESULTADO;
 				_varios = false;
 				iniciarThread();
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 	}
 	
@@ -1409,7 +1489,7 @@ public class Trabajo implements Runnable, Exchanger {
 								obj.setCantidad(obj.getCantidad() - cant);
 								GestorSalida.ENVIAR_OQ_CAMBIA_CANTIDAD_DEL_OBJETO(_cliente, obj);
 							}
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 					}
 				}
 				if (!oficio.esGratisSiFalla() || resultado) {
@@ -1431,7 +1511,7 @@ public class Trabajo implements Runnable, Exchanger {
 								Objeto nuevoOjb = obj.clonarObjeto(cant, Constantes.OBJETO_POS_NO_EQUIPADO);
 								_artesano.addObjIdentAInventario(nuevoOjb, false);
 							}
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 					}
 				}
 			}
@@ -1571,7 +1651,7 @@ public class Trabajo implements Runnable, Exchanger {
 		} else {
 			GestorSalida.ENVIAR_EMK_MOVER_OBJETO_LOCAL(artesano, 'O', "+", str);
 			GestorSalida.ENVIAR_EmK_MOVER_OBJETO_DISTANTE(cliente, 'O', "+", str + add);
-			objMovedor.add(new Duo<>(objetoID, cantidad));
+			objMovedor.add(new Duo<Integer, Integer>(objetoID, cantidad));
 		}
 	}
 	
@@ -1593,7 +1673,7 @@ public class Trabajo implements Runnable, Exchanger {
 			} else {
 				GestorSalida.ENVIAR_Ep_PAGO_TRABAJO_KAMAS_OBJETOS(_artesano, pagoID, "O", "+", str + add);
 				GestorSalida.ENVIAR_Ep_PAGO_TRABAJO_KAMAS_OBJETOS(_cliente, pagoID, "O", "+", str);
-				_objetosPago.add(new Duo<>(idObj, cant));
+				_objetosPago.add(new Duo<Integer, Integer>(idObj, cant));
 			}
 		} else {
 			final Duo<Integer, Integer> duo = Mundo.getDuoPorIDPrimero(_objetosSiSeConsegui, idObj);
@@ -1605,7 +1685,7 @@ public class Trabajo implements Runnable, Exchanger {
 			} else {
 				GestorSalida.ENVIAR_Ep_PAGO_TRABAJO_KAMAS_OBJETOS(_artesano, pagoID, "O", "+", str + add);
 				GestorSalida.ENVIAR_Ep_PAGO_TRABAJO_KAMAS_OBJETOS(_cliente, pagoID, "O", "+", str);
-				_objetosSiSeConsegui.add(new Duo<>(idObj, cant));
+				_objetosSiSeConsegui.add(new Duo<Integer, Integer>(idObj, cant));
 			}
 		}
 	}

@@ -6,17 +6,17 @@ import java.util.TreeMap;
 
 public class CreaTuItem {
 	public static Map<Integer, Float> PRECIOS = new TreeMap<>();
-	private final int _id;
-	private final Map<Integer, Integer> _statsMaximos = new TreeMap<>();
-	private final int _maxOgrinas;
-	private final int _precioBase;
+	private int _id;
+	private Map<Integer, Integer> _statsMaximos = new TreeMap<>();
+	private int _maxOgrinas;
+	private int _precioBase;
 	
 	public CreaTuItem(int _id, String _statsMaximos, int _maxOgrinas, int precioBase) {
 		this._id = _id;
 		for (String s : _statsMaximos.split("\\|")) {
 			try {
 				this._statsMaximos.put(Integer.parseInt(s.split(",")[0]), Integer.parseInt(s.split(",")[1]));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		this._maxOgrinas = _maxOgrinas;
 		this._precioBase = precioBase;
@@ -39,7 +39,7 @@ public class CreaTuItem {
 			if (s.length() > 0) {
 				s.append(",");
 			}
-			s.append(entry.getKey()).append("*").append(entry.getValue());
+			s.append(entry.getKey() + "*" + entry.getValue());
 		}
 		return s.toString();
 	}

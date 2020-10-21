@@ -3,10 +3,9 @@ package variables.personaje;
 import estaticos.Constantes;
 
 public class SetRapido {
-	private final int _id;
-    private final int _icono;
-	private final int[] _objetos = new int[18];
-	private final String _nombre;
+	private int _id, _icono;
+	private int[] _objetos = new int[18];
+	private String _nombre;
 	
 	public SetRapido(int id, String nombre, int icono, String data) {
 		_id = id;
@@ -20,7 +19,7 @@ public class SetRapido {
 			int posObjeto = Integer.parseInt(s.split(",")[1]);
 			try {
 				_objetos[posObjeto] = idObjeto;
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 	}
 	
@@ -58,7 +57,7 @@ public class SetRapido {
 			if (data.length() > 0) {
 				data.append(";");
 			}
-			data.append(_objetos[i]).append(",").append(i);
+			data.append(_objetos[i] + "," + i);
 		}
 		return _id + "|" + _nombre + "|" + _icono + "|" + data.toString();
 	}

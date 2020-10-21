@@ -27,14 +27,13 @@ public class Prisma implements PreLuchador {
 	private long _tiempoProteccion;
 	private final Mapa _mapa;
 	private final Celda _celda;
-	private final short _idMob;
-	private final short _gfx;
-	private final Area _area;
-	private final SubArea _subArea;
+	private short _idMob, _gfx;
+	private Area _area;
+	private SubArea _subArea;
 	private Pelea _pelea;
 	private final Stats _stats = new Stats();
 	private final TotalStats _totalStats = new TotalStats(_stats, null, new Stats(), null, 4);
-	private final Map<Integer, StatHechizo> _hechizos = new TreeMap<>();
+	private final Map<Integer, StatHechizo> _hechizos = new TreeMap<Integer, StatHechizo>();
 	
 	// public void destruir() {
 	// try {
@@ -173,9 +172,9 @@ public class Prisma implements PreLuchador {
 			if (perso == null) {
 				continue;
 			}
-			str.append("|").append(Integer.toString(perso.getID(), 36)).append(";");
-			str.append(perso.getNombre()).append(";");
-			str.append(perso.getNivel()).append(";");
+			str.append("|" + Integer.toString(perso.getID(), 36) + ";");
+			str.append(perso.getNombre() + ";");
+			str.append(perso.getNivel() + ";");
 		}
 		return str.toString();
 	}
@@ -188,10 +187,10 @@ public class Prisma implements PreLuchador {
 			if (perso == null) {
 				continue;
 			}
-			str.append("|").append(Integer.toString(perso.getID(), 36)).append(";");
-			str.append(perso.getNombre()).append(";");
-			str.append(perso.getGfxID(false)).append(";");
-			str.append(perso.getNivel()).append(";");
+			str.append("|" + Integer.toString(perso.getID(), 36) + ";");
+			str.append(perso.getNombre() + ";");
+			str.append(perso.getGfxID(false) + ";");
+			str.append(perso.getNivel() + ";");
 			if (_pelea.cantLuchDeEquipo(2) >= 8) {
 				str.append("1;");
 			} else {
@@ -255,8 +254,8 @@ public class Prisma implements PreLuchador {
 	public String stringGMLuchador() {
 		StringBuilder str = new StringBuilder();
 		str.append("-2;");
-		str.append(_alineacion == 1 ? 8101 : 8100).append("^100;");
-		str.append(_nivel).append(";");
+		str.append((_alineacion == 1 ? 8101 : 8100) + "^100;");
+		str.append(_nivel + ";");
 		str.append("-1;-1;-1;");
 		str.append("0,0,0,0;");
 		return str.toString();

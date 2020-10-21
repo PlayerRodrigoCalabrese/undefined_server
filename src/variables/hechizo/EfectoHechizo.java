@@ -61,19 +61,19 @@ public class EfectoHechizo {
 		final String[] split = _args.split(",");
 		try {
 			_primerValor = Integer.parseInt(split[0]);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		try {
 			_segundoValor = Integer.parseInt(split[1]);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		try {
 			_tercerValor = Integer.parseInt(split[2]);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		try {
 			_duracion = Integer.parseInt(split[3]);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		try {
 			_suerte = Byte.parseByte(split[4]);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		if (_duracion <= -1) {
 			_duracion = -3;
 		}
@@ -172,12 +172,12 @@ public class EfectoHechizo {
 					if (!split[0].equals("null")) {
 						max = Math.max(max, Integer.parseInt(split[0]));
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				try {
 					if (!split[1].equals("null")) {
 						max = Math.max(max, Integer.parseInt(split[1]));
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				return max;
 		}
 	}
@@ -199,48 +199,83 @@ public class EfectoHechizo {
 	}
 	
 	public static int getStatPorEfecto(final int efecto) {
-		return switch (efecto) {
-			case Constantes.STAT_ROBA_PM, 169 -> Constantes.STAT_MENOS_PM;
-			case Constantes.STAT_ROBA_PA, 168 -> Constantes.STAT_MENOS_PA;
-			case 266 -> Constantes.STAT_MENOS_SUERTE;
-			case 267 -> Constantes.STAT_MENOS_VITALIDAD;
-			case 268 -> Constantes.STAT_MENOS_AGILIDAD;
-			case 269 -> Constantes.STAT_MENOS_INTELIGENCIA;
-			case 270 -> Constantes.STAT_MENOS_SABIDURIA;
-			case 271 -> Constantes.STAT_MENOS_FUERZA;
-			case Constantes.STAT_ROBA_ALCANCE -> Constantes.STAT_MENOS_ALCANCE;
-			case 606 -> Constantes.STAT_MAS_SABIDURIA;
-			case 607 -> Constantes.STAT_MAS_FUERZA;
-			case 608 -> Constantes.STAT_MAS_SUERTE;
-			case 609 -> Constantes.STAT_MAS_AGILIDAD;
-			case 610 -> Constantes.STAT_MAS_VITALIDAD;
-			case 611 -> Constantes.STAT_MAS_INTELIGENCIA;
-			default -> efecto;
-		};
+		switch (efecto) {
+			case Constantes.STAT_ROBA_PM :
+			case 169 :
+				return Constantes.STAT_MENOS_PM;
+			case Constantes.STAT_ROBA_PA :
+			case 168 :
+				return Constantes.STAT_MENOS_PA;
+			case 266 :
+				return Constantes.STAT_MENOS_SUERTE;
+			case 267 :
+				return Constantes.STAT_MENOS_VITALIDAD;
+			case 268 :
+				return Constantes.STAT_MENOS_AGILIDAD;
+			case 269 :
+				return Constantes.STAT_MENOS_INTELIGENCIA;
+			case 270 :
+				return Constantes.STAT_MENOS_SABIDURIA;
+			case 271 :
+				return Constantes.STAT_MENOS_FUERZA;
+			case Constantes.STAT_ROBA_ALCANCE :
+				return Constantes.STAT_MENOS_ALCANCE;
+			case 606 :
+				return Constantes.STAT_MAS_SABIDURIA;
+			case 607 :
+				return Constantes.STAT_MAS_FUERZA;
+			case 608 :
+				return Constantes.STAT_MAS_SUERTE;
+			case 609 :
+				return Constantes.STAT_MAS_AGILIDAD;
+			case 610 :
+				return Constantes.STAT_MAS_VITALIDAD;
+			case 611 :
+				return Constantes.STAT_MAS_INTELIGENCIA;
+		}
+		return efecto;
 	}
 	
 	private static int getStatContrario(int efecto) {
-		return switch (efecto) {
-			case Constantes.STAT_MAS_PM -> Constantes.STAT_MENOS_PM;
-			case Constantes.STAT_MAS_PA -> Constantes.STAT_MENOS_PA;
-			case Constantes.STAT_MAS_SUERTE -> Constantes.STAT_MENOS_SUERTE;
-			case Constantes.STAT_MAS_VITALIDAD -> Constantes.STAT_MENOS_VITALIDAD;
-			case Constantes.STAT_MAS_AGILIDAD -> Constantes.STAT_MENOS_AGILIDAD;
-			case Constantes.STAT_MAS_INTELIGENCIA -> Constantes.STAT_MENOS_INTELIGENCIA;
-			case Constantes.STAT_MAS_SABIDURIA -> Constantes.STAT_MENOS_SABIDURIA;
-			case Constantes.STAT_MAS_FUERZA -> Constantes.STAT_MENOS_FUERZA;
-			case Constantes.STAT_MAS_ALCANCE -> Constantes.STAT_MENOS_ALCANCE;
-			case Constantes.STAT_MENOS_PM -> Constantes.STAT_MAS_PM;
-			case Constantes.STAT_MENOS_PA -> Constantes.STAT_MAS_PA;
-			case Constantes.STAT_MENOS_SUERTE -> Constantes.STAT_MAS_SUERTE;
-			case Constantes.STAT_MENOS_VITALIDAD -> Constantes.STAT_MAS_VITALIDAD;
-			case Constantes.STAT_MENOS_AGILIDAD -> Constantes.STAT_MAS_AGILIDAD;
-			case Constantes.STAT_MENOS_INTELIGENCIA -> Constantes.STAT_MAS_INTELIGENCIA;
-			case Constantes.STAT_MENOS_SABIDURIA -> Constantes.STAT_MAS_SABIDURIA;
-			case Constantes.STAT_MENOS_FUERZA -> Constantes.STAT_MAS_FUERZA;
-			case Constantes.STAT_MENOS_ALCANCE -> Constantes.STAT_MAS_ALCANCE;
-			default -> efecto;
-		};
+		switch (efecto) {
+			case Constantes.STAT_MAS_PM :
+				return Constantes.STAT_MENOS_PM;
+			case Constantes.STAT_MAS_PA :
+				return Constantes.STAT_MENOS_PA;
+			case Constantes.STAT_MAS_SUERTE :
+				return Constantes.STAT_MENOS_SUERTE;
+			case Constantes.STAT_MAS_VITALIDAD :
+				return Constantes.STAT_MENOS_VITALIDAD;
+			case Constantes.STAT_MAS_AGILIDAD :
+				return Constantes.STAT_MENOS_AGILIDAD;
+			case Constantes.STAT_MAS_INTELIGENCIA :
+				return Constantes.STAT_MENOS_INTELIGENCIA;
+			case Constantes.STAT_MAS_SABIDURIA :
+				return Constantes.STAT_MENOS_SABIDURIA;
+			case Constantes.STAT_MAS_FUERZA :
+				return Constantes.STAT_MENOS_FUERZA;
+			case Constantes.STAT_MAS_ALCANCE :
+				return Constantes.STAT_MENOS_ALCANCE;
+			case Constantes.STAT_MENOS_PM :
+				return Constantes.STAT_MAS_PM;
+			case Constantes.STAT_MENOS_PA :
+				return Constantes.STAT_MAS_PA;
+			case Constantes.STAT_MENOS_SUERTE :
+				return Constantes.STAT_MAS_SUERTE;
+			case Constantes.STAT_MENOS_VITALIDAD :
+				return Constantes.STAT_MAS_VITALIDAD;
+			case Constantes.STAT_MENOS_AGILIDAD :
+				return Constantes.STAT_MAS_AGILIDAD;
+			case Constantes.STAT_MENOS_INTELIGENCIA :
+				return Constantes.STAT_MAS_INTELIGENCIA;
+			case Constantes.STAT_MENOS_SABIDURIA :
+				return Constantes.STAT_MAS_SABIDURIA;
+			case Constantes.STAT_MENOS_FUERZA :
+				return Constantes.STAT_MAS_FUERZA;
+			case Constantes.STAT_MENOS_ALCANCE :
+				return Constantes.STAT_MAS_ALCANCE;
+		}
+		return efecto;
 	}
 	
 	static String convertirArgs(int valor, int efectoID, String args) {
@@ -250,15 +285,47 @@ public class EfectoHechizo {
 		String[] splits = args.split(",");
 		String valMax = "-1";
 		switch (efectoID) {
-// armaduras
-			case 81, 85, 86, 87, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 107, 108, 220, 265 -> {
+			case 81 :// Cura, PDV devueltos
+			case 85 :// Daños Agua %vida del atacante
+			case 86 :// Daños Tierra %vida del atacante
+			case 87 :// Daños Aire %vida del atacante
+			case 88 :// Daños Fuego %vida del atacante
+			case 89 :// Daños Neutral %vida del atacante
+			case 91 :// Robar Vida(agua)
+			case 92 :// Robar Vida(tierra)
+			case 93 :// Robar Vida(aire)
+			case 94 :// Robar Vida(fuego)
+			case 95 :// Robar Vida(neutral)
+			case 96 :// Daños Agua
+			case 97 :// Daños Tierra
+			case 98 :// Daños Aire
+			case 99 :// Daños Fuego
+			case 100 :// Daños Neutral
+			case 107 :// reenvia daños
+			case 108 :// Cura, PDV devueltos
+			case 220 :// reenvia daños
+			case 265 :// armaduras
 				valor = Integer.parseInt(splits[0]);
 				if (!splits[1].equals(valor + "")) {
 					valMax = splits[1];
 				}
-			}
-// Castigo X durante Y turnos
-			case 9, 79, 106, 131, 165, 181, 293, 301, 302, 303, 304, 305, 787, 788 -> valMax = splits[1];
+				break;
+			case 9 :// Esquiva un X% del ataque haciendolo retroceder Y casillas
+			case 79 :// + X % de posibilidades de que sufras daños x X, o de que te cure x Y
+			case 106 :// reenvio de hechizo
+			case 131 :// Veneno : X Pdv por PA
+			case 165 :// Aumenta los daños % del arma
+			case 181 :// Invoca una criatura
+			case 293 :// Aumenta los daños de base del hechizo X de Y
+			case 301 :// Efecto de hechizo
+			case 302 :
+			case 303 :
+			case 304 :
+			case 305 :
+			case 787 :// Activa un hechizo despues de turnos
+			case 788 :// Castigo X durante Y turnos
+				valMax = splits[1];
+				break;
 		}
 		String argsF = valor + "," + valMax + "," + splits[2] + "," + splits[3] + "," + splits[4];
 		return argsF;
@@ -368,7 +435,7 @@ public class EfectoHechizo {
 					int nroCasillas = 0;
 					try {
 						nroCasillas = Integer.parseInt(buff.getArgs().split(",")[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					efectoEmpujones(pelea, lanzador, objetivo, lanzador.getCeldaPelea(), objetivo.getCeldaPelea(), nroCasillas,
 					true);
 					daño = 0;
@@ -390,7 +457,7 @@ public class EfectoHechizo {
 						} else {
 							daño *= coefDaño;
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					break;
 				case 304 ://
 					for (Luchador o : pelea.luchadoresDeEquipo(3)) {
@@ -442,7 +509,7 @@ public class EfectoHechizo {
 					int max = 0;
 					try {
 						max = Integer.parseInt(buff.getArgs().split(",")[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					max -= objetivo.getBonusCastigo(stat);
 					if (max <= 0 || bonusGanado <= 0) {
 						continue;
@@ -523,7 +590,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 5, lanzador.getID() + "", objetivo.getID() + "," + nuevaCeldaID);
 				try {
 					Thread.sleep((int) (300 + (200 * Math.sqrt(nCeldasAMover))));
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 		}
 		if (dañoEmpuje > 0) {
@@ -624,7 +691,7 @@ public class EfectoHechizo {
 			retorno = sacrificado;
 			try {
 				Thread.sleep(250);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		if (retorno.tieneBuff(766)) {// intercepcion de daños (no cambia de posicion)
 			if (retorno.esEstatico() || retorno.estaMuerto()) {
@@ -667,30 +734,34 @@ public class EfectoHechizo {
 			for (final Buff buff : afectado.getBuffsPorEfectoID(efectoID)) {// daños reducidos
 				int statComplementario = Constantes.STAT_MAS_INTELIGENCIA;
 				switch (buff.getHechizoID()) {
-					case 1, 452 -> {
+					case 1 :// incandescente
+					case 452 :
 						if (elementoID != Constantes.ELEMENTO_FUEGO) {
 							continue;
 						}
 						statComplementario = Constantes.STAT_MAS_INTELIGENCIA;
-					}
-					case 6, 453 -> {
+						break;
+					case 6 :// terrestre
+					case 453 :
 						if (elementoID != Constantes.ELEMENTO_NEUTRAL && elementoID != Constantes.ELEMENTO_TIERRA) {
 							continue;
 						}
 						statComplementario = Constantes.STAT_MAS_FUERZA;
-					}
-					case 14, 454 -> {
+						break;
+					case 14 :// ventisca
+					case 454 :
 						if (elementoID != Constantes.ELEMENTO_AIRE) {
 							continue;
 						}
 						statComplementario = Constantes.STAT_MAS_AGILIDAD;
-					}
-					case 18, 451 -> {
+						break;
+					case 18 :// acuosa
+					case 451 :
 						if (elementoID != Constantes.ELEMENTO_AGUA) {
 							continue;
 						}
 						statComplementario = Constantes.STAT_MAS_SUERTE;
-					}
+						break;
 				}
 				Luchador lTemp = buff.getLanzador();
 				if (efectoID == Constantes.STAT_MAS_DAÑOS_REDUCIDOS_NO_FECA) {
@@ -785,10 +856,12 @@ public class EfectoHechizo {
 		StringBuilder info = null;
 		if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 			info = new StringBuilder();
-			info.append("SpellID: ").append(hechizoID).append(" TargetID: ").append(objetivo.getID()).append(" CaC: ").append(esCaC).append(" GC: ").append(esGC).append(" DmgStart: ").append(dañoInicial);
+			info.append("SpellID: " + hechizoID + " TargetID: " + objetivo.getID() + " CaC: " + esCaC + " GC: " + esGC
+			+ " DmgStart: " + dañoInicial);
 		}
 		switch (elemento) {
-			case Constantes.ELEMENTO_NEUTRAL + 10, Constantes.ELEMENTO_NEUTRAL -> {
+			case Constantes.ELEMENTO_NEUTRAL + 10 :
+			case Constantes.ELEMENTO_NEUTRAL :
 				statC = tStatsLanzador.getTotalStatConComplemento(Constantes.STAT_MAS_FUERZA);
 				masDaños = tStatsLanzador.getTotalStatConComplemento(Constantes.STAT_MAS_DAÑO_FISICO);
 				masDaños = tStatsLanzador.getTotalStatConComplemento(Constantes.STAT_MAS_DAÑOS_DE_NEUTRAL);
@@ -796,13 +869,17 @@ public class EfectoHechizo {
 				resPorcO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_PORC_NEUTRAL);
 				redFis = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_REDUCCION_FISICA);
 				switch (pelea.getTipoPelea()) {
-					case Constantes.PELEA_TIPO_DESAFIO, Constantes.PELEA_TIPO_KOLISEO, Constantes.PELEA_TIPO_PVP, Constantes.PELEA_TIPO_RECAUDADOR -> {
+					case Constantes.PELEA_TIPO_DESAFIO :
+					case Constantes.PELEA_TIPO_KOLISEO :
+					case Constantes.PELEA_TIPO_PVP :
+					case Constantes.PELEA_TIPO_RECAUDADOR :
 						resPorcO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_PORC_PVP_NEUTRAL);
 						resMasO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_FIJA_PVP_NEUTRAL);
-					}
+						break;
 				}
-			}
-			case Constantes.ELEMENTO_TIERRA + 10, Constantes.ELEMENTO_TIERRA -> {
+				break;
+			case Constantes.ELEMENTO_TIERRA + 10 :
+			case Constantes.ELEMENTO_TIERRA :
 				statC = tStatsLanzador.getTotalStatConComplemento(Constantes.STAT_MAS_FUERZA);
 				masDaños = tStatsLanzador.getTotalStatConComplemento(Constantes.STAT_MAS_DAÑO_FISICO);
 				masDaños = tStatsLanzador.getTotalStatConComplemento(Constantes.STAT_MAS_DAÑOS_DE_TIERRA);
@@ -810,51 +887,66 @@ public class EfectoHechizo {
 				resPorcO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_PORC_TIERRA);
 				redFis = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_REDUCCION_FISICA);
 				switch (pelea.getTipoPelea()) {
-					case Constantes.PELEA_TIPO_DESAFIO, Constantes.PELEA_TIPO_KOLISEO, Constantes.PELEA_TIPO_PVP, Constantes.PELEA_TIPO_RECAUDADOR -> {
+					case Constantes.PELEA_TIPO_DESAFIO :
+					case Constantes.PELEA_TIPO_KOLISEO :
+					case Constantes.PELEA_TIPO_PVP :
+					case Constantes.PELEA_TIPO_RECAUDADOR :
 						resPorcO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_PORC_PVP_TIERRA);
 						resMasO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_FIJA_PVP_TIERRA);
-					}
+						break;
 				}
-			}
-			case Constantes.ELEMENTO_FUEGO + 10, Constantes.ELEMENTO_FUEGO -> {
+				break;
+			case Constantes.ELEMENTO_FUEGO + 10 :
+			case Constantes.ELEMENTO_FUEGO :
 				statC = tStatsLanzador.getTotalStatConComplemento(Constantes.STAT_MAS_INTELIGENCIA);
 				masDaños = tStatsLanzador.getTotalStatConComplemento(Constantes.STAT_MAS_DAÑOS_DE_FUEGO);
 				resMasO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_FIJA_FUEGO);
 				resPorcO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_PORC_FUEGO);
 				redMag = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_REDUCCION_MAGICA);
 				switch (pelea.getTipoPelea()) {
-					case Constantes.PELEA_TIPO_DESAFIO, Constantes.PELEA_TIPO_KOLISEO, Constantes.PELEA_TIPO_PVP, Constantes.PELEA_TIPO_RECAUDADOR -> {
+					case Constantes.PELEA_TIPO_DESAFIO :
+					case Constantes.PELEA_TIPO_KOLISEO :
+					case Constantes.PELEA_TIPO_PVP :
+					case Constantes.PELEA_TIPO_RECAUDADOR :
 						resPorcO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_PORC_PVP_FUEGO);
 						resMasO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_FIJA_PVP_FUEGO);
-					}
+						break;
 				}
-			}
-			case Constantes.ELEMENTO_AGUA + 10, Constantes.ELEMENTO_AGUA -> {
+				break;
+			case Constantes.ELEMENTO_AGUA + 10 :
+			case Constantes.ELEMENTO_AGUA :
 				statC = tStatsLanzador.getTotalStatConComplemento(Constantes.STAT_MAS_SUERTE);
 				masDaños = tStatsLanzador.getTotalStatConComplemento(Constantes.STAT_MAS_DAÑOS_DE_AGUA);
 				resMasO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_FIJA_AGUA);
 				resPorcO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_PORC_AGUA);
 				redMag = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_REDUCCION_MAGICA);
 				switch (pelea.getTipoPelea()) {
-					case Constantes.PELEA_TIPO_DESAFIO, Constantes.PELEA_TIPO_KOLISEO, Constantes.PELEA_TIPO_PVP, Constantes.PELEA_TIPO_RECAUDADOR -> {
+					case Constantes.PELEA_TIPO_DESAFIO :
+					case Constantes.PELEA_TIPO_KOLISEO :
+					case Constantes.PELEA_TIPO_PVP :
+					case Constantes.PELEA_TIPO_RECAUDADOR :
 						resPorcO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_PORC_PVP_AGUA);
 						resMasO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_FIJA_PVP_AGUA);
-					}
+						break;
 				}
-			}
-			case Constantes.ELEMENTO_AIRE + 10, Constantes.ELEMENTO_AIRE -> {
+				break;
+			case Constantes.ELEMENTO_AIRE + 10 :
+			case Constantes.ELEMENTO_AIRE :
 				statC = tStatsLanzador.getTotalStatConComplemento(Constantes.STAT_MAS_AGILIDAD);
 				masDaños = tStatsLanzador.getTotalStatConComplemento(Constantes.STAT_MAS_DAÑOS_DE_AIRE);
 				resMasO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_FIJA_AIRE);
 				resPorcO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_PORC_AIRE);
 				redMag = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_REDUCCION_MAGICA);
 				switch (pelea.getTipoPelea()) {
-					case Constantes.PELEA_TIPO_DESAFIO, Constantes.PELEA_TIPO_KOLISEO, Constantes.PELEA_TIPO_PVP, Constantes.PELEA_TIPO_RECAUDADOR -> {
+					case Constantes.PELEA_TIPO_DESAFIO :
+					case Constantes.PELEA_TIPO_KOLISEO :
+					case Constantes.PELEA_TIPO_PVP :
+					case Constantes.PELEA_TIPO_RECAUDADOR :
 						resPorcO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_PORC_PVP_AIRE);
 						resMasO = tStatsObjetivo.getTotalStatConComplemento(Constantes.STAT_MAS_RES_FIJA_PVP_AIRE);
-					}
+						break;
 				}
-			}
+				break;
 		}
 		if (elemento >= 10) {
 			elemento -= 10;
@@ -868,7 +960,9 @@ public class EfectoHechizo {
 		multiplicaDaños = tStatsLanzador.getTotalStatParaMostrar(Constantes.STAT_MULTIPLICA_DAÑOS);
 		if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 			info.append("\n");
-			info.append("PtsStats: ").append(statC).append(" +Dmg: ").append(masDaños).append(" %Dmg: ").append(porcDaños).append(" +ResTarget: ").append(resMasO).append(" %ResTarget: ").append(resPorcO).append(" RedMagTarget: ").append(redMag).append(" RedPhyTarget: ").append(redFis).append(" xDmg: ").append(multiplicaDaños);
+			info.append("PtsStats: " + statC + " +Dmg: " + masDaños + " %Dmg: " + porcDaños + " +ResTarget: " + resMasO
+			+ " %ResTarget: " + resPorcO + " RedMagTarget: " + redMag + " RedPhyTarget: " + redFis + " xDmg: "
+			+ multiplicaDaños);
 		}
 		// resPorcO = maxResistencia(objetivo, resPorcO);
 		int armaClase = 90;
@@ -953,9 +1047,9 @@ public class EfectoHechizo {
 						break;
 				}
 				if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
-					info.append(" %DmgWeapon: ").append(dominioArma).append(" ClasseWeapon: ").append(armaClase);
+					info.append(" %DmgWeapon: " + dominioArma + " ClasseWeapon: " + armaClase);
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		if (statC < 0) {
 			statC = 0;
@@ -966,7 +1060,7 @@ public class EfectoHechizo {
 			porcDaños += porcTrampa;
 			masDaños += masTrampa;
 			if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
-				info.append(" %DmgTrap: ").append(porcTrampa).append(" +DmgTrap: ").append(masTrampa);
+				info.append(" %DmgTrap: " + porcTrampa + " +DmgTrap: " + masTrampa);
 			}
 		}
 		if (multiplicaDaños < 1) {
@@ -975,19 +1069,21 @@ public class EfectoHechizo {
 		if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 			info.append("\n");
 			info.append("Formule: ");
-			info.append("DmgFinal = DmgStart X xDmg {").append(dañoInicial).append(" * ").append(multiplicaDaños).append("}");
+			info.append("DmgFinal = DmgStart X xDmg {" + dañoInicial + " * " + multiplicaDaños + "}");
 		}
 		float dañoFinal = dañoInicial * multiplicaDaños;
 		if (esCaC) {
 			if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 				info.append("\n");
-				info.append("DmgFinal = DmgFinal X ((100 + %DmgWeapon) / 100) X (ClasseWeapon / 100)   {").append(dañoFinal).append(" * ").append(" ((100 + ").append(dominioArma).append(") / 100f) * (").append(armaClase).append("/ 100f)}");
+				info.append("DmgFinal = DmgFinal X ((100 + %DmgWeapon) / 100) X (ClasseWeapon / 100)   {" + dañoFinal + " * "
+				+ " ((100 + " + dominioArma + ") / 100f) * (" + armaClase + "/ 100f)}");
 			}
 			dañoFinal = (dañoFinal * ((100 + dominioArma) / 100f) * (armaClase / 100f));
 		}
 		if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 			info.append("\n");
-			info.append("DmgFinal = (DmgFinal X (100 + PtsStats + %Dmg) / 100) + +Dmg   {(").append(dañoFinal).append(" * ").append(" (100 + ").append(statC).append(" + ").append(porcDaños).append(") / 100f) + ").append(masDaños).append(" }");
+			info.append("DmgFinal = (DmgFinal X (100 + PtsStats + %Dmg) / 100) + +Dmg   {(" + dañoFinal + " * " + " (100 + "
+			+ statC + " + " + porcDaños + ") / 100f) + " + masDaños + " }");
 		}
 		dañoFinal = (dañoFinal * (100 + statC + porcDaños) / 100f);
 		dañoFinal += masDaños;
@@ -996,7 +1092,8 @@ public class EfectoHechizo {
 			int redDañoCritico = tStatsObjetivo.getTotalStatParaMostrar(Constantes.STAT_MAS_REDUCCION_CRITICOS);
 			if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 				info.append("\n");
-				info.append("DmgFinal = DmgFinal + +DmgCritique - +RedCritTarget  {").append(dañoFinal).append(" + ").append(dañoCritico).append(" + ").append(redDañoCritico).append("}");
+				info.append("DmgFinal = DmgFinal + +DmgCritique - +RedCritTarget  {" + dañoFinal + " + " + dañoCritico + " + "
+				+ redDañoCritico + "}");
 			}
 			dañoFinal += dañoCritico;
 			dañoFinal -= redDañoCritico;
@@ -1029,13 +1126,15 @@ public class EfectoHechizo {
 		int dañoReducido = (int) (dañoFinal * resPorcO / 100f);
 		if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 			info.append("\n");
-			info.append("DmgFinal = DmgFinal - (DmgFinal X  %ResTarget / 100)  {").append(dañoFinal).append(" - (").append(dañoFinal).append(" * ").append(resPorcO).append(" / 100f)}");
+			info.append("DmgFinal = DmgFinal - (DmgFinal X  %ResTarget / 100)  {" + dañoFinal + " - (" + dañoFinal + " * "
+			+ resPorcO + " / 100f)}");
 		}
 		dañoFinal -= dañoReducido;
 		int resistencias = resMasO + redMag + redFis + redArmadO;
 		if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 			info.append("\n");
-			info.append("DmgFinal = DmgFinal - (ResistElem + RedMagic + RedPhysic + ArmSpell)  {").append(dañoFinal).append(" - (").append(resMasO).append(" + ").append(redMag).append(" + ").append(redFis).append(" + ").append(redArmadO).append(")}");
+			info.append("DmgFinal = DmgFinal - (ResistElem + RedMagic + RedPhysic + ArmSpell)  {" + dañoFinal + " - ("
+			+ resMasO + " + " + redMag + " + " + redFis + " + " + redArmadO + ")}");
 		}
 		dañoFinal -= resistencias;
 		if (dañoFinal < 0) {
@@ -1045,14 +1144,24 @@ public class EfectoHechizo {
 			if (b.getCondicionBuff().isEmpty()) {
 				continue;
 			}
-			String condicion = switch (elemento) {
-				case Constantes.ELEMENTO_NEUTRAL -> "N";
-				case Constantes.ELEMENTO_TIERRA -> "E";
-				case Constantes.ELEMENTO_FUEGO -> "F";
-				case Constantes.ELEMENTO_AGUA -> "W";
-				case Constantes.ELEMENTO_AIRE -> "A";
-				default -> "";
-			};
+			String condicion = "";
+			switch (elemento) {
+				case Constantes.ELEMENTO_NEUTRAL :
+					condicion = "N";
+					break;
+				case Constantes.ELEMENTO_TIERRA :
+					condicion = "E";
+					break;
+				case Constantes.ELEMENTO_FUEGO :
+					condicion = "F";
+					break;
+				case Constantes.ELEMENTO_AGUA :
+					condicion = "W";
+					break;
+				case Constantes.ELEMENTO_AIRE :
+					condicion = "A";
+					break;
+			}
 			if (b.getCondicionBuff().contains("DMG_ALL") || b.getCondicionBuff().contains("DMG_" + condicion) || (b
 			.getCondicionBuff().contains("D_") && b.getCondicionBuff().contains(condicion))) {
 				b.aplicarBuffCondicional(objetivo);
@@ -1070,12 +1179,14 @@ public class EfectoHechizo {
 				if (exitoReto != Reto.EstReto.EN_ESPERA) {
 					continue;
 				}
-				if (retoID == Constantes.RETO_BLITZKRIEG) {
-					if (objetivo.getEquipoBin() == 1) {
-						if (reto.getLuchMob() == null) {
-							reto.setMob(objetivo);
+				switch (retoID) {
+					case Constantes.RETO_BLITZKRIEG :
+						if (objetivo.getEquipoBin() == 1) {
+							if (reto.getLuchMob() == null) {
+								reto.setMob(objetivo);
+							}
 						}
-					}
+						break;
 				}
 			}
 		}
@@ -1144,7 +1255,7 @@ public class EfectoHechizo {
 			if (afectados.length() > 0) {
 				afectados.append("¬");
 			}
-			afectados.append(objetivo.getID()).append(",").append(-valor);
+			afectados.append(objetivo.getID() + "," + (-valor));
 		}
 		return valor;
 	}
@@ -1664,33 +1775,30 @@ public class EfectoHechizo {
 			final ArrayList<Buff> buffs = new ArrayList<>();
 			boolean tiene = false;
 			switch (_tercerValor) {
-// eskerdikat
-				case 2201 -> {
+				case 2201 :// eskerdikat
 					if (objetivo.tieneEstado(63)) {
 						objetivo.setEstado(63, 0);
 					}
 					if (objetivo.tieneEstado(62)) {
 						objetivo.setEstado(62, 0);
 					}
-				}
-// zobal
-				case 2207 -> {
+					break;
+				case 2207 :// zobal
 					if (objetivo.tieneEstado(64)) {
 						objetivo.setEstado(64, 0);
 					}
 					if (objetivo.tieneEstado(62)) {
 						objetivo.setEstado(62, 0);
 					}
-				}
-// saikopat
-				case 2209 -> {
+					break;
+				case 2209 :// saikopat
 					if (objetivo.tieneEstado(64)) {
 						objetivo.setEstado(64, 0);
 					}
 					if (objetivo.tieneEstado(63)) {
 						objetivo.setEstado(63, 0);
 					}
-				}
+					break;
 			}
 			for (final Buff buff : objetivo.getBuffsPelea()) {
 				if (buff.getHechizoID() != _tercerValor) {
@@ -1726,7 +1834,7 @@ public class EfectoHechizo {
 		.getID());
 		try {
 			Thread.sleep(500);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		verificaTrampas(lanzador);
 	}
 	
@@ -1851,7 +1959,7 @@ public class EfectoHechizo {
 		.getID());
 		try {
 			Thread.sleep(500);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		verificaTrampas(objetivo);
 		verificaTrampas(lanzador);
 	}
@@ -1860,7 +1968,7 @@ public class EfectoHechizo {
 	private void efecto_Buff_Valor_Fijo(final ArrayList<Luchador> objetivos, final Pelea pelea, Luchador lanzador,
 	Celda celdaObjetivo) {
 		int efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<>();
+		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
 				continue;
@@ -1894,7 +2002,7 @@ public class EfectoHechizo {
 		GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 50, lanzador.getID() + "", "" + objetivo.getID());
 		try {
 			Thread.sleep(500);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	// lanza a un jugador
@@ -1908,7 +2016,7 @@ public class EfectoHechizo {
 		GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 51, lanzador.getID() + "", celdaObjetivo.getID() + "");
 		try {
 			Thread.sleep(1000);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		pelea.quitarTransportados(lanzador);
 	}
 	
@@ -1952,7 +2060,7 @@ public class EfectoHechizo {
 				if (afectados.length() > 0) {
 					afectados.append("¬");
 				}
-				afectados.append(objetivo.getID()).append(",").append(-perdidos).append(",").append(duracionFinal(objetivo));
+				afectados.append(objetivo.getID() + "," + (-perdidos) + "," + duracionFinal(objetivo));
 				ganados += perdidos;
 			}
 		}
@@ -1974,14 +2082,14 @@ public class EfectoHechizo {
 		final int valor = getRandomValor(lanzador);
 		StringBuilder afectados = new StringBuilder();
 		int ganados = 0, efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<>();
+		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
 				continue;
 			}
 			if (afectados.length() > 0)
 				afectados.append("¬");
-			afectados.append(objetivo.getID()).append(",").append(valor).append(",").append(duracionFinal(objetivo));
+			afectados.append(objetivo.getID() + "," + (valor) + "," + duracionFinal(objetivo));
 			temp.add(objetivo);
 			ganados += valor;
 		}
@@ -2008,7 +2116,7 @@ public class EfectoHechizo {
 		StringBuilder afectados = new StringBuilder();
 		int robo = 0, efectoID = getStatPorEfecto(_efectoID);
 		final int valor2 = valor;
-		final ArrayList<Luchador> temp = new ArrayList<>();
+		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
 				continue;
@@ -2022,7 +2130,7 @@ public class EfectoHechizo {
 			}
 			if (afectados.length() > 0)
 				afectados.append("¬");
-			afectados.append(objetivo.getID()).append(",").append(valor).append(",").append(duracionFinal(objetivo));
+			afectados.append(objetivo.getID() + "," + (valor) + "," + duracionFinal(objetivo));
 			robo += valor;
 			valor = valor2;
 		}
@@ -2066,7 +2174,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<>();
+			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2107,7 +2215,7 @@ public class EfectoHechizo {
 			if (afectados.length() > 0) {
 				afectados.append("¬");
 			}
-			afectados.append(objetivo.getID()).append(",").append(valor);
+			afectados.append(objetivo.getID() + "," + (valor));
 		}
 		if (afectados.length() > 0 && _condicionHechizo.isEmpty()) {
 			GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 130, lanzador.getID() + "", afectados.toString());
@@ -2116,7 +2224,7 @@ public class EfectoHechizo {
 	
 	private void efecto_Efectos_De_Hechizos(final ArrayList<Luchador> objetivos, final Pelea pelea, Luchador lanzador) {
 		int efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<>();
+		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
 				continue;
@@ -2133,7 +2241,7 @@ public class EfectoHechizo {
 	Celda celdaObjetivo, TipoDaño tipo) {
 		final int valor = getRandomValor(lanzador);
 		int efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<>();
+		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 		StringBuilder afectados = new StringBuilder();
 		for (Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
@@ -2188,7 +2296,7 @@ public class EfectoHechizo {
 			if (afectados.length() > 0) {
 				afectados.append("¬");
 			}
-			afectados.append(objetivo.getID()).append(",").append(-perdidos).append(",").append(duracionFinal(objetivo));
+			afectados.append(objetivo.getID() + "," + (-perdidos) + "," + duracionFinal(objetivo));
 		}
 		if (afectados.length() > 0 && _condicionHechizo.isEmpty()) {
 			GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, efectoID, lanzador.getID() + "", afectados.toString());
@@ -2244,7 +2352,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<>();
+			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2276,7 +2384,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<>();
+			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2307,7 +2415,7 @@ public class EfectoHechizo {
 			}
 		} else {
 			int efectoID = getStatPorEfecto(_efectoID);
-			final ArrayList<Luchador> temp = new ArrayList<>();
+			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2342,7 +2450,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<>();
+			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2383,7 +2491,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<>();
+			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2431,7 +2539,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<>();
+			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2479,7 +2587,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<>();
+			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2550,14 +2658,14 @@ public class EfectoHechizo {
 			pelea.addMuertosReturnFinalizo(objetivo, lanzador);
 			try {
 				Thread.sleep(500);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 	}
 	
 	private void efecto_Dominio_Arma(final ArrayList<Luchador> objetivos, final Pelea pelea, Luchador lanzador,
 	Celda celdaObjetivo) {
 		int efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<>();
+		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
 				continue;
@@ -2573,15 +2681,17 @@ public class EfectoHechizo {
 	private void efecto_Bonus_Malus(final ArrayList<Luchador> objetivos, final Pelea pelea, Luchador lanzador,
 	Celda celdaObjetivo, TipoDaño tipo) {
 		// solo tiene los mas pa y mas pm, no esta los menos
-		if (_hechizoID == 2210) {// furia de zobal
-			if (celdaObjetivo.getPrimerLuchador() == null) {
-				return;
-			}
+		switch (_hechizoID) {
+			case 2210 :// furia de zobal
+				if (celdaObjetivo.getPrimerLuchador() == null) {
+					return;
+				}
+				break;
 		}
 		int valor = getRandomValor(lanzador);
 		int efectoID = getStatPorEfecto(_efectoID);
 		final int valor2 = valor;
-		final ArrayList<Luchador> temp = new ArrayList<>();
+		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 		StringBuilder afectados = new StringBuilder();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
@@ -2594,24 +2704,71 @@ public class EfectoHechizo {
 			} else {
 				temp.add(objetivo);
 			}
-			// case 210 :// Resist % tierra
-			// case 211 :// Resist % agua
-			// case 212 :// Resist % aire
-			// case 213 :// Resist % fuego
-			// case 214 :// Resist % neutral
-			// case 215 :// Debilidad % tierra
-			// case 216 :// Debilidad % agua
-			// case 217 :// Debilidad % aire
-			// case 218 :// Debilidad % fuego
-			// case 219 :// Debilidad % neutral
 			switch (_efectoID) {
-// +% de los daños incurables sufridos
-				case 78, 111, 128, 120, 110, 112, 114, 115, 116, 117, 118, 119, 121, 122, 123, 124, 125, 126, 138, 142, 144, 145, 152, 153, 154, 155, 156, 157, 160, 161, 162, 163, 171, 176, 177, 178, 179, 182, 183, 184, 186, 425, 606, 607, 608, 609, 610, 611, 776 -> {
+				case 78 :// + PM
+				case 111 :// + X PA
+				case 128 :// + PM
+				case 120 :// + PA segun el 3arg
+				case 110 :// + X vida
+				case 112 :// + Daños
+				case 114 :// Multiplica los daños por X
+				case 115 :// + Golpes Criticos
+				case 116 :// - Alcance
+				case 117 :// + Alcance
+				case 118 :// + Fuerza
+				case 119 :// + Agilidad
+				case 121 :// + Daños
+				case 122 :// + Fallos Criticos
+				case 123 :// + Suerte
+				case 124 :// + Sabiduria
+				case 125 :// + Vitalidad
+				case 126 :// + Inteligencia
+				case 138 :// + % daños
+				case 142 :// + Daños Fisicos
+				case 144 :// - Daños (no boosteados)
+				case 145 :// - Daños
+				case 152 :// - Suerte
+				case 153 :// - Vitalidad
+				case 154 :// - Agilidad
+				case 155 :// - Inteligencia
+				case 156 :// - Sabiduria
+				case 157 :// - Fuerza
+				case 160 :// + Esquiva PA
+				case 161 :// + Esquiva PM
+				case 162 :// - Esquiva PA
+				case 163 :// - Esquiva PM
+				case 171 :// - Golpes Criticos
+				case 176 :// + a las prospecciones
+				case 177 :// - a las prospecciones
+				case 178 :// + a las curaciones
+				case 179 :// - a las curaciones
+				case 182 :// + Invocaciones
+				case 183 :// + Reduccion Magica
+				case 184 :// + Reduccion Fisica
+				case 186 :// Disminuye los daños %
+					// case 210 :// Resist % tierra
+					// case 211 :// Resist % agua
+					// case 212 :// Resist % aire
+					// case 213 :// Resist % fuego
+					// case 214 :// Resist % neutral
+					// case 215 :// Debilidad % tierra
+					// case 216 :// Debilidad % agua
+					// case 217 :// Debilidad % aire
+					// case 218 :// Debilidad % fuego
+					// case 219 :// Debilidad % neutral
+				case 425 :// + daños empuje
+				case 606 :// + sabiduria
+				case 607 :// + fuerza
+				case 608 :// + suerte
+				case 609 :// + agilidad
+				case 610 :// + vitalidad
+				case 611 :// + inteligencia
+				case 776 :// +% de los daños incurables sufridos
 					if (afectados.length() > 0) {
 						afectados.append("¬");
 					}
 					afectados.append(objetivo.getID() + "," + valor + "," + duracionFinal(objetivo));
-				}
+					break;
 			}
 		}
 		if (afectados.length() > 0 && _condicionHechizo.isEmpty()) {
@@ -2629,7 +2786,7 @@ public class EfectoHechizo {
 		if (nivelMax == -1) {
 			return;
 		}
-		final ArrayList<Luchador> temp = new ArrayList<>();
+		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
 				continue;
@@ -2641,7 +2798,7 @@ public class EfectoHechizo {
 			lanzador, TipoDaño.POST_TURNOS, _condicionHechizo);
 		try {
 			Thread.sleep(200);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void efecto_Deshechizar(final ArrayList<Luchador> objetivos, final Pelea pelea, Luchador lanzador,
@@ -2654,7 +2811,7 @@ public class EfectoHechizo {
 			if (afectados.length() > 0) {
 				afectados.append("¬");
 			}
-			afectados.append(objetivo.getID());
+			afectados.append(objetivo.getID() + "");
 		}
 		if (afectados.length() > 0 && _condicionHechizo.isEmpty()) {
 			GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, _efectoID, lanzador.getID() + "", afectados.toString());
@@ -2672,7 +2829,7 @@ public class EfectoHechizo {
 	Celda celdaObjetivo) {
 		int gfxID = _tercerValor;
 		int efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<>();
+		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 		quitarInvisibilidad(lanzador, TipoDaño.NORMAL);
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
@@ -2702,7 +2859,7 @@ public class EfectoHechizo {
 	private void efecto_Invisibilidad(final ArrayList<Luchador> objetivos, final Pelea pelea, Luchador lanzador,
 	Celda celdaObjetivo) {
 		int efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<>();
+		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 		StringBuilder afectados = new StringBuilder();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
@@ -2712,7 +2869,7 @@ public class EfectoHechizo {
 			objetivo.vaciarVisibles();
 			if (afectados.length() > 0)
 				afectados.append("¬");
-			afectados.append(objetivo.getID()).append(",").append(duracionFinal(objetivo));
+			afectados.append(objetivo.getID() + "," + duracionFinal(objetivo));
 		}
 		if (afectados.length() > 0 && _condicionHechizo.isEmpty()) {
 			GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, _efectoID, lanzador.getID() + "", afectados.toString());
@@ -2752,7 +2909,7 @@ public class EfectoHechizo {
 		lanzador.addNroInvocaciones(1);
 		try {
 			Thread.sleep(1000);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		verificaTrampas(doble);
 		// pelea.actualizarNumTurnos(null);
 	}
@@ -2770,7 +2927,7 @@ public class EfectoHechizo {
 				pelea.addMuertosReturnFinalizo(celdaObjetivo.getPrimerLuchador(), lanzador);
 				try {
 					Thread.sleep(1000);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 		}
 		if (!celdaObjetivo.esCaminable(true)) {
@@ -2788,7 +2945,7 @@ public class EfectoHechizo {
 		try {
 			mobID = Integer.parseInt(_args.split(",")[0]);
 			mobNivel = Byte.parseByte(_args.split(",")[1]);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		MobGrado mob = null;
 		final int idInvocacion = pelea.getSigIDLuchador();
 		try {
@@ -2809,21 +2966,26 @@ public class EfectoHechizo {
 		if (MainServidor.PARAM_MOSTRAR_STATS_INVOCACION) {
 			StringBuilder str = new StringBuilder();
 			str.append("<b>STATS INVOCATION [</b>");
-			str.append("<b>STR:</b> ").append(invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_FUERZA)).append(", ");
-			str.append("<b>INT:</b> ").append(invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_INTELIGENCIA)).append(", ");
-			str.append("<b>CHA:</b> ").append(invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_SUERTE)).append(", ");
-			str.append("<b>AGI:</b> ").append(invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_AGILIDAD)).append("<b>]</b>");
+			str.append("<b>STR:</b> " + invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_FUERZA)
+			+ ", ");
+			str.append("<b>INT:</b> " + invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_INTELIGENCIA)
+			+ ", ");
+			str.append("<b>CHA:</b> " + invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_SUERTE)
+			+ ", ");
+			str.append("<b>AGI:</b> " + invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_AGILIDAD)
+			+ "<b>]</b>");
 			GestorSalida.ENVIAR_cs_CHAT_MENSAJE_A_PELEA(pelea, str.toString(), Constantes.COLOR_NARANJA);
 		}
 		try {
 			Thread.sleep(1000);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		switch (mobID) {
-// arbol de la vida
-			case 556, 282, 2750 -> {
+			case 556 :// zanahowia
+			case 282 :// arbol
+			case 2750 :// arbol de la vida
 				invocacion.setEstatico(true);
 				invocacion.setSirveParaBuff(false);
-			}
+				break;
 		}
 		verificaTrampas(invocacion);
 		// pelea.actualizarNumTurnos(null);
@@ -2852,7 +3014,7 @@ public class EfectoHechizo {
 		try {
 			mobID = Integer.parseInt(_args.split(",")[0]);
 			mobnivel = Byte.parseByte(_args.split(",")[1]);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		MobGrado mob = null;
 		final int idInvocacion = pelea.getSigIDLuchador();
 		try {
@@ -2873,7 +3035,7 @@ public class EfectoHechizo {
 		// lanzador.aumentarInvocaciones(); supuestamente no cuenta para estas
 		try {
 			Thread.sleep(1000);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		// invocacion.setEstado(Constantes.ESTADO_ARRAIGADO, -1);
 		// invocacion.setEstado(Constantes.ESTADO_PESADO, -1);
 		verificaTrampas(invocacion);
@@ -2925,7 +3087,7 @@ public class EfectoHechizo {
 		}
 		try {
 			Thread.sleep(1000);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		verificaTrampas(objetivo);
 		// pelea.actualizarNumTurnos(null);
 	}
@@ -3078,7 +3240,7 @@ public class EfectoHechizo {
 		if (estadoID == -1) {
 			return;
 		}
-		final ArrayList<Luchador> temp = new ArrayList<>();
+		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
 		// StringBuilder afectados = new StringBuilder();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {

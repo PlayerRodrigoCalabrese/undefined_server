@@ -26,7 +26,7 @@ public class EncarnacionModelo {
 				final int statID = Integer.parseInt(s.split(",")[0]);
 				final int valor = Integer.parseInt(s.split(",")[1]);
 				_statsBase.put(statID, valor);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e1) {}
 		}
 	}
 	
@@ -39,7 +39,7 @@ public class EncarnacionModelo {
 				final int statID = Integer.parseInt(s.split(",")[0]);
 				final float valor = Float.parseFloat(s.split(",")[1]);
 				_statsPorNivel.put(statID, valor);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e1) {}
 		}
 	}
 	
@@ -56,7 +56,7 @@ public class EncarnacionModelo {
 				}
 				final char pos = s.split(",")[1].charAt(0);
 				_posicionHechizos.put(id, pos);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e1) {}
 		}
 	}
 	

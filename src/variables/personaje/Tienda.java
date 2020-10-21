@@ -8,7 +8,7 @@ import sprites.Exchanger;
 import variables.objeto.Objeto;
 
 public class Tienda implements Exchanger {
-	private final ArrayList<Objeto> _tienda = new ArrayList<>();
+	private final ArrayList<Objeto> _tienda = new ArrayList<Objeto>();
 	
 	
 	public void addObjeto(Objeto objeto) {

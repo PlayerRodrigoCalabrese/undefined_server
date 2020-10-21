@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/src/estaticos/Mundo.java" charset="windows-1252" />
     <file url="file://$PROJECT_DIR$/src/variables/hechizo/EfectoHechizo.java" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/src/variables/zotros/Accion.java" charset="windows-1252" />
     <file url="PROJECT" charset="windows-1252" />
   </component>
 </project>

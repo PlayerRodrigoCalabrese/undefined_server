@@ -57,25 +57,39 @@ public class Comandos {
 				}
 				return;
 			}
-			if (rangoJugador == 0) {// nada
-			} else {
-				if (rangoJugador >= rangoComando) {
-					rangoJugador = 5;
-				} else {
-					GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1DONT_RANGE_GM");
-					return;
-				}
+			switch (rangoJugador) {
+				case 0 :
+					// nada
+					break;
+				default :
+					if (rangoJugador >= rangoComando) {
+						rangoJugador = 5;
+					} else {
+						GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1DONT_RANGE_GM");
+						return;
+					}
+					break;
 			}
 			switch (rangoJugador) {
-				case 1 -> GM_lvl_1(comando, infos, mensaje, _cuenta, _perso);
-				case 2 -> GM_lvl_2(comando, infos, mensaje, _cuenta, _perso);
-				case 3 -> GM_lvl_3(comando, infos, mensaje, _cuenta, _perso);
-				case 4 -> GM_lvl_4(comando, infos, mensaje, _cuenta, _perso);
-				case 5 -> GM_lvl_5(comando, infos, mensaje, _cuenta, _perso);
-				default -> {
+			
+				case 1 :
+					GM_lvl_1(comando, infos, mensaje, _cuenta, _perso);
+					break;
+				case 2 :
+					GM_lvl_2(comando, infos, mensaje, _cuenta, _perso);
+					break;
+				case 3 :
+					GM_lvl_3(comando, infos, mensaje, _cuenta, _perso);
+					break;
+				case 4 :
+					GM_lvl_4(comando, infos, mensaje, _cuenta, _perso);
+					break;
+				case 5 :
+					GM_lvl_5(comando, infos, mensaje, _cuenta, _perso);
+					break;
+				default :
 					GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1DONT_RANGE_GM");
 					return;
-				}
 			}
 			if (!_cuenta.getSinco() && !MainServidor.PARAM_DESHABILITAR_SQL) {
 				GestorSQL.INSERT_COMANDO_GM(_perso.getNombre(), mensaje);
@@ -227,7 +241,7 @@ public class Comandos {
 			case "DESMUTE_MAP" :
 				try {
 					mapa = Mundo.getMapa(Short.parseShort(infos[1]));
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				mapa.setMuteado(false);
 				if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Map unmute.");
@@ -251,13 +265,13 @@ public class Comandos {
 					if (infos.length > 2) {
 						numInt = Integer.parseInt(infos[2]);
 					}
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				try {
 					if (infos.length > 3) {
 						infos = mensaje.split(" ", 4);
 						motivo = infos[3];
 					}
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				if (objetivo == null) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Le joueur n'existe pas");
@@ -367,7 +381,7 @@ public class Comandos {
 				try {
 					if (infos.length > 1)
 						numShort = Short.parseShort(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				if (numShort < 0) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Taille invalide");
@@ -413,7 +427,7 @@ public class Comandos {
 				try {
 					if (infos.length > 1)
 						numShort = Short.parseShort(infos[1]);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				if (numShort < 0) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Gfx ID invalide");
@@ -455,15 +469,15 @@ public class Comandos {
 					enLinea %= 60000L;
 					final int segundo = (int) (enLinea / 1000L);
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
-						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "================================================\n" + MainServidor.NOMBRE_SERVER
-						+ " (UndefinedEMU)\n\nUptime: " + dia + "j " + hora + "h " + minuto + "m "
+						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "====================\n" + MainServidor.NOMBRE_SERVER
+						+ " (ELBUSTEMU " + Constantes.VERSION_EMULADOR + ")\n\nUptime: " + dia + "j " + hora + "h " + minuto + "m "
 						+ segundo + "s\n" + "Joueurs en ligne: " + ServidorServer.nroJugadoresLinea() + "\n"
-						+ "Record de connexions: " + ServidorServer.getRecordJugadores() + "\n" + "================================================");
+						+ "Record de connexions: " + ServidorServer.getRecordJugadores() + "\n" + "====================");
 					} else {
-						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "================================================\n" + MainServidor.NOMBRE_SERVER
-						+ " (UndefinedEMU)\n\nOnline: " + dia + "d " + hora + "h " + minuto + "m "
+						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "====================\n" + MainServidor.NOMBRE_SERVER
+						+ " (ELBUSTEMU " + Constantes.VERSION_EMULADOR + ")\n\nEnLínea: " + dia + "d " + hora + "h " + minuto + "m "
 						+ segundo + "s\n" + "Jugadores en línea: " + ServidorServer.nroJugadoresLinea() + "\n"
-						+ "Record de conexión: " + ServidorServer.getRecordJugadores() + "\n" + "================================================");
+						+ "Record de conexión: " + ServidorServer.getRecordJugadores() + "\n" + "====================");
 					}
 				} catch (final Exception e) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Ocurrio un error");
@@ -544,7 +558,7 @@ public class Comandos {
 				int maximo = 50;
 				try {
 					maximo = Integer.parseInt(infos[1]);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "====================\nListe de joueur en ligne:");
 				} else {
@@ -565,43 +579,75 @@ public class Comandos {
 						strB.append("\n");
 					}
 					if (ep.getCuenta() == null) {
-						strB.append("Socket sin loguear cuenta - IP: ").append(ep.getActualIP());
+						strB.append("Socket sin loguear cuenta - IP: " + ep.getActualIP());
 						continue;
 					}
 					if (objetivo == null) {
-						strB.append("Cuenta sin loguear personaje - Cuenta: ").append(ep.getCuenta().getNombre()).append(" IP: ").append(ep
-								.getActualIP());
+						strB.append("Cuenta sin loguear personaje - Cuenta: " + ep.getCuenta().getNombre() + " IP: " + ep
+						.getActualIP());
 						continue;
 					}
 					if (!objetivo.enLinea()) {
-						strB.append("Personaje Offline: ").append(objetivo.getNombre()).append("Cuenta: ").append(ep.getCuenta().getNombre()).append(" IP: ").append(ep.getActualIP());
+						strB.append("Personaje Offline: " + objetivo.getNombre() + "Cuenta: " + ep.getCuenta().getNombre() + " IP: "
+						+ ep.getActualIP());
 						continue;
 					}
-					strB.append(objetivo.getNombre()).append("\t");
-					strB.append("(").append(objetivo.getID()).append(") ").append("\t");
-					strB.append("[").append(objetivo.getCuenta().getNombre()).append("]").append("\t");
+					strB.append(objetivo.getNombre() + "\t");
+					strB.append("(" + objetivo.getID() + ") " + "\t");
+					strB.append("[" + objetivo.getCuenta().getNombre() + "]" + "\t");
 					switch (objetivo.getClaseID(true)) {
-						case 1 -> strB.append("Feca" + "\t");
-						case 2 -> strB.append("Osamoda" + "\t");
-						case 3 -> strB.append("Anutrof" + "\t");
-						case 4 -> strB.append("Sram" + "\t");
-						case 5 -> strB.append("Xelor" + "\t");
-						case 6 -> strB.append("Zurcarak" + "\t");
-						case 7 -> strB.append("Aniripsa" + "\t");
-						case 8 -> strB.append("Yopuka" + "\t");
-						case 9 -> strB.append("Ocra" + "\t");
-						case 10 -> strB.append("Sadida" + "\t");
-						case 11 -> strB.append("Sacrogito" + "\t");
-						case 12 -> strB.append("Pandawa" + "\t");
-						case 13 -> strB.append("Tymador" + "\t");
-						case 14 -> strB.append("Zobal" + "\t");
-						case 15 -> strB.append("Steamer" + "\t");
-						default -> strB.append("Desconocido" + "\t");
+						case 1 :
+							strB.append("Feca" + "\t");
+							break;
+						case 2 :
+							strB.append("Osamoda" + "\t");
+							break;
+						case 3 :
+							strB.append("Anutrof" + "\t");
+							break;
+						case 4 :
+							strB.append("Sram" + "\t");
+							break;
+						case 5 :
+							strB.append("Xelor" + "\t");
+							break;
+						case 6 :
+							strB.append("Zurcarak" + "\t");
+							break;
+						case 7 :
+							strB.append("Aniripsa" + "\t");
+							break;
+						case 8 :
+							strB.append("Yopuka" + "\t");
+							break;
+						case 9 :
+							strB.append("Ocra" + "\t");
+							break;
+						case 10 :
+							strB.append("Sadida" + "\t");
+							break;
+						case 11 :
+							strB.append("Sacrogito" + "\t");
+							break;
+						case 12 :
+							strB.append("Pandawa" + "\t");
+							break;
+						case 13 :
+							strB.append("Tymador" + "\t");
+							break;
+						case 14 :
+							strB.append("Zobal" + "\t");
+							break;
+						case 15 :
+							strB.append("Steamer" + "\t");
+							break;
+						default :
+							strB.append("Desconocido" + "\t");
 					}
-					strB.append(" ").append(objetivo.getSexo() == 0 ? "M" : "F").append("\t");
-					strB.append(objetivo.getNivel()).append("\t");
-					strB.append(objetivo.getMapa().getID()).append("\t");
-					strB.append("(").append(objetivo.getMapa().getX()).append(",").append(objetivo.getMapa().getY()).append(")").append("\t");
+					strB.append(" " + (objetivo.getSexo() == 0 ? "M" : "F") + "\t");
+					strB.append(objetivo.getNivel() + "\t");
+					strB.append(objetivo.getMapa().getID() + "\t");
+					strB.append("(" + objetivo.getMapa().getX() + "," + objetivo.getMapa().getY() + ")" + "\t");
 					strB.append(objetivo.getPelea() == null ? "" : "En combat ");
 				}
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, strB.toString());
@@ -884,7 +930,7 @@ public class Comandos {
 					if (infos.length > 2) {
 						celdaID = Short.parseShort(infos[2]);
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				mapa = Mundo.getMapa(mapaID);
 				if (mapa == null) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
@@ -973,7 +1019,7 @@ public class Comandos {
 					if (infos.length > 2) {
 						celdaID = Short.parseShort(infos[2]);
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				mapa = Mundo.getMapa(mapaID);
 				if (mapa == null) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
@@ -1033,7 +1079,7 @@ public class Comandos {
 					mapaY = Integer.parseInt(infos[2]);
 					celdaID = Short.parseShort(infos[3]);
 					contID = Integer.parseInt(infos[4]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e10) {}
 				mapa = Mundo.mapaPorCoordXYContinente(mapaX, mapaY, contID);
 				if (mapa == null) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
@@ -1148,7 +1194,7 @@ public class Comandos {
 					pelea.acaboPelea((byte) (numInt == 1 ? 2 : 1));
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El equipo " + infos[1] + " ha salido victorioso, en la pelea ID "
 					+ pelea.getID() + " del mapa " + pelea.getMapaCopia().getID());
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case "CANCEL_FIGHT" :
 			case "CANCELAR_PELEA" :
@@ -1176,7 +1222,7 @@ public class Comandos {
 					pelea.cancelarPelea();
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La pelea ID " + pelea.getID() + " del mapa " + pelea.getMapaCopia()
 					.getID() + " ha sido cancelada");
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case "SHOW_BAN_IPS" :
 			case "MOSTRAR_BAN_IPS" :
@@ -1215,7 +1261,7 @@ public class Comandos {
 						infos = mensaje.split(" ", 4);
 						motivo = infos[3];
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				if (numInt == 0) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Durée du ban incorrecte!");
@@ -1366,7 +1412,7 @@ public class Comandos {
 						infos = mensaje.split(" ", 3);
 						motivo = infos[2];
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				if (objetivo == null) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Le joueur n'existe pas");
@@ -1495,7 +1541,7 @@ public class Comandos {
 				celdaID = -1;
 				try {
 					celdaID = Short.parseShort(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				if (mapa.getCelda(celdaID) == null) {
 					celdaID = _perso.getCelda().getID();
 				}
@@ -1523,7 +1569,7 @@ public class Comandos {
 				try {
 					equipo = Integer.parseInt(infos[1]);
 					celdaID = Short.parseShort(infos[2]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				if (equipo != 2 && equipo != 1) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Equipe incorrecte, use colour 2(blue) o 1(rouge)");
@@ -1636,7 +1682,7 @@ public class Comandos {
 				byte alineacion = -1;
 				try {
 					alineacion = Byte.parseByte(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e5) {}
 				if (alineacion < -1 || alineacion > 3) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Alignement incorrect.");
@@ -2020,7 +2066,7 @@ public class Comandos {
 					}
 					try {
 						stats = infos[3];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MobModelo mobModelo = Mundo.getMobModelo(id);
 					if (mobModelo == null) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
@@ -2048,7 +2094,7 @@ public class Comandos {
 						if (Mundo.getMapa(mapaID) != null) {
 							mapa = Mundo.getMapa(mapaID);
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					mapa.setMaxPeleas(maxPeleas);
 					GestorSQL.UPDATE_MAPA_MAX_PELEAS(mapa.getID(), maxPeleas);
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El mapa " + mapa.getID() + " cambio el valor de maximo de pleas a "
@@ -2074,43 +2120,43 @@ public class Comandos {
 					int escudo = 0;
 					try {
 						id = Short.parseShort(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						sexo = Byte.parseByte(infos[2]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						escalaX = Short.parseShort(infos[3]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						escalaY = Short.parseShort(infos[4]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						gfxID = Short.parseShort(infos[5]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						color1 = Integer.parseInt(infos[6]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						color2 = Integer.parseInt(infos[7]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						color3 = Integer.parseInt(infos[8]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						arma = Integer.parseInt(infos[9]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						sombrero = Integer.parseInt(infos[10]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						capa = Integer.parseInt(infos[11]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						mascota = Integer.parseInt(infos[12]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						escudo = Integer.parseInt(infos[13]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					NPCModelo npcMod = Mundo.getNPCModelo(id);
 					if (npcMod == null) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "NPC " + id + " no existe");
@@ -2159,9 +2205,9 @@ public class Comandos {
 						return;
 					}
 					try {
-						StringBuilder s = new StringBuilder();
+						String s = "";
 						for (short c : Camino.celdasPorDistancia(_perso.getCelda(), _perso.getMapa(), celdaID)) {
-							s.append(c).append(",");
+							s += c + ",";
 							GestorSalida.ENVIAR_GDO_OBJETO_TIRAR_SUELO(_perso, '+', c, 311, false, "");
 						}
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Las celdas a mostrar son " + s);
@@ -2912,7 +2958,7 @@ public class Comandos {
 					}
 					try {
 						args = infos[2];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					final MisionObjetivoModelo objMision = Mundo.getMisionObjetivoModelo(id);
 					if (objMision == null) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El objetivo mision no existe");
@@ -2941,7 +2987,7 @@ public class Comandos {
 					}
 					try {
 						args = infos[2];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					final MisionEtapaModelo etapa = Mundo.getEtapa(id);
 					if (etapa == null) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La etapa de misión no existe");
@@ -2969,7 +3015,7 @@ public class Comandos {
 					}
 					try {
 						args = infos[2];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					final MisionEtapaModelo etapa = Mundo.getEtapa(id);
 					if (etapa == null) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La etapa de misión no existe");
@@ -3023,16 +3069,16 @@ public class Comandos {
 					}
 					try {
 						etapas = infos[2];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						pregDarMision = infos[3];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						pregMisCumplida = infos[4];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						pregMisIncompleta = infos[5];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					final MisionModelo mision = Mundo.getMision(id);
 					if (mision == null) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La misión no existe");
@@ -3184,7 +3230,7 @@ public class Comandos {
 					short mapaID = 0;
 					try {
 						mapaID = Short.parseShort(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					final String[] key = GestorSQL.GET_NUEVA_FECHA_KEY(mapaID).split(Pattern.quote("|"));
 					// if (key.length < 20) {
 					// GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "tiene una key muy corta");
@@ -3214,8 +3260,8 @@ public class Comandos {
 					}
 					for (final MobModelo mMod : Mundo.MOBS_MODELOS.values()) {
 						if (mMod.getTipoMob() == id) {
-							strB.append("ID: ").append(mMod.getID()).append(" - Nombre: ").append(mMod.getNombre()).append(" - Niveles: ").append(mMod
-									.listaNiveles()).append(" - Colores: ").append(mMod.getColores()).append("\n");
+							strB.append("ID: " + mMod.getID() + " - Nombre: " + mMod.getNombre() + " - Niveles: " + mMod
+							.listaNiveles() + " - Colores: " + mMod.getColores() + "\n");
 						}
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Los Mobs Tipo Criatura - " + Constantes.getNombreTipoMob(id)
@@ -3234,7 +3280,7 @@ public class Comandos {
 					StringBuilder strB = new StringBuilder();
 					for (int i = -1; i < 100; i++) {
 						if (!Constantes.getNombreTipoMob(i).isEmpty()) {
-							strB.append("Tipo ID: ").append(i).append(" - Criaturas: ").append(Constantes.getNombreTipoMob(i)).append("\n");
+							strB.append("Tipo ID: " + i + " - Criaturas: " + Constantes.getNombreTipoMob(i) + "\n");
 						}
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Lista Tipo Criatura son:\n" + strB.toString());
@@ -3288,17 +3334,19 @@ public class Comandos {
 					}
 					try {
 						args = infos[5];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						condicion = infos[6];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						tiempoRecarga = Integer.parseInt(infos[7]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						descripcion = infos[8];
-					} catch (final Exception ignored) {}
-					strB.append("Se creo acción para Otro Interactivo GfxID: ").append(id).append(", mapaID: ").append(mapaID).append(", celdaID: ").append(celdaID).append(", accionID: ").append(accionID).append(", args: ").append(args).append(", condicion: ").append(condicion).append(", tiempoRecarga: ").append(tiempoRecarga);
+					} catch (final Exception e) {}
+					strB.append("Se creo acción para Otro Interactivo GfxID: " + id + ", mapaID: " + mapaID + ", celdaID: "
+					+ celdaID + ", accionID: " + accionID + ", args: " + args + ", condicion: " + condicion + ", tiempoRecarga: "
+					+ tiempoRecarga);
 					Mundo.borrarOtroInteractivo(id, mapaID, celdaID, accionID, true);
 					OtroInteractivo otro = new OtroInteractivo(id, mapaID, celdaID, accionID, args, condicion, tiempoRecarga);
 					Mundo.addOtroInteractivo(otro);
@@ -3320,13 +3368,14 @@ public class Comandos {
 					StringBuilder strB = new StringBuilder();
 					try {
 						mapaID = Short.parseShort(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					for (final OtroInteractivo oi : Mundo.OTROS_INTERACTIVOS) {
 						if (oi.getMapaID() != mapaID) {
 							continue;
 						}
 						strB.append("\n");
-						strB.append("Mapa: ").append(oi.getMapaID()).append(" Celda: ").append(oi.getCeldaID()).append(" GfxID: ").append(oi.getGfxID()).append(" Accion: ").append(oi.getAccionID()).append(" Args: ").append(oi.getArgs()).append(" Condicion: ").append(oi.getCondicion());
+						strB.append("Mapa: " + oi.getMapaID() + " Celda: " + oi.getCeldaID() + " GfxID: " + oi.getGfxID()
+						+ " Accion: " + oi.getAccionID() + " Args: " + oi.getArgs() + " Condicion: " + oi.getCondicion());
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Los otros interactivos son:" + strB.toString());
 				} catch (final Exception e) {
@@ -3342,7 +3391,7 @@ public class Comandos {
 					try {
 						accesoGM = Byte.parseByte(infos[1]);
 						botarRango = Byte.parseByte(infos[2]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MainServidor.ACCESO_ADMIN_MINIMO = accesoGM;
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso,
@@ -3356,7 +3405,7 @@ public class Comandos {
 								try {
 									GestorSalida.ENVIAR_M0_MENSAJE_BASICOS_SVR_MUESTRA_DISCONNECT(pj.getServidorSocket(), "19", "", "");
 									pj.getServidorSocket().cerrarSocket(true, "command BLOCK GM");
-								} catch (Exception ignored) {}
+								} catch (Exception e) {}
 							}
 						}
 						if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
@@ -3392,10 +3441,10 @@ public class Comandos {
 					}
 					try {
 						args = infos[3];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						condicion = infos[4];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					RespuestaNPC respuesta = Mundo.getRespuestaNPC(id);
 					if (respuesta == null) {
 						respuesta = new RespuestaNPC(id);
@@ -3403,8 +3452,8 @@ public class Comandos {
 					}
 					Accion accion = new Accion(accionID, args, condicion);
 					respuesta.addAccion(accion);
-					strB.append("La acción respuesta ").append(respuesta.getID()).append(", accionID: ").append(accion.getID()).append(", args: ").append(accion
-							.getArgs()).append(", condición: ").append(accion.getCondicion()).append(" agregada");
+					strB.append("La acción respuesta " + respuesta.getID() + ", accionID: " + accion.getID() + ", args: " + accion
+					.getArgs() + ", condición: " + accion.getCondicion() + " agregada");
 					if (GestorSQL.REPLACE_ACCIONES_RESPUESTA(respuesta.getID(), accion.getID(), accion.getArgs(), accion
 					.getCondicion())) {
 						strB.append(" a la BDD");
@@ -3462,7 +3511,8 @@ public class Comandos {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "NPC no existe");
 						return;
 					}
-					strB.append("Fija al NPC Modelo ").append(npcID).append(" - Nombre: ").append(npcModelo.getNombre()).append(", Pregunta: ").append(preguntaID);
+					strB.append("Fija al NPC Modelo " + npcID + " - Nombre: " + npcModelo.getNombre() + ", Pregunta: "
+					+ preguntaID);
 					npcModelo.setPreguntaID(preguntaID);
 					if (GestorSQL.UPDATE_NPC_PREGUNTA(npcID, preguntaID)) {
 						strB.append(" a la BDD");
@@ -3493,10 +3543,10 @@ public class Comandos {
 					}
 					try {
 						respuestas = infos[2];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						args = infos[3];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					PreguntaNPC pregunta = Mundo.getPreguntaNPC(id);
 					if (pregunta == null) {
 						pregunta = new PreguntaNPC(id, respuestas, args, "");
@@ -3505,7 +3555,8 @@ public class Comandos {
 						pregunta.setRespuestas(respuestas);
 						pregunta.setParams(args);
 					}
-					strB.append("Parámetros de la pregunta ").append(id).append(" => respuestas: ").append(pregunta.getStrRespuestas()).append(", args: ").append(pregunta.getParams()).append(", alternos: ").append(pregunta.getStrAlternos());
+					strB.append("Parámetros de la pregunta " + id + " => respuestas: " + pregunta.getStrRespuestas() + ", args: "
+					+ pregunta.getParams() + ", alternos: " + pregunta.getStrAlternos());
 					if (GestorSQL.REPLACE_PREGUNTA_NPC(pregunta)) {
 						strB.append(" a la BDD");
 					}
@@ -3536,7 +3587,7 @@ public class Comandos {
 					}
 					try {
 						alternos = infos[2];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					PreguntaNPC pregunta = Mundo.getPreguntaNPC(id);
 					if (pregunta == null) {
 						pregunta = new PreguntaNPC(id, "", "", alternos);
@@ -3544,7 +3595,8 @@ public class Comandos {
 					} else {
 						pregunta.setPreguntasCondicionales(alternos);
 					}
-					strB.append("Parámetros de la pregunta ").append(id).append(" => respuestas: ").append(pregunta.getStrRespuestas()).append(", args: ").append(pregunta.getParams()).append(", alternos: ").append(pregunta.getStrAlternos());
+					strB.append("Parámetros de la pregunta " + id + " => respuestas: " + pregunta.getStrRespuestas() + ", args: "
+					+ pregunta.getParams() + ", alternos: " + pregunta.getStrAlternos());
 					if (GestorSQL.REPLACE_PREGUNTA_NPC(pregunta)) {
 						strB.append(" a la BDD");
 					}
@@ -3598,8 +3650,8 @@ public class Comandos {
 							continue;
 						}
 						StringBuilder sB = new StringBuilder();
-						sB.append("\n\t--> Answers: ").append(pregunta.getStrRespuestas());
-						sB.append("\n\t--> Alternates: ").append(pregunta.getStrAlternos());
+						sB.append("\n\t--> Answers: " + pregunta.getStrRespuestas());
+						sB.append("\n\t--> Alternates: " + pregunta.getStrAlternos());
 						GestorSalida.enviar(_perso, "DLQ" + respuestaID + "|" + sB.toString());
 					}
 					GestorSalida.enviar(_perso, "DX");
@@ -3629,9 +3681,9 @@ public class Comandos {
 							continue;
 						}
 						StringBuilder sB = new StringBuilder();
-						sB.append("\n\t--> Condition: ").append(respuesta.getCondicion());
+						sB.append("\n\t--> Condition: " + respuesta.getCondicion());
 						for (Accion a : respuesta.getAcciones()) {
-							sB.append("\n\t--> Action ID: ").append(a.getID()).append(", Args: ").append(a.getArgs());
+							sB.append("\n\t--> Action ID: " + a.getID() + ", Args: " + a.getArgs());
 						}
 						GestorSalida.enviar(_perso, "DLA" + respuestaID + "|" + sB.toString());
 					}
@@ -3662,10 +3714,10 @@ public class Comandos {
 					StringBuilder strB = new StringBuilder();
 					try {
 						id = Integer.parseInt(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						args = infos[2];
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					for (RespuestaNPC respuesta2 : Mundo.NPC_RESPUESTAS.values()) {
 						boolean b = false;
 						for (Accion a : respuesta2.getAcciones()) {
@@ -3684,10 +3736,10 @@ public class Comandos {
 						if (strB.length() > 0) {
 							strB.append("\n----------------------------------\n");
 						}
-						strB.append("Acciones de la respuesta ID ").append(respuesta2.getID()).append(", condición: ").append(respuesta2
-								.getCondicion());
+						strB.append("Acciones de la respuesta ID " + respuesta2.getID() + ", condición: " + respuesta2
+						.getCondicion());
 						for (Accion a : respuesta2.getAcciones()) {
-							strB.append("\n\tAccion ID: ").append(a.getID()).append(", Args: ").append(a.getArgs());
+							strB.append("\n\tAccion ID: " + a.getID() + ", Args: " + a.getArgs());
 						}
 					}
 					if (strB.length() == 0) {
@@ -3716,8 +3768,8 @@ public class Comandos {
 							if (strB.length() > 0) {
 								strB.append("\n");
 							}
-							strB.append("Respuestas de la pregunta ").append(pregunta2.getID()).append(", respuestas: ").append(pregunta2
-									.getStrRespuestas());
+							strB.append("Respuestas de la pregunta " + pregunta2.getID() + ", respuestas: " + pregunta2
+							.getStrRespuestas());
 						}
 					}
 					if (strB.length() == 0) {
@@ -3773,7 +3825,7 @@ public class Comandos {
 					int id = -1;
 					try {
 						id = Integer.parseInt(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					Objeto obj = Mundo.getObjeto(id);
 					if (obj == null) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Objeto nulo");
@@ -3857,7 +3909,7 @@ public class Comandos {
 					}
 					try {
 						strB.append(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					_perso.getPelea().setTempAccion(strB.toString());
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Se asigno la tempAccion: " + strB.toString());
 				} catch (final Exception e) {
@@ -3888,10 +3940,11 @@ public class Comandos {
 					for (final Celda celda : mapa.getCeldas().values()) {
 						if (celda.getObjetoInteractivo() != null) {
 							strB.append("\n");
-							strB.append("Mapa: ").append(mapa.getID()).append(" Celda: ").append(celda.getID()).append(" Movimiento: ").append(celda.getMovimiento()).append(" Gfx: ").append(celda.getObjetoInteractivo().getGfxID());
+							strB.append("Mapa: " + mapa.getID() + " Celda: " + celda.getID() + " Movimiento: " + celda.getMovimiento()
+							+ " Gfx: " + celda.getObjetoInteractivo().getGfxID());
 							try {
-								strB.append(" ID ObjInt: ").append(celda.getObjetoInteractivo().getObjIntModelo().getID());
-							} catch (Exception ignored) {}
+								strB.append(" ID ObjInt: " + celda.getObjetoInteractivo().getObjIntModelo().getID());
+							} catch (Exception e) {}
 						}
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Este mapa tiene:" + strB.toString());
@@ -3913,7 +3966,7 @@ public class Comandos {
 								strB.append("|");
 							}
 							celda.getObjetoInteractivo().recargando(true);
-							strB.append(celda.getID()).append(";").append(celda.getObjetoInteractivo().getInfoPacket());
+							strB.append(celda.getID() + ";" + celda.getObjetoInteractivo().getInfoPacket());
 							cantidad++;
 						}
 					}
@@ -3929,7 +3982,7 @@ public class Comandos {
 					byte limite = 0;
 					try {
 						limite = Byte.parseByte(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					if (limite < 0) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argumentos incorrectos");
 						return;
@@ -3952,7 +4005,7 @@ public class Comandos {
 					byte limite = 0;
 					try {
 						limite = Byte.parseByte(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					if (limite <= 0) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argumentos incorrectos");
 						return;
@@ -3975,7 +4028,7 @@ public class Comandos {
 					byte limite = 0;
 					try {
 						limite = Byte.parseByte(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					if (limite < 0) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argumentos incorrectos");
 						return;
@@ -4062,10 +4115,10 @@ public class Comandos {
 					}
 					try {
 						max = Integer.parseInt(infos[5]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						condicion = infos[6];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MobModelo mobModelo = Mundo.getMobModelo(mobID);
 					ObjetoModelo objModelo = Mundo.getObjetoModelo(objModID);
 					if (mobModelo == null || objModelo == null) {
@@ -4104,8 +4157,8 @@ public class Comandos {
 						if (objModelo == null) {
 							continue;
 						}
-						strB.append(" - ").append(drop.getIDObjModelo()).append(" - ").append(objModelo.getNombre()).append("\tProsp: ").append(drop
-								.getProspeccion()).append("\tPorcentaje: ").append(drop.getPorcentaje()).append("%\tMax: ").append(drop.getMaximo()).append("\n");
+						strB.append(" - " + drop.getIDObjModelo() + " - " + objModelo.getNombre() + "\tProsp: " + drop
+						.getProspeccion() + "\tPorcentaje: " + drop.getPorcentaje() + "%\tMax: " + drop.getMaximo() + "\n");
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La listas de drop del mob " + mobModelo.getNombre() + " es: \n"
 					+ strB.toString());
@@ -4170,14 +4223,15 @@ public class Comandos {
 						if (infos.length > 5) {
 							descripcion = infos[5];
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						if (infos.length > 6) {
 							mapa = Mundo.getMapa(Short.parseShort(infos[6]));
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					mapa.addAccionFinPelea(tipo, new Accion(accionID, args, ""));
-					strB.append("Se agregó la accion fin pelea, mapaID: ").append(mapa.getID()).append(", tipoPelea: ").append(tipo).append(", accionID: ").append(accionID).append(", args: ").append(args).append(" condicion: ").append(condicion);
+					strB.append("Se agregó la accion fin pelea, mapaID: " + mapa.getID() + ", tipoPelea: " + tipo + ", accionID: "
+					+ accionID + ", args: " + args + " condicion: " + condicion);
 					if (GestorSQL.INSERT_ACCION_FIN_PELEA(mapa.getID(), tipo, accionID, args, condicion, descripcion)) {
 						strB.append(" a la BDD");
 					}
@@ -4242,7 +4296,7 @@ public class Comandos {
 								packet.append(info);
 								primero = false;
 							}
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Lista peleas de:\n" + packet.toString());
 				} catch (final Exception e) {
@@ -4285,16 +4339,16 @@ public class Comandos {
 						condInicio = condInicio.replaceAll("mayor", ">");
 						condInicio = condInicio.replaceAll("igual", "=");
 						condInicio = condInicio.replaceAll("diferente", "!");
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						condUnirse = infos[4].replaceAll("menor", "<");
 						condUnirse = condUnirse.replaceAll("mayor", ">");
 						condUnirse = condUnirse.replaceAll("igual", "=");
 						condUnirse = condUnirse.replaceAll("diferente", "!");
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					try {
 						segundosRespawn = Integer.parseInt(infos[5]);
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					TipoGrupo tipoGrupo = Constantes.getTipoGrupoMob(tipoGrupoMob);
 					if (tipoGrupo == TipoGrupo.NORMAL) {
 						tipoGrupo = TipoGrupo.FIJO;
@@ -4341,7 +4395,7 @@ public class Comandos {
 					int id = 0;
 					try {
 						id = Integer.parseInt(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e5) {}
 					if (Mundo.getNPCModelo(id) == null) {
 						if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 							GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "L'ID du PNJ est invalide.");
@@ -4412,7 +4466,7 @@ public class Comandos {
 					int id = 0;
 					try {
 						id = Integer.parseInt(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					NPC npc = mapa.getNPC(id);
 					if (npc == null) {
 						if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
@@ -4443,7 +4497,7 @@ public class Comandos {
 					Short celdaID = -1;
 					try {
 						celdaID = Short.parseShort(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					Celda celda = mapa.getCelda(celdaID);
 					if (celda == null) {
 						celda = _perso.getCelda();
@@ -4494,7 +4548,7 @@ public class Comandos {
 						if (infos.length > 4) {
 							condicion = infos[4];
 						}
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					if (GestorSQL.REPLACE_CELDAS_ACCION(mapa.getID(), celda.getID(), accionID, args, condicion)) {
 						if (mapa.getID() == _perso.getMapa().getID()) {
 							GestorSalida.enviarEnCola(_perso, "GDZ|+" + celda.getID() + ";0;11", false);// color
@@ -4557,7 +4611,7 @@ public class Comandos {
 					}
 					try {
 						args = infos[3];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					ObjetoModelo objModelo = Mundo.getObjetoModelo(id);
 					if (objModelo == null) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Algun valor inválido");
@@ -4604,7 +4658,7 @@ public class Comandos {
 					String str = "";
 					try {
 						str = mensaje.split(" ", 2)[1];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MainServidor.MENSAJE_BIENVENIDA = str;
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El mensaje de bienvenida es :\n" + str);
 				} catch (final Exception e) {
@@ -4616,7 +4670,7 @@ public class Comandos {
 					String str = "";
 					try {
 						str = mensaje.split(" ", 2)[1];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MainServidor.PANEL_BIENVENIDA = str;
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El panel bievenida dice :\n" + str);
 				} catch (final Exception e) {
@@ -4629,7 +4683,7 @@ public class Comandos {
 					String str = "";
 					try {
 						str = mensaje.split(" ", 2)[1];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MainServidor.PANEL_DESPUES_CREAR_PERSONAJE = str;
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El panel crear pj dice :\n" + str);
 				} catch (final Exception e) {
@@ -4641,7 +4695,7 @@ public class Comandos {
 					String str = "";
 					try {
 						str = mensaje.split(" ", 2)[1];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MainServidor.MENSAJE_COMANDOS = str;
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El nuevo mensaje de comandos es :\n" + str);
 				} catch (final Exception e) {
@@ -4653,7 +4707,7 @@ public class Comandos {
 					String str = "";
 					try {
 						str = mensaje.split(" ", 2)[1];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MainServidor.TUTORIAL_ES = str;
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El mensaje de tutorial_es es :\n" + str);
 				} catch (final Exception e) {
@@ -4665,7 +4719,7 @@ public class Comandos {
 					String str = "";
 					try {
 						str = mensaje.split(" ", 2)[1];
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MainServidor.TUTORIAL_FR = str;
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El mensaje de tutorial_fr es :\n" + str);
 				} catch (final Exception e) {
@@ -4704,7 +4758,7 @@ public class Comandos {
 					boolean a = false;
 					try {
 						a = infos[1].equalsIgnoreCase("true");
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MainServidor.MUTE_CANAL_ALINEACION = a;
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Canal alineacion: " + !MainServidor.MUTE_CANAL_COMERCIO);
 				} catch (final Exception e) {
@@ -4717,7 +4771,7 @@ public class Comandos {
 					boolean a = false;
 					try {
 						a = infos[1].equalsIgnoreCase("true");
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MainServidor.MUTE_CANAL_INCARNAM = a;
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Canal incarnam: " + !MainServidor.MUTE_CANAL_COMERCIO);
 				} catch (final Exception e) {
@@ -4730,7 +4784,7 @@ public class Comandos {
 					boolean a = false;
 					try {
 						a = infos[1].equalsIgnoreCase("true");
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MainServidor.MUTE_CANAL_COMERCIO = a;
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Canal commerce: " + !MainServidor.MUTE_CANAL_COMERCIO);
@@ -4747,7 +4801,7 @@ public class Comandos {
 					boolean b = false;
 					try {
 						b = infos[1].equalsIgnoreCase("true");
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					MainServidor.MUTE_CANAL_RECLUTAMIENTO = b;
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Canal recrutement: " + !MainServidor.MUTE_CANAL_RECLUTAMIENTO);
@@ -4788,7 +4842,7 @@ public class Comandos {
 			case "SET_HECHIZOS_MOB" :
 				try {
 					id = Integer.parseInt(infos[1]);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				mobModelo = Mundo.getMobModelo(id);
 				if (mobModelo == null) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Mob ID " + id + " no existe");
@@ -4807,7 +4861,7 @@ public class Comandos {
 				}
 				try {
 					str = infos[3];
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				mobGradoModelo.setHechizos(str);
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El mob " + mobModelo.getNombre() + " (" + id + ") con Grado "
 				+ cantByte + " a modificado sus hechizos a " + str);
@@ -4818,7 +4872,7 @@ public class Comandos {
 			case "UPDATE_ALMANAX" :
 				try {
 					id = Integer.parseInt(infos[1]);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				if (id == -1) {
 					id = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
 				}
@@ -4836,16 +4890,30 @@ public class Comandos {
 				}
 				GestorSQL.UPDATE_ALMANAX(id, str, tipo, cantInt);
 				Mundo.addAlmanax(new Almanax(id, tipo, cantInt, str));
-				String bonus = switch (tipo) {
-					case 1 -> "EXP PJ";
-					case 2 -> "KAMAS";
-					case 3 -> "DROP";
-					case 4 -> "EXP CRAFT";
-					case 5 -> "EXP RECOLECCION";
-					case 6 -> "DROP RECOLECCION";
-					case 7 -> "BONUS HONOR";
-					default -> "EXP PJ";
-				};
+				String bonus = "EXP PJ";
+				switch (tipo) {
+					case 1 :
+						bonus = "EXP PJ";
+						break;
+					case 2 :
+						bonus = "KAMAS";
+						break;
+					case 3 :
+						bonus = "DROP";
+						break;
+					case 4 :
+						bonus = "EXP CRAFT";
+						break;
+					case 5 :
+						bonus = "EXP RECOLECCION";
+						break;
+					case 6 :
+						bonus = "DROP RECOLECCION";
+						break;
+					case 7 :
+						bonus = "BONUS HONOR";
+						break;
+				}
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Se actualizó el día almanax " + id + ", con ofrenda " + str
 				+ ", tipoBonus " + bonus + " y bonus %" + cantInt);
 				break;
@@ -4853,7 +4921,7 @@ public class Comandos {
 			case "ADD_CARD_MOB" :
 				try {
 					id = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				objetivo = _perso;
 				if (infos.length > 2) {
 					objetivo = Mundo.getPersonajePorNombre(infos[2]);
@@ -4971,7 +5039,7 @@ public class Comandos {
 				try {
 					titulo = Byte.parseByte(infos[1]);
 					color = Integer.parseInt(infos[2]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				objetivo = _perso;
 				if (infos.length > 3) {
 					objetivo = Mundo.getPersonajePorNombre(infos[3]);
@@ -5000,7 +5068,7 @@ public class Comandos {
 			case "ORNEMENT" :
 				try {
 					cantByte = Byte.parseByte(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				objetivo = _perso;
 				if (infos.length > 2) {
 					objetivo = Mundo.getPersonajePorNombre(infos[2]);
@@ -5054,7 +5122,7 @@ public class Comandos {
 					if (objetivo.getPelea() == null) {
 						objetivo.refrescarEnMapa();
 					}
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case "SET_STATS_OBJETO_SET" :
 			case "SET_STATS_SET_OBJETO" :
@@ -5068,7 +5136,7 @@ public class Comandos {
 					id = Integer.parseInt(infos[1]);
 					str = infos[2];
 					cantInt = Integer.parseInt(infos[3]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				final ObjetoSet set = Mundo.getObjetoSet(id);
 				if (set == null) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El objeto set " + id + " no existe");
@@ -5086,7 +5154,7 @@ public class Comandos {
 				try {
 					try {
 						id = Integer.parseInt(infos[1]);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					final ObjetoSet OS = Mundo.getObjetoSet(id);
 					if (OS == null) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El objeto set " + id + " no existe");
@@ -5117,9 +5185,9 @@ public class Comandos {
 						objetivo.addObjIdentAInventario(obj, false);
 					}
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
-						strB.append("Création de la panoplie ").append(OS.getNombre()).append(" pour ").append(objetivo.getNombre());
+						strB.append("Création de la panoplie " + OS.getNombre() + " pour " + objetivo.getNombre());
 					} else {
-						strB.append("Creación del objeto set ").append(OS.getNombre()).append(" a ").append(objetivo.getNombre());
+						strB.append("Creación del objeto set " + OS.getNombre() + " a " + objetivo.getNombre());
 					}
 					switch (useMax) {
 						case MAXIMO :
@@ -5141,7 +5209,7 @@ public class Comandos {
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, strB.toString());
 					GestorSalida.ENVIAR_Ow_PODS_DEL_PJ(objetivo);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case "DEL_NPC_ITEM" :
 			case "DEL_ITEM_NPC" :
@@ -5158,15 +5226,15 @@ public class Comandos {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "NPC inválido");
 						return;
 					}
-					final ArrayList<ObjetoModelo> objetos = new ArrayList<>();
+					final ArrayList<ObjetoModelo> objetos = new ArrayList<ObjetoModelo>();
 					for (final String a : infos[2].split(",")) {
 						try {
 							objModelo = Mundo.getObjetoModelo(Integer.parseInt(a));
 							if (objModelo != null) {
 								objetos.add(objModelo);
-								strB.append("\n").append(objModelo.getNombre());
+								strB.append("\n" + objModelo.getNombre());
 							}
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 					}
 					npcModelo.borrarObjetoAVender(objetos);
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Al NPC " + npcModelo.getNombre()
@@ -5193,15 +5261,15 @@ public class Comandos {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "NPC inválido");
 						return;
 					}
-					final ArrayList<ObjetoModelo> objetos = new ArrayList<>();
+					final ArrayList<ObjetoModelo> objetos = new ArrayList<ObjetoModelo>();
 					for (final String a : infos[2].split(",")) {
 						try {
 							objModelo = Mundo.getObjetoModelo(Integer.parseInt(a));
 							if (objModelo != null) {
 								objetos.add(objModelo);
-								strB.append("\n").append(objModelo.getNombre());
+								strB.append("\n" + objModelo.getNombre());
 							}
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 					}
 					npcModelo.addObjetoAVender(objetos);
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Al NPC " + npcModelo.getNombre()
@@ -5228,7 +5296,7 @@ public class Comandos {
 				int honor = 0;
 				try {
 					honor = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e6) {}
 				objetivo = _perso;
 				if (infos.length > 2) {
 					objetivo = Mundo.getPersonajePorNombre(infos[2]);
@@ -5264,7 +5332,7 @@ public class Comandos {
 			case "DESCRIPCION_MAPA" :
 				try {
 					cantShort = Byte.parseByte(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				_perso.getMapa().setParametros(cantShort);
 				GestorSQL.UPDATE_MAPA_PARAMETROS(_perso.getMapa().getID(), cantShort);
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Los parametros del mapa cambió a " + cantShort);
@@ -5273,7 +5341,7 @@ public class Comandos {
 			case "GIFT" :
 				try {
 					str = infos[1];
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				objetivo = _perso;
 				if (infos.length > 2) {
 					objetivo = Mundo.getPersonajePorNombre(infos[2]);
@@ -5298,11 +5366,11 @@ public class Comandos {
 			case "GIFT_ONLINE" :
 				try {
 					str = infos[1];
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				for (final Personaje pj : Mundo.getPersonajesEnLinea()) {
 					try {
 						pj.getCuenta().addRegalo(str);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 				}
 				if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Le cadeau a été envoyé à tous les joueurs en ligne.");
@@ -5314,7 +5382,7 @@ public class Comandos {
 			case "GIFT_FOR_ALL" :
 				try {
 					str = infos[1];
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				for (Cuenta cuenta : Mundo.getCuentas().values()) {
 					cuenta.addRegalo(str);
 				}
@@ -5338,7 +5406,7 @@ public class Comandos {
 				try {
 					id = Integer.parseInt(infos[1]);
 					cantInt = Integer.parseInt(infos[2]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e13) {}
 				objModelo = Mundo.getObjetoModelo(id);
 				if (objModelo == null) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
@@ -5386,7 +5454,7 @@ public class Comandos {
 				try {
 					oficio = Integer.parseInt(infos[1]);
 					exp = Integer.parseInt(infos[2]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				if (oficio < 0 || exp < 0) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argument incorrect.");
@@ -5430,7 +5498,7 @@ public class Comandos {
 					if (infos.length > 1) {
 						pts = Integer.parseInt(infos[1]);
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				if (pts < 0) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argument incorrect.");
@@ -5466,7 +5534,7 @@ public class Comandos {
 				try {
 					if (infos.length > 1)
 						id = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				if (id < 0) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argument incorrect.");
@@ -5510,7 +5578,7 @@ public class Comandos {
 				try {
 					if (infos.length > 1)
 						id = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				if (id < 0) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argument incorrect.");
@@ -5563,14 +5631,14 @@ public class Comandos {
 							if (id != 0)
 								montura = Mundo.getMontura(id);
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					if (montura == null) {
 						return;
 					}
 					montura.addExperiencia(Integer.parseInt(infos[2]));
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La montura ID " + montura.getID() + " a recibido " + Integer
 					.parseInt(infos[2]) + " puntos de exp");
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case "FECUNDADA_HACE" :
 				try {
@@ -5584,13 +5652,13 @@ public class Comandos {
 							if (id != 0)
 								montura = Mundo.getMontura(id);
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					if (montura == null) {
 						return;
 					}
 					montura.setFecundada(100);
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La montura ID " + montura.getID() + " esta lista para parir");
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case "MONTABLE" :
 			case "MONTAR" :
@@ -5605,7 +5673,7 @@ public class Comandos {
 							if (id != 0)
 								montura = Mundo.getMontura(id);
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					if (montura == null) {
 						return;
 					}
@@ -5618,7 +5686,7 @@ public class Comandos {
 						montura.addExperiencia(restante);
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La montura ID " + montura.getID() + " ahora es montable");
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case "FECUNDABLE" :
 			case "FECUNDAR" :
@@ -5633,7 +5701,7 @@ public class Comandos {
 							if (id != 0)
 								montura = Mundo.getMontura(id);
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					if (montura == null) {
 						return;
 					}
@@ -5650,7 +5718,7 @@ public class Comandos {
 						montura.quitarCastrado();
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La montura ID " + montura.getID() + " ahora esta fecundo");
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case "STATS_POINTS" :
 			case "POINTS_CAPITAL" :
@@ -5661,7 +5729,7 @@ public class Comandos {
 				try {
 					if (infos.length > 1)
 						puntos = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				if (puntos < 0) {
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argument incorrect.");
@@ -5747,7 +5815,7 @@ public class Comandos {
 				try {
 					infos = mensaje.split(" ", 3);
 					msj = infos[2];
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				int segundos = (id * 60);
 				Mundo.SEG_CUENTA_REGRESIVA = segundos;
 				if (id == 0) {
@@ -5810,7 +5878,7 @@ public class Comandos {
 								+ rec + " - USA COMANDO .caceria");
 								GestorSalida.ENVIAR_IC_PERSONAJE_BANDERA_COMPAS(perso, geo);
 							}
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 					}
 				}
 				GestorSalida.ENVIAR_ÑL_BOTON_LOTERIA_TODOS(Mundo.VENDER_BOLETOS);
@@ -6072,7 +6140,7 @@ public class Comandos {
 				String condiciones = "";
 				try {
 					condiciones = infos[2];
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				hechizo.setCondiciones(condiciones);
 				GestorSQL.ACTUALIZAR_CONDICIONES_HECHIZO(id, condiciones);
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El hechizo " + hechizo.getNombre() + " a cambiado sus condiciones : "
@@ -6098,7 +6166,7 @@ public class Comandos {
 				String afectados = "";
 				try {
 					afectados = infos[2];
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				hechizo.setAfectados(afectados);
 				GestorSQL.UPDATE_HECHIZO_AFECTADOS(id, afectados);
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El hechizo " + hechizo.getNombre() + " a cambiado sus afectados : "
@@ -6359,7 +6427,7 @@ public class Comandos {
 				id = 1;
 				try {
 					id = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				_perso.getMapa().moverGrupoMobs(id);
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Se movieron " + id + "  grupos de mobs del mapa");
 				break;
@@ -6390,7 +6458,7 @@ public class Comandos {
 						if (infos.length > 2) {
 							cantInt = Integer.parseInt(infos[2]);
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					if (cantInt < 1) {
 						cantInt = 1;
 					}
@@ -6425,9 +6493,11 @@ public class Comandos {
 					}
 					objetivo.addObjIdentAInventario(obj, false);
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
-						strB.append("Creatio de l'objet ").append(OM.getNombre()).append(" (").append(id).append(") en ").append(cantInt).append(" exemplaires pour ").append(objetivo.getNombre());
+						strB.append("Creatio de l'objet " + OM.getNombre() + " (" + id + ") en " + cantInt + " exemplaires pour "
+						+ objetivo.getNombre());
 					} else {
-						strB.append("Se creó ").append(cantInt).append(" objeto(s) ").append(OM.getNombre()).append(" (").append(id).append(") para el personaje ").append(objetivo.getNombre());
+						strB.append("Se creó " + cantInt + " objeto(s) " + OM.getNombre() + " (" + id + ") para el personaje "
+						+ objetivo.getNombre());
 					}
 					switch (useMax) {
 						case MAXIMO :
@@ -6453,7 +6523,7 @@ public class Comandos {
 						strB.append(", mais le joueur n'est pas en ligne");
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, strB.toString());
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			default :
 				GM_lvl_3(comando, infos, mensaje, _cuenta, _perso);
@@ -6475,8 +6545,7 @@ public class Comandos {
 		ObjetoModelo objMod;
 		Personaje objetivo = null;
 		Cuenta cuenta;
-		StringBuilder str = new StringBuilder();
-		String args = "";
+		String str = "", args = "";
 		switch (comando.toUpperCase()) {
 			case "RELOAD_CONFIG" :
 			case "CARGAR_CONFIGURACION" :
@@ -6518,8 +6587,8 @@ public class Comandos {
 			case "CREAR_SONIDO" :
 				try {
 					infos = mensaje.split(" ", 2);
-					str = new StringBuilder(infos[1]);
-					String mp3 = TextoAVoz.crearMP3(str.toString(), "");
+					str = infos[1];
+					String mp3 = TextoAVoz.crearMP3(str, "");
 					if (mp3 == null) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "No se pudo crear el sonido");
 					} else if (mp3.isEmpty()) {
@@ -6528,7 +6597,7 @@ public class Comandos {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Sonando el mp3 " + mp3);
 						GestorSalida.ENVIAR_Bv_SONAR_MP3(_perso, mp3);
 					}
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case "CREAR_AUDIO_IDIOMA" :
 			case "CREAR_MP3_IDIOMA" :
@@ -6539,8 +6608,8 @@ public class Comandos {
 			case "CREAR_SONIDO_IDIOMA" :
 				try {
 					infos = mensaje.split(" ", 3);
-					str = new StringBuilder(infos[2]);
-					String mp3 = TextoAVoz.crearMP3(str.toString(), infos[1]);
+					str = infos[2];
+					String mp3 = TextoAVoz.crearMP3(str, infos[1]);
 					if (mp3 == null) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "No se pudo crear el sonido");
 					} else if (mp3.isEmpty()) {
@@ -6549,7 +6618,7 @@ public class Comandos {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Sonando el mp3 " + mp3);
 						GestorSalida.ENVIAR_Bv_SONAR_MP3(_perso, mp3);
 					}
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case "TELEPORT_TODOS" :
 				try {
@@ -6561,7 +6630,7 @@ public class Comandos {
 						if (infos.length > 2) {
 							celdaID = Short.parseShort(infos[2]);
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					Mapa mapa = Mundo.getMapa(mapaID);
 					if (mapa == null) {
 						if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
@@ -6598,7 +6667,7 @@ public class Comandos {
 						try {
 							final String[] stat = s.split(",");
 							MainServidor.LIMITE_STATS_CON_BUFF.put(Integer.parseInt(stat[0]), Integer.parseInt(stat[1]));
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 					}
 				} catch (Exception e) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argumentos invalidos");
@@ -6614,7 +6683,7 @@ public class Comandos {
 						try {
 							final String[] stat = s.split(",");
 							MainServidor.LIMITE_STATS_SIN_BUFF.put(Integer.parseInt(stat[0]), Integer.parseInt(stat[1]));
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 					}
 				} catch (Exception e) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argumentos invalidos");
@@ -6634,7 +6703,7 @@ public class Comandos {
 					String npcs = "";
 					try {
 						idInt = Integer.parseInt(infos[1]);
-						str = new StringBuilder(infos[2]);
+						str = infos[2];
 						prioridad = Byte.parseByte(infos[3]);
 					} catch (Exception e) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argumentos invalidos");
@@ -6645,12 +6714,12 @@ public class Comandos {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Objeto modelo no existe");
 						return;
 					}
-					if (str.length() == 0) {
+					if (str.isEmpty()) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Objetos necesarios invalidos");
 						return;
 					}
-					Mundo.addObjetoTrueque(objMod.getID(), str.toString(), prioridad, npcs);
-					GestorSQL.INSERT_OBJETO_TRUEQUE(objMod.getID(), str.toString(), prioridad, npcs, objMod.getNombre());
+					Mundo.addObjetoTrueque(objMod.getID(), str, prioridad, npcs);
+					GestorSQL.INSERT_OBJETO_TRUEQUE(objMod.getID(), str, prioridad, npcs, objMod.getNombre());
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Se agregó el objeto trueque " + objMod.getNombre() + " (" + objMod
 					.getID() + "), objetos necesarios: " + str + ", prioridad: " + prioridad + ", npcs: " + npcs);
 				} catch (final Exception e) {
@@ -6660,7 +6729,7 @@ public class Comandos {
 			case "INICIAR_ATAQUE" :
 			case "START_ATTACK" :
 			case "STARTATTACK" :
-				str = new StringBuilder(infos[1]);
+				str = infos[1];
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Start the Attack: " + str);
 				GestorSalida.enviarTodos(1, "AjI" + str);
 				break;
@@ -6673,7 +6742,7 @@ public class Comandos {
 			case "PAQUETE_ATAQUE" :
 			case "PACKET_ATTACK" :
 			case "PACKETATTACK" :
-				str = new StringBuilder(infos[1]);
+				str = infos[1];
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Send Packet of Attack: " + str);
 				GestorSalida.enviarTodos(1, "AjE" + str);
 				break;
@@ -6707,7 +6776,7 @@ public class Comandos {
 						if (infos.length > 2) {
 							tiempo = Integer.parseInt(infos[2]);
 						}
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					GestorSalida.enviar(objetivo, "$" + tiempo);
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El personaje " + objetivo.getNombre()
 					+ " ha sido crasheado su cliente por " + tiempo + " minutos");
@@ -6776,7 +6845,7 @@ public class Comandos {
 						if (infos.length > 2) {
 							veces = Integer.parseInt(infos[2]);
 						}
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					GestorSalida.enviar(objetivo, "@" + veces + ";" + infos[3]);
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El personaje " + objetivo.getNombre()
 					+ " ha sido spameado su cliente por " + veces + " veces, con el packet " + infos[3]);
@@ -6826,15 +6895,15 @@ public class Comandos {
 				idInt = -1;
 				try {
 					idInt = Integer.parseInt(infos[3]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				Duo<Integer, ArrayList<Celda>> path = Camino.getPathPelea(_perso.getPelea() != null
 				? _perso.getPelea().getMapaCopia()
 				: _perso.getMapa(), celda1, celda2, idInt, null, true);
 				if (path != null) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Path es " + path._primero + " y " + path._segundo.size());
-					StringBuilder s = new StringBuilder();
+					String s = "";
 					for (Celda c : path._segundo) {
-						s.append(c.getID()).append(" ");
+						s += c.getID() + " ";
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "celdas " + s);
 				} else
@@ -6989,13 +7058,13 @@ public class Comandos {
 					return;
 				}
 				for (byte i : Constantes.POSICIONES_EQUIPAMIENTO) {
-					if (str.length() > 0) {
-						str.append(", ");
+					if (!str.isEmpty()) {
+						str += ", ";
 					}
 					if (objetivo.getObjPosicion(i) == null) {
-						str.append("null");
+						str += "null";
 					} else {
-						str.append(objetivo.getObjPosicion(i).getID());
+						str += objetivo.getObjPosicion(i).getID();
 					}
 				}
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Stuff de " + objetivo.getNombre() + " es " + str);
@@ -7272,35 +7341,35 @@ public class Comandos {
 			case "PERMITIR_BONUS_DROP_RETOS" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_PERMITIR_BONUS_DROP_RETOS = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PERMITIR_BONUS_DROP_RETOS cambio a " + boleano);
 				break;
 			case "PERMITIR_BONUS_EXP_RETOS" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_PERMITIR_BONUS_EXP_RETOS = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PERMITIR_BONUS_EXP_RETOS cambio a " + boleano);
 				break;
 			case "PARAM_RANKING_STAFF" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_LADDER_STAFF = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_RANKING_STAFF cambio a " + boleano);
 				break;
 			case "PARAM_INFO_DAÑO_BATALLA" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_INFO_DAÑO_BATALLA = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_INFO_DAÑO_BATALLA cambio a " + boleano);
 				break;
 			case "PARAM_MOSTRAR_EXP_MOBS" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_MOSTRAR_EXP_MOBS = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_MOSTRAR_EXP_MOBS cambio a " + boleano);
 				break;
@@ -7309,42 +7378,42 @@ public class Comandos {
 			case "PARAM_AUTO_RECUPERAR_VIDA" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_AUTO_RECUPERAR_TODA_VIDA = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_AUTO_RECUPERAR_TODA_VIDA cambio a " + boleano);
 				break;
 			case "PARAM_MOSTRAR_PROBABILIDAD_TACLEO" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_MOSTRAR_PROBABILIDAD_TACLEO = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_MOSTRAR_PROBABILIDAD_TACLEO cambio a " + boleano);
 				break;
 			case "PARAM_AUTO_SALTAR_TURNO" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_AUTO_SALTAR_TURNO = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_AUTO_SALTAR_TURNO cambio a " + boleano);
 				break;
 			case "PARAM_TODOS_MOBS_EN_BESTIARIO" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_TODOS_MOBS_EN_BESTIARIO = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_TODOS_MOBS_EN_BESTIARIO cambio a " + boleano);
 				break;
 			case "PARAM_CAPTURAR_MONTURA_COMO_PERGAMINO" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_CAPTURAR_MONTURA_COMO_PERGAMINO = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_CAPTURAR_MONTURA_COMO_PERGAMINO cambio a " + boleano);
 				break;
 			case "PARAM_AGRESION_ADMIN" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_AGRESION_ADMIN = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_AGRESION_ADMIN cambio a " + boleano);
 				break;
@@ -7352,14 +7421,14 @@ public class Comandos {
 			case "PARAM_JUGAR_RAPIDO" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_JUGAR_RAPIDO = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_JUGAR_RAPIDO cambio a " + boleano);
 				break;
 			case "PARAM_PERDER_ENERGIA" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_PERDER_ENERGIA = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_PERDER_ENERGIA cambio a " + boleano);
 				break;
@@ -7368,21 +7437,21 @@ public class Comandos {
 			case "ACTIVAR_ALBUM" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_BESTIARIO = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_ALBUM_MOBS cambio a " + boleano);
 				break;
 			case "PARAM_AGRESION_MULTICUENTA" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_PERMITIR_MULTICUENTA_PELEA_PVP = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_AGRESION_MULTICUENTA cambio a " + boleano);
 				break;
 			case "PARAM_LOTERIA" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_LOTERIA = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_LOTERIA cambio a " + boleano);
 				break;
@@ -7392,7 +7461,7 @@ public class Comandos {
 			case "PARAM_COMANDOS_JUGADOR" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_COMANDOS_JUGADOR = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_COMANDOS_JUGADOR cambio a " + boleano);
 				break;
@@ -7401,14 +7470,14 @@ public class Comandos {
 			case "AURA" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_ACTIVAR_AURA = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_ACTIVAR_AURA cambio a " + boleano);
 				break;
 			case "PARAM_ANTI_SPEEDHACK" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_ANTI_SPEEDHACK = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_ANTI_SPEEDHACK cambio a " + boleano);
 				break;
@@ -7417,7 +7486,7 @@ public class Comandos {
 			case "ANTI_DDOS" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_ANTI_DDOS = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El PARAM_ANTI_DDOS cambio a " + boleano);
 				break;
@@ -7517,7 +7586,7 @@ public class Comandos {
 			case "DEVOLVER_OGRINAS" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_DEVOLVER_OGRINAS = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Se cambió devolver ogrinas a " + MainServidor.PARAM_DEVOLVER_OGRINAS);
 				break;
@@ -7525,7 +7594,7 @@ public class Comandos {
 			case "LADDER" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_LADDER_NIVEL = boleano;
 				if (boleano)
 					Mundo.actualizarRankings();
@@ -7554,8 +7623,8 @@ public class Comandos {
 					return;
 				}
 				try {
-					str = new StringBuilder(infos[2]);
-				} catch (final Exception ignored) {}
+					str = infos[2];
+				} catch (final Exception e) {}
 				objMod = Mundo.getObjetoModelo(idInt);
 				if (objMod == null) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Objeto set nulo");
@@ -7563,8 +7632,8 @@ public class Comandos {
 				}
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Se modifico los statsModelo del objeto " + objMod.getNombre()
 				+ ": \nAntiguo Stats - " + objMod.getStatsModelo() + "\nNuevos Stats - " + str);
-				objMod.setStatsModelo(str.toString());
-				GestorSQL.UPDATE_STATS_OBJETO_MODELO(idInt, str.toString());
+				objMod.setStatsModelo(str);
+				GestorSQL.UPDATE_STATS_OBJETO_MODELO(idInt, str);
 				try {
 					for (final NPCModelo npcMod : Mundo.NPC_MODELOS.values()) {
 						if (npcMod.getObjAVender().contains(objMod)) {
@@ -7602,7 +7671,7 @@ public class Comandos {
 			case "LOTERIA_OGRINAS" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_LOTERIA_OGRINAS = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Loteria ogrinas es " + MainServidor.PARAM_DEVOLVER_OGRINAS);
 				break;
@@ -7641,7 +7710,7 @@ public class Comandos {
 								npcMod.actualizarObjetosAVender();
 							}
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 				} catch (final Exception e) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Ocurrio una exception");
 				}
@@ -7669,7 +7738,7 @@ public class Comandos {
 								npcMod.actualizarObjetosAVender();
 							}
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 				} catch (final Exception e) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Ocurrio una exception");
 				}
@@ -7691,11 +7760,11 @@ public class Comandos {
 						return;
 					}
 					try {
-						str = new StringBuilder(infos[2]);
-					} catch (final Exception ignored) {}
+						str = infos[2];
+					} catch (final Exception e) {}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Cambio stats del objeto " + idInt + ": \nAntiguo Stats - " + obj
 					.convertirStatsAString(true) + "\nNuevos Stats - " + str);
-					obj.convertirStringAStats(str.toString());
+					obj.convertirStringAStats(str);
 					if (_perso.getObjeto(idInt) != null) {
 						if (_perso.enLinea()) {
 							GestorSalida.ENVIAR_OCK_ACTUALIZA_OBJETO(_perso, obj);
@@ -7743,12 +7812,12 @@ public class Comandos {
 					return;
 				}
 				if (infos.length > 2) {
-					str = new StringBuilder(infos[2]);
+					str = infos[2];
 				} else {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La contraseña no puede estar vacia");
 					return;
 				}
-				GestorSQL.CAMBIAR_CONTRASEÑA_CUENTA(str.toString(), consultado.getID());
+				GestorSQL.CAMBIAR_CONTRASEÑA_CUENTA(str, consultado.getID());
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La cuenta " + consultado.getNombre() + " ha cambiado su contraseña a "
 				+ str);
 				break;
@@ -7792,7 +7861,7 @@ public class Comandos {
 			case "RECURSOS_EN_OGRINAS" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_PRECIO_RECURSOS_EN_OGRINAS = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Sistema recurso de ogrinas se cambio a " + boleano);
 				break;
@@ -7801,7 +7870,7 @@ public class Comandos {
 			case "CRAFT_SEGURO" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_CRAFT_SIEMPRE_EXITOSA = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Craft Seguro se cambio a "
 				+ MainServidor.PARAM_CRAFT_SIEMPRE_EXITOSA);
@@ -7816,7 +7885,7 @@ public class Comandos {
 				int mascota = -1;
 				try {
 					mascota = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e1) {}
 				if (mascota == -1) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argumentos incorrectos");
 					return;
@@ -7858,7 +7927,7 @@ public class Comandos {
 			case "PARAM_REGISTRO_JUGADORES" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.PARAM_REGISTRO_LOGS_JUGADORES = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "PARAM_REGISTRO_JUGADORES se cambio a " + boleano);
 				break;
@@ -7866,7 +7935,7 @@ public class Comandos {
 			case "RECIBIDOS" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.MOSTRAR_RECIBIDOS = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Mostrar recibidos se cambio a " + boleano);
 				break;
@@ -7874,7 +7943,7 @@ public class Comandos {
 			case "ENVIADOS" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.MOSTRAR_ENVIOS = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Mostrar enviados se cambio a " + boleano);
 				break;
@@ -7882,14 +7951,14 @@ public class Comandos {
 			case "MODO_DEBUG" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.MODO_DEBUG = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Mostrar mensajes debug se cambio a " + boleano);
 				break;
 			case "MODO_HEROICO" :
 				try {
 					boleano = infos[1].equalsIgnoreCase("true");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MainServidor.MODO_HEROICO = boleano;
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "El MODO_HEROICO cambio a " + boleano);
 				break;
@@ -7925,7 +7994,7 @@ public class Comandos {
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Se borró el prisma de la subArea " + prisma.getSubArea().getID());
 					prisma.murio();
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case "SEND" :
 			case "ENVIAR" :
@@ -8049,7 +8118,7 @@ public class Comandos {
 					}
 					pelea.addAccion(new Accion(accionID, args, ""));
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La pelea agrego la accion: ID " + accionID + ", Args " + args);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case "STR_ACCIONES_PELEA" :
 				if (_perso.getPelea() == null) {
@@ -8069,7 +8138,7 @@ public class Comandos {
 			case "ADD_CREDITS" :
 				try {
 					idInt = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				objetivo = _perso;
 				if (infos.length > 2) {
 					objetivo = Mundo.getPersonajePorNombre(infos[2]);
@@ -8097,7 +8166,7 @@ public class Comandos {
 			case "ADD_POINTS" :
 				try {
 					idInt = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				objetivo = _perso;
 				if (infos.length > 2) {
 					objetivo = Mundo.getPersonajePorNombre(infos[2]);
@@ -8121,7 +8190,7 @@ public class Comandos {
 			case "ADD_POINTS_ACCOUNT" :
 				try {
 					idInt = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				cuenta = _cuenta;
 				if (infos.length > 2) {
 					cuenta = Mundo.getCuentaPorNombre(infos[2]);
@@ -8148,7 +8217,7 @@ public class Comandos {
 			case "ADD_ABONO_MINUTES" :
 				try {
 					idInt = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				objetivo = _perso;
 				if (infos.length > 2) {
 					objetivo = Mundo.getPersonajePorNombre(infos[2]);
@@ -8179,7 +8248,7 @@ public class Comandos {
 			case "ADD_ABONO_HOURS" :
 				try {
 					idInt = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				objetivo = _perso;
 				if (infos.length > 2) {
 					objetivo = Mundo.getPersonajePorNombre(infos[2]);
@@ -8210,7 +8279,7 @@ public class Comandos {
 			case "ADD_ABONO_DAYS" :
 				try {
 					idInt = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				objetivo = _perso;
 				if (infos.length > 2) {
 					objetivo = Mundo.getPersonajePorNombre(infos[2]);
@@ -8270,13 +8339,13 @@ public class Comandos {
 						if (h >= 0 && h <= 23) {
 							MainServidor.HORA_DIA = h;
 						}
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					try {
 						int h = Integer.parseInt(dia[1]);
 						if (h >= 0 && h <= 59) {
 							MainServidor.MINUTOS_DIA = h;
 						}
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Se cambio el HORARIO_DIA a " + MainServidor.HORA_DIA + ":"
 					+ (MainServidor.MINUTOS_DIA < 10 ? "0" : "") + MainServidor.MINUTOS_DIA);
 					for (Personaje p : Mundo.getPersonajesEnLinea()) {
@@ -8297,13 +8366,13 @@ public class Comandos {
 						if (h >= 0 && h <= 23) {
 							MainServidor.HORA_NOCHE = h;
 						}
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					try {
 						int h = Integer.parseInt(dia[1]);
 						if (h >= 0 && h <= 59) {
 							MainServidor.MINUTOS_NOCHE = h;
 						}
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Se cambio el HORARIO_NOCHE a " + MainServidor.HORA_NOCHE + ":"
 					+ (MainServidor.MINUTOS_NOCHE < 10 ? "0" : "") + MainServidor.MINUTOS_NOCHE);
 					for (Personaje p : Mundo.getPersonajesEnLinea()) {
@@ -8327,7 +8396,7 @@ public class Comandos {
 						if (infos.length > 2) {
 							celdaID = Short.parseShort(infos[2]);
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					Mapa mapa = Mundo.getMapa(mapaID);
 					if (mapa == null) {
 						if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {

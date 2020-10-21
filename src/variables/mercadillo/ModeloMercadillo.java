@@ -8,7 +8,7 @@ import estaticos.Mundo;
 
 public class ModeloMercadillo {
 	private final int _modeloID;
-	private final Map<Integer, LineaMercadillo> _lineasDeUnModelo = new HashMap<>();
+	private final Map<Integer, LineaMercadillo> _lineasDeUnModelo = new HashMap<Integer, LineaMercadillo>();
 	
 	public ModeloMercadillo(final int modeloID, final ObjetoMercadillo objMerca) {
 		_modeloID = modeloID;

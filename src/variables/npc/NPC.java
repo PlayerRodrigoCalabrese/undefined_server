@@ -54,19 +54,19 @@ public class NPC implements Exchanger {
 	
 	public String strinGM(final Personaje perso) {
 		final StringBuilder str = new StringBuilder();
-		str.append(_celdaID).append(";");
-		str.append(_orientacion).append(";");
+		str.append(_celdaID + ";");
+		str.append(_orientacion + ";");
 		str.append("0" + ";");
-		str.append(_id).append(";");
-		str.append(_npcModelo.getID()).append(";");
+		str.append(_id + ";");
+		str.append(_npcModelo.getID() + ";");
 		str.append("-4" + ";");// tipo = NPC
-		str.append(_npcModelo.getGfxID()).append("^").append(_npcModelo.getTallaX()).append("x").append(_npcModelo.getTallaY()).append(";");
-		str.append(_npcModelo.getSexo()).append(";");
-		str.append(_npcModelo.getColor1() != -1 ? Integer.toHexString(_npcModelo.getColor1()) : "-1").append(";");
-		str.append(_npcModelo.getColor2() != -1 ? Integer.toHexString(_npcModelo.getColor2()) : "-1").append(";");
-		str.append(_npcModelo.getColor3() != -1 ? Integer.toHexString(_npcModelo.getColor3()) : "-1").append(";");
-		str.append(_npcModelo.getAccesoriosHex()).append(";");
-		str.append(_npcModelo.getExtraClip(perso)).append(";");
+		str.append(_npcModelo.getGfxID() + "^" + _npcModelo.getTallaX() + "x" + _npcModelo.getTallaY() + ";");
+		str.append(_npcModelo.getSexo() + ";");
+		str.append((_npcModelo.getColor1() != -1 ? Integer.toHexString(_npcModelo.getColor1()) : "-1") + ";");
+		str.append((_npcModelo.getColor2() != -1 ? Integer.toHexString(_npcModelo.getColor2()) : "-1") + ";");
+		str.append((_npcModelo.getColor3() != -1 ? Integer.toHexString(_npcModelo.getColor3()) : "-1") + ";");
+		str.append(_npcModelo.getAccesoriosHex() + ";");
+		str.append(_npcModelo.getExtraClip(perso) + ";");
 		str.append(_npcModelo.getFoto());
 		return str.toString();
 	}

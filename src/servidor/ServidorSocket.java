@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -71,11 +70,11 @@ import estaticos.Mundo;
 import sprites.Preguntador;
 
 public class ServidorSocket implements Runnable {
-	private static final HashMap<String, Integer> POSIBLES_ATAQUES = new HashMap<>();
+	private static HashMap<String, Integer> POSIBLES_ATAQUES = new HashMap<>();
 	public static Map<String, StringBuilder> REGISTROS = new ConcurrentHashMap<>();
-	public static ArrayList<String> JUGADORES_REGISTRAR = new ArrayList<>();
-	public static ArrayList<Integer> RASTREAR_CUENTAS = new ArrayList<>();
-	public static ArrayList<String> RASTREAR_IPS = new ArrayList<>();
+	public static ArrayList<String> JUGADORES_REGISTRAR = new ArrayList<String>();
+	public static ArrayList<Integer> RASTREAR_CUENTAS = new ArrayList<Integer>();
+	public static ArrayList<String> RASTREAR_IPS = new ArrayList<String>();
 	//
 	// dinamicos
 	//
@@ -127,7 +126,7 @@ public class ServidorSocket implements Runnable {
 				return;
 			}
 			POSIBLES_ATAQUES.put(_IP, 0);
-			_accionesDeJuego = new TreeMap<>();
+			_accionesDeJuego = new TreeMap<Integer, AccionDeJuego>();
 			_ultPackets = new String[7];
 			_timePackets = new long[7];
 			_aKeys = new String[16];
@@ -159,10 +158,12 @@ public class ServidorSocket implements Runnable {
 	}
 	
 	private void crearTimerAcceso() {
-		_timerAcceso = new Timer(10 * 1000, arg0 -> {
-			MainServidor.redactarLogServidorln("TIMER ACCEDER SERVER AGOTADO (posible ataque): " + _IP);
-			posibleAtaque();
-			cerrarSocket(true, "crearTimerAcceso()");
+		_timerAcceso = new Timer(10 * 1000, new ActionListener() {
+			public void actionPerformed(final ActionEvent arg0) {
+				MainServidor.redactarLogServidorln("TIMER ACCEDER SERVER AGOTADO (posible ataque): " + _IP);
+				posibleAtaque();
+				cerrarSocket(true, "crearTimerAcceso()");
+			}
 		});
 	}
 	
@@ -190,7 +191,7 @@ public class ServidorSocket implements Runnable {
 			while ((lenght = _in.read(bytes)) != -1) {
 				byteArray.write(bytes, 0, lenght);
 				if (_in.available() == 0) {
-					String tempPacket = byteArray.toString(StandardCharsets.UTF_8);
+					String tempPacket = byteArray.toString("UTF-8");
 					for (String packet : tempPacket.split("[\u0000\n\r]")) {
 						if (packet.isEmpty()) {
 							continue;
@@ -304,7 +305,7 @@ public class ServidorSocket implements Runnable {
 					MainServidor.redactarLogServidorln("{" + _IP + "} " + packet.toString());
 				}
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	public void registrar(final String packet) {
@@ -313,10 +314,10 @@ public class ServidorSocket implements Runnable {
 				if (REGISTROS.get(_cuenta.getNombre()) == null) {
 					REGISTROS.put(_cuenta.getNombre(), new StringBuilder());
 				}
-				REGISTROS.get(_cuenta.getNombre()).append(System.currentTimeMillis()).append(" - ").append(new Date(System
-						.currentTimeMillis())).append(" : \t").append(packet).append("\n");
+				REGISTROS.get(_cuenta.getNombre()).append(System.currentTimeMillis() + " - " + new Date(System
+				.currentTimeMillis()) + " : \t" + packet + "\n");
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	public long getPing() {
@@ -432,7 +433,7 @@ public class ServidorSocket implements Runnable {
 				try {
 					GestorSalida.ENVIAR_ÑV_VOTO_RPG(this, Mundo.CAPTCHAS.get(Formulas.getRandomInt(0, Mundo.CAPTCHAS.size()
 					- 1)));
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				break;
 			case 'O' :// objetos
 				analizar_Objetos(packet);
@@ -460,7 +461,7 @@ public class ServidorSocket implements Runnable {
 					if (i == _ultMillis) {
 						_ping = System.currentTimeMillis() - _lastMillis;
 					}
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				break;
 			case 'S' :// hechizo
 				analizar_Hechizos(packet);
@@ -702,7 +703,7 @@ public class ServidorSocket implements Runnable {
 							_timerAcceso.stop();
 						}
 						_timerAcceso = null;
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					ServidorServer.delEsperandoCuenta(_cuenta);
 					int cuentasPorIP = ServidorServer.getIPsClientes(_IP);
 					if (_cuenta.getAdmin() <= 0 && cuentasPorIP >= MainServidor.MAX_CUENTAS_POR_IP) {
@@ -782,8 +783,8 @@ public class ServidorSocket implements Runnable {
 				if (lista.length() > 0) {
 					lista.append(";");
 				}
-				lista.append("0~").append(Integer.toString(Integer.parseInt(str), 16)).append("~1~~").append(efectos);
-			} catch (final Exception ignored) {}
+				lista.append("0~" + Integer.toString(Integer.parseInt(str), 16) + "~1~~" + efectos);
+			} catch (final Exception e) {}
 		}
 		if (lista.length() == 0) {
 			return false;
@@ -847,7 +848,7 @@ public class ServidorSocket implements Runnable {
 		}
 		try {
 			capital = Integer.parseInt(packet.split(";")[1]);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		_perso.boostStat2(stat, capital);
 	}
 	
@@ -857,7 +858,7 @@ public class ServidorSocket implements Runnable {
 			if (p.esFantasma()) {
 				p.reiniciarCero();
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	private void cuenta_Seleccion_Personaje(final String packet) {
@@ -883,8 +884,8 @@ public class ServidorSocket implements Runnable {
 			Personaje perso = _cuenta.getPersonaje(Integer.parseInt(split[0]));
 			String respuesta = "";
 			try {
-				respuesta = URLDecoder.decode(split[1], StandardCharsets.UTF_8);
-			} catch (Exception ignored) {}
+				respuesta = URLDecoder.decode(split[1], "UTF-8");
+			} catch (Exception e) {}
 			if (perso != null) {
 				if (perso.getNivel() < 25 || (perso.getNivel() >= 25 && respuesta.equalsIgnoreCase(_cuenta.getRespuesta()))) {
 					_cuenta.eliminarPersonaje(perso.getID());
@@ -1208,27 +1209,34 @@ public class ServidorSocket implements Runnable {
 		try {
 			Servicio servicio = null;
 			switch (packet.charAt(2)) {
-// cambio de color
-				case 'C' -> servicio = Mundo.getServicio(Constantes.SERVICIO_CAMBIO_COLOR);
-// cambio de emblema
-				case 'G' -> servicio = Mundo.getServicio(Constantes.SERVICIO_CAMBIO_EMBLEMA);
-				case 'M' -> servicio = Mundo.getServicio(Constantes.SERVICIO_MIMOBIONTE);
-				case 'm' -> servicio = Mundo.getServicio(Constantes.SERVICIO_TRANSFORMAR_MONTURA);
-// cambio de nombre
-				case 'N' -> servicio = Mundo.getServicio(Constantes.SERVICIO_CAMBIO_NOMBRE);
-// titulo VIP
-				case 'T' -> servicio = Mundo.getServicio(Constantes.SERVICIO_TITULO_PERSONALIZADO);
-				default -> {
+				case 'C' :// cambio de color
+					servicio = Mundo.getServicio(Constantes.SERVICIO_CAMBIO_COLOR);
+					break;
+				case 'G' :// cambio de emblema
+					servicio = Mundo.getServicio(Constantes.SERVICIO_CAMBIO_EMBLEMA);
+					break;
+				case 'M' :
+					servicio = Mundo.getServicio(Constantes.SERVICIO_MIMOBIONTE);
+					break;
+				case 'm' :
+					servicio = Mundo.getServicio(Constantes.SERVICIO_TRANSFORMAR_MONTURA);
+					break;
+				case 'N' :// cambio de nombre
+					servicio = Mundo.getServicio(Constantes.SERVICIO_CAMBIO_NOMBRE);
+					break;
+				case 'T' :// titulo VIP
+					servicio = Mundo.getServicio(Constantes.SERVICIO_TITULO_PERSONALIZADO);
+					break;
+				default :
 					String[] arg = packet.split(";");
 					try {
 						if (arg.length > 1) {
 							_perso.setMedioPagoServicio(Byte.parseByte(arg[1]));
 						}
-					} catch (Exception ignored) {
-					}
+					} catch (Exception e) {}
 					servicio = Mundo.getServicio(Integer.parseInt(arg[0].substring(2)));
 					packet = "";
-				}
+					break;
 			}
 			servicio.usarServicio(_perso, packet);
 		} catch (Exception e) {
@@ -1241,11 +1249,11 @@ public class ServidorSocket implements Runnable {
 	private void bustofus_Sets_Rapidos(final String packet) {
 		try {
 			switch (packet.charAt(2)) {
-				case 'B' -> {
+				case 'B' :
 					_perso.borrarSetRapido(Integer.parseInt(packet.substring(3)));
 					GestorSalida.ENVIAR_BN_NADA(_perso, "SET RAPIDO BORRADO");
-				}
-				case 'C' -> {
+					break;
+				case 'C' :
 					String[] split = packet.substring(3).split(Pattern.quote("|"));
 					int id = Integer.parseInt(split[0]);
 					String nombre = split[1];
@@ -1253,7 +1261,7 @@ public class ServidorSocket implements Runnable {
 						nombre = nombre.substring(0, 20);
 					}
 					final String plantilla = Encriptador.NUMEROS + Encriptador.ABC_MIN + Encriptador.ABC_MAY
-							+ Encriptador.ESPACIO;
+					+ Encriptador.ESPACIO;
 					for (final char letra : nombre.toCharArray()) {
 						if (!plantilla.contains(letra + "")) {
 							nombre = nombre.replace(letra + "", "");
@@ -1263,8 +1271,8 @@ public class ServidorSocket implements Runnable {
 					String data = objeto_String_Set_Equipado();
 					_perso.addSetRapido(id, nombre, icono, data);
 					GestorSalida.ENVIAR_BN_NADA(_perso, "SET RAPIDO CREADO");
-				}
-				case 'U' -> {
+					break;
+				case 'U' :
 					SetRapido set = _perso.getSetRapido(Integer.parseInt(packet.substring(3)));
 					if (set == null) {
 						return;
@@ -1278,7 +1286,7 @@ public class ServidorSocket implements Runnable {
 					if (cambio >= 1) {
 						_perso.refrescarStuff(true, cambio >= 1, cambio >= 2);
 					}
-				}
+					break;
 			}
 		} catch (Exception e) {
 			MainServidor.redactarLogServidorln("EXCEPTION Packet " + packet + ", bustofus_Sets_Rapidos " + e.toString());
@@ -1325,7 +1333,7 @@ public class ServidorSocket implements Runnable {
 			Calendar.DAY_OF_MONTH) + "|" + almanax.getOfrenda()._primero + "," + almanax.getOfrenda()._segundo + "|" + almanax
 			.getTipo() + "," + almanax.getBonus() + "|" + _perso.cantMisionseAlmanax() + ","
 			+ MainServidor.MAX_MISIONES_ALMANAX + "|" + (_perso.realizoMisionDelDia() ? 1 : 0));
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	private void bustofus_Borrar_Reporte(final String packet) {
@@ -1338,17 +1346,19 @@ public class ServidorSocket implements Runnable {
 	
 	private void bustofus_Detalle_Reporte(final String packet) {
 		switch (packet.charAt(2)) {
-			case '0', '1', '2', '3' -> {
+			case '0' :
+			case '1' :
+			case '2' :
+			case '3' :
 				final String[] arg = packet.substring(3).split(";");
 				byte tipo = Byte.parseByte(packet.charAt(2) + "");
 				int idReporte = Integer.parseInt(arg[0]);
 				GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, GestorSQL.GET_DESCRIPTION_REPORTE(tipo, idReporte));
 				_cuenta.addIDReporte(tipo, idReporte);
-			}
-			default -> {
+				break;
+			default :
 				GestorSalida.ENVIAR_BN_NADA(_perso);
 				return;
-			}
 		}
 	}
 	
@@ -1361,14 +1371,21 @@ public class ServidorSocket implements Runnable {
 		String tema = packet2.substring(4).split(Pattern.quote("|"))[1];
 		String detalle = packet2.substring(4).split(Pattern.quote("|"))[2];
 		switch (packet.charAt(3)) {
-			case '1' -> GestorSQL.INSERT_REPORTE_BUG(_perso.getNombre(), tema, detalle);
-			case '2' -> GestorSQL.INSERT_SUGERENCIAS(_perso.getNombre(), tema, detalle);
-			case '3' -> GestorSQL.INSERT_DENUNCIAS(_perso.getNombre(), tema, detalle);
-			case '4' -> GestorSQL.INSERT_PROBLEMA_OGRINAS(_perso.getNombre(), tema, detalle);
-			default -> {
+			case '1' :
+				GestorSQL.INSERT_REPORTE_BUG(_perso.getNombre(), tema, detalle);
+				break;
+			case '2' :
+				GestorSQL.INSERT_SUGERENCIAS(_perso.getNombre(), tema, detalle);
+				break;
+			case '3' :
+				GestorSQL.INSERT_DENUNCIAS(_perso.getNombre(), tema, detalle);
+				break;
+			case '4' :
+				GestorSQL.INSERT_PROBLEMA_OGRINAS(_perso.getNombre(), tema, detalle);
+				break;
+			default :
 				GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1REPORTE_ENVIADO_ERROR");
 				return;
-			}
 		}
 		_cuenta.setUltimoReporte(System.currentTimeMillis());
 		GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1REPORTE_ENVIADO_OK");
@@ -1471,13 +1488,13 @@ public class ServidorSocket implements Runnable {
 		boolean exoPM = false;
 		try {
 			capStas = r[2].equals("1") ? CAPACIDAD_STATS.MAXIMO : CAPACIDAD_STATS.RANDOM;
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		try {
 			exoPA = r[3].equals("1");
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		try {
 			exoPM = r[4].equals("1");
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		final ObjetoModelo objMod = Mundo.getObjetoModelo(idObjMod);
 		if (objMod == null) {
 			GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1OBJECT_DONT_EXIST");
@@ -1726,12 +1743,12 @@ public class ServidorSocket implements Runnable {
 					if (stats.length() > 0) {
 						stats.append(",");
 					}
-					stats.append(Integer.toHexString(statID)).append("#").append(Integer.toHexString(cantidad)).append("#0#0#0d0+").append(cantidad);
+					stats.append(Integer.toHexString(statID) + "#" + Integer.toHexString(cantidad) + "#0#0#0d0+" + cantidad);
 					ids.add(statID);
 					if (ids.size() >= 9) {
 						break;
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e1) {}
 			}
 			error = 10;
 			int maximo = crea.getMaxOgrinas();
@@ -1744,7 +1761,7 @@ public class ServidorSocket implements Runnable {
 				if (stats.length() > 0) {
 					stats.append(",");
 				}
-				stats.append(Integer.toHexString(Constantes.STAT_FACBRICADO_POR)).append("#0#0#0#").append(_perso.getNombre());
+				stats.append(Integer.toHexString(Constantes.STAT_FACBRICADO_POR) + "#0#0#0#" + _perso.getNombre());
 			}
 			error = 12;
 			if (GestorSQL.RESTAR_OGRINAS(_cuenta, ogrinas, _perso)) {
@@ -1770,18 +1787,21 @@ public class ServidorSocket implements Runnable {
 			_perso.setMedioPagoServicio((byte) 0);
 			GestorSalida.ENVIAR_bOC_ABRIR_PANEL_SERVICIOS(_perso, GestorSQL.GET_CREDITOS_CUENTA(_cuenta.getID()), GestorSQL
 			.GET_OGRINAS_CUENTA(_cuenta.getID()));
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void analizar_Documentos(final String packet) {
-		if (packet.charAt(1) == 'V') {
-			GestorSalida.ENVIAR_dV_CERRAR_DOCUMENTO(_perso);
-		} else {
-			MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR DOCUMENTOS: " + packet);
-			if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
-				MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
-				cerrarSocket(true, "analizar_Documentos");
-			}
+		switch (packet.charAt(1)) {
+			case 'V' :
+				GestorSalida.ENVIAR_dV_CERRAR_DOCUMENTO(_perso);
+				break;
+			default :
+				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR DOCUMENTOS: " + packet);
+				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
+					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
+					cerrarSocket(true, "analizar_Documentos");
+				}
+				break;
 		}
 	}
 	
@@ -1793,78 +1813,91 @@ public class ServidorSocket implements Runnable {
 			return;
 		}
 		_perso.setTutorial(null);
-		if (packet.charAt(1) == 'V') {
-			if (packet.charAt(2) != '0' && packet.charAt(2) != '4') {
-				try {
-					if (System.currentTimeMillis() - _perso.getInicioTutorial() > 13000) {
-						int recompensa = Integer.parseInt(packet.charAt(2) + "") - 1;
-						tuto.getRecompensa().get(recompensa).realizarAccion(_perso, null, -1, (short) -1);
+		switch (packet.charAt(1)) {
+			case 'V' :
+				if (packet.charAt(2) != '0' && packet.charAt(2) != '4') {
+					try {
+						if (System.currentTimeMillis() - _perso.getInicioTutorial() > 13000) {
+							int recompensa = Integer.parseInt(packet.charAt(2) + "") - 1;
+							tuto.getRecompensa().get(recompensa).realizarAccion(_perso, null, -1, (short) -1);
+						}
+					} catch (final Exception e) {
+						MainServidor.redactarLogServidorln("Se quizo usar un tutorial con " + packet);
 					}
-				} catch (final Exception e) {
-					MainServidor.redactarLogServidorln("Se quizo usar un tutorial con " + packet);
 				}
-			}
-			if (tuto.getFin() != null) {
-				tuto.getFin().realizarAccion(_perso, null, -1, (short) -1);
-			}
-			try {
-				if (param.length > 2) {
-					byte orientacion = Byte.parseByte(param[2]);
-					short celdaID = Short.parseShort(param[1]);
-					_perso.setOrientacion(orientacion);
-					_perso.setCelda(_perso.getMapa().getCelda(celdaID));
+				if (tuto.getFin() != null) {
+					tuto.getFin().realizarAccion(_perso, null, -1, (short) -1);
 				}
-			} catch (final Exception e) {
-			}
-			_perso.setOcupado(false);
-			GestorSalida.ENVIAR_BN_NADA(_perso);
-		} else {
-			MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR TUTORIALES: " + packet);
-			if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
-				MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
-				cerrarSocket(true, "analizar_Tutoriales()");
-			}
+				try {
+					if (param.length > 2) {
+						byte orientacion = Byte.parseByte(param[2]);
+						short celdaID = Short.parseShort(param[1]);
+						_perso.setOrientacion(orientacion);
+						_perso.setCelda(_perso.getMapa().getCelda(celdaID));
+					}
+				} catch (final Exception e) {}
+				_perso.setOcupado(false);
+				GestorSalida.ENVIAR_BN_NADA(_perso);
+				break;
+			default :
+				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR TUTORIALES: " + packet);
+				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
+					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
+					cerrarSocket(true, "analizar_Tutoriales()");
+				}
+				break;
 		}
 	}
 	
 	private void analizar_Misiones(final String packet) {
 		switch (packet.charAt(1)) {
-			case 'L' -> GestorSalida.ENVIAR_QL_LISTA_MISIONES(_perso, _perso.listaMisiones());
-			case 'S' -> {
+			case 'L' :
+				GestorSalida.ENVIAR_QL_LISTA_MISIONES(_perso, _perso.listaMisiones());
+				break;
+			case 'S' :
 				int misionID = -1;
 				try {
 					misionID = Integer.parseInt(packet.substring(2));
-				} catch (final Exception ignored) {
-				}
+				} catch (final Exception e) {}
 				if (misionID <= 0) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 				}
 				GestorSalida.ENVIAR_QS_PASOS_RECOMPENSA_MISION(_perso, _perso.detalleMision(misionID));
-			}
-			default -> {
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR MISIONES: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Misiones()");
 				}
-			}
+				break;
 		}
 	}
 	
 	private void analizar_Conquista(final String packet) {
 		switch (packet.charAt(1)) {
-			case 'b' -> conquista_Balance();
-			case 'B' -> conquista_Bonus();
-			case 'W' -> conquista_Geoposicion(packet);
-			case 'I' -> conquista_Defensa(packet);
-			case 'F' -> conquista_Unirse_Defensa_Prisma(packet);
-			default -> {
+			case 'b' :
+				conquista_Balance();
+				break;
+			case 'B' :
+				conquista_Bonus();
+				break;
+			case 'W' :
+				conquista_Geoposicion(packet);
+				break;
+			case 'I' :
+				conquista_Defensa(packet);
+				break;
+			case 'F' :
+				conquista_Unirse_Defensa_Prisma(packet);
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR CONQUISTA: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Conquista()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -1913,32 +1946,39 @@ public class ServidorSocket implements Runnable {
 	
 	private void conquista_Geoposicion(final String packet) {
 		switch (packet.charAt(2)) {
-			case 'J' -> GestorSalida.ENVIAR_CW_INFO_MUNDO_CONQUISTA(_perso, Mundo.prismasGeoposicion(_perso.getAlineacion()));
-			case 'V' -> GestorSalida.ENVIAR_CIV_CERRAR_INFO_CONQUISTA(_perso);
-			default -> {
+			case 'J' :
+				GestorSalida.ENVIAR_CW_INFO_MUNDO_CONQUISTA(_perso, Mundo.prismasGeoposicion(_perso.getAlineacion()));
+				break;
+			case 'V' :
+				GestorSalida.ENVIAR_CIV_CERRAR_INFO_CONQUISTA(_perso);
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR CONQUISTA GEOPOSICION: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "conquista_Geoposicion()");
 				}
-			}
+				break;
 		}
 	}
 	
 	private void conquista_Unirse_Defensa_Prisma(final String packet) {
-		if (packet.charAt(2) == 'J') {
-			final Prisma prisma = _perso.getMapa().getSubArea().getPrisma();
-			if (prisma == null || prisma.getPelea() == null || _perso.getPelea() != null || prisma.getAlineacion() != _perso
-					.getAlineacion()) {
-				return;
-			}
-			prisma.getPelea().unirsePelea(_perso, prisma.getID());
-		} else {
-			MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR CONQ UNIRSE DEFENSA: " + packet);
-			if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
-				MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
-				cerrarSocket(true, "conquista_Unirse_Defensa_Prisma()");
-			}
+		switch (packet.charAt(2)) {
+			case 'J' :
+				final Prisma prisma = _perso.getMapa().getSubArea().getPrisma();
+				if (prisma == null || prisma.getPelea() == null || _perso.getPelea() != null || prisma.getAlineacion() != _perso
+				.getAlineacion()) {
+					return;
+				}
+				prisma.getPelea().unirsePelea(_perso, prisma.getID());
+				break;
+			default :
+				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR CONQ UNIRSE DEFENSA: " + packet);
+				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
+					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
+					cerrarSocket(true, "conquista_Unirse_Defensa_Prisma()");
+				}
+				break;
 		}
 	}
 	
@@ -1949,19 +1989,28 @@ public class ServidorSocket implements Runnable {
 			return;
 		}
 		switch (packet.charAt(1)) {
-			case 'B' -> casa.comprarCasa(_perso);
-			case 'G' -> casa.analizarCasaGremio(_perso, packet.substring(2));
-// expulsar a otro perso
-			case 'Q' -> casa.expulsar(_perso, packet.substring(2));
-			case 'S' -> casa.modificarPrecioVenta(_perso, packet.substring(2));
-			case 'V' -> casa.cerrarVentanaCompra(_perso);
-			default -> {
+			case 'B' :
+				casa.comprarCasa(_perso);
+				break;
+			case 'G' :
+				casa.analizarCasaGremio(_perso, packet.substring(2));
+				break;
+			case 'Q' :// expulsar a otro perso
+				casa.expulsar(_perso, packet.substring(2));
+				break;
+			case 'S' :
+				casa.modificarPrecioVenta(_perso, packet.substring(2));
+				break;
+			case 'V' :
+				casa.cerrarVentanaCompra(_perso);
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR CASAS: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Casas()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -1974,28 +2023,40 @@ public class ServidorSocket implements Runnable {
 			if (_perso.getPelea().getTipoPelea() == Constantes.PELEA_TIPO_KOLISEO) {
 				return;
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		switch (packet.charAt(1)) {
-			case 'A' -> koliseo_Aceptar_Invitacion(packet);
-			case 'I' -> koliseo_Invitar(packet);
-			case 'P' -> {
+			case 'A' :
+				koliseo_Aceptar_Invitacion(packet);
+				break;
+			case 'I' :
+				koliseo_Invitar(packet);
+				break;
+			case 'P' :
 				if (_perso.getPelea() != null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				GestorSalida.ENVIAR_kP_PANEL_KOLISEO(_perso);
-			}
-			case 'R' -> koliseo_Rechazar_Invitacion();
-			case 'V' -> koliseo_Expulsar(packet);
-			case 'Y' -> koliseo_Inscribirse();
-			case 'Z' -> koliseo_Desinscribirse();
-			default -> {
+				break;
+			case 'R' :
+				koliseo_Rechazar_Invitacion();
+				break;
+			case 'V' :
+				koliseo_Expulsar(packet);
+				break;
+			case 'Y' :
+				koliseo_Inscribirse();
+				break;
+			case 'Z' :
+				koliseo_Desinscribirse();
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR KOLISEO: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Koliseo()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -2151,7 +2212,7 @@ public class ServidorSocket implements Runnable {
 					}
 					break;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	private void panel_Claves(final String packet) {
@@ -2186,16 +2247,22 @@ public class ServidorSocket implements Runnable {
 	
 	private void analizar_Enemigos(final String packet) {
 		switch (packet.charAt(1)) {
-			case 'A' -> enemigo_Agregar(packet);
-			case 'D' -> enemigo_Borrar(packet);
-			case 'L' -> GestorSalida.ENVIAR_iL_LISTA_ENEMIGOS(_perso);
-			default -> {
+			case 'A' :
+				enemigo_Agregar(packet);
+				break;
+			case 'D' :
+				enemigo_Borrar(packet);
+				break;
+			case 'L' :
+				GestorSalida.ENVIAR_iL_LISTA_ENEMIGOS(_perso);
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR ENEMIGOS: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Enemigos()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -2203,7 +2270,7 @@ public class ServidorSocket implements Runnable {
 		int id = -1;
 		String nombre = "";
 		switch (packet.charAt(2)) {
-			case '%' -> {
+			case '%' :
 				nombre = packet.substring(3);
 				final Personaje perso = Mundo.getPersonajePorNombre(nombre);
 				if (perso == null) {
@@ -2211,8 +2278,8 @@ public class ServidorSocket implements Runnable {
 					return;
 				}
 				id = perso.getCuentaID();
-			}
-			case '*' -> {
+				break;
+			case '*' :
 				nombre = packet.substring(3);
 				final Cuenta cuenta = Mundo.getCuentaPorApodo(nombre);
 				if (cuenta == null) {
@@ -2220,8 +2287,8 @@ public class ServidorSocket implements Runnable {
 					return;
 				}
 				id = cuenta.getID();
-			}
-			default -> {
+				break;
+			default :
 				nombre = packet.substring(2);
 				final Personaje perso2 = Mundo.getPersonajePorNombre(nombre);
 				if (perso2 == null || !perso2.enLinea()) {
@@ -2229,7 +2296,7 @@ public class ServidorSocket implements Runnable {
 					return;
 				}
 				id = perso2.getCuentaID();
-			}
+				break;
 		}
 		_cuenta.addEnemigo(nombre, id);
 	}
@@ -2238,7 +2305,7 @@ public class ServidorSocket implements Runnable {
 		int id = -1;
 		String nombre = "";
 		switch (packet.charAt(2)) {
-			case '%' -> {
+			case '%' :
 				nombre = packet.substring(3);
 				final Personaje pj = Mundo.getPersonajePorNombre(nombre);
 				if (pj == null) {
@@ -2246,8 +2313,8 @@ public class ServidorSocket implements Runnable {
 					return;
 				}
 				id = pj.getCuentaID();
-			}
-			case '*' -> {
+				break;
+			case '*' :
 				nombre = packet.substring(3);
 				final Cuenta cuenta = Mundo.getCuentaPorApodo(nombre);
 				if (cuenta == null) {
@@ -2255,8 +2322,8 @@ public class ServidorSocket implements Runnable {
 					return;
 				}
 				id = cuenta.getID();
-			}
-			default -> {
+				break;
+			default :
 				nombre = packet.substring(2);
 				final Personaje perso = Mundo.getPersonajePorNombre(nombre);
 				if (perso == null || !perso.enLinea()) {
@@ -2264,30 +2331,33 @@ public class ServidorSocket implements Runnable {
 					return;
 				}
 				id = perso.getCuentaID();
-			}
+				break;
 		}
 		_cuenta.borrarEnemigo(id);
 	}
 	
 	private void analizar_Oficios(final String packet) {
-		if (packet.charAt(1) == 'O') {
-			final String[] infos = packet.substring(2).split(Pattern.quote("|"));
-			final byte posOficio = Byte.parseByte(infos[0]);
-			final int opciones = Integer.parseInt(infos[1]);
-			final byte slots = Byte.parseByte(infos[2]);
-			final StatOficio statOficio = _perso.getStatsOficios().get(posOficio);
-			if (statOficio == null) {
-				return;
-			}
-			statOficio.setOpciones(opciones);
-			statOficio.setSlotsPublico(slots);
-			GestorSalida.ENVIAR_JO_OFICIO_OPCIONES(_perso, statOficio);
-		} else {
-			MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR OFICIOS: " + packet);
-			if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
-				MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
-				cerrarSocket(true, "analizar_Oficios()");
-			}
+		switch (packet.charAt(1)) {
+			case 'O' :
+				final String[] infos = packet.substring(2).split(Pattern.quote("|"));
+				final byte posOficio = Byte.parseByte(infos[0]);
+				final int opciones = Integer.parseInt(infos[1]);
+				final byte slots = Byte.parseByte(infos[2]);
+				final StatOficio statOficio = _perso.getStatsOficios().get(posOficio);
+				if (statOficio == null) {
+					return;
+				}
+				statOficio.setOpciones(opciones);
+				statOficio.setSlotsPublico(slots);
+				GestorSalida.ENVIAR_JO_OFICIO_OPCIONES(_perso, statOficio);
+				break;
+			default :
+				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR OFICIOS: " + packet);
+				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
+					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
+					cerrarSocket(true, "analizar_Oficios()");
+				}
+				break;
 		}
 	}
 	
@@ -2300,7 +2370,7 @@ public class ServidorSocket implements Runnable {
 			case 'U' :
 				try {
 					_perso.usarZonas(Short.parseShort(packet.substring(2)));
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			case 'V' :
 				GestorSalida.ENVIAR_zV_CERRAR_ZONAS(_perso);
 				break;
@@ -2320,19 +2390,31 @@ public class ServidorSocket implements Runnable {
 			return;
 		}
 		switch (packet.charAt(1)) {
-			case 'U' -> zaap_Usar(packet);
-			case 'u' -> zaapi_Usar(packet);
-			case 'v' -> GestorSalida.ENVIAR_Wv_CERRAR_ZAPPI(_perso);
-			case 'V' -> GestorSalida.ENVIAR_WV_CERRAR_ZAAP(_perso);
-			case 'w' -> GestorSalida.ENVIAR_Ww_CERRAR_PRISMA(_perso);
-			case 'p' -> prisma_Usar(packet);
-			default -> {
+			case 'U' :
+				zaap_Usar(packet);
+				break;
+			case 'u' :
+				zaapi_Usar(packet);
+				break;
+			case 'v' :
+				GestorSalida.ENVIAR_Wv_CERRAR_ZAPPI(_perso);
+				break;
+			case 'V' :
+				GestorSalida.ENVIAR_WV_CERRAR_ZAAP(_perso);
+				break;
+			case 'w' :
+				GestorSalida.ENVIAR_Ww_CERRAR_PRISMA(_perso);
+				break;
+			case 'p' :
+				prisma_Usar(packet);
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR AREAS: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Areas()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -2342,7 +2424,7 @@ public class ServidorSocket implements Runnable {
 			if (_perso.esMaestro()) {
 				_perso.getGrupoParty().packetSeguirLider(packet);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void zaapi_Usar(final String packet) {
@@ -2351,7 +2433,7 @@ public class ServidorSocket implements Runnable {
 			if (_perso.esMaestro()) {
 				_perso.getGrupoParty().packetSeguirLider(packet);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void prisma_Usar(final String packet) {
@@ -2360,7 +2442,7 @@ public class ServidorSocket implements Runnable {
 			if (_perso.esMaestro()) {
 				_perso.getGrupoParty().packetSeguirLider(packet);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void analizar_Gremio(final String packet) {
@@ -2372,39 +2454,60 @@ public class ServidorSocket implements Runnable {
 			}
 		}
 		switch (packet.charAt(1)) {
-			case 'B' -> gremio_Stats(packet);
-			case 'b' -> gremio_Hechizos(packet);
-			case 'C' -> gremio_Crear(packet);
-			case 'f' -> {
+			case 'B' :
+				gremio_Stats(packet);
+				break;
+			case 'b' :
+				gremio_Hechizos(packet);
+				break;
+			case 'C' :
+				gremio_Crear(packet);
+				break;
+			case 'f' :
 				if (!_perso.estaDisponible(true, true)) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				gremio_Cercado(packet.substring(2));
-			}
-			case 'F' -> gremio_Retirar_Recaudador(packet.substring(2));
-// casa de gremio
-			case 'h' -> {
+				break;
+			case 'F' :
+				gremio_Retirar_Recaudador(packet.substring(2));
+				break;
+			case 'h' :// casa de gremio
 				if (!_perso.estaDisponible(true, true)) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				gremio_Casa(packet.substring(2));
-			}
-			case 'H' -> gremio_Poner_Recaudador();
-			case 'I' -> gremio_Informacion(packet);
-			case 'J' -> gremio_Invitar(packet);
-			case 'K' -> gremio_Expulsar(packet.substring(2));
-			case 'P' -> gremio_Promover_Rango(packet.substring(2));
-			case 'T' -> gremio_Pelea_Recaudador(packet.substring(2));
-			case 'V' -> gremio_Cancelar_Creacion();
-			default -> {
+				break;
+			case 'H' :
+				gremio_Poner_Recaudador();
+				break;
+			case 'I' :
+				gremio_Informacion(packet);
+				break;
+			case 'J' :
+				gremio_Invitar(packet);
+				break;
+			case 'K' :
+				gremio_Expulsar(packet.substring(2));
+				break;
+			case 'P' :
+				gremio_Promover_Rango(packet.substring(2));
+				break;
+			case 'T' :
+				gremio_Pelea_Recaudador(packet.substring(2));
+				break;
+			case 'V' :
+				gremio_Cancelar_Creacion();
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR GREMIO: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Gremio()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -2415,45 +2518,41 @@ public class ServidorSocket implements Runnable {
 			return;
 		}
 		switch (packet.charAt(2)) {
-// prospeccion
-			case 'p' -> {
+			case 'p' :// prospeccion
 				if (gremio.getCapital() < 1 || gremio.getStatRecolecta(176) >= 500) {
 					return;
 				}
 				gremio.addCapital(-1);
 				gremio.addStat(176, 1);
-			}
-// sabiduria
-			case 'x' -> {
+				break;
+			case 'x' :// sabiduria
 				if (gremio.getCapital() < 1 || gremio.getStatRecolecta(124) >= 400) {
 					return;
 				}
 				gremio.addCapital(-1);
 				gremio.addStat(124, 1);
-			}
-// pods
-			case 'o' -> {
+				break;
+			case 'o' :// pods
 				if (gremio.getCapital() < 1 || gremio.getStatRecolecta(158) >= 5000) {
 					return;
 				}
 				gremio.addCapital(-1);
 				gremio.addStat(158, 20);
-			}
-// mas recaudadores
-			case 'k' -> {
+				break;
+			case 'k' :// mas recaudadores
 				if (gremio.getCapital() < 10 || gremio.getNroMaxRecau() >= 50) {
 					return;
 				}
 				gremio.addCapital(-10);
 				gremio.setNroMaxRecau((byte) (gremio.getNroMaxRecau() + 1));
-			}
-			default -> {
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR GREMIO STATS: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "gremio_Stats()");
 				}
-			}
+				break;
 		}
 		GestorSalida.ENVIAR_gIB_GREMIO_INFO_BOOST(_perso, gremio.analizarRecauAGremio());
 	}
@@ -2479,27 +2578,26 @@ public class ServidorSocket implements Runnable {
 		try {
 			final int recaudadorID = Integer.parseInt(packet.substring(1));
 			switch (packet.charAt(0)) {
-// defender recaudador
-				case 'J' -> {
+				case 'J' :// defender recaudador
 					if (!_perso.estaDisponible(true, true)) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
 					}
 					Mundo.getRecaudador(recaudadorID).getPelea().unirsePelea(_perso, recaudadorID);
-				}
-				case 'V' -> {
+					break;
+				case 'V' :
 					Pelea p = Mundo.getRecaudador(recaudadorID).getPelea();
 					if (p.getFase() == Constantes.PELEA_FASE_POSICION) {
 						p.retirarsePelea(_perso.getID(), 0, false);
 					}
-				}
-				default -> {
+					break;
+				default :
 					MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR GREMIO UNIRSE PELEA: " + packet);
 					if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 						MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 						cerrarSocket(true, "gremio_Pelea_Recaudador()");
 					}
-				}
+					break;
 			}
 		} catch (Exception e) {
 			GestorSalida.ENVIAR_BN_NADA(_perso);
@@ -2703,7 +2801,7 @@ public class ServidorSocket implements Runnable {
 			if (perso != null && perso.getID() != _perso.getID()) {
 				GestorSalida.ENVIAR_gS_STATS_GREMIO(perso, perso.getMiembroGremio());
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void gremio_Expulsar(final String nombre) {
@@ -2756,19 +2854,22 @@ public class ServidorSocket implements Runnable {
 	
 	private void gremio_Invitar(final String packet) {
 		switch (packet.charAt(2)) {
-// invitar
-			case 'R' -> gremio_Invitar_Unirse(packet);
-// rechazar
-			case 'E' -> gremio_Invitar_Rechazar();
-// aceptar
-			case 'K' -> gremio_Invitar_Aceptar();
-			default -> {
+			case 'R' :// invitar
+				gremio_Invitar_Unirse(packet);
+				break;
+			case 'E' :// rechazar
+				gremio_Invitar_Rechazar();
+				break;
+			case 'K' :// aceptar
+				gremio_Invitar_Aceptar();
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR GREMIO INVITAR: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "gremio_Invitar_Unirse()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -2859,30 +2960,42 @@ public class ServidorSocket implements Runnable {
 			return;
 		}
 		switch (packet.charAt(2)) {
-			case 'B' -> GestorSalida.ENVIAR_gIB_GREMIO_INFO_BOOST(_perso, gremio.analizarRecauAGremio());
-			case 'F' -> GestorSalida.ENVIAR_gIF_GREMIO_INFO_CERCADOS(_perso, gremio.analizarInfoCercados());
-			case 'G' -> GestorSalida.ENVIAR_gIG_GREMIO_INFO_GENERAL(_perso, gremio);
-			case 'H' -> GestorSalida.ENVIAR_gIH_GREMIO_INFO_CASAS(_perso, Casa.stringCasaGremio(gremio.getID()));
-			case 'M' -> GestorSalida.ENVIAR_gIM_GREMIO_INFO_MIEMBROS(_perso, gremio, '+');
-			case 'T' -> {
+			case 'B' :
+				GestorSalida.ENVIAR_gIB_GREMIO_INFO_BOOST(_perso, gremio.analizarRecauAGremio());
+				break;
+			case 'F' :
+				GestorSalida.ENVIAR_gIF_GREMIO_INFO_CERCADOS(_perso, gremio.analizarInfoCercados());
+				break;
+			case 'G' :
+				GestorSalida.ENVIAR_gIG_GREMIO_INFO_GENERAL(_perso, gremio);
+				break;
+			case 'H' :
+				GestorSalida.ENVIAR_gIH_GREMIO_INFO_CASAS(_perso, Casa.stringCasaGremio(gremio.getID()));
+				break;
+			case 'M' :
+				GestorSalida.ENVIAR_gIM_GREMIO_INFO_MIEMBROS(_perso, gremio, '+');
+				break;
+			case 'T' :
 				char c = 'a';
 				try {
 					c = packet.charAt(3);
-				} catch (Exception ignored) {
+				} catch (Exception e) {}
+				switch (c) {
+					case 'V' :
+						break;
+					default :
+						GestorSalida.ENVIAR_gITM_GREMIO_INFO_RECAUDADOR(_perso, gremio.analizarRecaudadores());
+						gremio.actualizarAtacantesDefensores();
+						break;
 				}
-				if (c == 'V') {
-				} else {
-					GestorSalida.ENVIAR_gITM_GREMIO_INFO_RECAUDADOR(_perso, gremio.analizarRecaudadores());
-					gremio.actualizarAtacantesDefensores();
-				}
-			}
-			default -> {
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR GREMIO INFORMACION: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "gremio_Informacion()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -2956,18 +3069,21 @@ public class ServidorSocket implements Runnable {
 			GestorSalida.ENVIAR_gV_CERRAR_PANEL_GREMIO(_perso);
 			_perso.setOcupado(false);
 			_perso.cambiarRopaVisual();
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void analizar_Canal(final String packet) {
-		if (packet.charAt(1) == 'C') {
-			canal_Cambiar(packet);
-		} else {
-			MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR CANAL: " + packet);
-			if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
-				MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
-				cerrarSocket(true, "analizar_Canal()");
-			}
+		switch (packet.charAt(1)) {
+			case 'C' :
+				canal_Cambiar(packet);
+				break;
+			default :
+				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR CANAL: " + packet);
+				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
+					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
+					cerrarSocket(true, "analizar_Canal()");
+				}
+				break;
 		}
 	}
 	
@@ -2999,41 +3115,65 @@ public class ServidorSocket implements Runnable {
 					}
 					break;
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void analizar_Montura(final String packet) {
-		// case 'z' :
-		// montura_Stats_VIP(packet);
-		// break;
-		// try {
-		// if (_perso.getMontura().getColor() == 75) {
-		// GestorSalida.ENVIAR_Rz_STATS_VIP(_perso, _perso.getMontura().getStatsVIP());
-		// } else {
-		// GestorSalida.ENVIAR_BN_NADA(_perso);
-		// }
-		// } catch (final Exception e) {
-		// }
 		switch (packet.charAt(1)) {
-			case 'b' -> montura_Comprar_Cercado(packet);
-			case 'c' -> montura_Castrar();
-			case 'd' -> montura_Descripcion(packet);
-			case 'f' -> montura_Liberar();
-			case 'n' -> montura_Nombre(packet.substring(2));
-			case 'o' -> montura_Borrar_Objeto_Crianza(packet);
-			case 'p' -> montura_Descripcion(packet);
-			case 'r' -> montura_Montar();
-			case 's' -> montura_Vender_Cercado(packet);
-			case 'v' -> GestorSalida.ENVIAR_Rv_MONTURA_CERRAR(_perso);
-			case 'x' -> montura_CambiarXP_Donada(packet);
-			case 'Z' -> GestorSalida.ENVIAR_BN_NADA(_perso);
-			default -> {
+			case 'b' :
+				montura_Comprar_Cercado(packet);
+				break;
+			case 'c' :
+				montura_Castrar();
+				break;
+			case 'd' :
+				montura_Descripcion(packet);
+				break;
+			case 'f' :
+				montura_Liberar();
+				break;
+			case 'n' :
+				montura_Nombre(packet.substring(2));
+				break;
+			case 'o' :
+				montura_Borrar_Objeto_Crianza(packet);
+				break;
+			case 'p' :
+				montura_Descripcion(packet);
+				break;
+			case 'r' :
+				montura_Montar();
+				break;
+			case 's' :
+				montura_Vender_Cercado(packet);
+				break;
+			case 'v' :
+				GestorSalida.ENVIAR_Rv_MONTURA_CERRAR(_perso);
+				break;
+			case 'x' :
+				montura_CambiarXP_Donada(packet);
+				break;
+			// case 'z' :
+			// montura_Stats_VIP(packet);
+			// break;
+			case 'Z' :
+				// try {
+				// if (_perso.getMontura().getColor() == 75) {
+				// GestorSalida.ENVIAR_Rz_STATS_VIP(_perso, _perso.getMontura().getStatsVIP());
+				// } else {
+				// GestorSalida.ENVIAR_BN_NADA(_perso);
+				// }
+				// } catch (final Exception e) {
+				GestorSalida.ENVIAR_BN_NADA(_perso);
+				// }
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR MONTURA: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Montura()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -3051,7 +3191,7 @@ public class ServidorSocket implements Runnable {
 		int precio = 0;
 		try {
 			precio = Integer.parseInt(packet.substring(2));
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		if (precio < 0) {
 			GestorSalida.ENVIAR_BN_NADA(_perso);
 			return;
@@ -3116,7 +3256,7 @@ public class ServidorSocket implements Runnable {
 			byte xp = Byte.parseByte(packet.substring(2));
 			_perso.setPorcXPMontura(xp);
 			GestorSalida.ENVIAR_Rx_EXP_DONADA_MONTURA(_perso);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void montura_Borrar_Objeto_Crianza(final String packet) {
@@ -3126,7 +3266,7 @@ public class ServidorSocket implements Runnable {
 				GestorSalida.ENVIAR_BN_NADA(_perso);
 				return;
 			}
-			if (!_perso.getNombre().equals("Elbusta")) {
+			if (_perso.getNombre() != "Elbusta") {
 				if (_perso.getGremio() == null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
@@ -3141,7 +3281,7 @@ public class ServidorSocket implements Runnable {
 				GestorSalida.ENVIAR_GDO_OBJETO_TIRAR_SUELO(_perso.getMapa(), '-', celda, 0, false, "");
 				return;
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void montura_Nombre(final String nombre) {
@@ -3200,14 +3340,13 @@ public class ServidorSocket implements Runnable {
 				break;
 			case 'O' :
 				switch (packet.charAt(2)) {
-					case '-' -> {
+					case '-' :
 						_perso.mostrarAmigosEnLinea(false);
 						GestorSalida.ENVIAR_BN_NADA(_perso);
-					}
-					case '+' -> {
+						break;
+					case '+' :
 						_perso.mostrarAmigosEnLinea(true);
 						GestorSalida.ENVIAR_BN_NADA(_perso);
-					}
 				}
 				break;
 			case 'J' :
@@ -3239,45 +3378,49 @@ public class ServidorSocket implements Runnable {
 			return;
 		}
 		switch (packet.charAt(2)) {
-			case 'S' -> _perso.teleportEsposo(esposo);
-			case 'C' -> _perso.seguirEsposo(esposo, packet);
-			default -> {
+			case 'S' :
+				_perso.teleportEsposo(esposo);
+				break;
+			case 'C' :
+				_perso.seguirEsposo(esposo, packet);
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR AMIGO ESPOSO: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "amigo_Esposo()");
 				}
-			}
+				break;
 		}
 	}
 	
 	private void amigo_Borrar(final String packet) {
 		int id = -1;
 		switch (packet.charAt(2)) {
-			case '%' -> {
+			case '%' :
 				final Personaje perso = Mundo.getPersonajePorNombre(packet.substring(3));
 				if (perso == null) {
 					GestorSalida.ENVIAR_FD_BORRAR_AMIGO(_perso, "Ef");
 					return;
 				}
 				id = perso.getCuentaID();
-			}
-			case '*' -> {
+				break;
+			case '*' :
 				final Cuenta cuenta = Mundo.getCuentaPorApodo(packet.substring(3));
 				if (cuenta == null) {
 					GestorSalida.ENVIAR_FD_BORRAR_AMIGO(_perso, "Ef");
 					return;
 				}
 				id = cuenta.getID();
-			}
-			default -> {
+				break;
+			default :
 				final Personaje perso2 = Mundo.getPersonajePorNombre(packet.substring(2));
 				if (perso2 == null || !perso2.enLinea()) {
 					GestorSalida.ENVIAR_FD_BORRAR_AMIGO(_perso, "Ef");
 					return;
 				}
 				id = perso2.getCuentaID();
-			}
+				break;
 		}
 		if (id == -1 || !_cuenta.esAmigo(id)) {
 			GestorSalida.ENVIAR_FD_BORRAR_AMIGO(_perso, "Ef");
@@ -3289,30 +3432,30 @@ public class ServidorSocket implements Runnable {
 	private void amigo_Agregar(final String packet) {
 		int id = -1;
 		switch (packet.charAt(2)) {
-			case '%' -> {
+			case '%' :
 				final Personaje perso = Mundo.getPersonajePorNombre(packet.substring(3));
 				if (perso == null || !perso.enLinea()) {
 					GestorSalida.ENVIAR_FA_AGREGAR_AMIGO(_perso, "Ef");
 					return;
 				}
 				id = perso.getCuentaID();
-			}
-			case '*' -> {
+				break;
+			case '*' :
 				final Cuenta cuenta = Mundo.getCuentaPorApodo(packet.substring(3));
 				if (cuenta == null || !cuenta.enLinea()) {
 					GestorSalida.ENVIAR_FA_AGREGAR_AMIGO(_perso, "Ef");
 					return;
 				}
 				id = cuenta.getID();
-			}
-			default -> {
+				break;
+			default :
 				final Personaje perso2 = Mundo.getPersonajePorNombre(packet.substring(2));
 				if (perso2 == null || !perso2.enLinea()) {
 					GestorSalida.ENVIAR_FA_AGREGAR_AMIGO(_perso, "Ef");
 					return;
 				}
 				id = perso2.getCuentaID();
-			}
+				break;
 		}
 		if (id == -1) {
 			GestorSalida.ENVIAR_FA_AGREGAR_AMIGO(_perso, "Ef");
@@ -3324,44 +3467,50 @@ public class ServidorSocket implements Runnable {
 	private void analizar_Grupo(final String packet) {
 		final Grupo grupo = _perso.getGrupoParty();
 		switch (packet.charAt(1)) {
-			case 'A' -> grupo_Aceptar();
-			case 'F' -> {
+			case 'A' :
+				grupo_Aceptar();
+				break;
+			case 'F' :
 				if (grupo == null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				grupo_Seguir(packet);
-			}
-			case 'G' -> {
+				break;
+			case 'G' :
 				if (grupo == null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				grupo_Seguirme_Todos(packet);
-			}
-			case 'I' -> grupo_Invitar(packet);
-			case 'R' -> grupo_Rechazar();
-			case 'V' -> {
+				break;
+			case 'I' :
+				grupo_Invitar(packet);
+				break;
+			case 'R' :
+				grupo_Rechazar();
+				break;
+			case 'V' :
 				if (grupo == null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				grupo_Expulsar(packet);
-			}
-			case 'W' -> {
+				break;
+			case 'W' :
 				if (grupo == null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				grupo_Localizar();
-			}
-			default -> {
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR GRUPO: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Grupo()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -3373,28 +3522,28 @@ public class ServidorSocket implements Runnable {
 		int id = -1;
 		try {
 			id = Integer.parseInt(packet.substring(3));
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		final Personaje persoSeguir = Mundo.getPersonaje(id);
 		if (persoSeguir == null || !persoSeguir.enLinea()) {
 			GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1211");
 			return;
 		}
 		switch (packet.charAt(2)) {
-			case '+' -> {
+			case '+' :
 				_perso.getGrupoParty().setRastrear(persoSeguir);
 				for (final Personaje integrante : _perso.getGrupoParty().getMiembros()) {
 					GestorSalida.ENVIAR_IC_PERSONAJE_BANDERA_COMPAS(integrante, persoSeguir.getMapa().getX() + "|" + persoSeguir
-							.getMapa().getY());
+					.getMapa().getY());
 					GestorSalida.ENVIAR_PF_SEGUIR_PERSONAJE(integrante, "+" + persoSeguir.getID());
 				}
-			}
-			case '-' -> {
+				break;
+			case '-' :
 				_perso.getGrupoParty().setRastrear(null);
 				for (final Personaje integrante : _perso.getGrupoParty().getMiembros()) {
 					GestorSalida.ENVIAR_IC_BORRAR_BANDERA_COMPAS(integrante);
 					GestorSalida.ENVIAR_PF_SEGUIR_PERSONAJE(integrante, "-");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -3406,24 +3555,24 @@ public class ServidorSocket implements Runnable {
 		int id = -1;
 		try {
 			id = Integer.parseInt(packet.substring(3));
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		final Personaje persoSeguir = Mundo.getPersonaje(id);
 		if (persoSeguir == null || !persoSeguir.enLinea()) {
 			GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1211");
 			return;
 		}
 		switch (packet.charAt(2)) {
-			case '+' -> {
+			case '+' :
 				GestorSalida.ENVIAR_IC_PERSONAJE_BANDERA_COMPAS(_perso, persoSeguir.getMapa().getX() + "|" + persoSeguir
-						.getMapa().getY());
+				.getMapa().getY());
 				GestorSalida.ENVIAR_PF_SEGUIR_PERSONAJE(_perso, "+" + persoSeguir.getID());
 				_perso.getGrupoParty().setRastrear(persoSeguir);
-			}
-			case '-' -> {
+				break;
+			case '-' :
 				GestorSalida.ENVIAR_IC_BORRAR_BANDERA_COMPAS(_perso);
 				GestorSalida.ENVIAR_PF_SEGUIR_PERSONAJE(_perso, "-");
 				_perso.getGrupoParty().setRastrear(null);
-			}
+				break;
 		}
 	}
 	
@@ -3434,7 +3583,8 @@ public class ServidorSocket implements Runnable {
 			if (str.length() > 0) {
 				str.append("|");
 			}
-			str.append(miembro.getMapa().getX()).append(";").append(miembro.getMapa().getY()).append(";").append(miembro.getMapa().getID()).append(";2;").append(miembro.getID()).append(";").append(miembro.getNombre());
+			str.append(miembro.getMapa().getX() + ";" + miembro.getMapa().getY() + ";" + miembro.getMapa().getID() + ";2;"
+			+ miembro.getID() + ";" + miembro.getNombre());
 		}
 		GestorSalida.ENVIAR_IH_COORDENADAS_UBICACION(_perso, str.toString());
 	}
@@ -3450,7 +3600,7 @@ public class ServidorSocket implements Runnable {
 			int id = -1;
 			try {
 				id = Integer.parseInt(packet.substring(2));
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			final Personaje expulsado = Mundo.getPersonaje(id);
 			if (expulsado == null) {
 				GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1211");
@@ -3526,22 +3676,38 @@ public class ServidorSocket implements Runnable {
 			return;
 		}
 		switch (packet.charAt(1)) {
-			case 'd' -> objeto_Eliminar(packet);
-			case 'D' -> objeto_Tirar(packet);
-			case 'f' -> objeto_Alimentar_Objevivo(packet);
-			case 'M' -> objeto_Mover(packet);
-// disasociar mimobionte
-			case 'm' -> objeto_Desasociar_Mimobionte(packet);
-			case 's' -> objeto_Apariencia_Objevivo(packet);
-			case 'U', 'u' -> objeto_Usar(packet);
-			case 'x' -> objeto_Desequipar_Objevivo(packet);
-			default -> {
+			case 'd' :
+				objeto_Eliminar(packet);
+				break;
+			case 'D' :
+				objeto_Tirar(packet);
+				break;
+			case 'f' :
+				objeto_Alimentar_Objevivo(packet);
+				break;
+			case 'M' :
+				objeto_Mover(packet);
+				break;
+			case 'm' :// disasociar mimobionte
+				objeto_Desasociar_Mimobionte(packet);
+				break;
+			case 's' :
+				objeto_Apariencia_Objevivo(packet);
+				break;
+			case 'U' :
+			case 'u' :
+				objeto_Usar(packet);
+				break;
+			case 'x' :
+				objeto_Desequipar_Objevivo(packet);
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR OBJETOS: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Objetos()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -3554,7 +3720,7 @@ public class ServidorSocket implements Runnable {
 				if (infos.length > 1) {
 					cant = Integer.parseInt(infos[1]);
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			final Objeto objeto = _perso.getObjeto(id);
 			if (objeto == null || cant <= 0 || !_perso.estaDisponible(false, true)) {
 				GestorSalida.ENVIAR_ODE_ERROR_ELIMINAR_OBJETO(_perso);
@@ -3588,7 +3754,7 @@ public class ServidorSocket implements Runnable {
 		try {
 			id = Integer.parseInt(packet.substring(2).split(Pattern.quote("|"))[0]);
 			cantidad = Integer.parseInt(packet.split(Pattern.quote("|"))[1]);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		final Objeto objeto = _perso.getObjeto(id);
 		if (objeto == null || cantidad < 1) {
 			GestorSalida.ENVIAR_BN_NADA(_perso, "OBJETO TIRAR NULO O -1");
@@ -3651,13 +3817,13 @@ public class ServidorSocket implements Runnable {
 			final String[] infos = packet.substring(2).split(Pattern.quote("|"));
 			try {
 				idObjeto = Integer.parseInt(infos[0]);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			try {
 				idObjetivo = Integer.parseInt(infos[1]);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			try {
 				idCelda = Short.parseShort(infos[2]);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			Objeto objeto = _perso.getObjeto(idObjeto);
 			if (objeto == null) {
 				GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1OBJECT_DONT_EXIST");
@@ -3878,7 +4044,7 @@ public class ServidorSocket implements Runnable {
 					if (infos.length > 2) {
 						cantObjMover = Integer.parseInt(infos[2]);
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				cambio = Math.max(objeto_Mover_2(objetoID, posAMover, cantObjMover), cambio);
 				Thread.sleep(100);
 			}
@@ -3972,12 +4138,12 @@ public class ServidorSocket implements Runnable {
 				if (str.length() > 0) {
 					str.append(";");
 				}
-				str.append(obj.getID()).append(",").append(obj.getPosicion());
+				str.append(obj.getID() + "," + obj.getPosicion());
 			} else {
 				if (cond.length() > 0) {
 					cond.append(";");
 				}
-				cond.append(obj.getID()).append(",").append(obj.getPosicion());
+				cond.append(obj.getID() + "," + obj.getPosicion());
 			}
 		}
 		if (cond.length() > 0) {
@@ -4060,11 +4226,19 @@ public class ServidorSocket implements Runnable {
 			}
 			int tipoObj = objeto.getObjModelo().getTipo();
 			int tipoVivo = Integer.parseInt(objevivo.getParamStatTexto(Constantes.STAT_REAL_TIPO, 3), 16);
-			boolean paso = switch (tipoVivo) {
-				case Constantes.OBJETO_TIPO_CAPA -> tipoObj == tipoVivo || tipoObj == Constantes.OBJETO_TIPO_MOCHILA;
-				case Constantes.OBJETO_TIPO_SOMBRERO, Constantes.OBJETO_TIPO_AMULETO, Constantes.OBJETO_TIPO_BOTAS, Constantes.OBJETO_TIPO_CINTURON, Constantes.OBJETO_TIPO_ANILLO -> tipoObj == tipoVivo;
-				default -> false;
-			};
+			boolean paso = false;
+			switch (tipoVivo) {
+				case Constantes.OBJETO_TIPO_CAPA :
+					paso = tipoObj == tipoVivo || tipoObj == Constantes.OBJETO_TIPO_MOCHILA;
+					break;
+				case Constantes.OBJETO_TIPO_SOMBRERO :
+				case Constantes.OBJETO_TIPO_AMULETO :
+				case Constantes.OBJETO_TIPO_BOTAS :
+				case Constantes.OBJETO_TIPO_CINTURON :
+				case Constantes.OBJETO_TIPO_ANILLO :
+					paso = tipoObj == tipoVivo;
+					break;
+			}
 			if (!paso) {
 				return r;
 			}
@@ -4222,7 +4396,7 @@ public class ServidorSocket implements Runnable {
 			if (Constantes.esPosicionVisual(objeto.getPosicion())) {
 				_perso.cambiarRopaVisual();
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	private int objeto_Alimentar_Mascota(final Objeto comida, final Objeto mascObj) {
@@ -4426,7 +4600,7 @@ public class ServidorSocket implements Runnable {
 			byte tipo = -1;
 			try {
 				tipo = Byte.parseByte(split[0]);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			if ((_perso.getTipoExchange() == Constantes.INTERCAMBIO_TIPO_MERCADILLO_COMPRAR
 			&& tipo == Constantes.INTERCAMBIO_TIPO_MERCADILLO_VENDER) || (_perso
 			.getTipoExchange() == Constantes.INTERCAMBIO_TIPO_MERCADILLO_VENDER
@@ -4445,8 +4619,8 @@ public class ServidorSocket implements Runnable {
 				return;
 			}
 			switch (tipo) {
-// mercadillo vender
-				case Constantes.INTERCAMBIO_TIPO_MERCADILLO_COMPRAR, Constantes.INTERCAMBIO_TIPO_MERCADILLO_VENDER -> {
+				case Constantes.INTERCAMBIO_TIPO_MERCADILLO_COMPRAR :// mercadillo comprar
+				case Constantes.INTERCAMBIO_TIPO_MERCADILLO_VENDER :// mercadillo vender
 					if (_perso.getDeshonor() >= 5) {
 						GestorSalida.ENVIAR_Im_INFORMACION(_perso, "183");
 						GestorSalida.ENVIAR_EV_CERRAR_VENTANAS(_perso, "");
@@ -4462,14 +4636,13 @@ public class ServidorSocket implements Runnable {
 					}
 					_perso.setExchanger(mercadillo);
 					GestorSalida.ENVIAR_ECK_PANEL_DE_INTERCAMBIOS(_perso, tipo, "1,10,100;" + mercadillo.getTipoObjPermitidos()
-							+ ";" + mercadillo.getPorcentajeImpuesto() + ";" + mercadillo.getNivelMax() + ";" + mercadillo
-							.getMaxObjCuenta() + ";-1;" + mercadillo.getTiempoVenta());
+					+ ";" + mercadillo.getPorcentajeImpuesto() + ";" + mercadillo.getNivelMax() + ";" + mercadillo
+					.getMaxObjCuenta() + ";-1;" + mercadillo.getTiempoVenta());
 					if (tipo == Constantes.INTERCAMBIO_TIPO_MERCADILLO_VENDER) {// mercadillo vender
 						GestorSalida.ENVIAR_EL_LISTA_EXCHANGER(_perso, mercadillo);
 					}
-				}
-// invitar oficio
-				case Constantes.INTERCAMBIO_TIPO_TALLER_ARTESANO -> {
+					break;
+				case Constantes.INTERCAMBIO_TIPO_TALLER_ARTESANO :// invitar oficio
 					final int invitadoID = Integer.parseInt(split[1]);
 					final int trabajoID = Integer.parseInt(split[2]);
 					Trabajo trabajo = null;
@@ -4507,12 +4680,11 @@ public class ServidorSocket implements Runnable {
 					invitandoA.setInvitador(_perso, "taller");
 					_perso.setExchanger(trabajo);
 					GestorSalida.ENVIAR_ERK_CONSULTA_INTERCAMBIO(_perso, _perso.getID(), invitandoA.getID(),
-							Constantes.INTERCAMBIO_TIPO_TALLER_ARTESANO);
+					Constantes.INTERCAMBIO_TIPO_TALLER_ARTESANO);
 					GestorSalida.ENVIAR_ERK_CONSULTA_INTERCAMBIO(invitandoA, _perso.getID(), invitandoA.getID(),
-							Constantes.INTERCAMBIO_TIPO_TALLER_CLIENTE);
-				}
-// dragopavo mochila
-				case Constantes.INTERCAMBIO_TIPO_MONTURA -> {
+					Constantes.INTERCAMBIO_TIPO_TALLER_CLIENTE);
+					break;
+				case Constantes.INTERCAMBIO_TIPO_MONTURA :// dragopavo mochila
 					if (_perso.getMontura() == null) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
@@ -4521,9 +4693,8 @@ public class ServidorSocket implements Runnable {
 					GestorSalida.ENVIAR_ECK_PANEL_DE_INTERCAMBIOS(_perso, tipo, _perso.getMontura().getID() + "");
 					GestorSalida.ENVIAR_EL_LISTA_EXCHANGER(_perso, _perso.getMontura());
 					GestorSalida.ENVIAR_Ew_PODS_MONTURA(_perso);
-				}
-// tienda NPC
-				case Constantes.INTERCAMBIO_TIPO_TIENDA_NPC -> {
+					break;
+				case Constantes.INTERCAMBIO_TIPO_TIENDA_NPC :// tienda NPC
 					final int npcID = Integer.parseInt(split[1]);
 					final NPC npc = _perso.getMapa().getNPC(npcID);
 					if (npc == null) {
@@ -4533,13 +4704,12 @@ public class ServidorSocket implements Runnable {
 					_perso.setExchanger(npc);
 					GestorSalida.ENVIAR_ECK_PANEL_DE_INTERCAMBIOS(_perso, tipo, npcID + "");
 					GestorSalida.ENVIAR_EL_LISTA_EXCHANGER(_perso, npc);
-				}
-// intercambio
-				case Constantes.INTERCAMBIO_TIPO_PERSONAJE -> {
+					break;
+				case Constantes.INTERCAMBIO_TIPO_PERSONAJE :// intercambio
 					final int objetidoID = Integer.parseInt(split[1]);
 					final Personaje invitandoA2 = Mundo.getPersonaje(objetidoID);
 					if (invitandoA2 == null || invitandoA2 == _perso || invitandoA2.getMapa() != _perso.getMapa() || !invitandoA2
-							.enLinea()) {
+					.enLinea()) {
 						GestorSalida.ENVIAR_ERE_ERROR_CONSULTA(_perso, 'E');
 						return;
 					}
@@ -4554,12 +4724,12 @@ public class ServidorSocket implements Runnable {
 					_perso.setInvitandoA(invitandoA2, "intercambio");
 					invitandoA2.setInvitador(_perso, "intercambio");
 					GestorSalida.ENVIAR_ERK_CONSULTA_INTERCAMBIO(_perso, _perso.getID(), invitandoA2.getID(),
-							Constantes.INTERCAMBIO_TIPO_PERSONAJE);
+					Constantes.INTERCAMBIO_TIPO_PERSONAJE);
 					GestorSalida.ENVIAR_ERK_CONSULTA_INTERCAMBIO(invitandoA2, _perso.getID(), invitandoA2.getID(),
-							Constantes.INTERCAMBIO_TIPO_PERSONAJE);
-				}
-// resucitar mascota
-				case Constantes.INTERCAMBIO_TIPO_TRUEQUE, Constantes.INTERCAMBIO_TIPO_RESUCITAR_MASCOTA -> {
+					Constantes.INTERCAMBIO_TIPO_PERSONAJE);
+					break;
+				case Constantes.INTERCAMBIO_TIPO_TRUEQUE :// intercambio npc
+				case Constantes.INTERCAMBIO_TIPO_RESUCITAR_MASCOTA :// resucitar mascota
 					final int npcID2 = Integer.parseInt(split[1]);
 					final NPC npc2 = _perso.getMapa().getNPC(npcID2);
 					if (npc2 == null) {
@@ -4567,12 +4737,11 @@ public class ServidorSocket implements Runnable {
 						return;
 					}
 					Trueque trueque = new Trueque(_perso, tipo == Constantes.INTERCAMBIO_TIPO_RESUCITAR_MASCOTA, npc2
-							.getModeloID());
+					.getModeloID());
 					_perso.setExchanger(trueque);
 					GestorSalida.ENVIAR_ECK_PANEL_DE_INTERCAMBIOS(_perso, Constantes.INTERCAMBIO_TIPO_TRUEQUE, "");
-				}
-// mercante
-				case Constantes.INTERCAMBIO_TIPO_MERCANTE -> {
+					break;
+				case Constantes.INTERCAMBIO_TIPO_MERCANTE :// mercante
 					final int mercanteID = Integer.parseInt(split[1]);
 					Personaje mercante = Mundo.getPersonaje(mercanteID);
 					if (mercante == null) {
@@ -4582,18 +4751,17 @@ public class ServidorSocket implements Runnable {
 					_perso.setExchanger(mercante);
 					GestorSalida.ENVIAR_ECK_PANEL_DE_INTERCAMBIOS(_perso, tipo, mercanteID + "");
 					GestorSalida.ENVIAR_EL_LISTA_EXCHANGER(_perso, mercante);
-				}
-// misma tienda
-				case Constantes.INTERCAMBIO_TIPO_MI_TIENDA -> {
+					break;
+				case Constantes.INTERCAMBIO_TIPO_MI_TIENDA :// misma tienda
 					_perso.setExchanger(_perso.getTienda());
 					GestorSalida.ENVIAR_ECK_PANEL_DE_INTERCAMBIOS(_perso, tipo, _perso.getID() + "");
 					GestorSalida.ENVIAR_EL_LISTA_EXCHANGER(_perso, _perso);
-				}
-				case Constantes.INTERCAMBIO_TIPO_RECAUDADOR -> {
+					break;
+				case Constantes.INTERCAMBIO_TIPO_RECAUDADOR :
 					final int recaudaID = Integer.parseInt(split[1]);
 					final Recaudador recaudador = Mundo.getRecaudador(recaudaID);
 					if (recaudador == null || recaudador.getPelea() != null || recaudador.getEnRecolecta() || _perso
-							.getGremio() == null) {
+					.getGremio() == null) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
 					}
@@ -4609,11 +4777,10 @@ public class ServidorSocket implements Runnable {
 					GestorSalida.ENVIAR_ECK_PANEL_DE_INTERCAMBIOS(_perso, tipo, recaudador.getID() + "");
 					GestorSalida.ENVIAR_EL_LISTA_EXCHANGER(_perso, recaudador);
 					_perso.setExchanger(recaudador);
-				}
-				default -> {
+					break;
+				default :
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
-				}
 			}
 			_perso.setTipoExchange(tipo);
 		} catch (final Exception e) {
@@ -4623,9 +4790,8 @@ public class ServidorSocket implements Runnable {
 	}
 	
 	private synchronized void intercambio_Aceptar() {
-		// final InvitarTaller taller = new InvitarTaller(artesano, _perso, trabajo);
 		switch (_perso.getTipoInvitacion()) {
-			case "taller" -> {
+			case "taller" :
 				final Personaje artesano = _perso.getInvitador();
 				if (artesano == null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso, "INTERCAMBIO ACEPTAR ARTESANO NULO");
@@ -4636,18 +4802,19 @@ public class ServidorSocket implements Runnable {
 					GestorSalida.ENVIAR_BN_NADA(_perso, "INTERCAMBIO ACEPTAR TRABAJO NULO");
 					return;
 				}
+				// final InvitarTaller taller = new InvitarTaller(artesano, _perso, trabajo);
 				artesano.setTipoExchange(Constantes.INTERCAMBIO_TIPO_TALLER_ARTESANO);
 				_perso.setTipoExchange(Constantes.INTERCAMBIO_TIPO_TALLER_CLIENTE);
 				_perso.setExchanger(trabajo);
 				GestorSalida.ENVIAR_ECK_PANEL_DE_INTERCAMBIOS(artesano, Constantes.INTERCAMBIO_TIPO_TALLER_ARTESANO, trabajo
-						.getCasillasMax() + ";" + trabajo.getTrabajoID());
+				.getCasillasMax() + ";" + trabajo.getTrabajoID());
 				GestorSalida.ENVIAR_ECK_PANEL_DE_INTERCAMBIOS(_perso, Constantes.INTERCAMBIO_TIPO_TALLER_CLIENTE, trabajo
-						.getCasillasMax() + ";" + trabajo.getTrabajoID());
+				.getCasillasMax() + ";" + trabajo.getTrabajoID());
 				_perso.setInvitador(null, "");
 				artesano.setInvitandoA(null, "");
 				trabajo.setArtesanoCliente(artesano, _perso);
-			}
-			case "intercambio" -> {
+				break;
+			case "intercambio" :
 				final Personaje invitador = _perso.getInvitador();
 				if (invitador == null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso, "INTERCAMBIO ACEPTAR INTERCAMBIO NULO");
@@ -4662,7 +4829,7 @@ public class ServidorSocket implements Runnable {
 				GestorSalida.ENVIAR_ECK_PANEL_DE_INTERCAMBIOS(_perso, Constantes.INTERCAMBIO_TIPO_PERSONAJE, "");
 				_perso.setInvitador(null, "");
 				invitador.setInvitandoA(null, "");
-			}
+				break;
 		}
 	}
 	
@@ -4677,51 +4844,54 @@ public class ServidorSocket implements Runnable {
 	}
 	
 	private void intercambio_Oficios(final String packet) {
-		if (packet.charAt(2) == 'F') {
-			final int idOficio = Integer.parseInt(packet.substring(3));
-			for (final Personaje artesano : Mundo.getPersonajesEnLinea()) {
-				final Mapa mapa = artesano.getMapa();
-				for (final StatOficio oficio : artesano.getStatsOficios().values()) {
-					if (oficio.getLibroArtesano() && oficio.getOficio().getID() == idOficio) {
-						GestorSalida.ENVIAR_EJ_DESCRIPCION_LIBRO_ARTESANO(_perso, "+" + oficio.getOficio().getID() + ";"
-								+ artesano.getID() + ";" + artesano.getNombre() + ";" + oficio.getNivel() + ";" + mapa.getID() + ";"
-								+ (mapa.getTrabajos().isEmpty() ? 0 : 1) + ";" + artesano.getClaseID(true) + ";" + artesano.getSexo()
-								+ ";" + artesano.getColor1() + "," + artesano.getColor2() + "," + artesano.getColor3() + ";" + artesano
-								.getStringAccesorios() + ";" + oficio.getOpcionBin() + "," + oficio.getSlotsPublico());
+		switch (packet.charAt(2)) {
+			case 'F' :
+				final int idOficio = Integer.parseInt(packet.substring(3));
+				for (final Personaje artesano : Mundo.getPersonajesEnLinea()) {
+					final Mapa mapa = artesano.getMapa();
+					for (final StatOficio oficio : artesano.getStatsOficios().values()) {
+						if (oficio.getLibroArtesano() && oficio.getOficio().getID() == idOficio) {
+							GestorSalida.ENVIAR_EJ_DESCRIPCION_LIBRO_ARTESANO(_perso, "+" + oficio.getOficio().getID() + ";"
+							+ artesano.getID() + ";" + artesano.getNombre() + ";" + oficio.getNivel() + ";" + mapa.getID() + ";"
+							+ (mapa.getTrabajos().isEmpty() ? 0 : 1) + ";" + artesano.getClaseID(true) + ";" + artesano.getSexo()
+							+ ";" + artesano.getColor1() + "," + artesano.getColor2() + "," + artesano.getColor3() + ";" + artesano
+							.getStringAccesorios() + ";" + oficio.getOpcionBin() + "," + oficio.getSlotsPublico());
+						}
 					}
 				}
-			}
-			GestorSalida.ENVIAR_BN_NADA(_perso);
-		} else {
-			MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR INTERCAMBIO OFICIO: " + packet);
-			if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
-				MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
-				cerrarSocket(true, "intercambio_Oficios()");
-			}
+				GestorSalida.ENVIAR_BN_NADA(_perso);
+				break;
+			default :
+				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR INTERCAMBIO OFICIO: " + packet);
+				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
+					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
+					cerrarSocket(true, "intercambio_Oficios()");
+				}
+				break;
 		}
 	}
 	
 	private void intercambio_Oficio_Publico(final String packet) {
-		// for (StatsOficio SO : _perso.getStatsOficios().values()) {
-		// if (SO.getPosicion() != 7)
-		// GestorSalida.ENVIAR_Ej_AGREGAR_LIBRO_ARTESANO(_perso, "-" + SO.getOficio().getID());
-		// }
 		switch (packet.charAt(2)) {
-			case '+' -> {
+			case '+' :
 				GestorSalida.ENVIAR_EW_OFICIO_MODO_PUBLICO(_perso, "+");
 				_perso.packetModoInvitarTaller(null, false);
-			}
-			case '-' -> {
+				break;
+			case '-' :
+				// for (StatsOficio SO : _perso.getStatsOficios().values()) {
+				// if (SO.getPosicion() != 7)
+				// GestorSalida.ENVIAR_Ej_AGREGAR_LIBRO_ARTESANO(_perso, "-" + SO.getOficio().getID());
+				// }
 				GestorSalida.ENVIAR_EW_OFICIO_MODO_PUBLICO(_perso, "-");
 				GestorSalida.ENVIAR_EW_OFICIO_MODO_INVITACION(_perso, "-", _perso.getID(), "");
-			}
-			default -> {
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR INTER OFICIO PUBLICO: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "intercambio_Oficio_Publico()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -4740,7 +4910,8 @@ public class ServidorSocket implements Runnable {
 						if (kamas < 0) {// retirar
 							kamas = Math.abs(kamas);
 							switch (_perso.getTipoExchange()) {
-								case Constantes.INTERCAMBIO_TIPO_RECAUDADOR, Constantes.INTERCAMBIO_TIPO_COFRE -> {
+								case Constantes.INTERCAMBIO_TIPO_RECAUDADOR :
+								case Constantes.INTERCAMBIO_TIPO_COFRE :
 									if (_perso.getExchanger() == null) {
 										return;
 									}
@@ -4750,28 +4921,28 @@ public class ServidorSocket implements Runnable {
 									_perso.getExchanger().addKamas(-kamas, _perso);
 									_perso.addKamas(kamas, false, true);
 									GestorSalida.ENVIAR_EsK_MOVER_A_TIENDA_COFRE_BANCO(_perso, "G" + _perso.getExchanger().getKamas());
-								}
+									break;
 							}
 						} else {// si kamas > 0
 							if (_perso.getKamas() < kamas) {
 								kamas = _perso.getKamas();
 							}
 							switch (_perso.getTipoExchange()) {
-								case Constantes.INTERCAMBIO_TIPO_RECAUDADOR, Constantes.INTERCAMBIO_TIPO_COFRE -> {
+								case Constantes.INTERCAMBIO_TIPO_RECAUDADOR :
+								case Constantes.INTERCAMBIO_TIPO_COFRE :
 									if (_perso.getExchanger() == null) {
 										return;
 									}
 									_perso.getExchanger().addKamas(kamas, _perso);
 									_perso.addKamas(-kamas, false, true);
 									GestorSalida.ENVIAR_EsK_MOVER_A_TIENDA_COFRE_BANCO(_perso, "G" + _perso.getExchanger().getKamas());
-								}
-// intercambio
-								case Constantes.INTERCAMBIO_TIPO_PERSONAJE -> {
+									break;
+								case Constantes.INTERCAMBIO_TIPO_PERSONAJE :// intercambio
 									if (_perso.getExchanger() == null) {
 										return;
 									}
 									_perso.getExchanger().addKamas(kamas, _perso);
-								}
+									break;
 							}
 						}
 					} catch (final Exception e) {
@@ -4808,7 +4979,7 @@ public class ServidorSocket implements Runnable {
 							try {
 								id = Integer.parseInt(infos[0]);
 								cantidad = Integer.parseInt(infos[1]);
-							} catch (final Exception ignored) {}
+							} catch (final Exception e) {}
 							Objeto objeto = Mundo.getObjeto(id);
 							if (cantidad < 0 || objeto == null) {
 								GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1OBJECT_DONT_EXIST~" + id);
@@ -4838,25 +5009,34 @@ public class ServidorSocket implements Runnable {
 									if (cantidad > objeto.getCantidad()) {
 										cantidad = objeto.getCantidad();
 									}
-									// if (_perso.getObjeto(id) == null) {
-									// GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1OBJECT_DONT_EXIST");
-									// continue;
-									// }
 									switch (_perso.getTipoExchange()) {
-										case Constantes.INTERCAMBIO_TIPO_TALLER, Constantes.INTERCAMBIO_TIPO_RECAUDADOR, Constantes.INTERCAMBIO_TIPO_PERSONAJE, Constantes.INTERCAMBIO_TIPO_TALLER_ARTESANO, Constantes.INTERCAMBIO_TIPO_TALLER_CLIENTE, Constantes.INTERCAMBIO_TIPO_TRUEQUE, Constantes.INTERCAMBIO_TIPO_MI_TIENDA, Constantes.INTERCAMBIO_TIPO_MERCADILLO_VENDER, Constantes.INTERCAMBIO_TIPO_RESUCITAR_MASCOTA, Constantes.INTERCAMBIO_TIPO_MONTURA, Constantes.INTERCAMBIO_TIPO_COFRE -> {
+										case Constantes.INTERCAMBIO_TIPO_TALLER :
+										case Constantes.INTERCAMBIO_TIPO_RECAUDADOR :
+										case Constantes.INTERCAMBIO_TIPO_PERSONAJE :// intercambio
+										case Constantes.INTERCAMBIO_TIPO_TALLER_ARTESANO :// invitar oficio
+										case Constantes.INTERCAMBIO_TIPO_TALLER_CLIENTE :// invitar oficio
+										case Constantes.INTERCAMBIO_TIPO_TRUEQUE :// intercambio npc
+										case Constantes.INTERCAMBIO_TIPO_MI_TIENDA :// misma tienda
+										case Constantes.INTERCAMBIO_TIPO_MERCADILLO_VENDER :// mercadillo vender
+										case Constantes.INTERCAMBIO_TIPO_RESUCITAR_MASCOTA :// resucitar mascota
+										case Constantes.INTERCAMBIO_TIPO_MONTURA :// dragopavo mochila
+										case Constantes.INTERCAMBIO_TIPO_COFRE :
 											if (_perso.getExchanger() == null) {
 												continue;
 											}
+											// if (_perso.getObjeto(id) == null) {
+											// GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1OBJECT_DONT_EXIST");
+											// continue;
+											// }
 											try {
 												precio = Integer.parseInt(infos[2]);
-											} catch (final Exception ignored) {
-											}
+											} catch (final Exception e) {}
 											if (precio < 0) {
 												GestorSalida.ENVIAR_BN_NADA(_perso);
 												continue;
 											}
 											_perso.getExchanger().addObjetoExchanger(objeto, cantidad, _perso, precio);
-										}
+											break;
 									}
 									break;
 								case '-' :
@@ -4881,7 +5061,7 @@ public class ServidorSocket implements Runnable {
 											}
 											try {
 												precio = Integer.parseInt(infos[2]);
-											} catch (final Exception ignored) {}
+											} catch (final Exception e) {}
 											if (precio < 0) {
 												GestorSalida.ENVIAR_BN_NADA(_perso);
 												continue;
@@ -4904,27 +5084,31 @@ public class ServidorSocket implements Runnable {
 					}
 					break;
 				case 'R' :// varios craft o un craft
-					if (_perso.getTipoExchange() == Constantes.INTERCAMBIO_TIPO_TALLER) {
-						Trabajo trabajo = (Trabajo) _perso.getIntercambiandoCon(Trabajo.class);
-						if (trabajo == null) {
-							GestorSalida.ENVIAR_BN_NADA(_perso, "INTERCAMBIO MOVER OBJETO TRABAJO NULL 'R'");
-							return;
-						}
-						if (trabajo.esCraft()) {
-							trabajo.craftearXVeces(Integer.parseInt(packet.substring(3)));
-						}
+					switch (_perso.getTipoExchange()) {
+						case Constantes.INTERCAMBIO_TIPO_TALLER :
+							Trabajo trabajo = (Trabajo) _perso.getIntercambiandoCon(Trabajo.class);
+							if (trabajo == null) {
+								GestorSalida.ENVIAR_BN_NADA(_perso, "INTERCAMBIO MOVER OBJETO TRABAJO NULL 'R'");
+								return;
+							}
+							if (trabajo.esCraft()) {
+								trabajo.craftearXVeces(Integer.parseInt(packet.substring(3)));
+							}
+							break;
 					}
 					break;
 				case 'r' :
-					if (_perso.getTipoExchange() == Constantes.INTERCAMBIO_TIPO_TALLER) {
-						Trabajo trabajo = (Trabajo) _perso.getIntercambiandoCon(Trabajo.class);
-						if (trabajo == null) {
-							GestorSalida.ENVIAR_BN_NADA(_perso, "INTERCAMBIO MOVER OBJETO TRABAJO NULL 'r'");
-							return;
-						}
-						if (trabajo.esCraft()) {
-							trabajo.interrumpirReceta();
-						}
+					switch (_perso.getTipoExchange()) {
+						case Constantes.INTERCAMBIO_TIPO_TALLER :
+							Trabajo trabajo = (Trabajo) _perso.getIntercambiandoCon(Trabajo.class);
+							if (trabajo == null) {
+								GestorSalida.ENVIAR_BN_NADA(_perso, "INTERCAMBIO MOVER OBJETO TRABAJO NULL 'r'");
+								return;
+							}
+							if (trabajo.esCraft()) {
+								trabajo.interrumpirReceta();
+							}
+							break;
 					}
 					break;
 			}
@@ -4946,7 +5130,7 @@ public class ServidorSocket implements Runnable {
 		final char caracter = packet.charAt(3);
 		final char signo = packet.charAt(4);
 		switch (caracter) {
-			case 'G' -> {
+			case 'G' :
 				long kamas = 0;
 				try {
 					kamas = Long.parseLong(packet.substring(4));
@@ -4958,15 +5142,15 @@ public class ServidorSocket implements Runnable {
 					kamas = 0;
 				}
 				taller.setKamas(tipoPago, kamas, _perso.getKamas());
-			}
-			default -> {
+				break;
+			case 'O' :
+			default :
 				final String[] infos = packet.substring(5).split(Pattern.quote("|"));
 				int id = -1, cantidad = 0;
 				try {
 					id = Integer.parseInt(infos[0]);
 					cantidad = Integer.parseInt(infos[1]);
-				} catch (final Exception ignored) {
-				}
+				} catch (final Exception e) {}
 				final Objeto objeto = _perso.getObjeto(id);
 				if (cantidad <= 0 || objeto == null) {
 					GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1OBJECT_DONT_EXIST");
@@ -4982,21 +5166,21 @@ public class ServidorSocket implements Runnable {
 				}
 				final int cantInter = taller.getCantObjetoPago(id, tipoPago);
 				switch (signo) {
-					case '+' -> {
+					case '+' :
 						final int nuevaCant = objeto.getCantidad() - cantInter;
 						if (cantidad > nuevaCant) {
 							cantidad = nuevaCant;
 						}
 						taller.addObjetoPaga(objeto, cantidad, tipoPago);
-					}
-					case '-' -> {
+						break;
+					case '-' :
 						if (cantidad > cantInter) {
 							cantidad = cantInter;
 						}
 						taller.quitarObjetoPaga(objeto, cantidad, tipoPago);
-					}
+						break;
 				}
-			}
+				break;
 		}
 	}
 	
@@ -5056,56 +5240,55 @@ public class ServidorSocket implements Runnable {
 				return;
 			}
 			switch (packet.charAt(2)) {
-// comprar objeto mercadillo
-				case 'B' -> {
+				case 'B' :// comprar objeto mercadillo
 					final String[] info = packet.substring(3).split(Pattern.quote("|"));
 					if (mercadillo.comprarObjeto(Integer.parseInt(info[0]), Integer.parseInt(info[1]), Long.parseLong(info[2]),
-							_perso)) {
+					_perso)) {
 						GestorSalida.ENVIAR_Ow_PODS_DEL_PJ(_perso);
 						GestorSalida.ENVIAR_Im_INFORMACION(_perso, "068");
 					} else {
 						GestorSalida.ENVIAR_Im_INFORMACION(_perso, "172");
 					}
-				}
-				case 'l' -> {
+					break;
+				case 'l' :
 					final String str = mercadillo.strListaLineasPorModelo(Integer.parseInt(packet.substring(3)));
 					if (str.isEmpty()) {
 						GestorSalida.ENVIAR_EHM_MOVER_OBJMERCA_POR_MODELO(_perso, "-", Integer.parseInt(packet.substring(3)) + "");
 					} else {
 						GestorSalida.ENVIAR_EHl_LISTA_LINEAS_OBJMERCA_POR_MODELO(_perso, str);
 					}
-				}
-// precio promedio
-				case 'P' -> GestorSalida.ENVIAR_EHP_PRECIO_PROMEDIO_OBJ(_perso, Integer.parseInt(packet.substring(3)), Mundo
-						.getObjetoModelo(Integer.parseInt(packet.substring(3))).getPrecioPromedio());
-// buscar
-				case 'S' -> {
+					break;
+				case 'P' :// precio promedio
+					GestorSalida.ENVIAR_EHP_PRECIO_PROMEDIO_OBJ(_perso, Integer.parseInt(packet.substring(3)), Mundo
+					.getObjetoModelo(Integer.parseInt(packet.substring(3))).getPrecioPromedio());
+					break;
+				case 'S' : // buscar
 					final String[] splt = packet.substring(3).split(Pattern.quote("|"));
 					if (mercadillo.esTipoDeEsteMercadillo(Integer.parseInt(splt[0]))) {
 						if (mercadillo.hayModeloEnEsteMercadillo(Integer.parseInt(splt[0]), Integer.parseInt(splt[1]))) {
 							GestorSalida.ENVIAR_EHS_BUSCAR_OBJETO_MERCADILLO(_perso, "K");
 							GestorSalida.ENVIAR_EHl_LISTA_LINEAS_OBJMERCA_POR_MODELO(_perso, mercadillo.strListaLineasPorModelo(
-									Integer.parseInt(splt[1])));
+							Integer.parseInt(splt[1])));
 						} else {
 							GestorSalida.ENVIAR_EHS_BUSCAR_OBJETO_MERCADILLO(_perso, "E");
 						}
 					} else {
 						GestorSalida.ENVIAR_EHS_BUSCAR_OBJETO_MERCADILLO(_perso, "E");
 					}
-				}
-// lista por tipo de objeto
-				case 'T' -> GestorSalida.ENVIAR_EHL_LISTA_OBJMERCA_POR_TIPO(_perso, Integer.parseInt(packet.substring(3)), mercadillo
-						.stringModelo(Integer.parseInt(packet.substring(3))));
-				default -> {
+					break;
+				case 'T' :// lista por tipo de objeto
+					GestorSalida.ENVIAR_EHL_LISTA_OBJMERCA_POR_TIPO(_perso, Integer.parseInt(packet.substring(3)), mercadillo
+					.stringModelo(Integer.parseInt(packet.substring(3))));
+					break;
+				default :
 					MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR INTERCAMBIO MERCADILLO: " + packet);
 					if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 						MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 						cerrarSocket(true, "intercambio_Mercadillo()");
 					}
 					return;
-				}
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private synchronized void intercambio_Cercado(final String packet) {
@@ -5130,8 +5313,7 @@ public class ServidorSocket implements Runnable {
 			}
 			Montura montura = null;
 			switch (c) {
-// cercado => a establo
-				case 'g' -> {
+				case 'g' :// cercado => a establo
 					if (!cercado.borrarMonturaCercado(id)) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
@@ -5148,9 +5330,8 @@ public class ServidorSocket implements Runnable {
 						_cuenta.addMonturaEstablo(montura);
 						GestorSalida.ENVIAR_Ee_MONTURA_A_ESTABLO(_perso, '+', montura.detallesMontura());
 					}
-				}
-// establo => cercado
-				case 'p' -> {
+					break;
+				case 'p' :// establo => cercado
 					if (!cercado.puedeAgregar()) {
 						GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1107");
 						return;
@@ -5171,14 +5352,14 @@ public class ServidorSocket implements Runnable {
 					GestorSalida.ENVIAR_Ef_MONTURA_A_CRIAR(_perso, '+', montura.detallesMontura());
 					GestorSalida.ENVIAR_Ee_MONTURA_A_ESTABLO(_perso, '-', montura.getID() + "");
 					GestorSalida.ENVIAR_GM_DRAGOPAVO_A_MAPA(_perso.getMapa(), "+", montura);
-				}
-				default -> {
+					break;
+				default :
 					MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR INTERCAMBIO CERCADO: " + packet);
 					if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 						MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 						cerrarSocket(true, "intercambio_Cercado()");
 					}
-				}
+					break;
 			}
 		} catch (Exception e) {
 			GestorSalida.ENVIAR_BN_NADA(_perso);
@@ -5207,8 +5388,7 @@ public class ServidorSocket implements Runnable {
 			}
 			Montura montura = null;
 			switch (c) {
-// certificado / pergamino => establo
-				case 'C' -> {
+				case 'C' :// certificado / pergamino => establo
 					final Objeto obj = _perso.getObjeto(id);
 					if (obj == null) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
@@ -5243,9 +5423,8 @@ public class ServidorSocket implements Runnable {
 						montura.setPergamino(0);
 						GestorSalida.ENVIAR_Ee_MONTURA_A_ESTABLO(_perso, '+', montura.detallesMontura());
 					}
-				}
-// Establo => certificado / pergamino
-				case 'c' -> {
+					break;
+				case 'c' :// Establo => certificado / pergamino
 					montura = Mundo.getMontura(id);
 					if (montura == null || !_cuenta.borrarMonturaEstablo(id)) {
 						GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1104");
@@ -5257,7 +5436,7 @@ public class ServidorSocket implements Runnable {
 						return;
 					}
 					final Objeto obj1 = montura.getObjModCertificado().crearObjeto(1, Constantes.OBJETO_POS_NO_EQUIPADO,
-							CAPACIDAD_STATS.RANDOM);
+					CAPACIDAD_STATS.RANDOM);
 					obj1.fijarStatValor(Constantes.STAT_CONSULTAR_MONTURA, Math.abs(montura.getID()));
 					obj1.addStatTexto(Constantes.STAT_PERTENECE_A, "0#0#0#" + _perso.getNombre());
 					obj1.addStatTexto(Constantes.STAT_NOMBRE, "0#0#0#" + montura.getNombre());
@@ -5267,9 +5446,8 @@ public class ServidorSocket implements Runnable {
 					GestorSalida.ENVIAR_Ow_PODS_DEL_PJ(_perso);
 					GestorSalida.ENVIAR_Ee_MONTURA_A_ESTABLO(_perso, '-', montura.getID() + "");
 					GestorSQL.REPLACE_MONTURA(montura, false);
-				}
-// Establo = Equipar montura
-				case 'g' -> {
+					break;
+				case 'g' :// Establo = Equipar montura
 					if (_perso.getMontura() != null) {
 						GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1YOU_HAVE_MOUNT");
 						return;
@@ -5288,9 +5466,8 @@ public class ServidorSocket implements Runnable {
 					_perso.setMontura(montura);
 					GestorSalida.ENVIAR_Ee_MONTURA_A_ESTABLO(_perso, '-', montura.getID() + "");
 					GestorSalida.ENVIAR_Rx_EXP_DONADA_MONTURA(_perso);
-				}
-// Equipar => Establo
-				case 'p' -> {
+					break;
+				case 'p' :// Equipar => Establo
 					montura = _perso.getMontura();
 					if (montura == null || montura.getID() != id) {
 						GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1YOU_DONT_HAVE_MOUNT");
@@ -5311,14 +5488,14 @@ public class ServidorSocket implements Runnable {
 						GestorSalida.ENVIAR_Ee_MONTURA_A_ESTABLO(_perso, '+', montura.detallesMontura());
 					}
 					GestorSalida.ENVIAR_Rx_EXP_DONADA_MONTURA(_perso);
-				}
-				default -> {
+					break;
+				default :
 					MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR INTERCAMBIO ESTABLO: " + packet);
 					if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 						MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 						cerrarSocket(true, "intercambio_Establo()");
 					}
-				}
+					break;
 			}
 		} catch (final Exception e) {
 			MainServidor.redactarLogServidorln("EXCEPTION Packet " + packet + ", intercambio_Establo " + e.toString());
@@ -5371,12 +5548,13 @@ public class ServidorSocket implements Runnable {
 	
 	private synchronized void intercambio_Vender(final String packet) {
 		try {
-			if (_perso.getTipoExchange() == Constantes.INTERCAMBIO_TIPO_TIENDA_NPC) {// npc
-				// case 20 ://boutique
-				_perso.venderObjetos(packet.substring(2));
-				return;
+			switch (_perso.getTipoExchange()) {
+				case Constantes.INTERCAMBIO_TIPO_TIENDA_NPC :// npc
+					// case 20 ://boutique
+					_perso.venderObjetos(packet.substring(2));
+					return;
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		GestorSalida.ENVIAR_ESE_ERROR_VENTA(_perso);
 	}
 	
@@ -5391,7 +5569,7 @@ public class ServidorSocket implements Runnable {
 						try {
 							objModeloID = Integer.parseInt(infos[0]);
 							cantidad = Integer.parseInt(infos[1]);
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 						if (cantidad <= 0 || objModeloID <= 0) {
 							GestorSalida.ENVIAR_BN_NADA(_perso);
 							return;
@@ -5530,15 +5708,19 @@ public class ServidorSocket implements Runnable {
 	
 	private void analizar_Ambiente(final String packet) {
 		switch (packet.charAt(1)) {
-			case 'D' -> ambiente_Cambio_Direccion(packet);
-			case 'U' -> ambiente_Emote(packet);
-			default -> {
+			case 'D' :
+				ambiente_Cambio_Direccion(packet);
+				break;
+			case 'U' :
+				ambiente_Emote(packet);
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR AMBIENTE: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Ambiente()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -5559,12 +5741,13 @@ public class ServidorSocket implements Runnable {
 			return;
 		}
 		switch (emote) {
-			case Constantes.EMOTE_ACOSTARSE, Constantes.EMOTE_SENTARSE -> {
+			case Constantes.EMOTE_ACOSTARSE :
+			case Constantes.EMOTE_SENTARSE :
 				if (_perso.estaSentado()) {
 					emote = 0;
 				}
 				_perso.setSentado(!_perso.estaSentado());
-			}
+				break;
 		}
 		_perso.setEmoteActivado(emote);
 		int tiempo = 0;
@@ -5577,23 +5760,37 @@ public class ServidorSocket implements Runnable {
 		final Cercado cercado = _perso.getMapa().getCercado();
 		if (cercado != null) {
 			switch (emote) {
-				case Constantes.EMOTE_SEÑAL_CON_MANO, Constantes.EMOTE_ENFADARSE, Constantes.EMOTE_APLAUDIR, Constantes.EMOTE_PEDO, Constantes.EMOTE_MOSTRAR_ARMA, Constantes.EMOTE_BESO -> {
-					ArrayList<Montura> monturas = new ArrayList<>();
+				case Constantes.EMOTE_SEÑAL_CON_MANO :
+				case Constantes.EMOTE_ENFADARSE :
+				case Constantes.EMOTE_APLAUDIR :
+				case Constantes.EMOTE_PEDO :
+				case Constantes.EMOTE_MOSTRAR_ARMA :
+				case Constantes.EMOTE_BESO :
+					ArrayList<Montura> monturas = new ArrayList<Montura>();
 					for (final Montura montura : cercado.getCriando().values()) {
 						if (montura.getDueñoID() == _perso.getID()) {
 							monturas.add(montura);
 						}
 					}
 					if (!monturas.isEmpty()) {
-						int casillas = switch (emote) {
-							case Constantes.EMOTE_SEÑAL_CON_MANO, Constantes.EMOTE_ENFADARSE -> 1;
-							case Constantes.EMOTE_APLAUDIR, Constantes.EMOTE_PEDO -> Formulas.getRandomInt(2, 3);
-							case Constantes.EMOTE_MOSTRAR_ARMA, Constantes.EMOTE_BESO -> Formulas.getRandomInt(4, 7);
-							default -> 0;
-						};
+						int casillas = 0;
+						switch (emote) {
+							case Constantes.EMOTE_SEÑAL_CON_MANO :
+							case Constantes.EMOTE_ENFADARSE :
+								casillas = 1;
+								break;
+							case Constantes.EMOTE_APLAUDIR :
+							case Constantes.EMOTE_PEDO :
+								casillas = Formulas.getRandomInt(2, 3);
+								break;
+							case Constantes.EMOTE_MOSTRAR_ARMA :
+							case Constantes.EMOTE_BESO :
+								casillas = Formulas.getRandomInt(4, 7);
+								break;
+						}
 						boolean alejar;
 						if (emote == Constantes.EMOTE_SEÑAL_CON_MANO || emote == Constantes.EMOTE_APLAUDIR
-								|| emote == Constantes.EMOTE_BESO) {
+						|| emote == Constantes.EMOTE_BESO) {
 							alejar = false;
 						} else {
 							alejar = true;
@@ -5601,7 +5798,7 @@ public class ServidorSocket implements Runnable {
 						monturas.get(Formulas.getRandomInt(0, monturas.size() - 1)).moverMontura(_perso, -1, casillas, alejar);
 					}
 					monturas = null;
-				}
+					break;
 			}
 		}
 	}
@@ -5614,21 +5811,27 @@ public class ServidorSocket implements Runnable {
 			final byte dir = Byte.parseByte(packet.substring(2));
 			_perso.setOrientacion(dir);
 			GestorSalida.ENVIAR_eD_CAMBIAR_ORIENTACION(_perso.getMapa(), _perso.getID(), dir);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void analizar_Hechizos(final String packet) {
 		switch (packet.charAt(1)) {
-			case 'B' -> hechizos_Boost(packet);
-			case 'F' -> hechizos_Olvidar(packet);
-			case 'M' -> hechizos_Acceso_Rapido(packet);
-			default -> {
+			case 'B' :
+				hechizos_Boost(packet);
+				break;
+			case 'F' :
+				hechizos_Olvidar(packet);
+				break;
+			case 'M' :
+				hechizos_Acceso_Rapido(packet);
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR HECHIZOS: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Hechizos()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -5638,7 +5841,7 @@ public class ServidorSocket implements Runnable {
 			final int hechizoID = Integer.parseInt(split[0]);
 			final int posicion = Integer.parseInt(split[1]);
 			_perso.setPosHechizo(hechizoID, Encriptador.getValorHashPorNumero(posicion));
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void hechizos_Boost(final String packet) {
@@ -5664,61 +5867,61 @@ public class ServidorSocket implements Runnable {
 			if (_perso.olvidarHechizo(Integer.parseInt(packet.substring(2)), false, true)) {
 				_perso.setOlvidandoHechizo(false);
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	private void analizar_Peleas(final String packet) {
 		final Pelea pelea = _perso.getPelea();
 		switch (packet.charAt(1)) {
-			case 'D' -> {
+			case 'D' :
 				if (pelea != null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				pelea_Detalles(packet);
-			}
-			case 'H' -> {
+				break;
+			case 'H' :
 				if (pelea == null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				pelea.botonAyuda(_perso.getID());
-			}
-			case 'L' -> {
+				break;
+			case 'L' :
 				if (pelea != null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				GestorSalida.ENVIAR_fL_LISTA_PELEAS(_perso, _perso.getMapa());
-			}
-			case 'N' -> {
+				break;
+			case 'N' :
 				if (pelea == null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				pelea.botonBloquearMasJug(_perso.getID());
-			}
-			case 'P' -> {
+				break;
+			case 'P' :
 				if (pelea == null || _perso.getGrupoParty() == null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				pelea.botonSoloGrupo(_perso.getID());
-			}
-			case 'S' -> {
+				break;
+			case 'S' :
 				if (pelea == null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
 				}
 				pelea.botonBloquearEspect(_perso.getID());
-			}
-			default -> {
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR PELEAS: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "analizar_Peleas()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -5726,7 +5929,7 @@ public class ServidorSocket implements Runnable {
 		short id = -1;
 		try {
 			id = Short.parseShort(packet.substring(2).replace("0", ""));
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		if (id == -1) {
 			GestorSalida.ENVIAR_BN_NADA(_perso);
 			return;
@@ -5784,8 +5987,7 @@ public class ServidorSocket implements Runnable {
 	
 	private void basicos_Comandos_Rapidos(final String packet) {
 		switch (packet.charAt(2)) {
-// moverse por geoposicion
-			case 'M' -> {
+			case 'M' :// moverse por geoposicion
 				if (_cuenta.getAdmin() == 0) {
 					GestorSalida.ENVIAR_BN_NADA(_perso, "NO TIENE RANGO");
 					return;
@@ -5799,21 +6001,22 @@ public class ServidorSocket implements Runnable {
 					final int coordX = Integer.parseInt(infos[0]);
 					final int coordY = Integer.parseInt(infos[1]);
 					final Mapa mapa = Mundo.mapaPorCoordXYContinente(coordX, coordY, _perso.getMapa().getSubArea().getArea()
-							.getSuperArea().getID());
+					.getSuperArea().getID());
 					_perso.teleport(mapa.getID(), mapa.getRandomCeldaIDLibre());
 				} catch (final Exception e) {
 					GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1MAPA_NO_EXISTE");
 				}
-			}
-// expulsar en un tiempo a pj
-			case 'K' -> GestorSalida.ENVIAR_BN_NADA(_perso, MainServidor.PALABRA_CLAVE_CONSOLA);
-			default -> {
+				break;
+			case 'K' :// expulsar en un tiempo a pj
+				GestorSalida.ENVIAR_BN_NADA(_perso, MainServidor.PALABRA_CLAVE_CONSOLA);
+				break;
+			default :
 				MainServidor.redactarLogServidorln(getStringDesconocido() + " ANALIZAR BASICO COMANDOS RAPIDOS: " + packet);
 				if (_excesoPackets > MainServidor.MAX_PACKETS_DESCONOCIDOS) {
 					MainServidor.redactarLogServidorln("El IP del socket que intenta usar packet desconocidos: " + _IP);
 					cerrarSocket(true, "basicos_Comandos_Rapidos()");
 				}
-			}
+				break;
 		}
 	}
 	
@@ -5850,8 +6053,13 @@ public class ServidorSocket implements Runnable {
 				break;
 			case 'O' :
 				switch (packet.charAt(3)) {
-					default -> _perso.addOmitido(packet.substring(4));
-					case '-' -> _perso.borrarOmitido(packet.substring(4));
+					case '+' :
+					default :
+						_perso.addOmitido(packet.substring(4));
+						break;
+					case '-' :
+						_perso.borrarOmitido(packet.substring(4));
+						break;
 				}
 				break;
 			default :
@@ -5883,7 +6091,7 @@ public class ServidorSocket implements Runnable {
 			}
 			GestorSalida.ENVIAR_BWK_QUIEN_ES(_perso, perso.getCuenta().getApodo() + "|" + (perso.getPelea() != null ? 2 : 1)
 			+ "|" + perso.getNombre() + "|" + perso.getMapa().getID());
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void basicos_Chat(final String packet) {
@@ -5943,38 +6151,35 @@ public class ServidorSocket implements Runnable {
 				}
 			}
 			String sufijo = packet2.charAt(2) + "";
-			// mensaje mapa
 			switch (sufijo) {
-// mensaje grupo
-				case "$" -> {
+				case "$" :// mensaje grupo
 					if (!_perso.tieneCanal(sufijo) || _perso.getGrupoParty() == null) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
 					}
 					GestorSalida.ENVIAR_cMK_MENSAJE_CHAT_GRUPO(_perso, msjChat);
-				}
-// koliseo
-				case "¿" -> {
+					break;
+				case "¿" :// koliseo
 					if (_perso.getGrupoKoliseo() == null) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
 					}
 					GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_KOLISEO(_perso, msjChat);
-				}
-// all
-				case "~" -> GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_TODOS(sufijo, _perso, msjChat);
-// unknown
-				case "¬" -> GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_TODOS(sufijo, _perso, msjChat);
-// mensaje gremio
-				case "%" -> {
+					break;
+				case "~" :// all
+					GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_TODOS(sufijo, _perso, msjChat);
+					break;
+				case "¬" :// unknown
+					GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_TODOS(sufijo, _perso, msjChat);
+					break;
+				case "%" :// mensaje gremio
 					if (!_perso.tieneCanal(sufijo) || _perso.getGremio() == null) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
 					}
 					GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_GREMIO(_perso, msjChat);
-				}
-// mensaje pelea equipo
-				case "#" -> {
+					break;
+				case "#" :// mensaje pelea equipo
 					if (!_perso.tieneCanal(sufijo) || _perso.getPelea() == null) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
@@ -5982,13 +6187,13 @@ public class ServidorSocket implements Runnable {
 					final int equipo = _perso.getPelea().getParamMiEquipo(_perso.getID());
 					if (equipo == 4) {
 						GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_PELEA(_perso.getPelea(), 4, sufijo, _perso.getID(), _perso.getNombre(),
-								msjChat);
+						msjChat);
 					} else {
 						GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_PELEA(_perso.getPelea(), equipo, sufijo, _perso.getID(), _perso
-								.getNombre(), msjChat);
+						.getNombre(), msjChat);
 					}
-				}
-				case "*" -> {
+					break;
+				case "*" :
 					if (!_perso.tieneCanal(sufijo)) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
@@ -5996,6 +6201,7 @@ public class ServidorSocket implements Runnable {
 					if (comando_jugador(msjChat)) {
 						return;
 					}
+					// mensaje mapa
 					if (_perso.getPelea() == null) {
 						if (!_perso.getMapa().getMuteado() || _cuenta.getAdmin() > 0) {
 							GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_MAPA(_perso, sufijo, msjChat);
@@ -6006,15 +6212,14 @@ public class ServidorSocket implements Runnable {
 						final int equipo2 = _perso.getPelea().getParamMiEquipo(_perso.getID());
 						if (equipo2 == 1 || equipo2 == 2) {
 							GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_PELEA(_perso.getPelea(), 7, "", _perso.getID(), _perso.getNombre(),
-									msjChat);
+							msjChat);
 						} else {
 							GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_PELEA(_perso.getPelea(), 7, "p", _perso.getID(), _perso.getNombre(),
-									msjChat);
+							msjChat);
 						}
 					}
-				}
-// mensaje vip
-				case "¡" -> {
+					break;
+				case "¡" :// mensaje vip
 					if (!_cuenta.esAbonado()) {
 						GestorSalida.ENVIAR_BN_NADA(_perso, "NO ABONADO");
 						return;
@@ -6027,9 +6232,8 @@ public class ServidorSocket implements Runnable {
 					}
 					_tiempoUltVIP = System.currentTimeMillis();
 					GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_TODOS(sufijo, _perso, msjChat);
-				}
-// mensaje alineacion
-				case "!" -> {
+					break;
+				case "!" :// mensaje alineacion
 					if (!_perso.tieneCanal(sufijo) || _perso.getAlineacion() == Constantes.ALINEACION_NEUTRAL) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
@@ -6048,16 +6252,15 @@ public class ServidorSocket implements Runnable {
 					}
 					long k;
 					if ((k = ((System.currentTimeMillis() - _tiempoUltAlineacion)
-							/ 1000)) < MainServidor.SEGUNDOS_CANAL_ALINEACION) {
+					/ 1000)) < MainServidor.SEGUNDOS_CANAL_ALINEACION) {
 						k = (MainServidor.SEGUNDOS_CANAL_ALINEACION - k);
 						GestorSalida.ENVIAR_Im_INFORMACION(_perso, "0115;" + ((int) Math.ceil(k) + 1));
 						return;
 					}
 					_tiempoUltAlineacion = System.currentTimeMillis();
 					GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_TODOS(sufijo, _perso, msjChat);
-				}
-// mensaje incarnam
-				case "^" -> {
+					break;
+				case "^" :// mensaje incarnam
 					if (!_perso.tieneCanal(sufijo)) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
@@ -6074,9 +6277,8 @@ public class ServidorSocket implements Runnable {
 					}
 					_tiempoUltIncarnam = System.currentTimeMillis();
 					GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_TODOS(sufijo, _perso, msjChat);
-				}
-// mensaje comercio
-				case ":" -> {
+					break;
+				case ":" :// mensaje comercio
 					if (!_perso.tieneCanal(sufijo)) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
@@ -6093,9 +6295,8 @@ public class ServidorSocket implements Runnable {
 					}
 					_tiempoUltComercio = System.currentTimeMillis();
 					GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_TODOS(sufijo, _perso, msjChat);
-				}
-// mensaje reclutamiento
-				case "?" -> {
+					break;
+				case "?" :// mensaje reclutamiento
 					if (!_perso.tieneCanal(sufijo)) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
@@ -6106,24 +6307,22 @@ public class ServidorSocket implements Runnable {
 					}
 					long j;
 					if ((j = ((System.currentTimeMillis() - _tiempoUltReclutamiento)
-							/ 1000)) < MainServidor.SEGUNDOS_CANAL_RECLUTAMIENTO) {
+					/ 1000)) < MainServidor.SEGUNDOS_CANAL_RECLUTAMIENTO) {
 						j = (MainServidor.SEGUNDOS_CANAL_RECLUTAMIENTO - j);
 						GestorSalida.ENVIAR_Im_INFORMACION(_perso, "0115;" + ((int) Math.ceil(j) + 1));
 						return;
 					}
 					_tiempoUltReclutamiento = System.currentTimeMillis();
 					GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_TODOS(sufijo, _perso, msjChat);
-				}
-// mensaje admin
-				case "@" -> {
+					break;
+				case "@" :// mensaje admin
 					if (_cuenta.getAdmin() == 0) {
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return;
 					}
 					GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_TODOS(sufijo, _perso, msjChat);
-				}
-// mensaje privado
-				default -> {
+					break;
+				default :// mensaje privado
 					final String nombre = packet2.substring(2).split(Pattern.quote("|"))[0];
 					if (nombre.length() <= 1) {
 						break;
@@ -6142,7 +6341,7 @@ public class ServidorSocket implements Runnable {
 					if (_perso.estaAusente()) {
 						GestorSalida.ENVIAR_Im_INFORMACION(_perso, "072");
 					}
-				}
+					break;
 			}
 		} catch (Exception e) {
 			MainServidor.redactarLogServidorln("EXCEPTION Packet " + packet + ", basicos_Chat " + e.toString());
@@ -6169,19 +6368,9 @@ public class ServidorSocket implements Runnable {
 				String mapa_celda;
 				Mapa mapa;
 				short celdaID;
-				// if (_perso.getNivel() < 30) {
-				// GestorSalida.ENVIAR_Im_INFORMACION(_perso, "13");
-				// return false;
-				// }
-				// case "reiniciarhechizos" :
-				// _perso.reiniciarHechizosBug();
-				// GestorSalida.ENVIAR_M1_MENSAJE_SERVER_SVR_MUESTRA_INSTANTANEO(_perso, 36, "", "");
-				// break;
-				//
-				// ---- comandos secretos -----
-				//
 				switch (comando) {
-					case "convert", "convertir" -> {
+					case "convert" :
+					case "convertir" :
 						if (MainServidor.VALOR_KAMAS_POR_OGRINA <= 0) {
 							GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, "No se puede convertir ahora");
 						} else {
@@ -6204,17 +6393,19 @@ public class ServidorSocket implements Runnable {
 							}
 						}
 						return true;
-					}
-					case "servicio", "service", "services", "servicios" -> {
+					case "servicio" :
+					case "service" :
+					case "services" :
+					case "servicios" :
 						if (split.length < 2) {
 							GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, MainServidor.MENSAJE_SERVICIOS);
 						} else {
 							try {
 								String servicio = split[1].toLowerCase();
 								switch (servicio) {
-									case "guilde":
-									case "guild":
-									case "gremio":
+									case "guilde" :
+									case "guild" :
+									case "gremio" :
 										if (!_perso.estaDisponible(true, true)) {
 											return false;
 										}
@@ -6225,9 +6416,9 @@ public class ServidorSocket implements Runnable {
 											Accion.realizar_Accion_Estatico(-2, "", _perso, null, -1, (short) -1);
 										}
 										break;
-									case "scroll":
-									case "fullstats":
-									case "parcho":
+									case "scroll" :
+									case "fullstats" :
+									case "parcho" :
 										if (!_perso.estaDisponible(false, false)) {
 											return false;
 										}
@@ -6236,7 +6427,7 @@ public class ServidorSocket implements Runnable {
 											for (int s : stats) {
 												if (_perso.getStatScroll(s) > 0) {
 													GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso,
-															"Veuillez remettre à zéro vos caractéristiques via la Fée Risette avant de vous parchotter.");
+													"Veuillez remettre à zéro vos caractéristiques via la Fée Risette avant de vous parchotter.");
 													return false;
 												}
 											}
@@ -6245,9 +6436,9 @@ public class ServidorSocket implements Runnable {
 											}
 										}
 										break;
-									case "restater":
-									case "restarter":
-									case "reset":
+									case "restater" :
+									case "restarter" :
+									case "reset" :
 										if (_perso.getNivel() < 30) {
 											return false;
 										}
@@ -6255,30 +6446,54 @@ public class ServidorSocket implements Runnable {
 											_perso.resetearStats(false);
 										}
 										break;
-									case "sortspecial":
+									case "sortspecial" :
 										if (puede_Usar_Servicio(servicio)) {
 											_perso.fijarNivelHechizoOAprender(350, 1, false);
 										}
 										break;
-									case "sortclasse":
+									case "sortclasse" :
 										if (puede_Usar_Servicio(servicio)) {
 											switch (_perso.getClaseID(true)) {
-												case Constantes.CLASE_FECA -> _perso.fijarNivelHechizoOAprender(422, 1, false);
-												case Constantes.CLASE_OSAMODAS -> _perso.fijarNivelHechizoOAprender(420, 1, false);
-												case Constantes.CLASE_ANUTROF -> _perso.fijarNivelHechizoOAprender(425, 1, false);
-												case Constantes.CLASE_SRAM -> _perso.fijarNivelHechizoOAprender(416, 1, false);
-												case Constantes.CLASE_XELOR -> _perso.fijarNivelHechizoOAprender(424, 1, false);
-												case Constantes.CLASE_ZURCARAK -> _perso.fijarNivelHechizoOAprender(412, 1, false);
-												case Constantes.CLASE_ANIRIPSA -> _perso.fijarNivelHechizoOAprender(427, 1, false);
-												case Constantes.CLASE_YOPUKA -> _perso.fijarNivelHechizoOAprender(410, 1, false);
-												case Constantes.CLASE_OCRA -> _perso.fijarNivelHechizoOAprender(418, 1, false);
-												case Constantes.CLASE_SADIDA -> _perso.fijarNivelHechizoOAprender(426, 1, false);
-												case Constantes.CLASE_SACROGITO -> _perso.fijarNivelHechizoOAprender(421, 1, false);
-												case Constantes.CLASE_PANDAWA -> _perso.fijarNivelHechizoOAprender(423, 1, false);
+												case Constantes.CLASE_FECA :
+													_perso.fijarNivelHechizoOAprender(422, 1, false);
+													break;
+												case Constantes.CLASE_OSAMODAS :
+													_perso.fijarNivelHechizoOAprender(420, 1, false);
+													break;
+												case Constantes.CLASE_ANUTROF :
+													_perso.fijarNivelHechizoOAprender(425, 1, false);
+													break;
+												case Constantes.CLASE_SRAM :
+													_perso.fijarNivelHechizoOAprender(416, 1, false);
+													break;
+												case Constantes.CLASE_XELOR :
+													_perso.fijarNivelHechizoOAprender(424, 1, false);
+													break;
+												case Constantes.CLASE_ZURCARAK :
+													_perso.fijarNivelHechizoOAprender(412, 1, false);
+													break;
+												case Constantes.CLASE_ANIRIPSA :
+													_perso.fijarNivelHechizoOAprender(427, 1, false);
+													break;
+												case Constantes.CLASE_YOPUKA :
+													_perso.fijarNivelHechizoOAprender(410, 1, false);
+													break;
+												case Constantes.CLASE_OCRA :
+													_perso.fijarNivelHechizoOAprender(418, 1, false);
+													break;
+												case Constantes.CLASE_SADIDA :
+													_perso.fijarNivelHechizoOAprender(426, 1, false);
+													break;
+												case Constantes.CLASE_SACROGITO :
+													_perso.fijarNivelHechizoOAprender(421, 1, false);
+													break;
+												case Constantes.CLASE_PANDAWA :
+													_perso.fijarNivelHechizoOAprender(423, 1, false);
+													break;
 											}
 										}
 										break;
-									default:
+									default :
 										GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, "Servicio no existe.");
 										break;
 								}
@@ -6287,31 +6502,34 @@ public class ServidorSocket implements Runnable {
 							}
 						}
 						return true;
-					}
-// nothing else?
-					case "help", "comandos", "tutorial", "ayuda", "commands", "command", "commandes" -> {
+					case "help" :
+					case "comandos" :
+					case "tutorial" :
+					case "ayuda" :
+					case "commands" :
+					case "command" :
+					case "commandes" :// nothing else?
 						if (!MainServidor.MENSAJE_COMANDOS.isEmpty()) {
 							GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, MainServidor.MENSAJE_COMANDOS);
 						} else {
 							GestorSalida.ENVIAR_cs_CHAT_MENSAJE(_perso,
-									"Les commandes disponnible sont :\n<b>.infos</b> - Permet d'obtenir des informations sur le serveur."
-											+ "\n<b>.start</b> - Permet de se téléporter au zaap d'Astrub."
-											+ "\n<b>.staff</b> - Permet de voir les membres du staff connect\u00e9s."
-											+ "\n<b>.boutique</b> - Permet de se téléporter à la map Boutique."
-											+ "\n<b>.points</b> - Savoir ses points boutique."
-											+ "\n<b>.all</b> - Permet d'envoyer un message \u00e0 tous les joueurs."
-											+ "\n<b>.celldeblo</b> - Vous tp a une cellule Libre si vous êtes bloqué."
-											+ "\n<b>.banque</b> - Ouvrir la banque n’importe où."
-											+ "\n<b>.maitre</b> -permet crée l'éscouade , inviter tout tes mules dans ton groupes et rediriger tout les Messages privés de tes mûles vers le Maître."
-											+ "\n<b>.pass</b> -  permet au joueurs de passer automatiquement ses tours."
-											+ "\n<b>.transfert</b> -  transfert rapide en banque ( Items , Divers et ressources)."
-											+ "\n<b>.tp</b> - Permet de TP tes Personajes sur ta map actuel ( hors Donjon)."
-											+ "\n<b>.join</b> - permet que les Personajes s’autotp et rejoignent automatiquement quand un combat et lancer.",
-									"B9121B");
+							"Les commandes disponnible sont :\n<b>.infos</b> - Permet d'obtenir des informations sur le serveur."
+							+ "\n<b>.start</b> - Permet de se téléporter au zaap d'Astrub."
+							+ "\n<b>.staff</b> - Permet de voir les membres du staff connect\u00e9s."
+							+ "\n<b>.boutique</b> - Permet de se téléporter à la map Boutique."
+							+ "\n<b>.points</b> - Savoir ses points boutique."
+							+ "\n<b>.all</b> - Permet d'envoyer un message \u00e0 tous les joueurs."
+							+ "\n<b>.celldeblo</b> - Vous tp a une cellule Libre si vous êtes bloqué."
+							+ "\n<b>.banque</b> - Ouvrir la banque n’importe où."
+							+ "\n<b>.maitre</b> -permet crée l'éscouade , inviter tout tes mules dans ton groupes et rediriger tout les Messages privés de tes mûles vers le Maître."
+							+ "\n<b>.pass</b> -  permet au joueurs de passer automatiquement ses tours."
+							+ "\n<b>.transfert</b> -  transfert rapide en banque ( Items , Divers et ressources)."
+							+ "\n<b>.tp</b> - Permet de TP tes Personajes sur ta map actuel ( hors Donjon)."
+							+ "\n<b>.join</b> - permet que les Personajes s’autotp et rejoignent automatiquement quand un combat et lancer.",
+							"B9121B");
 						}
 						return true;
-					}
-					case "join" -> {
+					case "join" :
 						if (_perso.esMaestro()) {
 							if (_perso.getGrupoParty().getAutoUnir()) {
 								_perso.getGrupoParty().setAutoUnir(false);
@@ -6324,8 +6542,7 @@ public class ServidorSocket implements Runnable {
 							GestorSalida.ENVIAR_cs_CHAT_MENSAJE(_perso, "Mets toi Maître avant", "B9121B");
 						}
 						return true;
-					}
-					case "tp" -> {
+					case "tp" :
 						if (!_perso.estaDisponible(false, false)) {
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 								GestorSalida.ENVIAR_cs_CHAT_MENSAJE(_perso, "Vous êtes occupé", "B9121B");
@@ -6335,7 +6552,7 @@ public class ServidorSocket implements Runnable {
 						if (_perso.esMaestro()) {
 							if (_perso.getMapa().esMazmorra()) {
 								GestorSalida.ENVIAR_cs_CHAT_MENSAJE(_perso,
-										"Vous ne pouvez pas utiliser cette commande dans un donjon.", "B9121B");
+								"Vous ne pouvez pas utiliser cette commande dans un donjon.", "B9121B");
 								return true;
 							}
 							_perso.getGrupoParty().teleportATodos(_perso.getMapa().getID(), _perso.getCelda().getID());
@@ -6343,8 +6560,7 @@ public class ServidorSocket implements Runnable {
 							GestorSalida.ENVIAR_cs_CHAT_MENSAJE(_perso, "Mets toi Maître avant", "B9121B");
 						}
 						return true;
-					}
-					case "banque" -> {
+					case "banque" :
 						try {
 							if (!_perso.estaDisponible(false, false)) {
 								if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
@@ -6365,8 +6581,7 @@ public class ServidorSocket implements Runnable {
 							return true;
 						}
 						return true;
-					}
-					case "celldeblosdfzefezfrezfezdzdz" -> {
+					case "celldeblosdfzefezfrezfezdzdz" :
 						if (!_perso.estaDisponible(false, true)) {
 							if (_perso.getPelea() != null) {
 								GestorSalida.ENVIAR_Im_INFORMACION(_perso, "191");
@@ -6375,10 +6590,27 @@ public class ServidorSocket implements Runnable {
 							}
 							break;
 						}
-						boolean autorised = switch (_perso.getMapa().getID()) {
-							case 10700, 8905, 8911, 8916, 8917, 11095, 9827, 8930, 8932, 8933, 8934, 8935, 8936, 8938, 8939, 9230 -> false;
-							default -> true;
-						};
+						boolean autorised = true;
+						switch (_perso.getMapa().getID()) {
+							case 10700 :
+							case 8905 :
+							case 8911 :
+							case 8916 :
+							case 8917 :
+							case 11095 :
+							case 9827 :
+							case 8930 :
+							case 8932 :
+							case 8933 :
+							case 8934 :
+							case 8935 :
+							case 8936 :
+							case 8938 :
+							case 8939 :
+							case 9230 :
+								autorised = false;
+								break;
+						}
 						if (!autorised)
 							return true;
 						if (Mundo.getCasaDentroPorMapa(_perso.getMapa().getID()) != null) {
@@ -6388,8 +6620,7 @@ public class ServidorSocket implements Runnable {
 							_perso.teleport(_perso.getMapa().getID(), _perso.getMapa().getRandomCeldaIDLibre());
 						}
 						return true;
-					}
-					case "boutique" -> {
+					case "boutique" :
 						if (!_perso.estaDisponible(false, true)) {
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 								GestorSalida.ENVIAR_cs_CHAT_MENSAJE(_perso, "Vous êtes occupé", "B9121B");
@@ -6398,16 +6629,19 @@ public class ServidorSocket implements Runnable {
 						}
 						_perso.teleport((short) 21455, (short) 242);
 						return true;
-					}
-					case "noall" -> {
+					case "noall" :
 						_perso.removerCanal("~");
 						return true;
-					}
-					case "todos", "all" -> {
+					case "todos" :
+					case "all" :
 						split = msjChat.split(" ", 2);
 						if (split.length < 2) {
 							return true;
 						}
+						// if (_perso.getNivel() < 30) {
+						// GestorSalida.ENVIAR_Im_INFORMACION(_perso, "13");
+						// return false;
+						// }
 						long h;
 						if ((h = ((System.currentTimeMillis() - _tiempoUltAll) / 1000)) < MainServidor.SEGUNDOS_CANAL_ALL) {
 							h = (MainServidor.SEGUNDOS_CANAL_ALL - h);
@@ -6417,12 +6651,11 @@ public class ServidorSocket implements Runnable {
 						_tiempoUltAll = System.currentTimeMillis();
 						GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_TODOS("~", _perso, split[1]);
 						return true;
-					}
-					case "vip", "abonado" -> {
+					case "vip" :
+					case "abonado" :
 						GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, MainServidor.MENSAJE_VIP);
 						return true;
-					}
-					case "staff" -> {
+					case "staff" :
 						StringBuilder staff = new StringBuilder();
 						int staffO = 0;
 						for (final Personaje perso : Mundo.getPersonajesEnLinea()) {
@@ -6438,14 +6671,15 @@ public class ServidorSocket implements Runnable {
 								}
 								staff.append(perso.getNombre());
 								staffO++;
-							} catch (final Exception ignored) {
-							}
+							} catch (final Exception e) {}
 						}
 						GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, "<b>" + staffO + " online: " + staff.toString()
-								+ "</b>");
+						+ "</b>");
 						return true;
-					}
-					case "info_server", "info", "infos", "online" -> {
+					case "info_server" :
+					case "info" :
+					case "infos" :
+					case "online" :
 						try {
 							long enLinea = ServidorServer.getSegundosON() * 1000;
 							final int dia = (int) (enLinea / 86400000L);
@@ -6457,21 +6691,23 @@ public class ServidorSocket implements Runnable {
 							final int segundo = (int) (enLinea / 1000L);
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 								GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, "====================\n<b>"
-										+ MainServidor.NOMBRE_SERVER + "</b>\nUptime: " + dia + "j " + hora + "h " + minuto + "m " + segundo
-										+ "s\n" + "Joueurs en ligne: " + ServidorServer.nroJugadoresLinea() + "\n" + "Record de connexions: "
-										+ ServidorServer.getRecordJugadores() + "\n" + "====================");
+								+ MainServidor.NOMBRE_SERVER + "</b>\nUptime: " + dia + "j " + hora + "h " + minuto + "m " + segundo
+								+ "s\n" + "Joueurs en ligne: " + ServidorServer.nroJugadoresLinea() + "\n" + "Record de connexions: "
+								+ ServidorServer.getRecordJugadores() + "\n" + "====================");
 							} else {
 								GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, "====================\n<b>"
-										+ MainServidor.NOMBRE_SERVER + "</b>\nEnLínea: " + dia + "d " + hora + "h " + minuto + "m " + segundo
-										+ "s\n" + "Jugadores en línea: " + ServidorServer.nroJugadoresLinea() + "\n" + "Record de conexión: "
-										+ ServidorServer.getRecordJugadores() + "\n" + "====================");
+								+ MainServidor.NOMBRE_SERVER + "</b>\nEnLínea: " + dia + "d " + hora + "h " + minuto + "m " + segundo
+								+ "s\n" + "Jugadores en línea: " + ServidorServer.nroJugadoresLinea() + "\n" + "Record de conexión: "
+								+ ServidorServer.getRecordJugadores() + "\n" + "====================");
 							}
 						} catch (final Exception e) {
 							GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, "Ocurrio un error");
 						}
 						return true;
-					}
-					case "maguear", "elemental", "fmcac", "fm" -> {
+					case "maguear" :
+					case "elemental" :
+					case "fmcac" :
+					case "fm" :
 						Objeto exObj = _perso.getObjPosicion(Constantes.OBJETO_POS_ARMA);
 						if (exObj == null) {
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
@@ -6484,27 +6720,47 @@ public class ServidorSocket implements Runnable {
 						if (split.length < 2) {
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 								GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso,
-										"Vous devez specifier un argument (air - terre - eau - feu).");
+								"Vous devez specifier un argument (air - terre - eau - feu).");
 							} else {
 								GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso,
-										"Debes especificar un elemento (aire - tierra - agua - fuego).");
+								"Debes especificar un elemento (aire - tierra - agua - fuego).");
 							}
 							return false;
 						}
-						int statFM = switch (split[1].toLowerCase()) {
-							case "eau", "agua", "suerte", "water" -> 96;
-							case "terre", "tierra", "fuerza", "earth" -> 97;
-							case "air", "aire", "agilidad", "agi" -> 98;
-							case "feu", "fuego", "inteligencia", "fire" -> 99;
-							default -> 0;
-						};
+						int statFM = 0;
+						switch (split[1].toLowerCase()) {
+							case "eau" :// pocion chaparron
+							case "agua" :// pocion llovisna
+							case "suerte" :// pocion Tsunami
+							case "water" :
+								statFM = 96;
+								break;
+							case "terre" :// pocion de seismo
+							case "tierra" :// pocion de sacudida
+							case "fuerza" :// pocion derrumbamiento
+							case "earth" :
+								statFM = 97;
+								break;
+							case "air" :// pocion huracan
+							case "aire" :// pocion de rafaga
+							case "agilidad" :// pocion de corriente de airee
+							case "agi" :
+								statFM = 98;
+								break;
+							case "feu" :// pocion chispa
+							case "fuego" :// pocion de Flameacion
+							case "inteligencia" :// pocion Incendio
+							case "fire" :
+								statFM = 99;
+								break;
+						}
 						if (statFM == 0) {
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 								GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso,
-										"Vous devez specifier un argument (air - terre - eau - feu).");
+								"Vous devez specifier un argument (air - terre - eau - feu).");
 							} else {
 								GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso,
-										"Debes especificar un elemento (aire - tierra - agua - fuego).");
+								"Debes especificar un elemento (aire - tierra - agua - fuego).");
 							}
 							return false;
 						}
@@ -6515,52 +6771,73 @@ public class ServidorSocket implements Runnable {
 						GestorSalida.ENVIAR_As_STATS_DEL_PJ(_perso);
 						GestorSQL.SALVAR_OBJETO(exObj);
 						return true;
-					}
-					case "exo" -> {
+					case "exo" :
 						if (split.length < 2) {
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 								GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso,
-										"Vous devez specifier un argument (pa/po/pm/invo) space (coiffe/cape/bottes/anndroite/anngauche/ceinture/amulette).");
+								"Vous devez specifier un argument (pa/po/pm/invo) space (coiffe/cape/bottes/anndroite/anngauche/ceinture/amulette).");
 							} else {
 								GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso,
-										"Vous devez specifier un argument (pa/po/pm/invo) space (coiffe/cape/bottes/anndroite/anngauche/ceinture/amulette).");
+								"Vous devez specifier un argument (pa/po/pm/invo) space (coiffe/cape/bottes/anndroite/anngauche/ceinture/amulette).");
 							}
 							return false;
 						}
-						int statID = switch (split[1].toLowerCase()) {
-							case "pa" -> Constantes.STAT_MAS_PA;
-							case "pm" -> Constantes.STAT_MAS_PM;
-							case "po" -> Constantes.STAT_MAS_ALCANCE;
-							case "invo" -> Constantes.STAT_MAS_CRIATURAS_INVO;
-							default -> 0;
-						};
+						int statID = 0;
+						switch (split[1].toLowerCase()) {
+							case "pa" :
+								statID = Constantes.STAT_MAS_PA;
+								break;
+							case "pm" :
+								statID = Constantes.STAT_MAS_PM;
+								break;
+							case "po" :
+								statID = Constantes.STAT_MAS_ALCANCE;
+								break;
+							case "invo" :
+								statID = Constantes.STAT_MAS_CRIATURAS_INVO;
+								break;
+						}
 						if (statID == 0) {
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 								GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso,
-										"Vous devez specifier un argument (pa/po/pm/invo).");
+								"Vous devez specifier un argument (pa/po/pm/invo).");
 							} else {
 								GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso,
-										"Vous devez specifier un argument (pa/po/pm/invo).");
+								"Vous devez specifier un argument (pa/po/pm/invo).");
 							}
 							return false;
 						}
-						byte pos = switch (split[2].toLowerCase()) {
-							case "coiffe" -> Constantes.OBJETO_POS_SOMBRERO;
-							case "cape" -> Constantes.OBJETO_POS_CAPA;
-							case "bottes" -> Constantes.OBJETO_POS_BOTAS;
-							case "anndroite" -> Constantes.OBJETO_POS_ANILLO_DERECHO;
-							case "anngauche" -> Constantes.OBJETO_POS_ANILLO1;
-							case "ceinture" -> Constantes.OBJETO_POS_CINTURON;
-							case "amulette" -> Constantes.OBJETO_POS_AMULETO;
-							default -> (byte)-1;
-						};
+						byte pos = -1;
+						switch (split[2].toLowerCase()) {
+							case "coiffe" :
+								pos = Constantes.OBJETO_POS_SOMBRERO;
+								break;
+							case "cape" :
+								pos = Constantes.OBJETO_POS_CAPA;
+								break;
+							case "bottes" :
+								pos = Constantes.OBJETO_POS_BOTAS;
+								break;
+							case "anndroite" :
+								pos = Constantes.OBJETO_POS_ANILLO_DERECHO;
+								break;
+							case "anngauche" :
+								pos = Constantes.OBJETO_POS_ANILLO1;
+								break;
+							case "ceinture" :
+								pos = Constantes.OBJETO_POS_CINTURON;
+								break;
+							case "amulette" :
+								pos = Constantes.OBJETO_POS_AMULETO;
+								break;
+						}
 						if (pos == -1) {
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 								GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso,
-										"Vous devez specifier un argument (coiffe/cape/bottes/anndroite/anngauche/ceinture/amulette).");
+								"Vous devez specifier un argument (coiffe/cape/bottes/anndroite/anngauche/ceinture/amulette).");
 							} else {
 								GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso,
-										"Vous devez specifier un argument (coiffe/cape/bottes/anndroite/anngauche/ceinture/amulette).");
+								"Vous devez specifier un argument (coiffe/cape/bottes/anndroite/anngauche/ceinture/amulette).");
 							}
 							return false;
 						}
@@ -6583,7 +6860,7 @@ public class ServidorSocket implements Runnable {
 							return false;
 						}
 						int[] statsExo = {Constantes.STAT_MAS_PA, Constantes.STAT_MAS_PM, Constantes.STAT_MAS_ALCANCE,
-								Constantes.STAT_MAS_CRIATURAS_INVO};
+						Constantes.STAT_MAS_CRIATURAS_INVO};
 						for (int s : statsExo) {
 							if (objeto.tieneStatExo(s)) {
 								if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
@@ -6600,8 +6877,8 @@ public class ServidorSocket implements Runnable {
 						GestorSalida.ENVIAR_As_STATS_DEL_PJ(_perso);
 						GestorSQL.SALVAR_OBJETO(objeto);
 						return true;
-					}
-					case "grupo", "group" -> {
+					case "grupo" :
+					case "group" :
 						if (_perso.getGrupoParty() == null) {
 							int idWeb = GestorSQL.GET_ID_WEB(_cuenta.getNombre());
 							if (idWeb <= 0) {
@@ -6627,15 +6904,22 @@ public class ServidorSocket implements Runnable {
 							}
 						}
 						return true;
-					}
-					case "master", "leader", "lider", "maitre", "maestro" -> {
+					case "master" :
+					case "leader" :
+					case "lider" :
+					case "maitre" :
+					case "maestro" :
 						if (_perso.getGrupoParty() != null) {
 							split = msjChat.split(" ", 2);
 							boolean b = false;
 							if (split.length > 1) {
 								String onOff = split[1];
 								switch (onOff.toLowerCase()) {
-									case "on", "true", "1" -> b = true;
+									case "on" :
+									case "true" :
+									case "1" :
+										b = true;
+										break;
 								}
 							}
 							if (_perso.getGrupoParty().esLiderGrupo(_perso)) {
@@ -6698,8 +6982,12 @@ public class ServidorSocket implements Runnable {
 							}
 						}
 						return true;
-					}
-					case "eleve", "slave", "esclave", "discipulo", "esclavo", "follower" -> {
+					case "eleve" :
+					case "slave" :
+					case "esclave" :
+					case "discipulo" :
+					case "esclavo" :
+					case "follower" :
 						if (_perso.getGrupoParty() != null) {
 							if (_perso.getGrupoParty().addAlumno(_perso)) {
 								if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
@@ -6718,20 +7006,19 @@ public class ServidorSocket implements Runnable {
 							GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1YOU_NEED_GROUP");
 						}
 						return true;
-					}
-					case "jour" -> {
+					case "jour" :
 						_perso.setDeDia();
 						GestorSalida.ENVIAR_Im_INFORMACION(_perso, _perso.esDeDia() ? "1DAY_ON" : "1DAY_OFF");
 						GestorSalida.ENVIAR_BT_TIEMPO_SERVER(_perso);
 						return true;
-					}
-					case "nuit" -> {
+					case "nuit" :
 						_perso.setDeNoche();
 						GestorSalida.ENVIAR_Im_INFORMACION(_perso, _perso.esDeNoche() ? "1NIGHT_ON" : "1NIGHT_OFF");
 						GestorSalida.ENVIAR_BT_TIEMPO_SERVER(_perso);
 						return true;
-					}
-					case "passTurn", "pasarTurno", "pass" -> {
+					case "passTurn" :
+					case "pasarTurno" :
+					case "pass" :
 						if (_perso.getCuenta().getVip() == 0) {
 							GestorSalida.ENVIAR_cs_CHAT_MENSAJE(_perso, "Réservé au V.I.P", "B9121B");
 							return true;
@@ -6751,15 +7038,15 @@ public class ServidorSocket implements Runnable {
 							}
 						}
 						return true;
-					}
-					case "prisma", "prisme" -> {
+					case "prisma" :
+					case "prisme" :
 						if (!_perso.estaDisponible(true, true)) {
 							break;
 						}
 						Accion.realizar_Accion_Estatico(201, "2,1", _perso, null, -1, (short) -1);
 						return true;
-					}
-					case "caceria", "chasse" -> {
+					case "caceria" :
+					case "chasse" :
 						if (Mundo.NOMBRE_CACERIA.isEmpty() || Mundo.KAMAS_OBJ_CACERIA.isEmpty()) {
 							GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1EVENTO_CACERIA_DESACTIVADO");
 							return true;
@@ -6771,16 +7058,21 @@ public class ServidorSocket implements Runnable {
 						}
 						if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 							GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_PERSONAJE(_perso, "", 0, Mundo.NOMBRE_CACERIA, "RECOMPENSE CHASSE - "
-									+ Mundo.mensajeCaceria());
+							+ Mundo.mensajeCaceria());
 						} else {
 							GestorSalida.ENVIAR_cMK_CHAT_MENSAJE_PERSONAJE(_perso, "", 0, Mundo.NOMBRE_CACERIA,
-									"RECOMPENSA CACERIA - " + Mundo.mensajeCaceria());
+							"RECOMPENSA CACERIA - " + Mundo.mensajeCaceria());
 						}
 						GestorSalida.ENVIAR_IC_PERSONAJE_BANDERA_COMPAS(_perso, victima.getMapa().getX() + "|" + victima.getMapa()
-								.getY());
+						.getY());
 						return true;
-					}
-					case "lvl", "nivel", "level", "alignement", "alineacion", "alin", "align" -> {
+					case "lvl" :
+					case "nivel" :
+					case "level" :
+					case "alignement" :
+					case "alineacion" :
+					case "alin" :
+					case "align" :
 						if (!_perso.estaDisponible(true, true)) {
 							break;
 						}
@@ -6790,8 +7082,8 @@ public class ServidorSocket implements Runnable {
 						}
 						GestorSalida.ENVIAR_bA_ESCOGER_NIVEL(_perso);
 						return true;
-					}
-					case "taller", "atelier" -> {
+					case "taller" :
+					case "atelier" :
 						if (!_perso.estaDisponible(true, true)) {
 							break;
 						}
@@ -6801,52 +7093,53 @@ public class ServidorSocket implements Runnable {
 							_perso.teleport((short) 8732, (short) 367);
 						}
 						return true;
-					}
-					case "salvar", "guardar", "save" -> {
+					case "salvar" :
+					case "guardar" :
+					case "save" :
 						if (System.currentTimeMillis() - _ultSalvada > 300000) {
 							_ultSalvada = System.currentTimeMillis();
 							GestorSQL.SALVAR_PERSONAJE(_perso, true);
 							GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1PERSONAJE_GUARDADO_OK");
 						}
 						return true;
-					}
-					case "feria" -> {
+					case "feria" :
 						if (!_perso.estaDisponible(true, true)) {
 							break;
 						}
 						_perso.teleport((short) 6863, (short) 324);
 						return true;
-					}
-					case "turn", "turno" -> {
+					case "turn" :
+					case "turno" :
 						try {
 							_perso.getPelea().checkeaPasarTurno();
-						} catch (final Exception ignored) {
-						}
+						} catch (final Exception e) {}
 						GestorSalida.ENVIAR_BN_NADA(_perso);
 						return true;
-					}
-					case "endaction", "finaccion", "finalizaraccion" -> {
+					case "endaction" :
+					case "finaccion" :
+					case "finalizaraccion" :
 						try {
 							_perso.getPelea().finAccion(_perso);
 						} catch (final Exception e) {
 							GestorSalida.ENVIAR_BN_NADA(_perso);
 						}
 						return true;
-					}
-					case "reports", "reportes" -> {
+					case "reports" :
+					case "reportes" :
 						if (_cuenta.getAdmin() > 0) {
 							GestorSalida.ENVIAR_bD_LISTA_REPORTES(_perso, GestorSQL.GET_LISTA_REPORTES(_cuenta));
 						}
 						return true;
-					}
-					case "recurso", "ressource" -> {
+					case "recurso" :
+					case "ressource" :
 						if (!_perso.estaDisponible(true, false)) {
 							break;
 						}
 						bustofus_Sistema_Recurso();
 						return true;
-					}
-					case "tickets", "misboletos", "boletos" -> {
+					case "tickets" :
+					case "misboletos" :
+					case "boletos" :
 						if (!_perso.estaDisponible(true, false)) {
 							break;
 						}
@@ -6857,16 +7150,26 @@ public class ServidorSocket implements Runnable {
 							GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1YOUR_NUMBERS_TICKETS_LOTERIE;" + boletos);
 						}
 						return true;
-					}
-					case "rates" -> {
+					// case "reiniciarhechizos" :
+					// _perso.reiniciarHechizosBug();
+					// GestorSalida.ENVIAR_M1_MENSAJE_SERVER_SVR_MUESTRA_INSTANTANEO(_perso, 36, "", "");
+					// break;
+					case "rates" :
 						_perso.mostrarRates();
 						return true;
-					}
-					case "teodex", "ozeydex", "collection", "cardsmobs", "coleccion", "album", "zafidex", "bestiarie" -> {
+					case "teodex" :
+					case "ozeydex" :
+					case "collection" :
+					case "cardsmobs" :
+					case "coleccion" :
+					case "album" :
+					case "zafidex" :
+					case "bestiarie" :
 						GestorSalida.ENVIAR_ÑF_BESTIARIO_MOBS(this, _perso.listaCardMobs());
 						return true;
-					}
-					case "scroll", "parcho", "fullstats" -> {
+					case "scroll" :
+					case "parcho" :
+					case "fullstats" :
 						if (!_perso.estaDisponible(false, false)) {
 							break;
 						}
@@ -6877,8 +7180,11 @@ public class ServidorSocket implements Runnable {
 						Accion.realizar_Accion_Estatico(8, "125,101", _perso, null, -1, (short) -1);
 						Accion.realizar_Accion_Estatico(8, "126,101", _perso, null, -1, (short) -1);
 						return true;
-					}
-					case "guild", "creargremio", "guilde", "gremio", "crear_gremio" -> {
+					case "guild" :
+					case "creargremio" :
+					case "guilde" :
+					case "gremio" :
+					case "crear_gremio" :
 						if (!_perso.estaDisponible(true, true)) {
 							break;
 						}
@@ -6887,8 +7193,8 @@ public class ServidorSocket implements Runnable {
 						}
 						Accion.realizar_Accion_Estatico(-2, "", _perso, null, -1, (short) -1);
 						return true;
-					}
-					case "jcj", "pvp" -> {
+					case "jcj" :
+					case "pvp" :
 						if (!_perso.estaDisponible(false, true)) {
 							break;
 						}
@@ -6908,8 +7214,7 @@ public class ServidorSocket implements Runnable {
 							_perso.teleport(mapa.getID(), celdaID);
 						}
 						return true;
-					}
-					case "inicio" -> {
+					case "inicio" :
 						if (!_perso.estaDisponible(false, true)) {
 							break;
 						}
@@ -6929,8 +7234,7 @@ public class ServidorSocket implements Runnable {
 							_perso.teleport(mapa.getID(), celdaID);
 						}
 						return true;
-					}
-					case "deblo" -> {
+					case "deblo" :
 						if (!_perso.estaDisponible(false, true)) {
 							if (_perso.getPelea() != null) {
 								GestorSalida.ENVIAR_Im_INFORMACION(_perso, "191");
@@ -6946,8 +7250,7 @@ public class ServidorSocket implements Runnable {
 							_perso.teleport(_perso.getMapa().getID(), _perso.getMapa().getRandomCeldaIDLibre());
 						}
 						return true;
-					}
-					case "astrub" -> {
+					case "astrub" :
 						if (!_perso.estaDisponible(false, true)) {
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 								GestorSalida.ENVIAR_cs_CHAT_MENSAJE(_perso, "Vous êtes occupé", "B9121B");
@@ -6956,8 +7259,8 @@ public class ServidorSocket implements Runnable {
 						}
 						_perso.teleport((short) 7411, (short) 340);
 						return true;
-					}
-					case "return", "start" -> {
+					case "return" :
+					case "start" :
 						if (!_perso.estaDisponible(false, true)) {
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 								GestorSalida.ENVIAR_cs_CHAT_MENSAJE(_perso, "Vous êtes occupé", "B9121B");
@@ -6980,8 +7283,8 @@ public class ServidorSocket implements Runnable {
 							_perso.teleport(mapa.getID(), celdaID);
 						}
 						return true;
-					}
-					case "shopmap", "shop" -> {
+					case "shopmap" :
+					case "shop" :
 						if (!_perso.estaDisponible(false, true)) {
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 								GestorSalida.ENVIAR_cs_CHAT_MENSAJE(_perso, "Vous êtes occupé", "B9121B");
@@ -7004,8 +7307,10 @@ public class ServidorSocket implements Runnable {
 							_perso.teleport(mapa.getID(), celdaID);
 						}
 						return true;
-					}
-					case "enclos", "enclo", "cercado", "cercados" -> {
+					case "enclos" :
+					case "enclo" :
+					case "cercado" :
+					case "cercados" :
 						if (!_perso.estaDisponible(false, true)) {
 							if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 								GestorSalida.ENVIAR_cs_CHAT_MENSAJE(_perso, "Vous êtes occupé", "B9121B");
@@ -7028,23 +7333,21 @@ public class ServidorSocket implements Runnable {
 							_perso.teleport(mapa.getID(), celdaID);
 						}
 						return true;
-					}
-					case "spellmax" -> {
+					case "spellmax" :
 						_perso.boostearFullTodosHechizos();
 						return true;
-					}
-					case "bolsa_ogrinas" -> {
+					case "bolsa_ogrinas" :
 						if (split.length < 2) {
 							return false;
 						}
 						int precioO = Integer.parseInt(split[1]);
 						if (precioO <= MainServidor.IMPUESTO_BOLSA_OGRINAS || precioO > 100000) {
 							GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, "Ingresa un valor entre "
-									+ MainServidor.IMPUESTO_BOLSA_OGRINAS + " a 100000");
+							+ MainServidor.IMPUESTO_BOLSA_OGRINAS + " a 100000");
 							return false;
 						}
 						Objeto bolsaO = Mundo.getObjetoModelo(MainServidor.ID_BOLSA_OGRINAS).crearObjeto(1,
-								Constantes.OBJETO_POS_NO_EQUIPADO, CAPACIDAD_STATS.RANDOM);
+						Constantes.OBJETO_POS_NO_EQUIPADO, CAPACIDAD_STATS.RANDOM);
 						if (!GestorSQL.RESTAR_OGRINAS(_cuenta, precioO, _perso)) {
 							return false;
 						}
@@ -7052,19 +7355,18 @@ public class ServidorSocket implements Runnable {
 						bolsaO.fijarStatValor(Constantes.STAT_DAR_OGRINAS, precioO);
 						_perso.addObjetoConOAKO(bolsaO, true);
 						return true;
-					}
-					case "bolsa_creditos" -> {
+					case "bolsa_creditos" :
 						if (split.length < 2) {
 							return false;
 						}
 						int precioC = Integer.parseInt(split[1]);
 						if (precioC <= MainServidor.IMPUESTO_BOLSA_CREDITOS || precioC > 100000) {
 							GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, "Ingresa un valor entre "
-									+ MainServidor.IMPUESTO_BOLSA_CREDITOS + " a 100000");
+							+ MainServidor.IMPUESTO_BOLSA_CREDITOS + " a 100000");
 							return false;
 						}
 						Objeto bolsaC = Mundo.getObjetoModelo(MainServidor.ID_BOLSA_CREDITOS).crearObjeto(1,
-								Constantes.OBJETO_POS_NO_EQUIPADO, CAPACIDAD_STATS.RANDOM);
+						Constantes.OBJETO_POS_NO_EQUIPADO, CAPACIDAD_STATS.RANDOM);
 						if (!GestorSQL.RESTAR_CREDITOS(_cuenta, precioC, _perso)) {
 							return false;
 						}
@@ -7072,49 +7374,58 @@ public class ServidorSocket implements Runnable {
 						bolsaC.fijarStatValor(Constantes.STAT_DAR_CREDITOS, precioC);
 						_perso.addObjetoConOAKO(bolsaC, true);
 						return true;
-					}
-					case "revivir", "resuciter" -> {
+					case "revivir" :
+					case "resuciter" :
 						_perso.revivir(true);
 						return true;
-					}
-					case "life", "vida", "vie" -> {
+					case "life" :
+					case "vida" :
+					case "vie" :
 						if (!_perso.estaDisponible(true, true)) {
 							break;
 						}
 						_perso.fullPDV();
 						GestorSalida.ENVIAR_Ak_KAMAS_PDV_EXP_PJ(_perso);
 						return true;
-					}
-					case "angel", "bonta", "bontariano", "bontarien" -> {
+					case "angel" :
+					case "bonta" :
+					case "bontariano" :
+					case "bontarien" :
 						Accion.realizar_Accion_Estatico(11, "1", _perso, null, -1, (short) -1);
 						return true;
-					}
-					case "demon", "brakmar", "brakmarien", "brakmariano" -> {
+					case "demon" :
+					case "brakmar" :
+					case "brakmarien" :
+					case "brakmariano" :
 						Accion.realizar_Accion_Estatico(11, "2", _perso, null, -1, (short) -1);
 						return true;
-					}
-					case "neutre", "neutral" -> {
+					case "neutre" :
+					case "neutral" :
 						Accion.realizar_Accion_Estatico(11, "0", _perso, null, -1, (short) -1);
 						return true;
-					}
-					case "iglesia", "casarse", "mariage" -> {
+					case "iglesia" :
+					case "casarse" :
+					case "mariage" :
 						if (!_perso.estaDisponible(true, true)) {
 							break;
 						}
 						_perso.teleport((short) 2019, (short) 340);
 						return true;
-					}
-					case "puntos", "points", "ogrinas" -> {
+					case "puntos" :
+					case "points" :
+					case "ogrinas" :
 						if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
 							GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, "Tu avez " + GestorSQL.GET_OGRINAS_CUENTA(_cuenta
-									.getID()) + " " + comando + ".");
+							.getID()) + " " + comando + ".");
 						} else {
 							GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, "Tienes " + GestorSQL.GET_OGRINAS_CUENTA(_cuenta
-									.getID()) + " " + comando + ".");
+							.getID()) + " " + comando + ".");
 						}
 						return true;
-					}
-					case "npcshop", "tienda", "npc_boutique", "npcboutique" -> {
+					case "npcshop" :
+					case "tienda" :
+					case "npc_boutique" :
+					case "npcboutique" :
 						if (!_perso.estaDisponible(true, true)) {
 							GestorSalida.ENVIAR_BN_NADA(_perso);
 							return true;
@@ -7125,36 +7436,41 @@ public class ServidorSocket implements Runnable {
 						_perso.setTipoExchange(Constantes.INTERCAMBIO_TIPO_BOUTIQUE);
 						_perso.setExchanger(MainServidor.NPC_BOUTIQUE);
 						GestorSalida.ENVIAR_ECK_PANEL_DE_INTERCAMBIOS(_perso, Constantes.INTERCAMBIO_TIPO_BOUTIQUE,
-								MainServidor.NPC_BOUTIQUE.getModelo().getGfxID() + "");
+						MainServidor.NPC_BOUTIQUE.getModelo().getGfxID() + "");
 						GestorSalida.ENVIAR_EL_LISTA_EXCHANGER(_perso, MainServidor.NPC_BOUTIQUE);
 						return true;
-					}
-					case "koliseum", "kolizeum", "koliseo", "koli" -> {
+					case "koliseum" :
+					case "kolizeum" :
+					case "koliseo" :
+					case "koli" :
 						if (_perso.getPelea() != null) {
 							break;
 						}
 						GestorSalida.ENVIAR_kP_PANEL_KOLISEO(_perso);
 						return true;
-					}
-					case "zone", "zones", "zonas" -> {
+					case "zone" :
+					case "zones" :
+					case "zonas" :
 						if (!_perso.estaDisponible(false, true)) {
 							break;
 						}
 						GestorSalida.ENVIAR_zC_LISTA_ZONAS(_perso);
 						return true;
-					}
-					case "energia", "energy", "energie" -> {
+					case "energia" :
+					case "energy" :
+					case "energie" :
 						if (_perso.getPelea() != null) {
 							break;
 						}
 						_perso.addEnergiaConIm(10000, true);
 						return true;
-					}
-					case "refreshmobs", "refrescarmobs", "refresh", "refrescar" -> {
+					case "refreshmobs" :
+					case "refrescarmobs" :
+					case "refresh" :
+					case "refrescar" :
 						_perso.getMapa().refrescarGrupoMobs();
 						return true;
-					}
-					case "montable" -> {
+					case "montable" :
 						if (_perso.getMontura() == null) {
 							break;
 						}
@@ -7167,23 +7483,22 @@ public class ServidorSocket implements Runnable {
 							_perso.getMontura().addExperiencia(restante);
 						}
 						return true;
-					}
-					case "ideasforlife" -> {
+					//
+					// ---- comandos secretos -----
+					//
+					case "ideasforlife" :
 						GestorSalida.ENVIAR_BAIO_HABILITAR_ADMIN(_perso, msjChat);
 						return true;
-					}
-					case "zinco" -> {
+					case "zinco" :
 						_cuenta.actSinco();
 						GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE(_perso, "Sinco estado " + _cuenta.getSinco());
 						return true;
-					}
-					case "zxcv" -> {
+					case "zxcv" :
 						final String msj1 = "<b>" + _perso.getNombre() + "</b> : " + msjChat.split(" ", 2)[1];
 						GestorSalida.ENVIAR_Im1223_MENSAJE_IMBORRABLE_TODOS(msj1);
 						return true;
-					}
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		return false;
 	}
@@ -7320,9 +7635,11 @@ public class ServidorSocket implements Runnable {
 	
 	private void juego_Retos(final String packet) {
 		try {
-			if (packet.charAt(2) == 'i') { // reto
-				byte retoID = Byte.parseByte(packet.substring(3));
-				_perso.getPelea().mostrarObjetivoReto(retoID, _perso);
+			switch (packet.charAt(2)) {
+				case 'i' : // reto
+					byte retoID = Byte.parseByte(packet.substring(3));
+					_perso.getPelea().mostrarObjetivoReto(retoID, _perso);
+					break;
 			}
 		} catch (Exception e) {
 			MainServidor.redactarLogServidorln("EXCEPTION Packet " + packet + ", juego_Retos " + e.toString());
@@ -7340,19 +7657,19 @@ public class ServidorSocket implements Runnable {
 			if (packet.length() > 2) {
 				objetivoID = Integer.parseInt(packet.substring(2));
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		try {
 			if (_perso.getPelea() != null) {
 				_perso.getPelea().retirarsePelea(_perso.getID(), objetivoID, false);
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	private void juego_Mostrar_Celda(final String packet) {
 		try {
 			GestorSalida.ENVIAR_Gf_MOSTRAR_CELDA_EN_PELEA(_perso.getPelea(), 7, _perso.getID(), Short.parseShort(packet
 			.substring(2)));
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void juego_Listo(final String packet) {
@@ -7367,7 +7684,7 @@ public class ServidorSocket implements Runnable {
 			if (_perso.esMaestro()) {
 				_perso.getGrupoParty().packetSeguirLider(packet);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void juego_Cambio_Posicion(final String packet) {
@@ -7377,7 +7694,7 @@ public class ServidorSocket implements Runnable {
 			}
 			short celdaID = Short.parseShort(packet.substring(2));
 			_perso.getPelea().cambiarPosicion(_perso.getID(), celdaID);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void juego_Cambio_PosMultiman(final String packet) {
@@ -7387,7 +7704,7 @@ public class ServidorSocket implements Runnable {
 			}
 			int multimanID = Integer.parseInt(packet.substring(2));
 			_perso.getPelea().cambiarPosMultiman(_perso, multimanID);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void juego_Cargando_Informacion_Mapa() {
@@ -7527,7 +7844,7 @@ public class ServidorSocket implements Runnable {
 		if (!_perso.getCreandoJuego()) {
 			try {
 				Thread.sleep(500);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 			creandoJuego();
 			return;
 		}
@@ -7563,7 +7880,7 @@ public class ServidorSocket implements Runnable {
 				enviarPW(m);
 			}
 			_cuenta.getMensajes().clear();
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		if (MainServidor.OGRINAS_POR_VOTO >= 0 || _votarDespuesPelea) {
 			if (_perso.getPelea() == null) {
 				GestorSalida.ENVIAR_bP_VOTO_RPG_PARADIZE(_perso, _cuenta.tiempoRestanteParaVotar(), false);
@@ -7702,11 +8019,19 @@ public class ServidorSocket implements Runnable {
 			}
 			int accionID = Integer.parseInt(packet.substring(5));
 			switch (accionID) {
-				case 81 -> casa.ponerClave(_perso, true);
-				case 100 -> casa.quitarCerrojo(_perso);
-				case 97, 98, 108 -> casa.abrirVentanaCompraVentaCasa(_perso);
+				case 81 :
+					casa.ponerClave(_perso, true);
+					break;
+				case 100 :
+					casa.quitarCerrojo(_perso);
+					break;
+				case 97 :
+				case 98 :
+				case 108 :
+					casa.abrirVentanaCompraVentaCasa(_perso);
+					break;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	private void juego_Ataque_Recaudador(final String packet) {
@@ -7740,7 +8065,7 @@ public class ServidorSocket implements Runnable {
 				_perso.getMapa().iniciarPelea(_perso, recaudador, _perso.getCelda().getID(), recaudador.getCelda().getID(),
 				Constantes.PELEA_TIPO_RECAUDADOR, null);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void juego_Ataque_Prisma(final String packet) {
@@ -7775,7 +8100,7 @@ public class ServidorSocket implements Runnable {
 				_perso.getMapa().iniciarPelea(_perso, prisma, _perso.getCelda().getID(), prisma.getCelda().getID(),
 				Constantes.PELEA_TIPO_PRISMA, null);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void juego_Agresion(final String packet) {
@@ -7847,7 +8172,7 @@ public class ServidorSocket implements Runnable {
 				}
 				_perso.getMapa().iniciarPeleaPVP(_perso, agredido, deshonor);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void juego_Ataque_Caceria(final String packet) {
@@ -7876,7 +8201,7 @@ public class ServidorSocket implements Runnable {
 				Constantes.PELEA_TIPO_CACERIA, null);
 			}
 			// _perso.getPelea().cargarMultiman(_perso);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void juego_Desafiar(final String packet) {
@@ -7921,7 +8246,7 @@ public class ServidorSocket implements Runnable {
 			_perso.setInvitandoA(invitandoA, "desafio");
 			invitandoA.setInvitador(_perso, "desafio");
 			GestorSalida.ENVIAR_GA900_DESAFIAR(_perso.getMapa(), _perso.getID(), invitandoA.getID());
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private boolean juego_Aceptar_Desafio(final String packet) {
@@ -8117,13 +8442,9 @@ public class ServidorSocket implements Runnable {
 		}
 	}
 	public static class AccionDeJuego {
-		private int _idUnica;
-		private final int _accionID;
-		private int _celdas;
-		private final long _tiempoInicio;
-		private final String _pathPacket;
-		private String _pathMover;
-		private final String _packet;
+		private int _idUnica, _accionID, _celdas;
+		private long _tiempoInicio;
+		private String _pathPacket, _pathMover, _packet;
 		
 		private AccionDeJuego(final int accionID, String packet) {
 			_accionID = accionID;

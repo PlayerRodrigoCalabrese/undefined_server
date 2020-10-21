@@ -16,8 +16,8 @@ import estaticos.Mundo;
 import sincronizador.SincronizadorSocket;
 
 public abstract class ServidorThread extends Thread {
-	private static final HashMap<String, Boolean> ACTIVOS = new HashMap<>();
-	private final String _nameClass;
+	private static HashMap<String, Boolean> ACTIVOS = new HashMap<>();
+	private String _nameClass;
 	
 	public ServidorThread() {
 		_nameClass = this.getClass().getSimpleName();
@@ -248,7 +248,7 @@ public abstract class ServidorThread extends Thread {
 		}
 	}
 	public static class MensajeReset extends ServidorThread {
-		private final String _str;
+		private String _str;
 		
 		public MensajeReset(final String str) {
 			_str = str;
@@ -280,14 +280,14 @@ public abstract class ServidorThread extends Thread {
 		}
 	}
 	public static class AntiDDOS extends ServidorThread {
-
-        public AntiDDOS(int segundos) {
+		private int _minConexionesXSeg = 5;
+		
+		public AntiDDOS(int segundos) {
 			load(5);
 		}
 		
 		public void exec() {
-            int _minConexionesXSeg = 5;
-            if (!Mundo.BLOQUEANDO) {
+			if (!Mundo.BLOQUEANDO) {
 				boolean ataque = true;
 				for (int i = 0; i < ServidorServer._conexiones.length; i++) {
 					ataque &= ServidorServer._conexiones[i] > _minConexionesXSeg;
@@ -310,7 +310,7 @@ public abstract class ServidorThread extends Thread {
 								ss.cerrarSocket(true, "Antiddos.run()");
 							}
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					Mundo.BLOQUEANDO = false;
 					MainServidor.redactarLogServidorln("SE DESACTIVO EL BLOQUEO AUTOMATICO CONTRA ATAQUES");
 				}

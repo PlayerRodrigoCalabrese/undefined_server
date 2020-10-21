@@ -17,7 +17,7 @@ public class StatOficio {
 	private final byte _posicion;
 	private byte _slotsPublico;
 	private int _nivel, _adicional, _experiencia;
-	private ArrayList<Trabajo> _trabajosPoderRealizar = new ArrayList<>();
+	private ArrayList<Trabajo> _trabajosPoderRealizar = new ArrayList<Trabajo>();
 	private boolean _esPagable, _gratisSiFalla, _noProporcRecurso, _libroArtesano;
 	private final Oficio _oficio;
 	private Trabajo _tempTrabajo;
@@ -90,11 +90,11 @@ public class StatOficio {
 			if (str.length() > 0) {
 				str.append(",");
 			}
-			str.append(trabajo.getTrabajoID()).append("~");
+			str.append(trabajo.getTrabajoID() + "~");
 			if (trabajo.esCraft()) {
-				str.append(trabajo.getCasillasMax()).append("~").append("0~0~").append(trabajo.getSuerte());
+				str.append(trabajo.getCasillasMax() + "~" + "0~0~" + trabajo.getSuerte());
 			} else {
-				str.append(trabajo.getCasillasMin()).append("~").append(trabajo.getCasillasMax()).append("~0~").append(trabajo.getTiempo());
+				str.append(trabajo.getCasillasMin() + "~" + trabajo.getCasillasMax() + "~0~" + trabajo.getTiempo());
 			}
 		}
 		return "|" + _oficio.getID() + ";" + str.toString();

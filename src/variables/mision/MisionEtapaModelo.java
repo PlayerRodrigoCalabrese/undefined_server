@@ -45,7 +45,7 @@ public class MisionEtapaModelo {
 					if (objetivo != null) {
 						map.put(idObjetivo, objetivo);
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			_objetivos.add(map);
 		}
@@ -63,7 +63,7 @@ public class MisionEtapaModelo {
 				if (!str.equalsIgnoreCase("null")) {
 					_recompensas[i] = str;
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			i++;
 		}
 	}
@@ -103,7 +103,7 @@ public class MisionEtapaModelo {
 									perso.addObjIdentAInventario(Mundo.getObjetoModelo(id).crearObjeto(cant,
 									Constantes.OBJETO_POS_NO_EQUIPADO, CAPACIDAD_STATS.RANDOM), false);
 									GestorSalida.ENVIAR_Im_INFORMACION(perso, "021;" + cant + "~" + id);
-								} catch (final Exception ignored) {}
+								} catch (final Exception e) {}
 							}
 							GestorSalida.ENVIAR_Ow_PODS_DEL_PJ(perso);
 							break;
@@ -114,7 +114,7 @@ public class MisionEtapaModelo {
 										continue;
 									}
 									new Accion(65, str, "").realizarAccion(perso, perso, -1, (short) -1);
-								} catch (final Exception ignored) {}
+								} catch (final Exception e) {}
 							}
 							break;
 						case 4 :// oficios
@@ -124,7 +124,7 @@ public class MisionEtapaModelo {
 										continue;
 									}
 									new Accion(6, str, "").realizarAccion(perso, perso, -1, (short) -1);
-								} catch (final Exception ignored) {}
+								} catch (final Exception e) {}
 							}
 							break;
 						case 5 :// hechizo
@@ -134,7 +134,7 @@ public class MisionEtapaModelo {
 										continue;
 									}
 									new Accion(9, str, "").realizarAccion(perso, perso, -1, (short) -1);
-								} catch (final Exception ignored) {}
+								} catch (final Exception e) {}
 							}
 							break;
 						case 6 :// acciones
@@ -147,14 +147,14 @@ public class MisionEtapaModelo {
 									String arg = "";
 									try {
 										arg = str.split("@")[1];
-									} catch (Exception ignored) {}
+									} catch (Exception e) {}
 									new Accion(accion, arg, "").realizarAccion(perso, perso, -1, (short) -1);
-								} catch (final Exception ignored) {}
+								} catch (final Exception e) {}
 							}
 							break;
 					}
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 	}
 }

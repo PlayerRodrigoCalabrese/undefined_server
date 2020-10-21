@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class ObjetoTrueque implements Comparable<ObjetoTrueque> {
-	private final int _id;
-	private final Map<Integer, Integer> _necesita = new TreeMap<>();
-	private final int _prioridad;
+	private int _id;
+	private Map<Integer, Integer> _necesita = new TreeMap<Integer, Integer>();
+	private int _prioridad;
 	private ArrayList<Integer> _npcs;
 	
 	public ObjetoTrueque(int id, String necesita, int prioridad, String npcs) {
@@ -15,7 +15,7 @@ public class ObjetoTrueque implements Comparable<ObjetoTrueque> {
 		for (String s : necesita.split(";")) {
 			try {
 				_necesita.put(Integer.parseInt(s.split(",")[0]), Integer.parseInt(s.split(",")[1]));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		_prioridad = prioridad;
 		if (!npcs.isEmpty()) {
@@ -28,7 +28,7 @@ public class ObjetoTrueque implements Comparable<ObjetoTrueque> {
 						_npcs = new ArrayList<>();
 					}
 					_npcs.add(Integer.parseInt(s));
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 		}
 	}

@@ -5,8 +5,7 @@ import estaticos.Formulas;
 
 public class MobPosible {
 	private ArrayList<MobGradoModelo> _mobs;
-	private final int _cantMax;
-    private final int _probabilidad;
+	private int _cantMax, _probabilidad;
 	
 	public MobPosible(int cant, int porcentaje) {
 		_cantMax = cant;

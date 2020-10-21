@@ -13,14 +13,14 @@ import estaticos.MainServidor;
 import estaticos.Mundo;
 
 public class Encarnacion {
-	private final EncarnacionModelo _encarnacionModelo;
+	private EncarnacionModelo _encarnacionModelo;
 	private int _experiencia;
 	private int _nivel = 0;
 	private boolean _noLevel = false;
 	private TotalStats _totalStats;
-	private final Objeto _objeto;
+	private Objeto _objeto;
 	private long _ultEquipada;
-	private final Map<Integer, StatHechizo> _hechizos = new HashMap<>();
+	private Map<Integer, StatHechizo> _hechizos = new HashMap<>();
 	private final Map<Integer, Character> _posicionHechizos = new HashMap<>();
 	
 	public Encarnacion(Objeto objeto, int exp, EncarnacionModelo encarnacion) {
@@ -83,7 +83,7 @@ public class Encarnacion {
 		int nivel = _nivel / 10;
 		final StringBuilder str = new StringBuilder();
 		for (final Entry<Integer, Character> SH : _posicionHechizos.entrySet()) {
-			str.append(SH.getKey()).append("~").append(nivel + 1).append("~").append(SH.getValue()).append(";");
+			str.append(SH.getKey() + "~" + (nivel + 1) + "~" + SH.getValue() + ";");
 		}
 		return str.toString();
 	}

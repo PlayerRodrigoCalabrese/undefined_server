@@ -31,7 +31,7 @@ public class PreguntaNPC {
 			try {
 				String[] split = s.split(";");
 				_pregCondicionales.put(split[0], Integer.parseInt(split[1]));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 	}
 	
@@ -44,7 +44,7 @@ public class PreguntaNPC {
 		for (String s : respuestas.replace(";", ",").split(",")) {
 			try {
 				_respuestas.add(Integer.parseInt(s));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 	}
 	

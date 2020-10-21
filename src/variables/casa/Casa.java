@@ -22,8 +22,8 @@ public class Casa {
 	private int _derechosGremio;
 	private long _kamasVenta = 1000000;
 	private String _clave = "-";
-	private final Map<Integer, Boolean> _tieneDerecho = new HashMap<>();
-	private final ArrayList<Short> _mapasContenidos = new ArrayList<>();
+	private final Map<Integer, Boolean> _tieneDerecho = new HashMap<Integer, Boolean>();
+	private final ArrayList<Short> _mapasContenidos = new ArrayList<Short>();
 	
 	public Casa(final int id, final short mapaIDFuera, final short celdaIDFuera, final short mapaIDDentro,
 	final short celdaIDDentro, final long precio, final String mapasContenidos) {
@@ -36,7 +36,7 @@ public class Casa {
 		for (final String str : mapasContenidos.split(";")) {
 			try {
 				_mapasContenidos.add(Short.parseShort(str));
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		_mapasContenidos.trimToSize();
 	}
@@ -200,7 +200,7 @@ public class Casa {
 				}
 				objetivo.teleport(_mapaIDFuera, _celdaIDFuera);
 				GestorSalida.ENVIAR_Im_INFORMACION(objetivo, "018;" + perso.getNombre());
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 	}
 	
@@ -253,7 +253,7 @@ public class Casa {
 		for (final Cofre cofre : Mundo.getCofresPorCasa(this)) {
 			try {
 				cofre.moverCofreABanco(_dueñoID.getCuenta());
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			kamasCofre += cofre.getKamas();
 			cofre.setKamasCero();
 			cofre.setClave("-");
@@ -269,7 +269,7 @@ public class Casa {
 			} else {
 				_dueñoID.getCuenta().addMensaje("M15|" + _kamasVenta + ";" + perso.getNombre() + "|", true);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		_dueñoID = perso;
 		_kamasVenta = 0;
 		_clave = "-";
@@ -342,7 +342,7 @@ public class Casa {
 				default :
 					try {
 						actualizarDerechos(Integer.parseInt(packet));
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					break;
 			}
 			GestorSalida.ENVIAR_hG_DERECHOS_GREMIO_CASA(perso, _id + (_actParametros && _gremio != null
@@ -368,15 +368,15 @@ public class Casa {
 		final StringBuilder packet = new StringBuilder(_id + "|");
 		try {
 			packet.append(_dueñoID.getNombre());
-		} catch (final Exception ignored) {}
-		packet.append(";").append(_kamasVenta > 0 ? 1 : 0);
+		} catch (final Exception e) {}
+		packet.append(";" + (_kamasVenta > 0 ? 1 : 0));
 		boolean esDelGremio = perso.getGremio() != null && perso.getGremio().getID() == getGremioID();
 		if (_gremio != null) {
 			if (_gremio.getCantidadMiembros() < 10) {
 				_gremio = null;
 			} else if (tieneDerecho(Constantes.C_ESCUDO_VISIBLE_PARA_TODOS) || (tieneDerecho(
 			Constantes.C_ESCUDO_VISIBLE_MIEMBROS) && esDelGremio)) {
-				packet.append(";").append(_gremio.getNombre()).append(";").append(_gremio.getEmblema());
+				packet.append(";" + _gremio.getNombre() + ";" + _gremio.getEmblema());
 			}
 		}
 		return packet.toString();
@@ -394,14 +394,14 @@ public class Casa {
 				if (packet.length() > 0) {
 					packet.append("|");
 				}
-				packet.append(casa._id).append(";");
+				packet.append(casa._id + ";");
 				try {
-					packet.append(casa.getDueño().getNombre()).append(";");
+					packet.append(casa.getDueño().getNombre() + ";");
 				} catch (final Exception e) {
 					packet.append("?;");
 				}
 				final Mapa mapa = Mundo.getMapa(casa.getMapaIDDentro());
-				packet.append(mapa.getX()).append(",").append(mapa.getY()).append(";");
+				packet.append(mapa.getX() + "," + mapa.getY() + ";");
 				packet.append("0;");
 				packet.append(casa.getDerechosGremio());
 			}

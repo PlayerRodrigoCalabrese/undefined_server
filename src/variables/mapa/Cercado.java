@@ -17,17 +17,15 @@ import estaticos.Mundo;
 
 public class Cercado implements Exchanger {
 	private byte _capacidadMax, _objetosMax;
-	private short _celda = -1;
-    private short _celdaMontura;
-    private final short _celdaPuerta;
+	private short _celda = -1, _celdaMontura, _celdaPuerta;
 	private int _dueñoID, _precioPJ, _precioOriginal;
 	private Gremio _gremio;
 	private final Mapa _mapa;
 	// private final Map<Short, Map<Integer, Objeto>> _objCrianzaConDueño = new HashMap<Short,
 	// Map<Integer, Objeto>>();
-	private final Map<Short, Objeto> _objCrianza = new HashMap<>();
-	private final ConcurrentHashMap<Integer, Montura> _criando = new ConcurrentHashMap<>();
-	private final ArrayList<Short> _celdasObjeto = new ArrayList<>();
+	private final Map<Short, Objeto> _objCrianza = new HashMap<Short, Objeto>();
+	private final ConcurrentHashMap<Integer, Montura> _criando = new ConcurrentHashMap<Integer, Montura>();
+	private final ArrayList<Short> _celdasObjeto = new ArrayList<Short>();
 	
 	// private static String CERCADO_8848 =
 	// "305;0|171;0|308;0|311;0|413;0|470;0|228;0|527;0|194;0|254;0|117;0|251;0|365;0";
@@ -65,7 +63,7 @@ public class Cercado implements Exchanger {
 		for (final String celda : celdasObjetos.split(";")) {
 			try {
 				_celdasObjeto.add(Short.parseShort(celda));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		_celdasObjeto.trimToSize();
 		if (_mapa != null) {
@@ -75,19 +73,45 @@ public class Cercado implements Exchanger {
 			boolean publico = true;
 			String objCrianza = "";
 			switch (_mapa.getID()) {
-				case 8848 -> objCrianza = "305;0|171;0|308;0|311;0|413;0|470;0|228;0|527;0|194;0|254;0|117;0|251;0|365;0";
-				case 8744 -> objCrianza = "550;0|304;0|474;0|337;0|545;0|400;0|394;0|213;0|453;0|270;0|451;0|420;0|361;0";
-				case 8743 -> objCrianza = "305;0|272;0|413;0|470;0|522;0|319;0|359;0|601;0|416;0|215;0|421;0|362;0|211;0";
-				case 8747 -> objCrianza = "476;0|415;0|234;0|432;0|438;0|358;0|325;0|291;0|486;0|301;0|637;0|268;0|211;0";
-				case 8746 -> objCrianza = "513;0|559;0|380;0|527;0|377;0|193;0|288;0|488;0|323;0|355;0|635;0|454;0|603;0";
-				case 8745 -> objCrianza = "307;0|341;0|512;0|581;0|505;0|231;0|471;0|383;0|587;0|395;0|429;0|417;0|301;0";
-				case 8752 -> objCrianza = "304;0|476;0|474;0|65;0|544;0|472;0|232;0|381;0|468;0|228;0|253;0|156;0|396;0";
-				case 8750 -> objCrianza = "100;0|472;0|172;0|197;0|400;0|324;0|252;0|320;0|248;0|396;0|213;0|244;0|121;0";
-				case 8851 -> objCrianza = "544;0|472;0|400;0|286;0|379;0|358;0|190;0|217;0|430;0|82;0|247;0|214;0|328;0";
-				case 8749 -> objCrianza = "342;0|580;0|504;0|475;0|432;0|471;0|465;0|392;0|253;0|250;0|528;0|418;0|177;0";
-				case 8748 -> objCrianza = "343;0|137;0|308;0|402;0|436;0|393;0|564;0|80;0|397;0|560;0|321;0|267;0|451;0";
-				case 8751 -> objCrianza = "342;0|504;0|472;0|567;0|493;0|495;0|290;0|251;0|396;0|176;0|419;0|385;0|542;0";
-				default -> publico = false;
+				case 8848 :
+					objCrianza = "305;0|171;0|308;0|311;0|413;0|470;0|228;0|527;0|194;0|254;0|117;0|251;0|365;0";
+					break;
+				case 8744 :
+					objCrianza = "550;0|304;0|474;0|337;0|545;0|400;0|394;0|213;0|453;0|270;0|451;0|420;0|361;0";
+					break;
+				case 8743 :
+					objCrianza = "305;0|272;0|413;0|470;0|522;0|319;0|359;0|601;0|416;0|215;0|421;0|362;0|211;0";
+					break;
+				case 8747 :
+					objCrianza = "476;0|415;0|234;0|432;0|438;0|358;0|325;0|291;0|486;0|301;0|637;0|268;0|211;0";
+					break;
+				case 8746 :
+					objCrianza = "513;0|559;0|380;0|527;0|377;0|193;0|288;0|488;0|323;0|355;0|635;0|454;0|603;0";
+					break;
+				case 8745 :
+					objCrianza = "307;0|341;0|512;0|581;0|505;0|231;0|471;0|383;0|587;0|395;0|429;0|417;0|301;0";
+					break;
+				case 8752 :
+					objCrianza = "304;0|476;0|474;0|65;0|544;0|472;0|232;0|381;0|468;0|228;0|253;0|156;0|396;0";
+					break;
+				case 8750 :
+					objCrianza = "100;0|472;0|172;0|197;0|400;0|324;0|252;0|320;0|248;0|396;0|213;0|244;0|121;0";
+					break;
+				case 8851 :
+					objCrianza = "544;0|472;0|400;0|286;0|379;0|358;0|190;0|217;0|430;0|82;0|247;0|214;0|328;0";
+					break;
+				case 8749 :
+					objCrianza = "342;0|580;0|504;0|475;0|432;0|471;0|465;0|392;0|253;0|250;0|528;0|418;0|177;0";
+					break;
+				case 8748 :
+					objCrianza = "343;0|137;0|308;0|402;0|436;0|393;0|564;0|80;0|397;0|560;0|321;0|267;0|451;0";
+					break;
+				case 8751 :
+					objCrianza = "342;0|504;0|472;0|567;0|493;0|495;0|290;0|251;0|396;0|176;0|419;0|385;0|542;0";
+					break;
+				default :
+					publico = false;
+					break;
 			}
 			if (publico) {
 				_dueñoID = -1;
@@ -104,7 +128,7 @@ public class Cercado implements Exchanger {
 							continue;
 						}
 						_objCrianza.put(Short.parseShort(infos[0]), objeto);
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 				}
 			}
 		}
@@ -133,7 +157,7 @@ public class Cercado implements Exchanger {
 						continue;
 					}
 					_objCrianza.put(Short.parseShort(infos[0]), objeto);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 		}
 		for (final String montura : criando.split(";")) {
@@ -143,7 +167,7 @@ public class Cercado implements Exchanger {
 					continue;
 				}
 				_criando.put(DP.getID(), DP);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 	}
 	
@@ -161,7 +185,7 @@ public class Cercado implements Exchanger {
 			montura.moverMontura(null, dir, 3, false);
 			try {
 				Thread.sleep(300);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 	}
 	
@@ -174,13 +198,13 @@ public class Cercado implements Exchanger {
 			if (str.length() > 0) {
 				str.append("|");
 			}
-			str.append(entry.getKey()).append(";").append(esPublico() ? 0 : entry.getValue().getID());
+			str.append(entry.getKey() + ";" + (esPublico() ? 0 : entry.getValue().getID()));
 		}
 		return str.toString();
 	}
 	
 	public ArrayList<Objeto> getObjetosParaBD() {
-		final ArrayList<Objeto> objetos = new ArrayList<>();
+		final ArrayList<Objeto> objetos = new ArrayList<Objeto>();
 		for (final Objeto obj : _objCrianza.values()) {
 			if (obj == null) {
 				continue;

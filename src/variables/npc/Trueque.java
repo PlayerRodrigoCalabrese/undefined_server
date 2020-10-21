@@ -16,12 +16,10 @@ import variables.personaje.Personaje;
 
 public class Trueque implements Exchanger {
 	private final Personaje _perso;
-	private final ArrayList<Duo<Integer, Integer>> _entregar = new ArrayList<>();
-	private Map<Integer, Integer> _dar = new HashMap<>();
-	private final Map<Integer, Integer> _objetosModelo = new HashMap<>();
-	private boolean _ok;
-	private final boolean _resucitar;
-	private boolean _polvo;
+	private final ArrayList<Duo<Integer, Integer>> _entregar = new ArrayList<Duo<Integer, Integer>>();
+	private Map<Integer, Integer> _dar = new HashMap<Integer, Integer>();
+	private final Map<Integer, Integer> _objetosModelo = new HashMap<Integer, Integer>();
+	private boolean _ok, _resucitar, _polvo;
 	private int _idMascota = 0, _npcID = 0;
 	
 	public Trueque(final Personaje perso, final boolean resucitar, int npcID) {
@@ -77,7 +75,7 @@ public class Trueque implements Exchanger {
 					int cantidad = entry.getValue();
 					_perso.addObjIdentAInventario(Mundo.getObjetoModelo(idObjModelo).crearObjeto(cantidad,
 					Constantes.OBJETO_POS_NO_EQUIPADO, CAPACIDAD_STATS.RANDOM), false);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 		}
 		cerrar(_perso, "a");
@@ -106,7 +104,7 @@ public class Trueque implements Exchanger {
 		if (duo != null) {
 			duo._segundo += cantidad;
 		} else {
-			duo = new Duo<>(objeto.getID(), cantidad);
+			duo = new Duo<Integer, Integer>(objeto.getID(), cantidad);
 			_entregar.add(duo);
 		}
 		GestorSalida.ENVIAR_EMK_MOVER_OBJETO_LOCAL(_perso, 'O', "+", objeto.getID() + "|" + duo._segundo);
@@ -132,7 +130,7 @@ public class Trueque implements Exchanger {
 			if (_objetosModelo.get(idModelo) <= 0) {
 				_objetosModelo.remove(idModelo);
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		duo._segundo -= cantidad;
 		if (duo._segundo <= 0) {
 			_entregar.remove(duo);

@@ -30,12 +30,12 @@ public class GrupoMob {
 	private short _celdaID;
 	private int _bonusEstrellas = MainServidor.INICIO_BONUS_ESTRELLAS_MOBS;
 	private int _grupoID, _segundosRespawn;
-	private final ArrayList<MobGradoModelo> _mobsGradoModelo = new ArrayList<>();
-	private final HashMap<Integer, Integer> _almas = new HashMap<>();
+	private final ArrayList<MobGradoModelo> _mobsGradoModelo = new ArrayList<MobGradoModelo>();
+	private final HashMap<Integer, Integer> _almas = new HashMap<Integer, Integer>();
 	private String _condInicioPelea = "", _strGrupoMob = "", _condUnirsePelea = "";
 	private Timer _timer;
 	private Pelea _pelea;
-	private final ArrayList<Integer> _objetosHeroico = new ArrayList<>();
+	private final ArrayList<Integer> _objetosHeroico = new ArrayList<Integer>();
 	private long _kamasHeroico;
 	private ArrayList<Mapa> _mapasRandom;
 	
@@ -112,7 +112,7 @@ public class GrupoMob {
 						if (duo._primero == idMobModelo) {
 							try {
 								mobGrado = Mundo.getMobModelo(duo._segundo).getRandomGrado();
-							} catch (final Exception ignored) {}
+							} catch (final Exception e) {}
 						}
 					}
 				}
@@ -136,7 +136,7 @@ public class GrupoMob {
 			if (str.length() > 0) {
 				str.append(";");
 			}
-			str.append(mobGrado.getIDModelo()).append(",").append(mobGrado.getNivel()).append(",").append(mobGrado.getNivel());
+			str.append(mobGrado.getIDModelo() + "," + mobGrado.getNivel() + "," + mobGrado.getNivel());
 			_mobsGradoModelo.add(mobGrado);
 		}
 		if (_mobsGradoModelo.isEmpty()) {
@@ -164,7 +164,7 @@ public class GrupoMob {
 		_fijo = true;
 		_strGrupoMob = strGrupoMob;
 		int maxNivel = 0;
-		final List<Byte> grados = new ArrayList<>();
+		final List<Byte> grados = new ArrayList<Byte>();
 		for (final String data : _strGrupoMob.split(";")) {
 			try {
 				final String[] infos = data.split(",");
@@ -174,10 +174,10 @@ public class GrupoMob {
 				int max = 0;
 				try {
 					min = Integer.parseInt(infos[1]);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				try {
 					max = Integer.parseInt(infos[2]);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				grados.clear();
 				for (final MobGradoModelo mob : mobModelo.getGrados().values()) {
 					if (mob.getNivel() >= min && mob.getNivel() <= max) {
@@ -208,7 +208,7 @@ public class GrupoMob {
 					_distanciaAgresion = mobModelo.getDistAgresion();
 				}
 				_mobsGradoModelo.add(mob);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		if (_mobsGradoModelo.isEmpty()) {
 			return;
@@ -261,7 +261,7 @@ public class GrupoMob {
 		}
 		try {
 			Thread.sleep(100);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		GestorSalida.ENVIAR_GA_MOVER_SPRITE_MAPA(mapa, 0, 1, _grupoID + "", Encriptador.getValorHashPorNumero(_orientacion)
 		+ Encriptador.celdaIDAHash(_celdaID) + pathStr);
 		_orientacion = Camino.getIndexPorDireccion(pathStr.charAt(pathStr.length() - 3));
@@ -287,14 +287,14 @@ public class GrupoMob {
 					if (s.isEmpty())
 						continue;
 					addIDObjeto(Integer.parseInt(s));
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 		}
 		if (infos.length > 2 && !infos[2].isEmpty()) {
 			long kamas = 0;
 			try {
 				kamas = Long.parseLong(infos[1]);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 			addKamasHeroico(kamas);
 		}
 	}
@@ -384,8 +384,12 @@ public class GrupoMob {
 			return false;
 		}
 		switch (i) {
-			case INICIO_PELEA -> mapa.addSiguienteGrupoMob(grupoMob, true);
-			case FINAL_PELEA -> mapa.addUltimoGrupoMob(grupoMob, true);
+			case INICIO_PELEA :
+				mapa.addSiguienteGrupoMob(grupoMob, true);
+				break;
+			case FINAL_PELEA :
+				mapa.addUltimoGrupoMob(grupoMob, true);
+				break;
 		}
 		return true;
 	}
@@ -489,7 +493,7 @@ public class GrupoMob {
 				mobNiveles.append(",");
 			}
 			mobIDs.append(mob.getMobModelo().getID());
-			mobGFX.append(mob.getMobModelo().getGfxID()).append("^").append(mob.getMobModelo().getTalla());
+			mobGFX.append(mob.getMobModelo().getGfxID() + "^" + mob.getMobModelo().getTalla());
 			mobNiveles.append(mob.getNivel());
 			totalExp += mob.getBaseXp();
 		}
@@ -503,11 +507,12 @@ public class GrupoMob {
 			// colorAccesorios.append("accesorios");
 		}
 		StringBuilder s = new StringBuilder();
-		s.append(_celdaID).append(";").append(_orientacion).append(";").append(getBonusEstrellas()).append(";").append(_grupoID).append(";").append(mobIDs.toString()).append(";-3;").append(mobGFX.toString()).append(";").append(mobNiveles.toString()).append(";");
+		s.append(_celdaID + ";" + _orientacion + ";" + getBonusEstrellas() + ";" + _grupoID + ";" + mobIDs.toString()
+		+ ";-3;" + mobGFX.toString() + ";" + mobNiveles.toString() + ";");
 		if (MainServidor.PARAM_MOSTRAR_EXP_MOBS) {
 			s.append(totalExp);
 		}
-		s.append(";").append(colorAccesorios.toString());
+		s.append(";" + colorAccesorios.toString());
 		return s.toString();
 	}
 	

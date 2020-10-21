@@ -11,12 +11,11 @@ public class ObjetoInteractivo {
 	private boolean _esInteractivo;
 	private byte _estado = Constantes.OI_ESTADO_LLENO;
 	private int _bonusEstrellas = -1;
-	private final int _gfxID;
-	private int _milisegundosRecarga;
+	private int _gfxID, _milisegundosRecarga;
 	private long _tiempoProxRecarga = -1, _tiempoProxSubidaEstrella = -1, _tiempoFinalizarRecolecta = 0;
-	private final Mapa _mapa;
-	private final Celda _celda;
-	private final ObjetoInteractivoModelo _objInterModelo;
+	private Mapa _mapa;
+	private Celda _celda;
+	private ObjetoInteractivoModelo _objInterModelo;
 	
 	public ObjetoInteractivo(final Mapa mapa, final Celda celda, final int id) {
 		_gfxID = id;
@@ -201,13 +200,16 @@ public class ObjetoInteractivo {
 				restartSubirEstrellas();
 			}
 			if (!forzado) {
-				Thread t = new Thread(() -> {
-					GestorSalida.ENVIAR_GDF_ESTADO_OBJETO_INTERACTIVO(_mapa, _celda);
-					try {
-						Thread.sleep(2000);
-					} catch (InterruptedException ignored) {}
-					_estado = Constantes.OI_ESTADO_LLENO;
-					_tiempoProxRecarga = -1;
+				Thread t = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						GestorSalida.ENVIAR_GDF_ESTADO_OBJETO_INTERACTIVO(_mapa, _celda);
+						try {
+							Thread.sleep(2000);
+						} catch (InterruptedException e) {}
+						_estado = Constantes.OI_ESTADO_LLENO;
+						_tiempoProxRecarga = -1;
+					}
 				});
 				t.setDaemon(true);
 				t.start();

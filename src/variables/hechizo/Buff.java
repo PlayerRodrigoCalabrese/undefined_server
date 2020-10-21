@@ -14,7 +14,7 @@ public class Buff extends EfectoHechizo {
 	private String _condicionBuff = "";
 	// por el momento las condiciones son
 	// SOIN, BN,DN,DE,DA,DW,DF,-PA,-PM,PA,PM
-	private final TipoDaño _tipo;
+	private TipoDaño _tipo;
 	
 	public Buff(final int efectoID, final int hechizoID, final boolean desbufeable, final int turnos,
 	final Luchador lanzador, final String args, final TipoDaño tipo) {
@@ -38,13 +38,13 @@ public class Buff extends EfectoHechizo {
 		final String[] split = _args.split(",");
 		try {
 			_primerValor = Integer.parseInt(split[0]);// valor
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		try {
 			_segundoValor = Integer.parseInt(split[1]);// valor max
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		try {
 			_tercerValor = Integer.parseInt(split[2]);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	public void setCondBuff(String condicion) {
@@ -87,38 +87,40 @@ public class Buff extends EfectoHechizo {
 	
 	public void aplicarBuffDeInicioTurno(final Pelea pelea, Luchador objetivo) {
 		try {
-			ArrayList<Luchador> obj2 = new ArrayList<>();
+			ArrayList<Luchador> obj2 = new ArrayList<Luchador>();
 			obj2.add(objetivo);
 			switch (_efectoID) {
-// Daños Neutral %vida del atacante
-				case 85, 86, 87, 88, 89 -> {
+				case 85 :// Daños Agua %vida del atacante
+				case 86 :// Daños Tierra %vida del atacante
+				case 87 :// Daños Aire %vida del atacante
+				case 88 :// Daños Fuego %vida del atacante
+				case 89 :// Daños Neutral %vida del atacante
 					efecto_Daños_Porc_Elemental(obj2, pelea, _lanzador, _tipo, false);
 					return;
-				}
-// Robar Vida(neutral)
-				case 91, 92, 93, 94, 95 -> {
+				case 91 :// Robar Vida(agua)
+				case 92 :// Robar Vida(tierra)
+				case 93 :// Robar Vida(aire)
+				case 94 :// Robar Vida(fuego)
+				case 95 :// Robar Vida(neutral)
 					efecto_Roba_PDV_Elemental(obj2, pelea, _lanzador, _tipo, false);
 					return;
-				}
-// Daños Neutral
-				case 96, 97, 98, 99, 100 -> {
+				case 96 :// Daños Agua
+				case 97 :// Daños Tierra
+				case 98 :// Daños Aire
+				case 99 :// Daños Fuego
+				case 100 :// Daños Neutral
 					efecto_Daños_Elemental(obj2, pelea, _lanzador, _tipo, false);
 					return;
-				}
-// Cura, PDV devueltos
-				case 81, 108 -> {
+				case 81 :
+				case 108 :// Cura, PDV devueltos
 					efecto_Cura(obj2, pelea, _lanzador, _tipo);
 					return;
-				}
-				case 301 -> {
+				case 301 :
 					aplicarHechizoDeBuff(pelea, objetivo, objetivo.getCeldaPelea());
 					return;
-				}
-// activa un hechizo despues de varios turnos
-				case 787 -> {
+				case 787 :// activa un hechizo despues de varios turnos
 					aplicarHechizoDeBuff(pelea, objetivo, objetivo.getCeldaPelea());
 					return;
-				}
 			}
 		} catch (Exception e) {
 			MainServidor.redactarLogServidorln("EXCEPTION BUFF INICIO, HECHIZO:" + _hechizoID + ", ARGS:" + _args);
@@ -127,7 +129,7 @@ public class Buff extends EfectoHechizo {
 	}
 	
 	public void aplicarBuffCondicional(Luchador objetivo) {
-		ArrayList<Luchador> objetivos = new ArrayList<>();
+		ArrayList<Luchador> objetivos = new ArrayList<Luchador>();
 		objetivos.add(objetivo);
 		String c = _condicionBuff;
 		_condicionBuff = "";

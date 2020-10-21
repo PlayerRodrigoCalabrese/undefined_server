@@ -13,8 +13,8 @@ import variables.objeto.Objeto;
 public class Intercambio implements Exchanger {
 	private final Personaje _perso1, _perso2;
 	private long _kamas1, _kamas2;
-	private final ArrayList<Duo<Integer, Integer>> _objetos1 = new ArrayList<>(),
-	_objetos2 = new ArrayList<>();
+	private final ArrayList<Duo<Integer, Integer>> _objetos1 = new ArrayList<Duo<Integer, Integer>>(),
+	_objetos2 = new ArrayList<Duo<Integer, Integer>>();
 	private boolean _ok1, _ok2;
 	
 	public Intercambio(final Personaje p1, final Personaje p2) {
@@ -69,18 +69,19 @@ public class Intercambio implements Exchanger {
 		_perso1.addKamas(-_kamas1 + _kamas2, true, true);
 		_perso2.addKamas(-_kamas2 + _kamas1, true, true);
 		final StringBuilder str = new StringBuilder();
-		str.append(_perso1.getNombre()).append(" (").append(_perso1.getID()).append(") >> ");
-		str.append("[").append(_kamas1).append(" KAMAS]");
+		str.append(_perso1.getNombre() + " (" + _perso1.getID() + ") >> ");
+		str.append("[" + _kamas1 + " KAMAS]");
 		for (final Duo<Integer, Integer> duo : _objetos1) {
 			try {
 				final Objeto obj1 = _perso1.getObjeto(duo._primero);
 				final int cantidad = duo._segundo;
 				str.append(", ");
 				if (obj1 == null) {
-					str.append("[NO TIENE - ID ").append(duo._primero).append(" CANT ").append(duo._segundo);
+					str.append("[NO TIENE - ID " + duo._primero + " CANT " + duo._segundo);
 					continue;
 				}
-				str.append("[").append(obj1.getObjModelo().getNombre()).append(" ID:").append(obj1.getID()).append(" Mod:").append(obj1.getObjModeloID()).append(" Cant:").append(cantidad).append("]");
+				str.append("[" + obj1.getObjModelo().getNombre() + " ID:" + obj1.getID() + " Mod:" + obj1.getObjModeloID()
+				+ " Cant:" + cantidad + "]");
 				int nuevaCantidad = obj1.getCantidad() - cantidad;
 				if (nuevaCantidad >= 1) {
 					Objeto nuevoObj = obj1.clonarObjeto(cantidad, Constantes.OBJETO_POS_NO_EQUIPADO);
@@ -96,18 +97,19 @@ public class Intercambio implements Exchanger {
 			}
 		}
 		str.append(" ### ");
-		str.append(_perso2.getNombre()).append(" (").append(_perso2.getID()).append(") >> ");
-		str.append("[").append(_kamas2).append(" KAMAS]");
+		str.append(_perso2.getNombre() + " (" + _perso2.getID() + ") >> ");
+		str.append("[" + _kamas2 + " KAMAS]");
 		for (final Duo<Integer, Integer> duo : _objetos2) {
 			try {
 				final Objeto obj2 = _perso2.getObjeto(duo._primero);
 				final int cantidad = duo._segundo;
 				str.append(", ");
 				if (obj2 == null) {
-					str.append("[NO TIENE - ID ").append(duo._primero).append(" CANT ").append(duo._segundo);
+					str.append("[NO TIENE - ID " + duo._primero + " CANT " + duo._segundo);
 					continue;
 				}
-				str.append("[").append(obj2.getObjModelo().getNombre()).append(" ID:").append(obj2.getID()).append(" Mod:").append(obj2.getObjModeloID()).append(" Cant:").append(cantidad).append("]");
+				str.append("[" + obj2.getObjModelo().getNombre() + " ID:" + obj2.getID() + " Mod:" + obj2.getObjModeloID()
+				+ " Cant:" + cantidad + "]");
 				int nuevaCantidad = obj2.getCantidad() - cantidad;
 				if (nuevaCantidad >= 1) {
 					Objeto nuevoObj = obj2.clonarObjeto(cantidad, Constantes.OBJETO_POS_NO_EQUIPADO);
@@ -154,7 +156,7 @@ public class Intercambio implements Exchanger {
 			} else {
 				GestorSalida.ENVIAR_EMK_MOVER_OBJETO_LOCAL(_perso1, 'O', "+", str);
 				GestorSalida.ENVIAR_EmK_MOVER_OBJETO_DISTANTE(_perso2, 'O', "+", str + add);
-				_objetos1.add(new Duo<>(objetoID, cantidad));
+				_objetos1.add(new Duo<Integer, Integer>(objetoID, cantidad));
 			}
 		} else if (_perso2.getID() == perso.getID()) {
 			final Duo<Integer, Integer> duo = Mundo.getDuoPorIDPrimero(_objetos2, objetoID);
@@ -165,7 +167,7 @@ public class Intercambio implements Exchanger {
 			} else {
 				GestorSalida.ENVIAR_EMK_MOVER_OBJETO_LOCAL(_perso2, 'O', "+", str);
 				GestorSalida.ENVIAR_EmK_MOVER_OBJETO_DISTANTE(_perso1, 'O', "+", str + add);
-				_objetos2.add(new Duo<>(objetoID, cantidad));
+				_objetos2.add(new Duo<Integer, Integer>(objetoID, cantidad));
 			}
 		}
 	}

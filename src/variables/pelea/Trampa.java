@@ -18,7 +18,7 @@ public class Trampa implements Comparable<Trampa> {
 	private final int _hechizoID, _color;
 	private final StatHechizo _trampaSH;
 	private final Pelea _pelea;
-	private final ArrayList<Integer> _visibles = new ArrayList<>();
+	private ArrayList<Integer> _visibles = new ArrayList<Integer>();
 	private final ArrayList<Celda> _celdas;
 	
 	// private ArrayList<Luchador> _objetivos;
@@ -137,8 +137,10 @@ public class Trampa implements Comparable<Trampa> {
 	private int getPrioridad() {
 		int p = 0;
 		for (EfectoHechizo eh : _trampaSH.getEfectosNormales()) {
-			if (eh.getEfectoID() == 5) {
-				p = 10;
+			switch (eh.getEfectoID()) {
+				case 5 :
+					p = 10;
+					break;
 			}
 		}
 		return p;
@@ -146,6 +148,6 @@ public class Trampa implements Comparable<Trampa> {
 	
 	@Override
 	public int compareTo(Trampa o) {
-		return Integer.compare(getPrioridad(), o.getPrioridad());
+		return new Integer(getPrioridad()).compareTo(new Integer(o.getPrioridad()));
 	}
 }

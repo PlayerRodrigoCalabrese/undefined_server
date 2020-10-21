@@ -29,19 +29,15 @@ import estaticos.Mundo.Duo;
 
 public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 	private final int _id;
-	private final int _dueño;
+	private int _dueño;
 	private byte _direccion;
-	private long _kamas;
-	private long _exp;
-	private long _proxMovimiento = -1;
-	private long _tiempoProteccion;
-	private final long _tiempoCreacion;
+	private long _kamas, _exp, _proxMovimiento = -1, _tiempoProteccion, _tiempoCreacion;
 	private boolean _enRecolecta = false;
 	private String _nombre1 = "", _nombre2 = "";
-	private final Map<Integer, Objeto> _objetos = new TreeMap<>();
-	private final Map<Integer, Integer> _objModeloID = new TreeMap<>();
+	private final Map<Integer, Objeto> _objetos = new TreeMap<Integer, Objeto>();
+	private final Map<Integer, Integer> _objModeloID = new TreeMap<Integer, Integer>();
 	private Pelea _pelea;
-	private final Gremio _gremio;
+	private Gremio _gremio;
 	private final Mapa _mapa;
 	private Celda _celda;
 	private TotalStats _totalStats;
@@ -62,7 +58,7 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 					continue;
 				}
 				_objetos.put(obj.getID(), obj);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		_exp = xp;
 		_tiempoProteccion = tiempoProteccion;
@@ -230,7 +226,7 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 		}
 		try {
 			Thread.sleep(100);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		GestorSalida.ENVIAR_GA_MOVER_SPRITE_MAPA(_mapa, 0, 1, _id + "", Encriptador.getValorHashPorNumero(_direccion)
 		+ Encriptador.celdaIDAHash(_celda.getID()) + pathStr);
 		_direccion = Camino.getIndexPorDireccion(pathStr.charAt(pathStr.length() - 3));
@@ -285,13 +281,13 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 				GestorSQL.SALVAR_OBJETO(objeto);
 			}
 			_objetos.put(objeto.getID(), objeto);
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	public String stringListaObjetosBD() {
 		final StringBuilder str = new StringBuilder();
 		for (final Objeto obj : _objetos.values()) {
-			str.append(obj.getID()).append("|");
+			str.append(obj.getID() + "|");
 		}
 		return str.toString();
 	}
@@ -299,7 +295,7 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 	private String stringRecolecta() {
 		final StringBuilder str = new StringBuilder("|" + _exp);
 		for (final Entry<Integer, Integer> entry : _objModeloID.entrySet()) {
-			str.append(";").append(entry.getKey()).append(",").append(entry.getValue());
+			str.append(";" + entry.getKey() + "," + entry.getValue());
 		}
 		// for (final Objeto obj : _objetos.values()) {
 		// str.append(";" + obj.getIDObjModelo() + "," + obj.getCantidad());
@@ -317,15 +313,15 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 			return "";
 		}
 		final StringBuilder str = new StringBuilder();
-		str.append(_celda.getID()).append(";");
-		str.append(_direccion).append(";");
+		str.append(_celda.getID() + ";");
+		str.append(_direccion + ";");
 		str.append("0;");
-		str.append(_id).append(";");
-		str.append(_nombre1).append(",").append(_nombre2).append(";");
+		str.append(_id + ";");
+		str.append(_nombre1 + "," + _nombre2 + ";");
 		str.append("-6;");// tipo
 		str.append("6000^100;");// gfxID ^ talla
-		str.append(_gremio.getNivel()).append(";");
-		str.append(_gremio.getNombre()).append(";").append(_gremio.getEmblema());
+		str.append(_gremio.getNivel() + ";");
+		str.append(_gremio.getNombre() + ";" + _gremio.getEmblema());
 		return str.toString();
 	}
 	
@@ -341,11 +337,11 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 				if (perso == null) {
 					continue;
 				}
-				str.append("|").append(Integer.toString(perso.getID(), 36)).append(";");
-				str.append(perso.getNombre()).append(";");
-				str.append(perso.getNivel()).append(";");
+				str.append("|" + Integer.toString(perso.getID(), 36) + ";");
+				str.append(perso.getNombre() + ";");
+				str.append(perso.getNivel() + ";");
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return str.toString();
 	}
 	
@@ -358,24 +354,24 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 				if (perso == null) {
 					continue;
 				}
-				str.append("|").append(Integer.toString(perso.getID(), 36)).append(";");
-				str.append(perso.getNombre()).append(";");
-				str.append(perso.getGfxID(false)).append(";");
-				str.append(perso.getNivel()).append(";");
+				str.append("|" + Integer.toString(perso.getID(), 36) + ";");
+				str.append(perso.getNombre() + ";");
+				str.append(perso.getGfxID(false) + ";");
+				str.append(perso.getNivel() + ";");
 			}
 			stra.append(str.substring(1));
 			_pelea.setListaDefensores(stra.toString());
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return str.toString();
 	}
 	
 	public String getListaExchanger(Personaje perso) {
 		final StringBuilder str = new StringBuilder();
 		for (final Objeto obj : _objetos.values()) {
-			str.append("O").append(obj.stringObjetoConGuiño());
+			str.append("O" + obj.stringObjetoConGuiño());
 		}
 		if (_kamas > 0) {
-			str.append("G").append(_kamas);
+			str.append("G" + _kamas);
 		}
 		return str.toString();
 	}
@@ -501,7 +497,9 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 			GestorSalida.ENVIAR_EsK_MOVER_A_TIENDA_COFRE_BANCO(perso, "O+" + objeto.getID() + "|" + objeto.getCantidad() + "|"
 			+ objeto.getObjModeloID() + "|" + objeto.convertirStatsAString(false));
 		}
-		_objModeloID.putIfAbsent(objeto.getObjModeloID(), 0);
+		if (_objModeloID.get(objeto.getObjModeloID()) == null) {
+			_objModeloID.put(objeto.getObjModeloID(), 0);
+		}
 		_objModeloID.put(objeto.getObjModeloID(), _objModeloID.get(objeto.getObjModeloID()) + cantidad);
 	}
 	
@@ -530,29 +528,34 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 	
 	public String getInfoPanel() {
 		StringBuilder str = new StringBuilder();
-		str.append(Integer.toString(_id, 36)).append(";");
-		str.append(_nombre1).append(",").append(_nombre2).append(",");
+		str.append(Integer.toString(_id, 36) + ";");
+		str.append(_nombre1 + "," + _nombre2 + ",");
 		Personaje dueño = Mundo.getPersonaje(_dueño);
 		if (dueño != null) {
 			str.append(dueño.getNombre());
 		}
-		str.append(",").append(_tiempoCreacion).append(",,100000000,100000000");
-		str.append(";").append(Integer.toString(_mapa.getID(), 36)).append(",").append(_mapa.getX()).append(",").append(_mapa.getY()).append(";");
+		str.append("," + _tiempoCreacion + ",,100000000,100000000");
+		str.append(";" + Integer.toString(_mapa.getID(), 36) + "," + _mapa.getX() + "," + _mapa.getY() + ";");
 		int estadoR = 0;
 		if (_pelea != null) {
 			switch (_pelea.getFase()) {
-				case Constantes.PELEA_FASE_INICIO, Constantes.PELEA_FASE_POSICION -> estadoR = 1;
-				case Constantes.PELEA_FASE_COMBATE -> estadoR = 2;
+				case Constantes.PELEA_FASE_INICIO :
+				case Constantes.PELEA_FASE_POSICION :
+					estadoR = 1;
+					break;
+				case Constantes.PELEA_FASE_COMBATE :
+					estadoR = 2;
+					break;
 			}
 		}
-		str.append(estadoR).append(";");
+		str.append(estadoR + ";");
 		if (estadoR == 1) {
-			str.append(_pelea.getTiempoFaltInicioPelea()).append(";");
+			str.append(_pelea.getTiempoFaltInicioPelea() + ";");
 		} else {
 			str.append("0;");
 		}
-		str.append(MainServidor.SEGUNDOS_INICIO_PELEA * 1000).append(";");
-		str.append(_pelea == null ? 0 : (_pelea.getPosPelea(2) - 1)).append(";");
+		str.append((MainServidor.SEGUNDOS_INICIO_PELEA * 1000) + ";");
+		str.append((_pelea == null ? 0 : (_pelea.getPosPelea(2) - 1)) + ";");
 		return str.toString();
 	}
 }

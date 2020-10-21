@@ -3,10 +3,10 @@ package variables.zotros;
 import estaticos.Mundo.Duo;
 
 public class Almanax {
-	private final int _id;
-	private final int _tipo;
-	private final int _bonus;
-	private final Duo<Integer, Integer> _ofrenda;
+	private int _id;
+	private int _tipo;
+	private int _bonus;
+	private Duo<Integer, Integer> _ofrenda;
 	
 	public Almanax(int id, int tipo, int bonus, String ofrenda) {
 		_id = id;
@@ -14,7 +14,7 @@ public class Almanax {
 		_bonus = bonus;
 		int idObjeto = Integer.parseInt(ofrenda.split(",")[0]);
 		int cantidad = Integer.parseInt(ofrenda.split(",")[1]);
-		_ofrenda = new Duo<>(idObjeto, cantidad);
+		_ofrenda = new Duo<Integer, Integer>(idObjeto, cantidad);
 	}
 	
 	public Duo<Integer, Integer> getOfrenda() {

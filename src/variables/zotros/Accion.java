@@ -1,7 +1,6 @@
 package variables.zotros;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -258,7 +257,7 @@ public class Accion {
 							int preguntaID = 0;
 							try {
 								preguntaID = Integer.parseInt(_args);
-							} catch (final Exception ignored) {}
+							} catch (final Exception e) {}
 							if (preguntaID <= 0) {
 								perso.dialogoFin();
 							}
@@ -365,7 +364,7 @@ public class Accion {
 							boolean siOSi = false;
 							try {
 								siOSi = s.split(",")[1].equals("1");
-							} catch (final Exception ignored) {}
+							} catch (final Exception e) {}
 							if (Mundo.getOficio(idOficio) == null) {
 								GestorSalida.ENVIAR_BN_NADA(objetivo);
 							} else {
@@ -405,30 +404,30 @@ public class Accion {
 							final int cantidad = Integer.parseInt(s.split(",")[1]);
 							int mensajeID = 0;
 							switch (statID) {
-								case Constantes.STAT_MAS_SABIDURIA -> {
+								case Constantes.STAT_MAS_SABIDURIA :
 									perso.addScrollStat(Constantes.STAT_MAS_SABIDURIA, cantidad);
 									mensajeID = 9;
-								}
-								case Constantes.STAT_MAS_FUERZA -> {
+									break;
+								case Constantes.STAT_MAS_FUERZA :
 									perso.addScrollStat(Constantes.STAT_MAS_FUERZA, cantidad);
 									mensajeID = 10;
-								}
-								case Constantes.STAT_MAS_SUERTE -> {
+									break;
+								case Constantes.STAT_MAS_SUERTE :
 									perso.addScrollStat(Constantes.STAT_MAS_SUERTE, cantidad);
 									mensajeID = 11;
-								}
-								case Constantes.STAT_MAS_AGILIDAD -> {
+									break;
+								case Constantes.STAT_MAS_AGILIDAD :
 									perso.addScrollStat(Constantes.STAT_MAS_AGILIDAD, cantidad);
 									mensajeID = 12;
-								}
-								case Constantes.STAT_MAS_VITALIDAD -> {
+									break;
+								case Constantes.STAT_MAS_VITALIDAD :
 									perso.addScrollStat(Constantes.STAT_MAS_VITALIDAD, cantidad);
 									mensajeID = 13;
-								}
-								case Constantes.STAT_MAS_INTELIGENCIA -> {
+									break;
+								case Constantes.STAT_MAS_INTELIGENCIA :
 									perso.addScrollStat(Constantes.STAT_MAS_INTELIGENCIA, cantidad);
 									mensajeID = 14;
-								}
+									break;
 							}
 							if (mensajeID > 0) {
 								as = true;
@@ -473,11 +472,18 @@ public class Accion {
 							if (objUsar != null) {
 								short tipo = objUsar.getObjModelo().getTipo();
 								switch (tipo) {
-									case Constantes.OBJETO_TIPO_BEBIDA, Constantes.OBJETO_TIPO_POCION -> GestorSalida.ENVIAR_eUK_EMOTE_MAPA(objetivo.getMapa(), objetivo.getID(), 18, 0);
-									case Constantes.OBJETO_TIPO_PAN, Constantes.OBJETO_TIPO_CARNE_COMESTIBLE, Constantes.OBJETO_TIPO_PESCADO_COMESTIBLE -> GestorSalida.ENVIAR_eUK_EMOTE_MAPA(objetivo.getMapa(), objetivo.getID(), 17, 0);
+									case Constantes.OBJETO_TIPO_BEBIDA :
+									case Constantes.OBJETO_TIPO_POCION :
+										GestorSalida.ENVIAR_eUK_EMOTE_MAPA(objetivo.getMapa(), objetivo.getID(), 18, 0);
+										break;
+									case Constantes.OBJETO_TIPO_PAN :
+									case Constantes.OBJETO_TIPO_CARNE_COMESTIBLE :
+									case Constantes.OBJETO_TIPO_PESCADO_COMESTIBLE :
+										GestorSalida.ENVIAR_eUK_EMOTE_MAPA(objetivo.getMapa(), objetivo.getID(), 17, 0);
+										break;
 								}
 							}
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 						int valor = 0;
 						String[] s = _args.split(",");
 						if (s.length == 1) {
@@ -561,10 +567,10 @@ public class Accion {
 							int mobID = Integer.parseInt(mobONivel[0]);
 							mobGrupo.append(mobID);
 							if (mobONivel.length > 1) {
-								mobGrupo.append(",").append(Integer.parseInt(mobONivel[1]));
+								mobGrupo.append("," + Integer.parseInt(mobONivel[1]));
 							}
 							if (mobONivel.length > 2) {
-								mobGrupo.append(",").append(Integer.parseInt(mobONivel[2]));
+								mobGrupo.append("," + Integer.parseInt(mobONivel[2]));
 							}
 							mobGrupo.append(";");
 						}
@@ -587,7 +593,7 @@ public class Accion {
 						boolean todo = false;
 						try {
 							todo = _args.equalsIgnoreCase("true");
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 						perso.resetearStats(todo);
 					} catch (final Exception e) {
 						GestorSalida.ENVIAR_BN_NADA(objetivo, "EXCEPTION ACCION " + _id);
@@ -615,11 +621,11 @@ public class Accion {
 						int objNecesario = 0;
 						try {
 							objNecesario = Integer.parseInt(_args.split(",")[2]);
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 						int mapaNecesario = 0;
 						try {
 							mapaNecesario = Integer.parseInt(_args.split(",")[3]);
-						} catch (final Exception ignored) {}
+						} catch (final Exception e) {}
 						if (objNecesario == 0) {
 							perso.teleport(nuevoMapaID, nuevaCeldaID);
 						} else if (objNecesario > 0) {
@@ -837,7 +843,7 @@ public class Accion {
 						perso.deformar();
 						perso.refrescarEnMapa();
 						GestorSQL.CAMBIAR_SEXO_CLASE(perso);
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					break;
 				case ACCION_PAGAR_PESCAR_KUAKUA :// pagar para pescar kuakua
 					try {
@@ -1045,7 +1051,7 @@ public class Accion {
 						int cantidad = 1;
 						try {
 							cantidad = Integer.parseInt(_args);
-						} catch (Exception ignored) {}
+						} catch (Exception e) {}
 						if (objetivo == perso) {
 							return false;
 						}
@@ -1091,7 +1097,7 @@ public class Accion {
 							perso.botonActDesacAlas('+');
 						}
 						Personaje victima = null;
-						final ArrayList<Personaje> victimas = new ArrayList<>();
+						final ArrayList<Personaje> victimas = new ArrayList<Personaje>();
 						for (final Personaje temp : Mundo.getPersonajesEnLinea()) {
 							if (temp.getNivel() < MainServidor.NIVEL_MINIMO_PARA_PVP) {
 								continue;
@@ -1273,7 +1279,7 @@ public class Accion {
 							String args = "";
 							try {
 								args = sep[1].split(";", 2)[1];
-							} catch (final Exception ignored) {}
+							} catch (final Exception e1) {}
 							realizar_Accion_Estatico(Integer.parseInt(sep[1].split(";")[0]), args, perso, null, -1, (short) -1);
 						} else {
 							GestorSalida.ENVIAR_Im_INFORMACION(perso, "182");
@@ -1318,7 +1324,7 @@ public class Accion {
 							try {
 								if (s.split(",").length > 2)
 									max = s.split(",")[2].equals("1");
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							ObjetoModelo tempObjMod = Mundo.getObjetoModelo(id);
 							if (tempObjMod == null) {
 								GestorSalida.ENVIAR_BN_NADA(objetivo, "BUG ACCION " + _id + " idObjMod " + id);
@@ -1376,16 +1382,16 @@ public class Accion {
 						int tipoAlin = 0;
 						try {
 							tipoAlin = Integer.parseInt(t[0]);
-						} catch (Exception ignored) {}
+						} catch (Exception e) {}
 						int dist = 1000;
 						try {
 							dist = Integer.parseInt(t[1]);
-						} catch (Exception ignored) {}
+						} catch (Exception e) {}
 						int idAccion = Integer.parseInt(t[2].split(";")[0]);
 						String args2 = "";
 						try {
 							args2 = t[2].split(";", 2)[1];
-						} catch (final Exception ignored) {}
+						} catch (final Exception e1) {}
 						Mapa mapa = perso.getMapa();
 						short celdaPerso = perso.getCelda().getID();
 						ArrayList<Personaje> aplicar = new ArrayList<>();
@@ -1442,7 +1448,7 @@ public class Accion {
 								return false;
 							}
 						}
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					GestorSalida.ENVIAR_BN_NADA(objetivo, "EXCEPTION ACCION " + _id);
 					return false;
 				case ACCION_ACTIVAR_CELDAS_INTERACTIVAS :// 64 activar celda interactivas
@@ -1455,15 +1461,15 @@ public class Accion {
 								String cm = split[0];
 								c = Short.parseShort(cm.split("m")[0]);
 								m = Short.parseShort(cm.split("m")[1]);
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							boolean bAnimacionMovimiento = false;// conGDF
 							long milisegundos = 30000;
 							try {
 								bAnimacionMovimiento = split[1].equals("1");
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							try {
 								milisegundos = Long.parseLong(split[2]);
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							Mapa mapa = Mundo.getMapa(m);
 							if (mapa == null) {
 								GestorSalida.ENVIAR_BN_NADA(objetivo, "EXCEPTION ACCION " + _id + " MAPA " + m + " ES NULO");
@@ -1535,7 +1541,7 @@ public class Accion {
 						int accionID = Integer.parseInt(nuevaAccion.split(";")[0]);
 						try {
 							args2 = nuevaAccion.split(";", 2)[1];
-						} catch (final Exception ignored) {}
+						} catch (final Exception e1) {}
 						realizar_Accion_Estatico(accionID, args2, perso, null, -1, (short) -1);
 					} catch (final Exception e) {
 						GestorSalida.ENVIAR_BN_NADA(objetivo, "EXCEPTION ACCION " + _id);
@@ -1546,7 +1552,7 @@ public class Accion {
 					try {
 						perso.cambiarRostro(Byte.parseByte(_args));
 						GestorSalida.ENVIAR_Oa_CAMBIAR_ROPA_MAPA(perso.getMapa(), perso);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					break;
 				case ACCION_MENSAJE_INFORMACION :// mensaje informacion
 					GestorSalida.ENVIAR_Im_INFORMACION(perso, _args);
@@ -1641,7 +1647,7 @@ public class Accion {
 							int minutos = 0;
 							try {
 								minutos = Integer.parseInt(args[1]);
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							int borrados = perso.eliminarPorObjModeloRecibidoDesdeMinutos(id, minutos);
 							if (borrados > 0) {
 								b = true;
@@ -1729,7 +1735,9 @@ public class Accion {
 						final String[] dar = _args.split(Pattern.quote("|"))[1].split(";");
 						boolean quito = false;
 						ArrayList<String> array = new ArrayList<>();
-                        array.addAll(Arrays.asList(quitar));
+						for (String s : quitar) {
+							array.add(s);
+						}
 						while (!array.isEmpty()) {
 							int random = new Random().nextInt(array.size());
 							String s = array.get(random);
@@ -1773,10 +1781,10 @@ public class Accion {
 							int interactivo = 0;
 							try {
 								estado = Integer.parseInt(s.split(",")[1]);
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							try {
 								interactivo = Integer.parseInt(s.split(",")[2]);
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							GestorSalida.ENVIAR_GDF_FORZADO_PERSONAJE(perso, perso.getMapa().getCelda(c).getID() + ";" + estado + ";"
 							+ interactivo);
 						}
@@ -1793,10 +1801,10 @@ public class Accion {
 							int interactivo = 0;
 							try {
 								estado = Integer.parseInt(s.split(",")[1]);
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							try {
 								interactivo = Integer.parseInt(s.split(",")[2]);
-							} catch (Exception ignored) {}
+							} catch (Exception e) {}
 							GestorSalida.ENVIAR_GDF_FORZADO_MAPA(perso.getMapa(), perso.getMapa().getCelda(c).getID() + ";" + estado
 							+ ";" + interactivo);
 						}

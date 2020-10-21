@@ -13,7 +13,7 @@ public class MobGrado implements PreLuchador {
 	private final MobGradoModelo _mobGradoModelo;
 	private final MobModelo _mobModelo;
 	private final byte _grado;
-	private final short _nivel;
+	private short _nivel;
 	private int _id;
 	private int _PDV;
 	private int _PDVMAX;
@@ -121,9 +121,9 @@ public class MobGrado implements PreLuchador {
 	public String stringGMLuchador() {
 		StringBuilder str = new StringBuilder();
 		str.append("-2;");
-		str.append(_mobGradoModelo.getGfxID()).append("^").append(_mobModelo.getTalla()).append(";");
-		str.append(_grado).append(";");
-		str.append(_mobModelo.getColores().replace(",", ";")).append(";");
+		str.append(_mobGradoModelo.getGfxID() + "^" + _mobModelo.getTalla() + ";");
+		str.append(_grado + ";");
+		str.append(_mobModelo.getColores().replace(",", ";") + ";");
 		str.append("0,0,0,0;");
 		return str.toString();
 	}

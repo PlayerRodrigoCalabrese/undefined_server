@@ -2,8 +2,6 @@ package sincronizador;
 
 import java.net.*;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-
 import servidor.ServidorServer;
 import variables.personaje.Cuenta;
 import estaticos.MainServidor;
@@ -18,8 +16,9 @@ public class SincronizadorSocket implements Runnable {
 	private Socket _socket;
 	private BufferedInputStream _in;
 	private PrintWriter _out;
-	private final int _puerto;
-	private final String _IP;
+	private Thread _thread;
+	private int _puerto;
+	private String _IP;
 	
 	public SincronizadorSocket() {
 		_IP = MainServidor.IP_MULTISERVIDOR.get(MainServidor.INDEX_IP);
@@ -34,7 +33,7 @@ public class SincronizadorSocket implements Runnable {
 			_socket = new Socket(_IP, _puerto);
 			_in = new BufferedInputStream((_socket.getInputStream()));
 			_out = new PrintWriter(_socket.getOutputStream());
-			Thread _thread = new Thread(this);
+			_thread = new Thread(this);
 			_thread.setDaemon(true);
 			_thread.start();
 		} catch (final Exception e) {
@@ -63,7 +62,7 @@ public class SincronizadorSocket implements Runnable {
 				}
 				bytes[index++] = (byte) c;
 				if (bytes.length == index) {
-					String tempPacket = new String(bytes, StandardCharsets.UTF_8);
+					String tempPacket = new String(bytes, "UTF-8");
 					for (String packet : tempPacket.split("[\u0000\n\r]")) {
 						if (packet.isEmpty()) {
 							continue;
@@ -79,7 +78,7 @@ public class SincronizadorSocket implements Runnable {
 			System.out.println("<<<--- CERRANDO SINCRONIZADOR, IP: " + _IP + " PUERTO: " + _puerto + " --->>>");
 			try {
 				// ServidorGeneral.packetClientesEscogerServer("AH" + Mundo.strParaAH());
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			desconectar();
 		}
 	}
@@ -93,46 +92,49 @@ public class SincronizadorSocket implements Runnable {
 						final String ip = infos[0];
 						int cantidad = ServidorServer.getIPsClientes(ip);
 						sendPacket("I" + ip + ";" + cantidad, false);
-					} catch (final Exception ignored) {}
+					} catch (final Exception e) {}
 					break;
 				case 'A' :// cuenta
-					Thread t = new Thread(() -> {
-						try {
-							final String[] infos = packet.substring(1).split(";");
-							final int id = Integer.parseInt(infos[0]);
-							Cuenta cuenta = Mundo.getCuenta(id);
-							if (cuenta == null) {
-								GestorSQL.CARGAR_CUENTA_POR_ID(id);// cuenta nueva
-								cuenta = Mundo.getCuenta(id);
-							}
-							if (cuenta == null) {
-								MainServidor.redactarLogServidorln("SE QUIERE REGISTRAR CUENTA FALSA: " + packet);
-								return;
-							}
+					Thread t = new Thread(new Runnable() {
+						@Override
+						public void run() {
 							try {
-								if (cuenta.getSocket() != null) {
-									GestorSalida.ENVIAR_AlEd_DESCONECTAR_CUENTA_CONECTADA(cuenta.getSocket());
-									GestorSalida.ENVIAR_M0_MENSAJE_BASICOS_SVR_MUESTRA_DISCONNECT(cuenta.getSocket(), "45",
-									"OTHER PLAYER CONNECTED WITH YOUR ACCOUNT", "");
-									cuenta.getSocket().cerrarSocket(true, "analizarPackets()");
+								final String[] infos = packet.substring(1).split(";");
+								final int id = Integer.parseInt(infos[0]);
+								Cuenta cuenta = Mundo.getCuenta(id);
+								if (cuenta == null) {
+									GestorSQL.CARGAR_CUENTA_POR_ID(id);// cuenta nueva
+									cuenta = Mundo.getCuenta(id);
 								}
+								if (cuenta == null) {
+									MainServidor.redactarLogServidorln("SE QUIERE REGISTRAR CUENTA FALSA: " + packet);
+									return;
+								}
+								try {
+									if (cuenta.getSocket() != null) {
+										GestorSalida.ENVIAR_AlEd_DESCONECTAR_CUENTA_CONECTADA(cuenta.getSocket());
+										GestorSalida.ENVIAR_M0_MENSAJE_BASICOS_SVR_MUESTRA_DISCONNECT(cuenta.getSocket(), "45",
+										"OTHER PLAYER CONNECTED WITH YOUR ACCOUNT", "");
+										cuenta.getSocket().cerrarSocket(true, "analizarPackets()");
+									}
+								} catch (final Exception e) {
+									e.printStackTrace();
+								}
+								if (MainServidor.PARAM_SISTEMA_IP_ESPERA) {
+									ServidorServer.addIPEspera(infos[1]);
+								}
+								ServidorServer.addEsperandoCuenta(cuenta);
+								sendPacket("A" + id + ";" + cuenta.getPersonajes().size(), true);
 							} catch (final Exception e) {
-								e.printStackTrace();
+								MainServidor.redactarLogServidorln(" EXPCETION AL CARGAR CUENTA: " + e.toString());
 							}
-							if (MainServidor.PARAM_SISTEMA_IP_ESPERA) {
-								ServidorServer.addIPEspera(infos[1]);
-							}
-							ServidorServer.addEsperandoCuenta(cuenta);
-							sendPacket("A" + id + ";" + cuenta.getPersonajes().size(), true);
-						} catch (final Exception e) {
-							MainServidor.redactarLogServidorln(" EXPCETION AL CARGAR CUENTA: " + e.toString());
 						}
 					});
 					t.setDaemon(true);
 					t.start();
 					break;
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	private void desconectar() {

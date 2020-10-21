@@ -63,8 +63,6 @@ import variables.zotros.Tutorial;
 import java.sql.PreparedStatement;
 import estaticos.Mundo.Duo;
 import estaticos.Mundo.Experiencia;
-///import java.util.Timer;
-//import java.util.TimerTask;
 
 public class GestorSQL {
 	private static Connection _bdDinamica;
@@ -74,23 +72,7 @@ public class GestorSQL {
 	private static Timer _timerComienzo;
 	private static boolean _necesitaCommit;
 	public static StringBuilder LOG_SQL = new StringBuilder();
-	
-	// public static ResultSet consultaSQL(final PreparedStatement declaracion) throws Exception {
-	// if (!Bustemu._INICIADO) {
-	// return null;
-	// }
-	// final ResultSet resultado = declaracion.executeQuery();
-	// declaracion.setQueryTimeout(300);
-	// return resultado;
-	// }
-	// private static PreparedStatement preparedQuery(final String consultaSQL, final Connection
-	// conexion) throws Exception {
-	// if (!Bustemu._INICIADO) {
-	// return null;
-	// }
-	// return (PreparedStatement) conexion.prepareStatement(consultaSQL);
-	// }
-	//
+
 	private static void cerrarResultado(final ResultSet resultado) {
 		try {
 			resultado.getStatement().close();
@@ -179,17 +161,17 @@ public class GestorSQL {
 			_timerComienzo.cancel();
 		}
 	}
-	
+
 	public static boolean iniciarConexion() {
 		try {
 			_bdDinamica = DriverManager.getConnection("jdbc:mariadb://" + MainServidor.BD_HOST + "/" + MainServidor.BD_DINAMICA
-			+ "?autoReconnect=true", MainServidor.BD_USUARIO, MainServidor.BD_PASS);
+					+ "?autoReconnect=true", MainServidor.BD_USUARIO, MainServidor.BD_PASS);
 			_bdDinamica.setAutoCommit(MainServidor.PARAM_AUTO_COMMIT);
 			_bdEstatica = DriverManager.getConnection("jdbc:mariadb://" + MainServidor.BD_HOST + "/" + MainServidor.BD_ESTATICA
-			+ "?autoReconnect=true", MainServidor.BD_USUARIO, MainServidor.BD_PASS);
+					+ "?autoReconnect=true", MainServidor.BD_USUARIO, MainServidor.BD_PASS);
 			_bdEstatica.setAutoCommit(MainServidor.PARAM_AUTO_COMMIT);
 			_bdCuentas = DriverManager.getConnection("jdbc:mariadb://" + MainServidor.BD_HOST + "/" + MainServidor.BD_CUENTAS
-			+ "?autoReconnect=true", MainServidor.BD_USUARIO, MainServidor.BD_PASS);
+					+ "?autoReconnect=true", MainServidor.BD_USUARIO, MainServidor.BD_PASS);
 			_bdCuentas.setAutoCommit(MainServidor.PARAM_AUTO_COMMIT);
 			if (!_bdEstatica.isValid(1000) || !_bdDinamica.isValid(1000) || !_bdCuentas.isValid(1000)) {
 				MainServidor.redactarLogServidorln("SQLError : Conexion a la BDD invalida");
@@ -209,9 +191,9 @@ public class GestorSQL {
 			if (_bdAlterna != null) {
 				try {
 					_bdAlterna.close();
-				} catch (Exception ignored) {}
+				} catch (Exception e1) {}
 			}
-			_bdAlterna = DriverManager.getConnection("jdbc:mysql://" + host + "/" + database, user, pass);
+			_bdAlterna = DriverManager.getConnection("jdbc:mariadb://" + host + "/" + database, user, pass);
 			if (!_bdAlterna.isValid(1000)) {
 				return "BAD :(";
 			}
@@ -361,7 +343,7 @@ public class GestorSQL {
 			while (resultado.next()) {
 				try {
 					b = resultado.getByte("rango");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -549,7 +531,7 @@ public class GestorSQL {
 			resultado = true;
 			GestorSalida.ENVIAR_Im_INFORMACION(perso, "1EXITO_BUY_WITH_OGRINES;" + (ogrinas - restar) + "~"
 			+ MainServidor.NOMBRE_SERVER);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		return resultado;
 	}
 	
@@ -570,7 +552,7 @@ public class GestorSQL {
 			resultado = true;
 			GestorSalida.ENVIAR_Im_INFORMACION(perso, "1EXITO_BUY_WITH_CREDITS;" + (creditos - restar) + "~"
 			+ MainServidor.NOMBRE_SERVER);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		return resultado;
 	}
 	
@@ -582,7 +564,7 @@ public class GestorSQL {
 			if (resultado.first()) {
 				try {
 					str = resultado.getString("contraseña");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -612,7 +594,7 @@ public class GestorSQL {
 			if (resultado.first()) {
 				try {
 					str = resultado.getString("pregunta");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -644,7 +626,7 @@ public class GestorSQL {
 			if (resultado.first()) {
 				try {
 					str = resultado.getString("respuesta");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -771,7 +753,7 @@ public class GestorSQL {
 			if (resultado.first()) {
 				try {
 					str = resultado.getString("regalo");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -787,7 +769,7 @@ public class GestorSQL {
 				Mundo.CAPTCHAS.add(resultado.getString("captcha") + "|" + resultado.getString("respuesta"));
 			}
 			cerrarResultado(resultado);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	public static long GET_ULTIMO_SEGUNDOS_VOTO(final String ip, final int cuentaID) {
@@ -803,7 +785,7 @@ public class GestorSQL {
 					}
 					time = resultado.getLong("ultimoVoto");
 					break;
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			cerrarResultado(resultado);
 			consultaSQL = "SELECT `ultimoVoto` FROM `cuentas` WHERE `id` = '" + cuentaID + "' ;";
@@ -829,7 +811,7 @@ public class GestorSQL {
 			if (resultado.first()) {
 				try {
 					i = resultado.getInt("votos");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -874,7 +856,7 @@ public class GestorSQL {
 					.getLong("kamas"), resultado.getString("amigos"), resultado.getString("enemigos"), resultado.getString(
 					"establo"), resultado.getString("reportes"), resultado.getString("ultimaConexion"), resultado.getString(
 					"mensajes"), resultado.getString("ultimaIP"));
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -890,7 +872,7 @@ public class GestorSQL {
 			if (resultado.first()) {
 				try {
 					b = resultado.getByte("primeraVez");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -1061,7 +1043,7 @@ public class GestorSQL {
 		try {
 			final ResultSet resultado = consultaSQL("SELECT * FROM `recetas`;", _bdEstatica);
 			while (resultado.next()) {
-				final ArrayList<Duo<Integer, Integer>> arrayDuos = new ArrayList<>();
+				final ArrayList<Duo<Integer, Integer>> arrayDuos = new ArrayList<Duo<Integer, Integer>>();
 				boolean continua = false;
 				int idReceta = resultado.getInt("id");
 				String receta = resultado.getString("receta");
@@ -1070,7 +1052,7 @@ public class GestorSQL {
 						final String[] s = str.split(Pattern.quote(","));
 						final int idModeloObj = Integer.parseInt(s[0]);
 						final int cantidad = Integer.parseInt(s[1]);
-						arrayDuos.add(new Duo<>(idModeloObj, cantidad));
+						arrayDuos.add(new Duo<Integer, Integer>(idModeloObj, cantidad));
 						continua = true;
 					} catch (final Exception e) {
 						continua = false;
@@ -1311,7 +1293,7 @@ public class GestorSQL {
 					Mundo.getMapa(resultado.getShort("mapa")).addNPC(npcModelo, resultado.getShort("celda"), resultado.getByte(
 					"orientacion"));
 					numero++;
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -1344,7 +1326,7 @@ public class GestorSQL {
 				try {
 					Mundo.getCasa(resultado.getInt("id")).actualizarCasa(resultado.getInt("dueño"), resultado.getInt("precio"),
 					resultado.getByte("bloqueado"), resultado.getString("clave"), resultado.getInt("derechosGremio"));
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -1459,14 +1441,14 @@ public class GestorSQL {
 		try {
 			final ResultSet resultado = consultaSQL("SELECT * FROM `personajes`;", _bdDinamica);
 			while (resultado.next()) {
-				final TreeMap<Integer, Integer> statsBase = new TreeMap<>();
+				final TreeMap<Integer, Integer> statsBase = new TreeMap<Integer, Integer>();
 				statsBase.put(Constantes.STAT_MAS_VITALIDAD, resultado.getInt("vitalidad"));
 				statsBase.put(Constantes.STAT_MAS_FUERZA, resultado.getInt("fuerza"));
 				statsBase.put(Constantes.STAT_MAS_SABIDURIA, resultado.getInt("sabiduria"));
 				statsBase.put(Constantes.STAT_MAS_INTELIGENCIA, resultado.getInt("inteligencia"));
 				statsBase.put(Constantes.STAT_MAS_SUERTE, resultado.getInt("suerte"));
 				statsBase.put(Constantes.STAT_MAS_AGILIDAD, resultado.getInt("agilidad"));
-				final TreeMap<Integer, Integer> statsScroll = new TreeMap<>();
+				final TreeMap<Integer, Integer> statsScroll = new TreeMap<Integer, Integer>();
 				statsScroll.put(Constantes.STAT_MAS_VITALIDAD, resultado.getInt("sVitalidad"));
 				statsScroll.put(Constantes.STAT_MAS_FUERZA, resultado.getInt("sFuerza"));
 				statsScroll.put(Constantes.STAT_MAS_SABIDURIA, resultado.getInt("sSabiduria"));
@@ -1739,7 +1721,7 @@ public class GestorSQL {
 						if (m != null) {
 							mapas.add(mapa);
 						}
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 				}
 				if (mapas.isEmpty()) {
 					continue;
@@ -2242,7 +2224,7 @@ public class GestorSQL {
 					Mundo.getCercadoPorMapa(resultado.getShort("mapa")).actualizarCercado(resultado.getInt("propietario"),
 					resultado.getInt("gremio"), resultado.getInt("precio"), resultado.getString("objetosColocados"), resultado
 					.getString("criando"));
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -2257,7 +2239,7 @@ public class GestorSQL {
 				try {
 					Mundo.getCofre(resultado.getInt("id")).actualizarCofre(resultado.getString("objetos"), resultado.getLong(
 					"kamas"), resultado.getString("clave"), resultado.getInt("dueño"));
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -2273,7 +2255,7 @@ public class GestorSQL {
 				try {
 					Mundo.addObjetoTrueque(resultado.getInt("idObjeto"), resultado.getString("necesita"), resultado.getInt(
 					"prioridad"), resultado.getString("npc_ids"));
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 			cerrarResultado(resultado);
 			return;
@@ -2292,7 +2274,7 @@ public class GestorSQL {
 					}
 					Mundo.addAlmanax(new Almanax(resultado.getInt("id"), resultado.getInt("tipo"), resultado.getInt("bonus"),
 					resultado.getString("ofrenda")));
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 			cerrarResultado(resultado);
 			return;
@@ -2349,7 +2331,7 @@ public class GestorSQL {
 			while (resultado.next()) {
 				try {
 					Mundo.addMapaEstrellas(resultado.getShort("mapa"), resultado.getString("estrellas"));
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 			cerrarResultado(resultado);
 			return;
@@ -2405,7 +2387,7 @@ public class GestorSQL {
 				try {
 					Mundo.addMapaHeroico(resultado.getShort("mapa"), resultado.getString("mobs"), resultado.getString("objetos"),
 					resultado.getString("kamas"));
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 			cerrarResultado(resultado);
 			return;
@@ -2582,7 +2564,7 @@ public class GestorSQL {
 			declaracion.setString(2, respuesta);
 			ejecutarTransaccion(declaracion);
 			cerrarDeclaracion(declaracion);
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	public static void INSERT_MAPA(final short id, final String fecha, final byte ancho, final byte alto,
@@ -2898,7 +2880,8 @@ public class GestorSQL {
 		if (objetos == null || objetos.isEmpty()) {
 			return;
 		}
-		List<Objeto> tempObjetos = new ArrayList<>(objetos);
+		List<Objeto> tempObjetos = new ArrayList<>();
+		tempObjetos.addAll(objetos);
 		String consultaSQL = "REPLACE INTO `objetos` VALUES(?,?,?,?,?,?,?);";
 		try {
 			PreparedStatement declaracion = transaccionSQL(consultaSQL, _bdDinamica);
@@ -2963,7 +2946,7 @@ public class GestorSQL {
 	public static PreparedStatement GET_STATEMENT_SQL_DINAMICA(String consultaSQL) {
 		try {
 			return transaccionSQL(consultaSQL, _bdDinamica);
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return null;
 	}
 	
@@ -2972,7 +2955,7 @@ public class GestorSQL {
 			declaracion.setInt(1, mapaID);
 			declaracion.setString(2, estrellas);
 			declaracion.addBatch();
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		return;
 	}
 	
@@ -3140,7 +3123,7 @@ public class GestorSQL {
 					declaracion.setLong(7, obj.getPrecio());
 					ejecutarTransaccion(declaracion);
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e1) {}
 			cerrarDeclaracion(declaracion);
 		} catch (final Exception e) {
 			exceptionModify(e, consultaSQL, "");
@@ -3305,7 +3288,7 @@ public class GestorSQL {
 				ejecutarTransaccion(declaracion);
 				cerrarDeclaracion(declaracion);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	public static String QUERY_ESTATICA(final String query) {
@@ -3589,7 +3572,7 @@ public class GestorSQL {
 				if (salvarObjetos) {
 					SALVAR_OBJETOS(recaudador.getObjetos());
 				}
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		} catch (final Exception e) {
 			exceptionModify(e, consultaSQL, "");
 		}
@@ -3878,7 +3861,7 @@ public class GestorSQL {
 			for (final ObjetoMercadillo objMerca : lista) {
 				REPLACE_OBJETO_MERCADILLO(objMerca);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	public static boolean REPLACE_OBJETO_MERCADILLO(final ObjetoMercadillo objMerca) {
@@ -4098,7 +4081,7 @@ public class GestorSQL {
 			while (resultado.next()) {
 				try {
 					str = resultado.getString("fecha") + "|" + resultado.getString("key") + "|" + resultado.getString("mapData");
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			cerrarResultado(resultado);
 		} catch (final Exception e) {
@@ -4387,10 +4370,11 @@ public class GestorSQL {
 				if (str2.length() > 0) {
 					str2.append("#");
 				}
-				str2.append(resultado.getInt("id")).append(";").append(resultado.getString("perso")).append(";").append(resultado.getString("asunto")).append(";").append(resultado.getString("fecha")).append(";").append(cuenta.tieneReporte(Constantes.REPORTE_BUGS, resultado.getInt(
-						"id")) ? 1 : 0);
+				str2.append(resultado.getInt("id") + ";" + resultado.getString("perso") + ";" + resultado.getString("asunto")
+				+ ";" + resultado.getString("fecha") + ";" + (cuenta.tieneReporte(Constantes.REPORTE_BUGS, resultado.getInt(
+				"id")) ? 1 : 0));
 			}
-			str.append(str2.toString()).append("|");
+			str.append(str2.toString() + "|");
 			cerrarResultado(resultado);
 			resultado = consultaSQL("SELECT * FROM `sugerencias` LIMIT " + MainServidor.LIMITE_REPORTES + ";", _bdDinamica);
 			str2 = new StringBuilder();
@@ -4398,10 +4382,11 @@ public class GestorSQL {
 				if (str2.length() > 0) {
 					str2.append("#");
 				}
-				str2.append(resultado.getInt("id")).append(";").append(resultado.getString("perso")).append(";").append(resultado.getString("asunto")).append(";").append(resultado.getString("fecha")).append(";").append(cuenta.tieneReporte(Constantes.REPORTE_SUGERENCIAS, resultado
-						.getInt("id")) ? 1 : 0);
+				str2.append(resultado.getInt("id") + ";" + resultado.getString("perso") + ";" + resultado.getString("asunto")
+				+ ";" + resultado.getString("fecha") + ";" + (cuenta.tieneReporte(Constantes.REPORTE_SUGERENCIAS, resultado
+				.getInt("id")) ? 1 : 0));
 			}
-			str.append(str2.toString()).append("|");
+			str.append(str2.toString() + "|");
 			cerrarResultado(resultado);
 			resultado = consultaSQL("SELECT * FROM `denuncias` LIMIT " + MainServidor.LIMITE_REPORTES + ";", _bdDinamica);
 			str2 = new StringBuilder();
@@ -4409,10 +4394,11 @@ public class GestorSQL {
 				if (str2.length() > 0) {
 					str2.append("#");
 				}
-				str2.append(resultado.getInt("id")).append(";").append(resultado.getString("perso")).append(";").append(resultado.getString("asunto")).append(";").append(resultado.getString("fecha")).append(";").append(cuenta.tieneReporte(Constantes.REPORTE_DENUNCIAS, resultado
-						.getInt("id")) ? 1 : 0);
+				str2.append(resultado.getInt("id") + ";" + resultado.getString("perso") + ";" + resultado.getString("asunto")
+				+ ";" + resultado.getString("fecha") + ";" + (cuenta.tieneReporte(Constantes.REPORTE_DENUNCIAS, resultado
+				.getInt("id")) ? 1 : 0));
 			}
-			str.append(str2.toString()).append("|");
+			str.append(str2.toString() + "|");
 			cerrarResultado(resultado);
 			resultado = consultaSQL("SELECT * FROM `problema_ogrinas` LIMIT " + MainServidor.LIMITE_REPORTES + ";",
 			_bdDinamica);
@@ -4421,8 +4407,9 @@ public class GestorSQL {
 				if (str2.length() > 0) {
 					str2.append("#");
 				}
-				str2.append(resultado.getInt("id")).append(";").append(resultado.getString("perso")).append(";").append(resultado.getString("asunto")).append(";").append(resultado.getString("fecha")).append(";").append(cuenta.tieneReporte(Constantes.REPORTE_OGRINAS, resultado.getInt(
-						"id")) ? 1 : 0);
+				str2.append(resultado.getInt("id") + ";" + resultado.getString("perso") + ";" + resultado.getString("asunto")
+				+ ";" + resultado.getString("fecha") + ";" + (cuenta.tieneReporte(Constantes.REPORTE_OGRINAS, resultado.getInt(
+				"id")) ? 1 : 0));
 			}
 			str.append(str2.toString());
 			cerrarResultado(resultado);

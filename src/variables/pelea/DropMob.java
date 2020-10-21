@@ -4,10 +4,8 @@ import estaticos.Mundo;
 
 public class DropMob {
 	private final int _objModeloID, _prospeccion;
-	private final int _maximo;
-    private int _nivelMin;
-    private int _nivelMax;
-	private final float _porcentaje;
+	private int _maximo, _nivelMin, _nivelMax;
+	private float _porcentaje;
 	private String _condicion = "";
 	private final boolean _esDropFijo;
 	

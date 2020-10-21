@@ -14,12 +14,11 @@ public class MobGradoModelo {
 	private final byte _grado;
 	private short _nivel;
 	private int _PDVMAX, _baseXP, _minKamas, _maxKamas;
-	private final String _resistencias;
-    private String _spells;
+	private String _resistencias, _spells;
 	private final MobModelo _mobModelo;
 	private final Stats _stats = new Stats();
-	private final Map<Integer, StatHechizo> _hechizos = new TreeMap<>();
-	private static final int[] ORDEN_RESISTENCIAS = {Constantes.STAT_MAS_RES_PORC_NEUTRAL, Constantes.STAT_MAS_RES_PORC_TIERRA,
+	private Map<Integer, StatHechizo> _hechizos = new TreeMap<Integer, StatHechizo>();
+	private static int[] ORDEN_RESISTENCIAS = {Constantes.STAT_MAS_RES_PORC_NEUTRAL, Constantes.STAT_MAS_RES_PORC_TIERRA,
 	Constantes.STAT_MAS_RES_PORC_FUEGO, Constantes.STAT_MAS_RES_PORC_AGUA, Constantes.STAT_MAS_RES_PORC_AIRE,
 	Constantes.STAT_MAS_ESQUIVA_PERD_PA, Constantes.STAT_MAS_ESQUIVA_PERD_PM};
 	
@@ -36,7 +35,7 @@ public class MobGradoModelo {
 		}
 		_minKamas = minKamas;
 		_maxKamas = maxKamas;
-		Map<Integer, Integer> mapStats = new TreeMap<>();
+		Map<Integer, Integer> mapStats = new TreeMap<Integer, Integer>();
 		mapStats.put(Constantes.STAT_MAS_PA, PA);
 		mapStats.put(Constantes.STAT_MAS_PM, PM);
 		int i = -1;
@@ -45,13 +44,16 @@ public class MobGradoModelo {
 				if (sValor.isEmpty()) {
 					continue;
 				}
-				if (i == -1) {
-					_nivel = Short.parseShort(sValor);
-				} else {
-					mapStats.put(ORDEN_RESISTENCIAS[i], Integer.parseInt(sValor));
+				switch (i) {
+					case -1 :
+						_nivel = Short.parseShort(sValor);
+						break;
+					default :
+						mapStats.put(ORDEN_RESISTENCIAS[i], Integer.parseInt(sValor));
+						break;
 				}
 				i++;
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		// STATS
 		i = 0;
@@ -84,10 +86,14 @@ public class MobGradoModelo {
 					}
 					mapStats.put(idStat, Integer.parseInt(s));
 				}
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
-		mapStats.putIfAbsent(Constantes.STAT_MAS_CRIATURAS_INVO, 1);
-		mapStats.putIfAbsent(Constantes.STAT_MAS_INICIATIVA, iniciativa);
+		if (mapStats.get(Constantes.STAT_MAS_CRIATURAS_INVO) == null) {
+			mapStats.put(Constantes.STAT_MAS_CRIATURAS_INVO, 1);
+		}
+		if (mapStats.get(Constantes.STAT_MAS_INICIATIVA) == null) {
+			mapStats.put(Constantes.STAT_MAS_INICIATIVA, iniciativa);
+		}
 		_stats.nuevosStats(mapStats);
 		setHechizos(hechizos);
 	}
@@ -158,12 +164,19 @@ public class MobGradoModelo {
 		StringBuilder strStats = new StringBuilder();
 		for (Entry<Integer, Integer> entry : _stats.getEntrySet()) {
 			switch (entry.getKey()) {
-				case Constantes.STAT_MAS_PA, Constantes.STAT_MAS_PM, Constantes.STAT_MAS_CRIATURAS_INVO, Constantes.STAT_MAS_SUERTE, Constantes.STAT_MAS_AGILIDAD, Constantes.STAT_MAS_FUERZA, Constantes.STAT_MAS_INTELIGENCIA, Constantes.STAT_MAS_INICIATIVA -> {
+				case Constantes.STAT_MAS_PA :
+				case Constantes.STAT_MAS_PM :
+				case Constantes.STAT_MAS_CRIATURAS_INVO :
+				case Constantes.STAT_MAS_SUERTE :
+				case Constantes.STAT_MAS_AGILIDAD :
+				case Constantes.STAT_MAS_FUERZA :
+				case Constantes.STAT_MAS_INTELIGENCIA :
+				case Constantes.STAT_MAS_INICIATIVA :
 					if (strStats.length() > 0) {
 						strStats.append(",");
 					}
 					strStats.append(entry.getKey() + ":" + entry.getValue());
-				}
+					break;
 			}
 		}
 		return strStats.toString();

@@ -22,13 +22,12 @@ public class MobModelo {
 	private final int _id;
 	private MobModelo _archiMob;
 	private int _probabilidadAparecer = -1;
-	private final ArrayList<Integer> _subAreasAparecer = new ArrayList<>();
-	private short _talla;
-    private final short _gfxID;
+	private ArrayList<Integer> _subAreasAparecer = new ArrayList<>();
+	private short _talla, _gfxID;
 	private String _colores;
 	private final String _nombre;
-	private final Map<Byte, MobGradoModelo> _grados = new TreeMap<>();
-	private final ArrayList<DropMob> _drops = new ArrayList<>();
+	private final Map<Byte, MobGradoModelo> _grados = new TreeMap<Byte, MobGradoModelo>();
+	private final ArrayList<DropMob> _drops = new ArrayList<DropMob>();
 	private final boolean _esCapturable;
 	private final boolean _esKickeable;
 	
@@ -71,31 +70,31 @@ public class MobModelo {
 			}
 			try {
 				tempExp = Integer.parseInt(aExp[n]);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			try {
 				tempStats = aStats[n];
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			try {
 				tempHechizo = aHechizos[n];
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			try {
 				tempPDV = Integer.parseInt(aPDV[n]);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			try {
 				tempIniciativa = Integer.parseInt(aIniciativa[n]);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			try {
 				PA = Byte.parseByte(aPuntos[n].split(";")[0]);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			try {
 				PM = Byte.parseByte(aPuntos[n].split(";")[1]);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			try {
 				tempMinKamas = Integer.parseInt(aMinKamas[n]);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			try {
 				tempMaxKamas = Integer.parseInt(aMaxKamas[n]);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			_grados.put(grado, new MobGradoModelo(this, grado, PA, PM, tempResistNivel, tempStats, tempHechizo, tempPDV,
 			tempIniciativa, tempExp, tempMinKamas, tempMaxKamas));
 			grado++;
@@ -130,7 +129,7 @@ public class MobModelo {
 			}
 			try {
 				_subAreasAparecer.add(Integer.parseInt(s));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 	}
 	
@@ -154,12 +153,11 @@ public class MobModelo {
 			}
 			String[] split = packet.split(Pattern.quote("|"));
 			String[] stats = split[0].split(",");
-			for (String stat : stats) {
+			for (int i = 0; i < stats.length; i++) {
 				try {
-					String[] a = stat.split(":");
+					String[] a = stats[i].split(":");
 					mob.getStats().fijarStatID(Integer.parseInt(a[0]), Integer.parseInt(a[1]));
-				} catch (Exception ignored) {
-				}
+				} catch (Exception e) {}
 			}
 			mob.setPDVMAX(Integer.parseInt(split[1]));
 			mob.setBaseXp(Integer.parseInt(split[2]));
@@ -168,7 +166,7 @@ public class MobModelo {
 			String[] s = strStatsTodosMobs().split("~");
 			GestorSQL.UPDATE_STATS_PUNTOS_PDV_XP_MOB(_id, s[0], s[1], s[2], split[3], split[4]);
 			return true;
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return false;
 	}
 	
@@ -248,10 +246,18 @@ public class MobModelo {
 				int statID = Integer.parseInt(s2.split(",")[0]);
 				int valor = Integer.parseInt(s2.split(",")[1]);
 				switch (statID) {
-					case Constantes.STAT_MAS_FUERZA -> stats[0] = stats[1] = valor;
-					case Constantes.STAT_MAS_INTELIGENCIA -> stats[2] = valor;
-					case Constantes.STAT_MAS_SUERTE -> stats[3] = valor;
-					case Constantes.STAT_MAS_AGILIDAD -> stats[4] = valor;
+					case Constantes.STAT_MAS_FUERZA :
+						stats[0] = stats[1] = valor;
+						break;
+					case Constantes.STAT_MAS_INTELIGENCIA :
+						stats[2] = valor;
+						break;
+					case Constantes.STAT_MAS_SUERTE :
+						stats[3] = valor;
+						break;
+					case Constantes.STAT_MAS_AGILIDAD :
+						stats[4] = valor;
+						break;
 				}
 			}
 		} catch (Exception e) {
@@ -266,23 +272,24 @@ public class MobModelo {
 	
 	public String detalleMob() {
 		final StringBuilder str = new StringBuilder();
-		str.append(_tipoMob).append("|");
+		str.append(_tipoMob + "|");
 		StringBuilder str2 = new StringBuilder();
 		for (final DropMob drop : _drops) {
 			if (str2.length() > 0) {
 				str2.append(";");
 			}
-			str2.append(drop.getIDObjModelo()).append(",").append(drop.getProspeccion()).append("#").append(drop.getPorcentaje() * 1000).append("#").append(drop.getMaximo());
+			str2.append(drop.getIDObjModelo() + "," + drop.getProspeccion() + "#" + (drop.getPorcentaje() * 1000) + "#"
+			+ drop.getMaximo());
 		}
-		str.append(str2.toString()).append("|");
+		str.append(str2.toString() + "|");
 		str2 = new StringBuilder();
 		for (final MobGradoModelo mob : _grados.values()) {
 			if (str2.length() > 0) {
 				str2.append("|");
 			}
-			str2.append(mob.getPDVMAX()).append("~").append(mob.getPA()).append("~").append(mob.getPM()).append("~").append(mob.getResistencias()).append("~").append(mob
-					.getSpells().replace(";", ",")).append("~").append(mob.getBaseXp());
-			str2.append("~").append(mob.getMinKamas()).append(" - ").append(mob.getMaxKamas());
+			str2.append(mob.getPDVMAX() + "~" + mob.getPA() + "~" + mob.getPM() + "~" + mob.getResistencias() + "~" + mob
+			.getSpells().replace(";", ",") + "~" + mob.getBaseXp());
+			str2.append("~" + mob.getMinKamas() + " - " + mob.getMaxKamas());
 		}
 		str.append(str2.toString());
 		return str.toString();

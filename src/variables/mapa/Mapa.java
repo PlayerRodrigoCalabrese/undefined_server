@@ -43,20 +43,8 @@ import variables.zotros.Prisma;
 public class Mapa {
 	private byte _sigIDNpc = -51;
 	private boolean _muteado;
-	private final short _id;
-	private final short _X;
-	private final short _Y;
-	private short _capabilities;
-	private short _bgID;
-	private short _musicID;
-	private short _ambienteID;
-	private final byte _ancho;
-	private final byte _alto;
-	private byte _maxGrupoMobs = 5;
-	private byte _maxMobsPorGrupo = 8;
-	private byte _maxMercantes = 5;
-	private byte _maxPeleas = 99;
-	private byte _outDoor;
+	private short _id, _X, _Y, _capabilities, _bgID, _musicID, _ambienteID;
+	private byte _ancho, _alto, _maxGrupoMobs = 5, _maxMobsPorGrupo = 8, _maxMercantes = 5, _maxPeleas = 99, _outDoor;
 	private String _fecha, _mapData = "", _celdasPelea = "";
 	private Map<Short, Pelea> _peleas;
 	private Map<Integer, NPC> _npcs;
@@ -68,8 +56,8 @@ public class Mapa {
 	private ArrayList<MobPosible> _mobPosibles;
 	private ArrayList<Integer> _trabajosRealizar;
 	private ArrayList<ObjetoInteractivo> _objInteractivos;
-	private final Map<Short, Celda> _celdas = new TreeMap<>();
-	private final ArrayList<Short> _posPeleaRojo1 = new ArrayList<>(), _posPeleaAzul2 = new ArrayList<>();
+	private final Map<Short, Celda> _celdas = new TreeMap<Short, Celda>();
+	private final ArrayList<Short> _posPeleaRojo1 = new ArrayList<Short>(), _posPeleaAzul2 = new ArrayList<Short>();
 	private String _colorCeldaAtacante = "";
 	private SubArea _subArea;
 	private Cercado _cercado;
@@ -77,7 +65,7 @@ public class Mapa {
 	private Recaudador _recaudador;
 	private int _minNivelGrupoMob = 0;
 	private int _maxNivelGrupoMob = 0;
-	private final Boolean _prePelea = Boolean.TRUE;
+	private Boolean _prePelea = new Boolean(true);
 	
 	public Boolean getPrePelea() {
 		return _prePelea;
@@ -175,7 +163,7 @@ public class Mapa {
 					if (s2 != null && !s2.isEmpty()) {
 						s2.remove(0);
 					}
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 		}
 		if (s2 != null) {
@@ -191,7 +179,7 @@ public class Mapa {
 					}
 					grupoMob.addObjetosKamasInicioServer(s);
 					addUltimoGrupoMob(grupoMob);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 		}
 	}
@@ -243,17 +231,17 @@ public class Mapa {
 	}
 	
 	public void mapaNormal() {
-		_peleas = new HashMap<>();
-		_npcs = new HashMap<>();
-		_grupoMobsTotales = new HashMap<>();
+		_peleas = new HashMap<Short, Pelea>();
+		_npcs = new HashMap<Integer, NPC>();
+		_grupoMobsTotales = new HashMap<Integer, GrupoMob>();
 		// _grupoMobsFix = new HashMap<Integer, GrupoMob>();
-		_grupoMobsEnCola = new CopyOnWriteArrayList<>();
-		_personajes = new CopyOnWriteArrayList<>();
-		_accionFinPelea = new HashMap<>();
-		_mercantes = new TreeMap<>();
-		_mobPosibles = new ArrayList<>();
-		_trabajosRealizar = new ArrayList<>();
-		_objInteractivos = new ArrayList<>();
+		_grupoMobsEnCola = new CopyOnWriteArrayList<GrupoMob>();
+		_personajes = new CopyOnWriteArrayList<Personaje>();
+		_accionFinPelea = new HashMap<Integer, ArrayList<Accion>>();
+		_mercantes = new TreeMap<Integer, Personaje>();
+		_mobPosibles = new ArrayList<MobPosible>();
+		_trabajosRealizar = new ArrayList<Integer>();
+		_objInteractivos = new ArrayList<ObjetoInteractivo>();
 	}
 	
 	public Mapa copiarMapa(String posPelea) {
@@ -293,7 +281,7 @@ public class Mapa {
 			if (str.length > 2 && !str[2].isEmpty()) {
 				_colorCeldaAtacante = str[2];
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	// private void corregirPosPelea() {
@@ -394,7 +382,7 @@ public class Mapa {
 	
 	private int aptoParaPelea(int cant1, int cant2) {
 		switch (_colorCeldaAtacante) {
-			case "red" -> {
+			case "red" :
 				if (_posPeleaRojo1.size() < cant1) {
 					if (_posPeleaAzul2.size() < cant2) {
 						return -1;
@@ -405,8 +393,8 @@ public class Mapa {
 				if (_posPeleaAzul2.size() < cant2) {
 					return 2;
 				}
-			}
-			case "blue" -> {
+				break;
+			case "blue" :
 				if (_posPeleaAzul2.size() < cant1) {
 					if (_posPeleaRojo1.size() < cant2) {
 						return -1;
@@ -417,21 +405,21 @@ public class Mapa {
 				if (_posPeleaRojo1.size() < cant2) {
 					return 1;
 				}
-			}
-			default -> {
+				break;
+			default :
 				if (_posPeleaAzul2.size() < cant1 || _posPeleaRojo1.size() < cant1) {
 					return -1;
 				}
 				if (_posPeleaRojo1.size() < cant2 || _posPeleaAzul2.size() < cant2) {
 					return -1;
 				}
-			}
+				break;
 		}
 		return 0;
 	}
 	
 	private void getPosicionesAleatorias(int cant1, int cant2) {
-		final ArrayList<Short> celdaLibres = new ArrayList<>();
+		final ArrayList<Short> celdaLibres = new ArrayList<Short>();
 		for (final Entry<Short, Celda> entry : _celdas.entrySet()) {
 			if (!entry.getValue().esCaminable(true)) {
 				continue;
@@ -487,14 +475,14 @@ public class Mapa {
 		StringBuilder str = new StringBuilder();
 		String signo = mostrar ? "+" : "-";
 		for (short s : _posPeleaRojo1) {
-			str.append("|").append(signo).append(s).append(";0;4");
+			str.append("|" + signo + s + ";0;4");
 		}
 		for (short s : _posPeleaAzul2) {
-			str.append("|").append(signo).append(s).append(";0;11");
+			str.append("|" + signo + s + ";0;11");
 		}
 		if (_cercado != null) {
 			for (short s : _cercado.getCeldasObj()) {
-				str.append("|").append(signo).append(s).append(";0;5");
+				str.append("|" + signo + s + ";0;5");
 			}
 		}
 		if (str.length() == 0) {
@@ -548,14 +536,14 @@ public class Mapa {
 			return;
 		}
 		_mobPosibles.clear();
-		final ArrayList<Integer> ids = new ArrayList<>();
+		final ArrayList<Integer> ids = new ArrayList<Integer>();
 		for (final String str : mobs.split(Pattern.quote("|"))) {
 			try {
 				int mobID = 0;
 				String[] split = str.split(",");
 				try {
 					mobID = Integer.parseInt(split[0]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				mobID = Constantes.getMobSinHalloween(mobID);
 				if (ids.contains(mobID)) {
 					continue;
@@ -574,7 +562,7 @@ public class Mapa {
 					maxLvl = Integer.parseInt(split[2]);
 					cantidad = Integer.parseInt(split[3]);
 					probabilidad = Integer.parseInt(split[4]);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				MobPosible mobP = new MobPosible(cantidad, probabilidad);
 				for (final MobGradoModelo mob : Mundo.getMobModelo(mobID).getGrados().values()) {
 					if (minLvl > 0 && mob.getNivel() < minLvl) {
@@ -586,7 +574,7 @@ public class Mapa {
 					mobP.addMobPosible(mob);
 					addMobPosibles(mobP);
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		_mobPosibles.trimToSize();
 	}
@@ -758,7 +746,9 @@ public class Mapa {
 	
 	public void addAccionFinPelea(final int tipoPelea, final Accion accion) {
 		delAccionFinPelea(tipoPelea, accion.getID(), accion.getCondicion());
-		_accionFinPelea.computeIfAbsent(tipoPelea, k -> new ArrayList<Accion>());
+		if (_accionFinPelea.get(tipoPelea) == null) {
+			_accionFinPelea.put(tipoPelea, new ArrayList<Accion>());
+		}
 		_accionFinPelea.get(tipoPelea).add(accion);
 	}
 	
@@ -766,7 +756,8 @@ public class Mapa {
 		if (_accionFinPelea.get(tipoPelea) == null) {
 			return;
 		}
-		final ArrayList<Accion> copy = new ArrayList<>(_accionFinPelea.get(tipoPelea));
+		final ArrayList<Accion> copy = new ArrayList<Accion>();
+		copy.addAll(_accionFinPelea.get(tipoPelea));
 		for (final Accion acc : copy) {
 			if (acc.getID() == tipoAccion && acc.getCondicion().equals(condicion)) {
 				_accionFinPelea.get(tipoPelea).remove(acc);
@@ -868,7 +859,7 @@ public class Mapa {
 				return;
 			}
 			if (c.getAcciones().containsKey(0)) {
-				str.append("|").append(mostrar ? "+" : "-").append(c.getID()).append(";0;11");
+				str.append("|" + (mostrar ? "+" : "-") + c.getID() + ";0;11");
 			}
 		}
 		if (str.length() == 0) {
@@ -1025,7 +1016,7 @@ public class Mapa {
 					continue;
 				}
 				if (p.getPelea() == null) {
-					str.append("|+").append(p.stringGM());
+					str.append("|+" + p.stringGM());
 				}
 			}
 		} catch (final Exception e) {
@@ -1041,7 +1032,7 @@ public class Mapa {
 		if (!perso.enLinea()) {
 			try {
 				perso.setCelda(null);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 			removerPersonaje(perso);
 			return true;
 		}
@@ -1055,9 +1046,9 @@ public class Mapa {
 				if (celda.getLuchadores() == null)
 					return "";
 				for (final Luchador luchador : celda.getLuchadores()) {
-					str.append("|+").append(luchador.stringGM(idMirador));
+					str.append("|+" + luchador.stringGM(idMirador));
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception Exception) {}
 		}
 		if (str.length() < 3) {
 			return "";
@@ -1077,8 +1068,8 @@ public class Mapa {
 				if (GM.isEmpty()) {
 					continue;
 				}
-				str.append("|+").append(GM);
-			} catch (final Exception ignored) {}
+				str.append("|+" + GM);
+			} catch (final Exception Exception) {}
 		}
 		return str.toString();
 	}
@@ -1090,8 +1081,8 @@ public class Mapa {
 		final StringBuilder str = new StringBuilder("GM");
 		for (final NPC npc : _npcs.values()) {
 			try {
-				str.append("|+").append(npc.strinGM(perso));
-			} catch (final Exception ignored) {}
+				str.append("|+" + npc.strinGM(perso));
+			} catch (final Exception Exception) {}
 		}
 		return str.toString();
 	}
@@ -1103,8 +1094,8 @@ public class Mapa {
 		final StringBuilder str = new StringBuilder("GM");
 		for (final Personaje perso : _mercantes.values()) {
 			try {
-				str.append("|+").append(perso.stringGMmercante());
-			} catch (final Exception ignored) {}
+				str.append("|+" + perso.stringGMmercante());
+			} catch (final Exception Exception) {}
 		}
 		return str.toString();
 	}
@@ -1119,7 +1110,7 @@ public class Mapa {
 			if (esPublico && montura.getDueñoID() != perso.getID()) {
 				continue;
 			}
-			str.append("|+").append(montura.stringGM());
+			str.append("|+" + montura.stringGM());
 		}
 		return str.toString();
 	}
@@ -1134,9 +1125,10 @@ public class Mapa {
 				str.append("|");
 			}
 			if (_cercado.getDueñoID() == -1) {
-				str.append(entry.getKey()).append(";").append(Constantes.getObjCriaPorMapa(_id)).append(";1;1000;1000");
+				str.append(entry.getKey() + ";" + Constantes.getObjCriaPorMapa(_id) + ";1;1000;1000");
 			} else {
-				str.append(entry.getKey()).append(";").append(entry.getValue().getObjModeloID()).append(";1;").append(entry.getValue().getDurabilidad()).append(";").append(entry.getValue().getDurabilidadMax());
+				str.append(entry.getKey() + ";" + entry.getValue().getObjModeloID() + ";1;" + entry.getValue().getDurabilidad()
+				+ ";" + entry.getValue().getDurabilidadMax());
 			}
 		}
 		return "GDO+" + str.toString();
@@ -1147,10 +1139,10 @@ public class Mapa {
 		final StringBuilder str2 = new StringBuilder("GDF");
 		for (final Celda celda : _celdas.values()) {
 			if (celda.getObjetoInteractivo() != null) {
-				str2.append("|").append(celda.getID()).append(";").append(celda.getObjetoInteractivo().getInfoPacket());
+				str2.append("|" + celda.getID() + ";" + celda.getObjetoInteractivo().getInfoPacket());
 			} else if (celda.getEstado() != 1) {
-				str2.append("|").append(celda.getID()).append(";").append(celda.getEstado());
-				str.append(celda.getID()).append(";aaVaaaaaaa800|");
+				str2.append("|" + celda.getID() + ";" + celda.getEstado());
+				str.append(celda.getID() + ";aaVaaaaaaa800|");
 			}
 		}
 		if (str.length() == 3 && str2.length() == 3) {
@@ -1166,7 +1158,7 @@ public class Mapa {
 	}
 	
 	public short getRandomCeldaIDLibre() {
-		final ArrayList<Short> celdaLibre = new ArrayList<>();
+		final ArrayList<Short> celdaLibre = new ArrayList<Short>();
 		for (final Celda celda : _celdas.values()) {
 			if (!celda.esCaminable(true) || celda.getPrimerPersonaje() != null) {
 				continue;
@@ -1237,7 +1229,7 @@ public class Mapa {
 					break;
 				}
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		// return str;
 	}
 	
@@ -1635,7 +1627,7 @@ public class Mapa {
 				if (c.getObjetoInteractivo().getObjIntModelo().getID() == 120) {
 					return c.getObjetoInteractivo();
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		return null;
 	}

@@ -6,7 +6,7 @@ import variables.zotros.Accion;
 
 public class RespuestaNPC {
 	private final int _id;
-	private final ArrayList<Accion> _acciones = new ArrayList<>();
+	private final ArrayList<Accion> _acciones = new ArrayList<Accion>();
 	private String _condicion = "";
 	
 	public RespuestaNPC(final int id) {
@@ -35,7 +35,8 @@ public class RespuestaNPC {
 	}
 	
 	public void addAccion(final Accion accion) {
-        final ArrayList<Accion> c = new ArrayList<>(_acciones);
+		final ArrayList<Accion> c = new ArrayList<Accion>();
+		c.addAll(_acciones);
 		String condicion = accion.getCondicion();
 		if (condicion.isEmpty()) {
 			condicion = null;

@@ -28,8 +28,8 @@ public class MascotaModelo {
 		}
 	}
 	private final int _id, _maxStats, _fantasma;
-	private final ArrayList<Duo<Integer, Integer>> _statsPorEfecto = new ArrayList<>();
-	private final ArrayList<Comida> _comidas = new ArrayList<>();
+	private final ArrayList<Duo<Integer, Integer>> _statsPorEfecto = new ArrayList<Duo<Integer, Integer>>();
+	private final ArrayList<Comida> _comidas = new ArrayList<Comida>();
 	private final boolean _esDevorador;
 	private String _strComidas = "";
 	
@@ -43,16 +43,16 @@ public class MascotaModelo {
 				try {
 					final String[] str = comida.split(";");
 					_comidas.add(new Comida(Integer.parseInt(str[0]), Integer.parseInt(str[1]), Integer.parseInt(str[2])));
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 		}
 		_strComidas = "comidas: " + comidas + " statsPorEfecto: " + statsPorEfecto + " maxStats: " + maxStas;
 		final String[] stats = statsPorEfecto.split(Pattern.quote("|"));
 		for (final String s : stats) {
 			try {
-				_statsPorEfecto.add(new Duo<>(Integer.parseInt(s.split(";")[0]), Integer
-						.parseInt(s.split(";")[1])));
-			} catch (final Exception ignored) {}
+				_statsPorEfecto.add(new Duo<Integer, Integer>(Integer.parseInt(s.split(";")[0]), Integer
+				.parseInt(s.split(";")[1])));
+			} catch (final Exception e) {}
 		}
 		_esDevorador = devorador == 1;
 	}

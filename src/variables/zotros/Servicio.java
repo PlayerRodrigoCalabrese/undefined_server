@@ -13,14 +13,8 @@ import estaticos.GestorSalida;
 import estaticos.Mundo;
 
 public class Servicio {
-	private final int _id;
-    private final int _creditosSinAbono;
-    private final int _ogrinasSinAbono;
-    private final int _creditosAbonado;
-    private final int _ogrinasAbonado;
-	private final boolean _activado;
-    private final boolean _biPagoSinAbono;
-    private final boolean _biPagoAbonado;
+	private int _id, _creditosSinAbono, _ogrinasSinAbono, _creditosAbonado, _ogrinasAbonado;
+	private boolean _activado, _biPagoSinAbono, _biPagoAbonado;
 	
 	public Servicio(int id, int creditos, int ogrinas, boolean activado, int creditosVIP, int ogrinasVIP) {
 		_id = id;
@@ -59,18 +53,16 @@ public class Servicio {
 		if (_perso.getCuenta().esAbonado()) {
 			if (_biPagoAbonado) {
 				switch (_perso.getMedioPagoServicio()) {
-					case 1 -> {
+					case 1 :
 						if (!GestorSQL.RESTAR_CREDITOS(_perso.getCuenta(), _creditosAbonado, _perso)) {
 							return false;
 						}
 						return true;
-					}
-					case 2 -> {
+					case 2 :
 						if (!GestorSQL.RESTAR_OGRINAS(_perso.getCuenta(), _ogrinasAbonado, _perso)) {
 							return false;
 						}
 						return true;
-					}
 				}
 			}
 			if (_creditosAbonado > 0) {
@@ -85,18 +77,16 @@ public class Servicio {
 		} else {
 			if (_biPagoSinAbono) {
 				switch (_perso.getMedioPagoServicio()) {
-					case 1 -> {
+					case 1 :
 						if (!GestorSQL.RESTAR_CREDITOS(_perso.getCuenta(), _creditosSinAbono, _perso)) {
 							return false;
 						}
 						return true;
-					}
-					case 2 -> {
+					case 2 :
 						if (!GestorSQL.RESTAR_OGRINAS(_perso.getCuenta(), _ogrinasSinAbono, _perso)) {
 							return false;
 						}
 						return true;
-					}
 				}
 			}
 			if (_creditosSinAbono > 0) {

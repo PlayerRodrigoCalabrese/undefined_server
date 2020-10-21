@@ -232,7 +232,7 @@ public class Objeto {
 	
 	public ArrayList<EfectoHechizo> getEfectosCriticos() {
 		if (_efectosNormales != null) {
-			final ArrayList<EfectoHechizo> efectos = new ArrayList<>();
+			final ArrayList<EfectoHechizo> efectos = new ArrayList<EfectoHechizo>();
 			for (final EfectoHechizo EH : _efectosNormales) {
 				try {
 					if (EH.getEfectoID() == Constantes.STAT_MENOS_PA) {
@@ -256,7 +256,7 @@ public class Objeto {
 						eh.setAfectados(2);
 						efectos.add(eh);
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			return efectos;
 		}
@@ -428,7 +428,8 @@ public class Objeto {
 					}
 					final String[] infos = EH.getArgs().split(",");
 					try {
-						stats.append(Integer.toHexString(EH.getEfectoID())).append("#").append(Integer.toHexString(Integer.parseInt(infos[0]))).append("#").append(Integer.toHexString(Integer.parseInt(infos[1]))).append("#0#").append(infos[5]);
+						stats.append(Integer.toHexString(EH.getEfectoID()) + "#" + Integer.toHexString(Integer.parseInt(infos[0]))
+						+ "#" + Integer.toHexString(Integer.parseInt(infos[1])) + "#0#" + infos[5]);
 					} catch (final Exception e) {
 						e.printStackTrace();
 					}
@@ -438,7 +439,8 @@ public class Objeto {
 				if (stats.length() > 0) {
 					stats.append(",");
 				}
-				stats.append(Integer.toHexString(Constantes.STAT_RESISTENCIA)).append("#0#").append(Integer.toHexString(_durabilidad)).append("#").append(Integer.toHexString(_durabilidadMax)).append("#0d0+").append(_durabilidad);
+				stats.append(Integer.toHexString(Constantes.STAT_RESISTENCIA) + "#0#" + Integer.toHexString(_durabilidad) + "#"
+				+ Integer.toHexString(_durabilidadMax) + "#0d0+" + _durabilidad);
 			}
 			String oStats = _statsGeneral.getStringStats(this);
 			if (!oStats.isEmpty()) {
@@ -466,7 +468,7 @@ public class Objeto {
 			if (stats.length() > 0) {
 				stats.append(",");
 			}
-			stats.append(Integer.toHexString(Constantes.STAT_COLOR_NOMBRE_OBJETO)).append("#1");
+			stats.append(Integer.toHexString(Constantes.STAT_COLOR_NOMBRE_OBJETO) + "#1");
 		}
 		return stats.toString();
 	}
@@ -486,8 +488,8 @@ public class Objeto {
 				if (stats.length() > 0) {
 					stats.append(";");
 				}
-				stats.append(Integer.parseInt(s[3], 16)).append(",").append(Integer.parseInt(s[1], 16)).append(",").append(Integer.parseInt(s[1], 16));
-			} catch (Exception ignored) {}
+				stats.append(Integer.parseInt(s[3], 16) + "," + Integer.parseInt(s[1], 16) + "," + Integer.parseInt(s[1], 16));
+			} catch (Exception e) {}
 		}
 		return stats.toString();
 	}
@@ -505,8 +507,8 @@ public class Objeto {
 				if (stats.length() > 0) {
 					stats.append(";");
 				}
-				stats.append(Integer.parseInt(s[1], 16)).append(",").append(Integer.parseInt(s[2], 16));
-			} catch (Exception ignored) {}
+				stats.append(Integer.parseInt(s[1], 16) + "," + Integer.parseInt(s[2], 16));
+			} catch (Exception e) {}
 		}
 		return stats.toString();
 	}
@@ -536,7 +538,7 @@ public class Objeto {
 			if (tieneStatTexto(Constantes.STAT_NUMERO_COMIDAS)) {
 				nroComidas = Integer.parseInt(getParamStatTexto(Constantes.STAT_NUMERO_COMIDAS, 1), 16);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 		nroComidas++;
 		addStatTexto(Constantes.STAT_ULTIMA_COMIDA, "0#0#" + Integer.toHexString(idModComida));
 		if (nroComidas == 3) {
@@ -549,10 +551,16 @@ public class Objeto {
 			int maximo = 0, maxPorStat = 0;
 			for (final Entry<Integer, Integer> entry : _statsGeneral.getEntrySet()) {
 				final int statID = entry.getKey();
-				byte factor = switch (statID) {
-					case Constantes.STAT_MAS_RES_PORC_AGUA, Constantes.STAT_MAS_RES_PORC_TIERRA, Constantes.STAT_MAS_RES_PORC_AIRE, Constantes.STAT_MAS_RES_PORC_NEUTRAL, Constantes.STAT_MAS_RES_PORC_FUEGO -> 6;
-					default -> 1;
-				};
+				byte factor = 1;
+				switch (statID) {
+					case Constantes.STAT_MAS_RES_PORC_AGUA :
+					case Constantes.STAT_MAS_RES_PORC_TIERRA :
+					case Constantes.STAT_MAS_RES_PORC_AIRE :
+					case Constantes.STAT_MAS_RES_PORC_NEUTRAL :
+					case Constantes.STAT_MAS_RES_PORC_FUEGO :
+						factor = 6;
+						break;
+				}
 				maximo += entry.getValue() * factor;
 				if (statID == efecto) {
 					maxPorStat = entry.getValue() * factor;
@@ -594,7 +602,7 @@ public class Objeto {
 						valorTemp = c;
 						index = _statsGeneral.getStatRepetidos().indexOf(stati);
 					}
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 			if (index > -1) {
 				_statsGeneral.getStatRepetidos().remove(index);
@@ -604,10 +612,16 @@ public class Objeto {
 		idMobModelo) + "#0#" + Integer.toHexString(valorTemp + cantAlmasDevor) + "#0");
 		for (final Entry<Integer, Integer> entry : _statsGeneral.getEntrySet()) {
 			final int statID = entry.getKey();
-			byte por = switch (statID) {
-				case Constantes.STAT_MAS_RES_PORC_TIERRA, Constantes.STAT_MAS_RES_PORC_AGUA, Constantes.STAT_MAS_RES_PORC_AIRE, Constantes.STAT_MAS_RES_PORC_FUEGO, Constantes.STAT_MAS_RES_PORC_NEUTRAL -> 6;
-				default -> 1;
-			};
+			byte por = 1;
+			switch (statID) {
+				case Constantes.STAT_MAS_RES_PORC_TIERRA :
+				case Constantes.STAT_MAS_RES_PORC_AGUA :
+				case Constantes.STAT_MAS_RES_PORC_AIRE :
+				case Constantes.STAT_MAS_RES_PORC_FUEGO :
+				case Constantes.STAT_MAS_RES_PORC_NEUTRAL :
+					por = 6;
+					break;
+			}
 			maximo += entry.getValue() * por;
 			if (statID == efecto) {
 				maxPorStat = entry.getValue() * por;
@@ -643,12 +657,15 @@ public class Objeto {
 	
 	public void setCorpulencia(final int numero) {
 		switch (numero) {
-// obeso
-			case Constantes.CORPULENCIA_OBESO -> addStatTexto(Constantes.STAT_CORPULENCIA, "0#7#0");
-// delgaducho
-			case Constantes.CORPULENCIA_DELGADO -> addStatTexto(Constantes.STAT_CORPULENCIA, "0#0#7");
-// normal
-			case Constantes.CORPULENCIA_NORMAL -> addStatTexto(Constantes.STAT_CORPULENCIA, "0#0#0");
+			case Constantes.CORPULENCIA_OBESO :// obeso
+				addStatTexto(Constantes.STAT_CORPULENCIA, "0#7#0");
+				break;
+			case Constantes.CORPULENCIA_DELGADO :// delgaducho
+				addStatTexto(Constantes.STAT_CORPULENCIA, "0#0#7");
+				break;
+			case Constantes.CORPULENCIA_NORMAL :// normal
+				addStatTexto(Constantes.STAT_CORPULENCIA, "0#0#0");
+				break;
 		}
 	}
 	
@@ -693,7 +710,7 @@ public class Objeto {
 					}
 					final String[] infos = EH.getArgs().split(",");
 					return (Integer.parseInt(infos[1], 16) + Integer.parseInt(infos[0], 16)) / 2;
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 		}
 		return 1;
@@ -796,7 +813,7 @@ public class Objeto {
 						red = (float) Math.ceil(red / MainServidor.FACTOR_OBTENER_RUNAS);
 						pesoStat -= red;
 					}
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 		}
 	}
@@ -882,7 +899,7 @@ public class Objeto {
 	
 	private int getStatElegidoAPerder(final int pesoOrigRuna, final int statRuna,
 	final ArrayList<Integer> statsCheckeados) {
-		final ArrayList<Integer> listaStats = new ArrayList<>();
+		final ArrayList<Integer> listaStats = new ArrayList<Integer>();
 		for (final Entry<Integer, Integer> entry : _statsGeneral.getEntrySet()) {
 			final int statID = entry.getKey();
 			int valor = entry.getValue();
@@ -947,8 +964,9 @@ public class Objeto {
 	public String stringObjetoConGuiño() {
 		final StringBuilder str = new StringBuilder();
 		try {
-			str.append(Integer.toHexString(_id)).append("~").append(Integer.toHexString(_idObjModelo)).append("~").append(Integer.toHexString(
-					_cantidad)).append("~").append(_posicion == Constantes.OBJETO_POS_NO_EQUIPADO ? "" : Integer.toHexString(_posicion)).append("~").append(convertirStatsAString(false)).append("~").append(_objModelo.getKamas() / 10);
+			str.append(Integer.toHexString(_id) + "~" + Integer.toHexString(_idObjModelo) + "~" + Integer.toHexString(
+			_cantidad) + "~" + (_posicion == Constantes.OBJETO_POS_NO_EQUIPADO ? "" : Integer.toHexString(_posicion)) + "~"
+			+ convertirStatsAString(false) + "~" + _objModelo.getKamas() / 10);
 			str.append(";");
 		} catch (Exception e) {
 			MainServidor.redactarLogServidorln("OBJETO BUG stringObjetoConGuiño " + _id + " Exception: " + e.toString());
@@ -959,7 +977,7 @@ public class Objeto {
 	public String stringObjetoConPalo(final int cantidad) {
 		final StringBuilder str = new StringBuilder();
 		try {
-			str.append(_id).append("|").append(cantidad).append("|").append(_idObjModelo).append("|").append(convertirStatsAString(false));
+			str.append(_id + "|" + cantidad + "|" + _idObjModelo + "|" + convertirStatsAString(false));
 		} catch (Exception e) {
 			MainServidor.redactarLogServidorln("OBJETO BUG stringObjetoConPalo " + _id + " Exception: " + e.toString());
 		}

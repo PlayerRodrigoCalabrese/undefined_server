@@ -27,12 +27,12 @@ public class Cuenta {
 	private String _actualIP = "", _ultimaIP = "", _ultimaConexion = "", _idioma = "es";
 	private ServidorSocket _entradaPersonaje;
 	private Personaje _tempPerso;
-	private final ArrayList<Integer> _idsAmigos = new ArrayList<>(), _idsEnemigos = new ArrayList<>();
-	private final Map<Integer, Personaje> _personajes = new TreeMap<>();
-	private final Map<Byte, ArrayList<Integer>> _idsReportes = new TreeMap<>();
+	private final ArrayList<Integer> _idsAmigos = new ArrayList<Integer>(), _idsEnemigos = new ArrayList<Integer>();
+	private final Map<Integer, Personaje> _personajes = new TreeMap<Integer, Personaje>();
+	private final Map<Byte, ArrayList<Integer>> _idsReportes = new TreeMap<Byte, ArrayList<Integer>>();
 	// private final Map<Integer, Objeto> _objetosEnBanco = new TreeMap<Integer, Objeto>();
-	private final ConcurrentHashMap<Integer, Montura> _establo = new ConcurrentHashMap<>();
-	private final ArrayList<String> _mensajes = new ArrayList<>();
+	private final ConcurrentHashMap<Integer, Montura> _establo = new ConcurrentHashMap<Integer, Montura>();
+	private final ArrayList<String> _mensajes = new ArrayList<String>();
 	private final Cofre _banco = new Cofre((short) -1, (short) -1, (short) 0, (short) 0, 99999);
 	
 	public Cuenta(final int id, final String nombre) {
@@ -92,21 +92,21 @@ public class Cuenta {
 					continue;
 				}
 				_banco.addObjetoRapido(obj);
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		for (final String s : amigos.split(";")) {
 			try {
 				if (s.isEmpty())
 					continue;
 				_idsAmigos.add(Integer.parseInt(s));
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		for (final String s : enemigos.split(";")) {
 			try {
 				if (s.isEmpty())
 					continue;
 				_idsEnemigos.add(Integer.parseInt(s));
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		_idsAmigos.trimToSize();
 		_idsEnemigos.trimToSize();
@@ -118,17 +118,17 @@ public class Cuenta {
 				if (montura != null) {
 					addMonturaEstablo(montura);
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		byte i = 0;
 		for (final String s : reportes.split(Pattern.quote("|"))) {
-			final ArrayList<Integer> array = new ArrayList<>();
+			final ArrayList<Integer> array = new ArrayList<Integer>();
 			for (final String f : s.split(";")) {
 				try {
 					if (f.isEmpty())
 						continue;
 					array.add(Integer.parseInt(f));
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			_idsReportes.put(i, array);
 			i++;
@@ -153,7 +153,7 @@ public class Cuenta {
 					Mundo.CUENTAS_A_BORRAR.add(this);
 				}
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	public boolean tieneReporte(final byte tipo, final int id) {
@@ -178,7 +178,7 @@ public class Cuenta {
 					}
 					str2.append(f);
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 			str.append(str2.toString());
 		}
 		return str.toString();
@@ -186,11 +186,13 @@ public class Cuenta {
 	
 	public void addIDReporte(final byte tipo, final int id) {
 		try {
-			_idsReportes.computeIfAbsent(tipo, k -> new ArrayList<Integer>());
+			if (_idsReportes.get(tipo) == null) {
+				_idsReportes.put(tipo, new ArrayList<Integer>());
+			}
 			if (!_idsReportes.get(tipo).contains(id)) {
 				_idsReportes.get(tipo).add(id);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	public void setUltimaConexion() {
@@ -559,7 +561,7 @@ public class Cuenta {
 			if (cuenta == null) {
 				continue;
 			}
-			str.append("|").append(cuenta.getApodo());
+			str.append("|" + cuenta.getApodo());
 			if (!cuenta.enLinea()) {
 				continue;
 			}
@@ -622,14 +624,14 @@ public class Cuenta {
 		try {
 			_idsAmigos.remove(_idsAmigos.indexOf(id));
 			GestorSalida.ENVIAR_FD_BORRAR_AMIGO(_tempPerso, "K");
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	public void borrarEnemigo(final int id) {
 		try {
 			_idsEnemigos.remove(_idsEnemigos.indexOf(id));
 			GestorSalida.ENVIAR_iD_BORRAR_ENEMIGO(_tempPerso, "K");
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	public boolean esAmigo(final int id) {

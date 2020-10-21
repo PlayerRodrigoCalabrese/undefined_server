@@ -21,8 +21,8 @@ public class NPCModelo {
 	private String _accesoriosHex;
 	private final String _nombre;
 	private String _listaObjetos = "";
-	private final ArrayList<ObjetoModelo> _objVender = new ArrayList<>();
-	private final ArrayList<MisionModelo> _misiones = new ArrayList<>();
+	private final ArrayList<ObjetoModelo> _objVender = new ArrayList<ObjetoModelo>();
+	private final ArrayList<MisionModelo> _misiones = new ArrayList<MisionModelo>();
 	
 	public NPCModelo(final int id, final int gfxID, final short escalaX, final short escalaY, final byte sexo,
 	final int color1, final int color2, final int color3, final int foto, final int preguntaID, final String objVender,
@@ -49,7 +49,7 @@ public class NPCModelo {
 						continue;
 					}
 					_objVender.add(objModelo);
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 			}
 			actualizarObjetosAVender();
 		}
@@ -142,7 +142,7 @@ public class NPCModelo {
 			MisionPregunta preg;
 			for (final MisionModelo misionMod : _misiones) {
 				switch (perso.getEstadoMision(misionMod.getID())) {
-					case Mision.ESTADO_COMPLETADO -> {
+					case Mision.ESTADO_COMPLETADO :
 						if (misionMod.getPuedeRepetirse()) {
 							perso.borrarMision(misionMod.getID());
 						}
@@ -153,8 +153,8 @@ public class NPCModelo {
 						if (Condiciones.validaCondiciones(perso, preg.getCondicion())) {
 							completado = preg.getPreguntaID();
 						}
-					}
-					case Mision.ESTADO_INCOMPLETO -> {
+						break;
+					case Mision.ESTADO_INCOMPLETO :
 						preg = misionMod.getMisionPregunta(Mision.ESTADO_INCOMPLETO);
 						if (preg.getNPCID() != _id || preg.getPreguntaID() == 0) {
 							continue;
@@ -162,8 +162,8 @@ public class NPCModelo {
 						if (Condiciones.validaCondiciones(perso, preg.getCondicion())) {
 							incompleto = preg.getPreguntaID();
 						}
-					}
-					case Mision.ESTADO_NO_TIENE -> {
+						break;
+					case Mision.ESTADO_NO_TIENE :
 						preg = misionMod.getMisionPregunta(Mision.ESTADO_NO_TIENE);
 						if (preg.getNPCID() != _id || preg.getPreguntaID() == 0) {
 							continue;
@@ -171,7 +171,7 @@ public class NPCModelo {
 						if (Condiciones.validaCondiciones(perso, preg.getCondicion())) {
 							noTiene = preg.getPreguntaID();
 						}
-					}
+						break;
 				}
 			}
 			if (incompleto != -1) {
@@ -205,7 +205,7 @@ public class NPCModelo {
 		}
 		final StringBuilder objetos = new StringBuilder();
 		for (final ObjetoModelo obj : _objVender) {
-			objetos.append(obj.stringDeStatsParaTienda()).append("|");
+			objetos.append(obj.stringDeStatsParaTienda() + "|");
 		}
 		_listaObjetos = objetos.toString();
 	}
@@ -220,7 +220,7 @@ public class NPCModelo {
 		}
 		final StringBuilder objetos = new StringBuilder();
 		for (final ObjetoModelo obj : _objVender) {
-			objetos.append(obj.getID()).append(",");
+			objetos.append(obj.getID() + ",");
 		}
 		return objetos.toString();
 	}

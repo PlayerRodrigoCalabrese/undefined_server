@@ -7,8 +7,8 @@ public class MisionModelo {
 	private final int _id;
 	private final boolean _puedeRepetirse;
 	private final String _nombre;
-	private final ArrayList<Integer> _etapas = new ArrayList<>();
-	private final MisionPregunta[] _preguntas = new MisionPregunta[3];
+	private final ArrayList<Integer> _etapas = new ArrayList<Integer>();
+	private MisionPregunta[] _preguntas = new MisionPregunta[3];
 	
 	public MisionModelo(final int id, final String etapas, final String nombre, final String pregDarMision,
 	final String pregMisCumplida, final String pregMisIncompleta, boolean puedeRepetirse) {
@@ -32,18 +32,18 @@ public class MisionModelo {
 			String condicion = "";
 			try {
 				npc = Integer.parseInt(s[0]);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 			try {
 				pregID = Integer.parseInt(s[1]);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 			try {
 				condicion = s[2];
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 			_preguntas[estado] = new MisionPregunta(pregID, npc, condicion);
 			if (npc > 0) {
 				Mundo.getNPCModelo(npc).addMision(this);
 			}
-		} catch (final Exception ignored) {}
+		} catch (final Exception e) {}
 	}
 	
 	public MisionPregunta getMisionPregunta(int estado) {
@@ -75,14 +75,14 @@ public class MisionModelo {
 	}
 	
 	public String strEtapas() {
-		StringBuilder s = new StringBuilder();
+		String s = "";
 		for (int i : _etapas) {
-			if (s.length() > 0) {
-				s.append(",");
+			if (!s.isEmpty()) {
+				s += ",";
 			}
-			s.append(i);
+			s += i;
 		}
-		return s.toString();
+		return s;
 	}
 	
 	public void setEtapas(final String etapas) {
@@ -90,7 +90,7 @@ public class MisionModelo {
 		for (final String str : etapas.split(",")) {
 			try {
 				_etapas.add(Integer.parseInt(str));
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 	}
 	

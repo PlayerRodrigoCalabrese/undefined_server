@@ -6,7 +6,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 import variables.mapa.Celda;
@@ -17,7 +16,7 @@ public class Encriptador {
 	'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', // 38
 	'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', // 61
 	'-', '_'};// q = 16, N = 40, - = 63 _ = 64
-	private static final char[] HEX_CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+	private static char[] HEX_CHARS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
 	public static final String ABC_MIN = "abcdefghijklmnopqrstuvwxyz";
 	public static final String ABC_MAY = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	public static final String VOCALES = "aeiouAEIOU";
@@ -107,9 +106,9 @@ public class Encriptador {
 		preData[7] = preData[7] | valores[2] >> 12 & 1;
 		preData[8] = valores[2] >> 6 & 63;
 		preData[9] = valores[2] & 63;
-		StringBuilder fD = new StringBuilder();
+		String fD = "";
 		for (int d : preData) {
-			fD.append(Encriptador.getValorHashPorNumero(d));
+			fD += Encriptador.getValorHashPorNumero(d);
 		}
 		return fD + fP;
 	}
@@ -123,7 +122,7 @@ public class Encriptador {
 				if (((i & 15) << 4 | o & 15) == Integer.parseInt(split[cantidad])) {
 					final Character A = (char) (i + 48);
 					final Character B = (char) (o + 48);
-					encriptado.append(A.toString()).append(B.toString());
+					encriptado.append(A.toString() + B.toString());
 					i = 0;
 					o = 0;
 					cantidad++;
@@ -191,7 +190,7 @@ public class Encriptador {
 				listaCeldas.add((short) ((getNumeroPorValorHash(posPelea.charAt(a)) << 6) + getNumeroPorValorHash(posPelea
 				.charAt(a + 1))));
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 	}
 	
 	public static void decompilarMapaData(final Mapa mapa) {
@@ -201,7 +200,7 @@ public class Encriptador {
 			short objInteractivo;
 			for (short f = 0; f < mapa.getMapData().length(); f += 10) {
 				final StringBuilder celdaData = new StringBuilder(mapa.getMapData().substring(f, f + 10));
-				ArrayList<Byte> celdaInfo = new ArrayList<>();
+				ArrayList<Byte> celdaInfo = new ArrayList<Byte>();
 				for (int i = 0; i < celdaData.length(); i++) {
 					celdaInfo.add(getNumeroPorValorHash(celdaData.charAt(i)));
 				}
@@ -235,7 +234,7 @@ public class Encriptador {
 		try {
 			key = prepareKey(key);
 			data = decypherData(preData, key, checksum(key) + "");
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return data;
 	}
 	
@@ -284,16 +283,16 @@ public class Encriptador {
 	
 	private static String decypherData(String d, String k, String checksum) throws Exception {
 		int c = Integer.parseInt(checksum, 16) * 2;
-		StringBuilder _loc5 = new StringBuilder();
+		String _loc5 = "";
 		int _loc6 = k.length();
 		int _loc7 = 0;
 		int _loc9 = 0;
 		for (; _loc9 < d.length(); _loc9 = _loc9 + 2) {
-			_loc5.append((char) (Integer.parseInt(d.substring(_loc9, _loc9 + 2), 16) ^ k.codePointAt((_loc7 + c) % _loc6)));
+			_loc5 += (char) (Integer.parseInt(d.substring(_loc9, _loc9 + 2), 16) ^ k.codePointAt((_loc7 + c) % _loc6));
 			_loc7++;
 		}
-		_loc5 = new StringBuilder(unescape(_loc5.toString()));
-		return (_loc5.toString());
+		_loc5 = unescape(_loc5);
+		return (_loc5);
 	}
 	
 	private static String d2h(int d) {
@@ -305,16 +304,16 @@ public class Encriptador {
 	
 	private static String unescape(String s) {
 		try {
-			s = URLDecoder.decode(s, StandardCharsets.UTF_8);
-		} catch (Exception ignored) {}
+			s = URLDecoder.decode(s, "UTF-8");
+		} catch (Exception e) {}
 		return s;
 	}
 	
 	// oscila del 32 al 127, todos los contenidos de k 95
 	private static String escape(String s) {
 		try {
-			s = URLEncoder.encode(s, StandardCharsets.UTF_8);
-		} catch (Exception ignored) {}
+			s = URLEncoder.encode(s, "UTF-8");
+		} catch (Exception e) {}
 		return s;
 	}
 	
@@ -333,13 +332,13 @@ public class Encriptador {
 	}
 	
 	public static String prepareKey(String d) {
-		StringBuilder _loc3 = new StringBuilder(new String());
+		String _loc3 = new String();
 		int _loc4 = 0;
 		for (; _loc4 < d.length(); _loc4 = _loc4 + 2) {
-			_loc3.append((char) (Integer.parseInt(d.substring(_loc4, _loc4 + 2), 16)));
+			_loc3 = _loc3 + (char) (Integer.parseInt(d.substring(_loc4, _loc4 + 2), 16));
 		}
-		_loc3 = new StringBuilder(unescape(_loc3.toString()));
-		return (_loc3.toString());
+		_loc3 = unescape(_loc3);
+		return (_loc3);
 	}
 	
 	private static char checksum(String s) {
@@ -365,7 +364,7 @@ public class Encriptador {
 	public static String aUTF(final String entrada) {
 		String out = "";
 		try {
-			out = new String(entrada.getBytes(StandardCharsets.UTF_8));
+			out = new String(entrada.getBytes("UTF-8"));
 		} catch (final Exception e) {
 			System.out.println("Conversion en UTF-8 fallida! : " + e.toString());
 		}
@@ -375,7 +374,7 @@ public class Encriptador {
 	public static String aUnicode(final String entrada) {
 		String out = "";
 		try {
-			out = new String(entrada.getBytes(), StandardCharsets.UTF_8);
+			out = new String(entrada.getBytes(), "UTF-8");
 		} catch (final Exception e) {
 			System.out.println("Conversion en UNICODE fallida! : " + e.toString());
 		}

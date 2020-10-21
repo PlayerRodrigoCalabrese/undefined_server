@@ -10,7 +10,7 @@ import estaticos.Mundo;
 
 public class ObjetoSet {
 	private final int _id;
-	private final ArrayList<ObjetoModelo> _objetosModelos = new ArrayList<>();
+	private final ArrayList<ObjetoModelo> _objetosModelos = new ArrayList<ObjetoModelo>();
 	private final Map<Integer, Stats> _bonus = new TreeMap<>();
 	private final String _nombre;
 	
@@ -63,7 +63,7 @@ public class ObjetoSet {
 					int valor = Integer.parseInt(splitStats[1], 16);
 					stats.addStatID(statID, valor);
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 	}
 	

@@ -4,15 +4,18 @@ import java.util.ArrayList;
 
 public class ObjetoInteractivoModelo {
 	private final int _id, _tiempoRecarga, _duracion;
-	private final ArrayList<Integer> _gfx = new ArrayList<>(), _skills = new ArrayList<>();
+	private final ArrayList<Integer> _gfx = new ArrayList<Integer>(), _skills = new ArrayList<Integer>();
 	private final byte _tipo, _animacionnPJ;
-
+	@SuppressWarnings("unused")
+	private final byte _caminable;
+	
 	public ObjetoInteractivoModelo(final int id, final int tiempoRespuesta, final int duracion, final byte spritePJ,
 	final byte caminable, final byte tipo, final String gfx, final String skill) {
 		_id = id;
 		_tiempoRecarga = tiempoRespuesta;
 		_duracion = duracion;
 		_animacionnPJ = spritePJ;
+		_caminable = caminable;
 		_tipo = tipo;
 		for (final String str : gfx.split(",")) {
 			if (str.isEmpty()) {
@@ -20,7 +23,7 @@ public class ObjetoInteractivoModelo {
 			}
 			try {
 				_gfx.add(Integer.parseInt(str));
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		for (final String str : skill.split(",")) {
 			if (str.isEmpty()) {
@@ -28,7 +31,7 @@ public class ObjetoInteractivoModelo {
 			}
 			try {
 				_skills.add(Integer.parseInt(str));
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 	}
 	

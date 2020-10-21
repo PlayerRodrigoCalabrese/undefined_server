@@ -9,7 +9,7 @@ public class SubArea {
 	public static int BONTAS, BRAKMARS;
 	private final int _id;
 	private final String _nombre;
-	private final ArrayList<Mapa> _mapas = new ArrayList<>();
+	private final ArrayList<Mapa> _mapas = new ArrayList<Mapa>();
 	private final boolean _conquistable;
 	private byte _alineacion = Constantes.ALINEACION_NEUTRAL;
 	private final Area _area;

@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 public class TextoAVoz {
 	private static final String LANG = "es-MX";
@@ -32,7 +31,7 @@ public class TextoAVoz {
 				if (!idioma.isEmpty()) {
 					url = url.replace("&tl=" + LANG + "&", "&tl=" + idioma + "&");
 				}
-				url += URLEncoder.encode(texto, StandardCharsets.UTF_8);
+				url += URLEncoder.encode(texto, "UTF-8");
 				URL cUrl = new URL(url);
 				HttpURLConnection connection = (HttpURLConnection) cUrl.openConnection();
 				connection.setRequestMethod("GET");

@@ -8,8 +8,7 @@ public class Ornamento {
 	private final int _id;
 	private String _nombre;
 	private int _creditos, _ogrinas, _kamas;
-	private final boolean _vender;
-    private final boolean _valido;
+	private boolean _vender, _valido;
 	
 	public Ornamento(int _id, String _nombre, int _creditos, int _ogrinas, int _kamas, boolean _vender, boolean _valido) {
 		this._id = _id;

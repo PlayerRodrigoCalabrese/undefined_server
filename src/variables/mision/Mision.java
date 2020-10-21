@@ -34,7 +34,7 @@ public class Mision {
 							continue;
 						}
 						_estadoObjetivos.put(objetivoID, estadoObj);
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 				}
 			}
 		}
@@ -47,7 +47,8 @@ public class Mision {
 	public boolean confirmarEtapaActual(Personaje perso, boolean preConfirma) {
 		boolean p = false;
 		try {
-            Map<Integer, Integer> copia = new TreeMap<>(_estadoObjetivos);
+			Map<Integer, Integer> copia = new TreeMap<>();
+			copia.putAll(_estadoObjetivos);
 			for (Entry<Integer, Integer> e : copia.entrySet()) {
 				if (e.getValue() == ESTADO_INCOMPLETO) {
 					MisionObjetivoModelo mObjMod = Mundo.getMisionObjetivoModelo(e.getKey());

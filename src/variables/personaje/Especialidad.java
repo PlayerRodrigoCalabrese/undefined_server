@@ -9,7 +9,7 @@ public class Especialidad {
 	private final int _id;
 	private final int _orden;
 	private final int _nivel;
-	private final ArrayList<Don> _dones = new ArrayList<>();
+	private ArrayList<Don> _dones = new ArrayList<>();
 	
 	public Especialidad(final int id, final int orden, final int nivel, final String dones) {
 		_id = id;
@@ -50,7 +50,7 @@ public class Especialidad {
 	public ArrayList<Don> getDones() {
 		return _dones;
 	}
-	public static class Don {
+	public class Don {
 		private final int _id;
 		private final int _nivel;
 		private final Stats _stats = new Stats();

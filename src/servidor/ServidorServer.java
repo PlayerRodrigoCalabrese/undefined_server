@@ -21,10 +21,11 @@ import servidor.ServidorThread.*;
 
 public class ServidorServer extends Thread {
 	private static ServerSocket _serverSocket;
-	private static final Map<String, ArrayList<ServidorSocket>> _IpsClientes = new ConcurrentHashMap<>();
-	private static final CopyOnWriteArrayList<ServidorSocket> _clientes = new CopyOnWriteArrayList<>();
-	private static final CopyOnWriteArrayList<Cuenta> _cuentasEspera = new CopyOnWriteArrayList<>();
-	private static final CopyOnWriteArrayList<String> _IpsEspera = new CopyOnWriteArrayList<>();
+	private static Timer segundero;
+	private static Map<String, ArrayList<ServidorSocket>> _IpsClientes = new ConcurrentHashMap<>();
+	private static CopyOnWriteArrayList<ServidorSocket> _clientes = new CopyOnWriteArrayList<ServidorSocket>();
+	private static CopyOnWriteArrayList<Cuenta> _cuentasEspera = new CopyOnWriteArrayList<Cuenta>();
+	private static CopyOnWriteArrayList<String> _IpsEspera = new CopyOnWriteArrayList<String>();
 	public static int _j = 0, _recordJugadores = 0;
 	public static int[] _conexiones = new int[5];
 	public static int _segundosON = 0;
@@ -37,7 +38,7 @@ public class ServidorServer extends Thread {
 		if (MainServidor.PARAM_LOTERIA) {
 			new IniciarLoteria();
 		}
-		Timer segundero = new Timer();
+		segundero = new Timer();
 		segundero.schedule(new TimerTask() {
 			public void run() {
 				if (Mundo.SERVIDOR_ESTADO == Constantes.SERVIDOR_OFFLINE) {
@@ -241,7 +242,9 @@ public class ServidorServer extends Thread {
 	
 	public static void addIPsClientes(ServidorSocket s) {
 		String ip = s.getActualIP();
-		_IpsClientes.computeIfAbsent(ip, k -> new ArrayList<ServidorSocket>());
+		if (_IpsClientes.get(ip) == null) {
+			_IpsClientes.put(ip, new ArrayList<ServidorSocket>());
+		}
 		if (!_IpsClientes.get(ip).contains(s)) {
 			_IpsClientes.get(ip).add(s);
 		}
@@ -322,7 +325,7 @@ public class ServidorServer extends Thread {
 				if (!IPs.contains(ep.getActualIP())) {
 					IPs.add(ep.getActualIP());
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		return "IP Availables for attack: " + IPs.size();
 	}
@@ -334,15 +337,15 @@ public class ServidorServer extends Thread {
 				if (ep.getPersonaje() != null) {
 					if (!ep.getPersonaje().enLinea()) {
 						ep.cerrarSocket(true, "listaClientesBug(1)");
-						str.append("\n").append(ep.getActualIP());
+						str.append("\n" + ep.getActualIP());
 					}
 				} else {
 					if (System.currentTimeMillis() - ep.getTiempoUltPacket() > segundos * 1000) {
 						ep.cerrarSocket(true, "listaClientesBug(2)");
-						str.append("\n").append(ep.getActualIP());
+						str.append("\n" + ep.getActualIP());
 					}
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		return str.toString();
 	}
@@ -362,7 +365,7 @@ public class ServidorServer extends Thread {
 						i++;
 					}
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		return i;
 	}
@@ -381,13 +384,13 @@ public class ServidorServer extends Thread {
 	
 	public static String getFechaHoy() {
 		final Calendar hoy = Calendar.getInstance();
-		StringBuilder dia = new StringBuilder(hoy.get(Calendar.DAY_OF_MONTH) + "");
+		String dia = hoy.get(Calendar.DAY_OF_MONTH) + "";
 		while (dia.length() < 2) {
-			dia.insert(0, "0");
+			dia = "0" + dia;
 		}
-		StringBuilder mes = new StringBuilder((hoy.get(Calendar.MONTH)) + "");
+		String mes = (hoy.get(Calendar.MONTH)) + "";
 		while (mes.length() < 2) {
-			mes.insert(0, "0");
+			mes = "0" + mes;
 		}
 		int año = hoy.get(Calendar.YEAR);
 		return "BD" + año + "|" + mes + "|" + dia;

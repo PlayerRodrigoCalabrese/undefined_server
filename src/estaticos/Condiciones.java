@@ -31,45 +31,110 @@ public class Condiciones {
 						continue;
 					}
 					String cond = s.substring(0, 2);
-					// ------------------------
-					// ------------------------
-					// DE AQUI PARA ABAJO SON ADD VARIABLE
-					// ------------------------
-					// ------------------------
 					switch (cond) {
-// drop fijo
-						case "-1", "PX", "MK", "AO", "PN", "Pz", "DF" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), "true");
-						case "BI" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), "false");
-						case "Pj" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneOficio(s, perso));
-						case "PJ" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneNivelOficio(s, perso));
-						case "OR" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjetoRecibidoDespuesDeHoras(s, perso));
-						case "DH" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjetoRecibidoDespuesDeHoras(s, perso));
-						case "DM" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjetoRecibidoDespuesDeMinutos(s, perso));
-						case "DS" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjetoRecibidoDespuesDeSegundos(s, perso));
-						case "TE" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneEtapa(s, perso));
-						case "TO" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneEstadoObjetivo(s, perso));
-						case "TM" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneEstadoMision(s, perso));
-						case "QO" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), confirmarObjetivoMision(s, perso));
-						case "QE" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), confirmarEtapaMision(s, perso));
-						case "SO" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneStatObjetoLlaveoAlma(s, perso));
-						case "So" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneStatObjeto(s, perso));
-						case "PO" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjModeloNoEquip(s, perso));
-						case "EQ" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjModeloEquipado(s, perso));
-// don
-						case "Pg" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneDon(s, perso));
-						case "XO" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), celdasOcupadasPersonajesOtroMapa(s, perso));
-// celda ocupada personaje
-						case "CO" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), celdasOcupadasPersonajes(s, perso));
-// celda ocupada mob
-						case "Co" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), celdasOcupadasMob(s, perso));
-						case "Cr" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), celdasObjetoTirado(s, perso));
-						case "PH" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneHechizo(s, perso));
-						case "FM" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneMobsEnPelea(s, perso));
-						case "MM" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneMobsEnMapa(s, perso));
-						case "Is" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjetosSet(s, perso));
-						case "IS" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneCantObjetosSet(s, perso));
-						case "BS" -> condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneCantBonusSet(s, perso));
-						case "CI", "CV", "CA", "CW", "CC", "CS", "CM", "CP" -> {
+						case "-1" :
+						case "PX" :
+						case "MK" :
+						case "AO" :// puedeAprenderOficio(condiciones, perso);
+						case "PN" :// nombre
+						case "Pz" :
+						case "DF" :// drop fijo
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), "true");
+							break;
+						case "BI" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), "false");
+							break;
+						case "Pj" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneOficio(s, perso));
+							break;
+						case "PJ" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneNivelOficio(s, perso));
+							break;
+						case "OR" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjetoRecibidoDespuesDeHoras(s, perso));
+							break;
+						case "DH" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjetoRecibidoDespuesDeHoras(s, perso));
+							break;
+						case "DM" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjetoRecibidoDespuesDeMinutos(s, perso));
+							break;
+						case "DS" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjetoRecibidoDespuesDeSegundos(s, perso));
+							break;
+						case "TE" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneEtapa(s, perso));
+							break;
+						case "TO" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneEstadoObjetivo(s, perso));
+							break;
+						case "TM" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneEstadoMision(s, perso));
+							break;
+						case "QO" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), confirmarObjetivoMision(s, perso));
+							break;
+						case "QE" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), confirmarEtapaMision(s, perso));
+							break;
+						case "SO" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneStatObjetoLlaveoAlma(s, perso));
+							break;
+						case "So" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneStatObjeto(s, perso));
+							break;
+						case "PO" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjModeloNoEquip(s, perso));
+							break;
+						case "EQ" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjModeloEquipado(s, perso));
+							break;
+						case "Pg" :// don
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneDon(s, perso));
+							break;
+						case "XO" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), celdasOcupadasPersonajesOtroMapa(s, perso));
+							break;
+						case "CO" :// celda ocupada personaje
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), celdasOcupadasPersonajes(s, perso));
+							break;
+						case "Co" :// celda ocupada mob
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), celdasOcupadasMob(s, perso));
+							break;
+						case "Cr" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), celdasObjetoTirado(s, perso));
+							break;
+						case "PH" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneHechizo(s, perso));
+							break;
+						case "FM" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneMobsEnPelea(s, perso));
+							break;
+						case "MM" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneMobsEnMapa(s, perso));
+							break;
+						case "Is" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneObjetosSet(s, perso));
+							break;
+						case "IS" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneCantObjetosSet(s, perso));
+							break;
+						case "BS" :
+							condiciones = condiciones.replaceFirst(Pattern.quote(s), tieneCantBonusSet(s, perso));
+							break;
+						// ------------------------
+						// ------------------------
+						// DE AQUI PARA ABAJO SON ADD VARIABLE
+						// ------------------------
+						// ------------------------
+						case "CI" :
+						case "CV" :
+						case "CA" :
+						case "CW" :
+						case "CC" :
+						case "CS" :
+						case "CM" :
+						case "CP" :
 							final TotalStats totalStas = perso.getTotalStats();
 							jep.addVariable("CI", totalStas.getTotalStatParaMostrar(Constantes.STAT_MAS_INTELIGENCIA));
 							jep.addVariable("CV", totalStas.getTotalStatParaMostrar(Constantes.STAT_MAS_VITALIDAD));
@@ -79,8 +144,13 @@ public class Condiciones {
 							jep.addVariable("CS", totalStas.getTotalStatParaMostrar(Constantes.STAT_MAS_FUERZA));
 							jep.addVariable("CM", totalStas.getTotalStatParaMostrar(Constantes.STAT_MAS_PM));
 							jep.addVariable("CP", totalStas.getTotalStatParaMostrar(Constantes.STAT_MAS_PA));
-						}
-						case "Ci", "Cv", "Ca", "Cw", "Cc", "Cs" -> {
+							break;
+						case "Ci" :
+						case "Cv" :
+						case "Ca" :
+						case "Cw" :
+						case "Cc" :
+						case "Cs" :
 							final Stats statsBase = perso.getTotalStats().getStatsBase();
 							jep.addVariable("Ci", statsBase.getStatParaMostrar(Constantes.STAT_MAS_INTELIGENCIA));
 							jep.addVariable("Cv", statsBase.getStatParaMostrar(Constantes.STAT_MAS_VITALIDAD));
@@ -88,35 +158,87 @@ public class Condiciones {
 							jep.addVariable("Cw", statsBase.getStatParaMostrar(Constantes.STAT_MAS_SABIDURIA));
 							jep.addVariable("Cc", statsBase.getStatParaMostrar(Constantes.STAT_MAS_SUERTE));
 							jep.addVariable("Cs", statsBase.getStatParaMostrar(Constantes.STAT_MAS_FUERZA));
-						}
-						case "PQ" -> jep.addVariable(cond, perso.getPreguntaID());
-						case "PG" -> jep.addVariable(cond, perso.getClaseID(true));
-						case "PD" -> jep.addVariable(cond, perso.getDeshonor());
-						case "PK" -> jep.addVariable(cond, perso.getKamas());
-						case "PF" -> jep.addVariable(cond, perso.getPelea() == null ? -1 : perso.getPelea().getTipoPelea());
-						case "FP" -> jep.addVariable(cond, perso.getPelea() == null ? -1 : perso.getPelea().getProspeccionEquipo());
-						case "Fp" -> jep.addVariable(cond, perso.getPelea() == null
-								? -1
-								: perso.getPelea().getLuchadorPorID(perso.getID()).getProspeccionLuchador());
-						case "PL" -> jep.addVariable(cond, perso.getNivel());
-						case "PP" -> jep.addVariable(cond, perso.getGradoAlineacion());
-						case "Ps" -> jep.addVariable(cond, perso.getAlineacion());
-						case "Pa" -> jep.addVariable(cond, perso.getOrdenNivel());
-						case "Pr" -> jep.addVariable(cond, perso.getEspecialidad());
-						case "PS" -> jep.addVariable(cond, perso.getSexo());
-						case "PW" -> jep.addVariable(cond, perso.alasActivadas());
-						case "PM" -> jep.addVariable(cond, perso.getGfxID(false));
-						case "PR" -> jep.addVariable(cond, perso.getEsposoID() != 0);
-						case "PC" -> jep.addVariable(cond, perso.puedeCasarse());
-						case "PZ" -> jep.addVariable(cond, perso.esAbonado() ? 1 : 0);
-						case "PV" -> jep.addVariable(cond, perso.esAbonado());
-						case "GL" -> jep.addVariable(cond, perso.getNivelGremio());
-						case "MA" -> jep.addVariable(cond, perso.realizoMisionDelDia());
-						case "Mi" -> jep.addVariable(cond, perso.getID());
-						case "NR" -> jep.addVariable(cond, perso.getResets());
-						case "mK" -> jep.addVariable(cond, perso.getMapa().getID());
-						case "mC" -> jep.addVariable(cond, perso.getCelda().getID());
-						case "Tc" -> jep.addVariable(cond, (System.currentTimeMillis() - perso.getCelda().getUltimoUsoTrigger()) / 1000);
+							break;
+						case "PQ" :
+							jep.addVariable(cond, perso.getPreguntaID());
+							break;
+						case "PG" :
+							jep.addVariable(cond, perso.getClaseID(true));
+							break;
+						case "PD" :
+							jep.addVariable(cond, perso.getDeshonor());
+							break;
+						case "PK" :
+							jep.addVariable(cond, perso.getKamas());
+							break;
+						case "PF" :
+							jep.addVariable(cond, perso.getPelea() == null ? -1 : perso.getPelea().getTipoPelea());
+							break;
+						case "FP" :
+							jep.addVariable(cond, perso.getPelea() == null ? -1 : perso.getPelea().getProspeccionEquipo());
+							break;
+						case "Fp" :
+							jep.addVariable(cond, perso.getPelea() == null
+							? -1
+							: perso.getPelea().getLuchadorPorID(perso.getID()).getProspeccionLuchador());
+							break;
+						case "PL" :
+							jep.addVariable(cond, perso.getNivel());
+							break;
+						case "PP" :
+							jep.addVariable(cond, perso.getGradoAlineacion());
+							break;
+						case "Ps" :
+							jep.addVariable(cond, perso.getAlineacion());
+							break;
+						case "Pa" :
+							jep.addVariable(cond, perso.getOrdenNivel());
+							break;
+						case "Pr" :
+							jep.addVariable(cond, perso.getEspecialidad());
+							break;
+						case "PS" :
+							jep.addVariable(cond, perso.getSexo());
+							break;
+						case "PW" :
+							jep.addVariable(cond, perso.alasActivadas());
+							break;
+						case "PM" :
+							jep.addVariable(cond, perso.getGfxID(false));
+							break;
+						case "PR" :
+							jep.addVariable(cond, perso.getEsposoID() != 0);
+							break;
+						case "PC" :
+							jep.addVariable(cond, perso.puedeCasarse());
+							break;
+						case "PZ" :
+							jep.addVariable(cond, perso.esAbonado() ? 1 : 0);
+							break;
+						case "PV" :
+							jep.addVariable(cond, perso.esAbonado());
+							break;
+						case "GL" :
+							jep.addVariable(cond, perso.getNivelGremio());
+							break;
+						case "MA" :
+							jep.addVariable(cond, perso.realizoMisionDelDia());
+							break;
+						case "Mi" :
+							jep.addVariable(cond, perso.getID());
+							break;
+						case "NR" :
+							jep.addVariable(cond, perso.getResets());
+							break;
+						case "mK" :
+							jep.addVariable(cond, perso.getMapa().getID());
+							break;
+						case "mC" :
+							jep.addVariable(cond, perso.getCelda().getID());
+							break;
+						case "Tc" :
+							jep.addVariable(cond, (System.currentTimeMillis() - perso.getCelda().getUltimoUsoTrigger()) / 1000);
+							break;
 					}
 				} catch (Exception e) {
 					MainServidor.redactarLogServidorln("EXCEPTION condicion: " + s + " validaCondiones(splittear) " + e
@@ -130,7 +252,7 @@ public class Condiciones {
 			final Object resultado = jep.evaluate();
 			boolean ok = false;
 			if (resultado != null) {
-				ok = Boolean.parseBoolean(resultado.toString());
+				ok = Boolean.valueOf(resultado.toString());
 			}
 			return ok;
 		} catch (final Exception e) {
@@ -153,7 +275,7 @@ public class Condiciones {
 			final int cant = Integer.parseInt(args[1]);
 			int tiene = perso.getNroObjEquipadosDeSet(setID);
 			return tiene + "" + s.charAt(2) + "" + cant;
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return "false";
 	}
 	
@@ -182,7 +304,7 @@ public class Condiciones {
 				tiene += v - 1;
 			}
 			return tiene + "" + s.charAt(2) + "" + cant;
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return "false";
 	}
 	
@@ -213,7 +335,7 @@ public class Condiciones {
 				}
 			}
 			return tiene + "" + s.charAt(2) + "" + cant;
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return "false";
 	}
 	
@@ -230,7 +352,7 @@ public class Condiciones {
 					lvlMin = Integer.parseInt(args[1]);
 					lvlMax = Integer.parseInt(args[2]);
 				}
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 			for (String m : ss[0].split(",")) {
 				if (m.isEmpty()) {
 					continue;
@@ -246,12 +368,12 @@ public class Condiciones {
 							break;
 						}
 					}
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 			}
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -259,7 +381,8 @@ public class Condiciones {
 		boolean b = false;
 		try {
 			if (perso.getPelea() != null) {
-                CopyOnWriteArrayList<MobGradoModelo> mobs = new CopyOnWriteArrayList<>(perso.getPelea().getMobGrupo().getMobs());
+				CopyOnWriteArrayList<MobGradoModelo> mobs = new CopyOnWriteArrayList<>();
+				mobs.addAll(perso.getPelea().getMobGrupo().getMobs());
 				String[] ss = s.substring(3).split(";");
 				for (String a : ss) {
 					String[] args = a.split(",");
@@ -271,7 +394,7 @@ public class Condiciones {
 							lvlMin = Integer.parseInt(args[1]);
 							lvlMax = Integer.parseInt(args[2]);
 						}
-					} catch (Exception ignored) {}
+					} catch (Exception e) {}
 					boolean tiene = false;
 					for (MobGradoModelo gm : mobs) {
 						if (gm.getIDModelo() == mobID) {
@@ -292,7 +415,7 @@ public class Condiciones {
 					}
 				}
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -309,7 +432,7 @@ public class Condiciones {
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -338,7 +461,7 @@ public class Condiciones {
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -350,7 +473,7 @@ public class Condiciones {
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -371,7 +494,7 @@ public class Condiciones {
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -399,7 +522,7 @@ public class Condiciones {
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -443,7 +566,7 @@ public class Condiciones {
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -455,13 +578,13 @@ public class Condiciones {
 			int cant = 1;
 			try {
 				cant = Integer.parseInt(args[1]);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 			cant = Math.max(1, cant);
 			b = perso.getObjModeloNoEquipado(id, cant) != null;
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -473,7 +596,7 @@ public class Condiciones {
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -486,7 +609,7 @@ public class Condiciones {
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -498,13 +621,13 @@ public class Condiciones {
 			int nivel = 1;
 			try {
 				nivel = Integer.parseInt(args[1]);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 			nivel = Math.max(1, nivel);
 			b = perso.tieneDon(id, nivel);
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -532,7 +655,7 @@ public class Condiciones {
 			if (dHoras > -1) {
 				return dHoras + "" + s.charAt(2) + "" + (horas);
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return "false";
 	}
 	
@@ -560,7 +683,7 @@ public class Condiciones {
 			if (dMinutos > -1) {
 				return dMinutos + "" + s.charAt(2) + "" + (minutos);
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return "false";
 	}
 	
@@ -588,7 +711,7 @@ public class Condiciones {
 			if (dSegundos > -1) {
 				return dSegundos + "" + s.charAt(2) + "" + (segundos);
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return "false";
 	}
 	
@@ -600,7 +723,7 @@ public class Condiciones {
 			} else {
 				return (perso.getStatOficioPorID(Integer.parseInt(a[0])) != null) + "";
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return "false";
 	}
 	
@@ -612,7 +735,7 @@ public class Condiciones {
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -625,7 +748,7 @@ public class Condiciones {
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -644,7 +767,7 @@ public class Condiciones {
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -663,7 +786,7 @@ public class Condiciones {
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -675,12 +798,12 @@ public class Condiciones {
 			boolean preConfirma = true;
 			try {
 				preConfirma = !args[1].equals("1");
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 			b = Mundo.getMisionObjetivoModelo(id).confirmar(perso, null, preConfirma, 0);
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 	
@@ -692,12 +815,12 @@ public class Condiciones {
 			boolean preConfirma = true;
 			try {
 				preConfirma = !args[1].equals("1");
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 			b = perso.confirmarEtapa(id, preConfirma);
 			if (s.contains("!")) {
 				b = !b;
 			}
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		return b + "";
 	}
 }

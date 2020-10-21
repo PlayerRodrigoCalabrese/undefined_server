@@ -21,7 +21,7 @@ public class Hechizo {
 	private final String _nombre;
 	private String _spriteInfos;// tipo lanz, anim pj, 1 o 0 (frente al sprite)
 	private int _valorIA = 0;
-	private final Map<Integer, StatHechizo> _statsHechizos = new HashMap<>();
+	private final Map<Integer, StatHechizo> _statsHechizos = new HashMap<Integer, StatHechizo>();
 	
 	public Hechizo(final int aHechizoID, final String aNombre, final int aSpriteID, final String aSpriteInfos,
 	final int valorIA) {
@@ -40,11 +40,11 @@ public class Hechizo {
 		String normales = "";
 		try {
 			normales = afectados.split(Pattern.quote("|"))[0];
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		String criticos = "";
 		try {
 			criticos = afectados.split(Pattern.quote("|"))[1];
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		String[] aNormales = normales.split(",");
 		String[] aCriticos = criticos.split(",");
 		for (StatHechizo sh : _statsHechizos.values()) {
@@ -62,11 +62,11 @@ public class Hechizo {
 		String normales = "";
 		try {
 			normales = condicion.split(Pattern.quote("|"))[0];
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		String criticos = "";
 		try {
 			criticos = condicion.split(Pattern.quote("|"))[1];
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		String[] aNormales = normales.split(",");
 		String[] aCriticos = criticos.split(",");
 		for (StatHechizo sh : _statsHechizos.values()) {
@@ -142,28 +142,31 @@ public class Hechizo {
 	// return str.toString();
 	// }
 	//
-	public static String strDañosStats(StatHechizo sh, int[] valoresStat) {
+	public static String strDañosStats(StatHechizo sh, int valoresStat[]) {
 		StringBuilder str = new StringBuilder(sh.getHechizoID() + "");
 		boolean paso = false;
 		for (EfectoHechizo eh : sh.getEfectosNormales()) {
 			String nombre = Constantes.getNombreEfecto(eh.getEfectoID());
 			int valorStat = -1;
 			switch (eh.getEfectoID()) {
-				case Constantes.STAT_CURAR, Constantes.STAT_CURAR_2 -> valorStat = valoresStat[2];// inteligencia
-				default -> {
+				case Constantes.STAT_CURAR :
+				case Constantes.STAT_CURAR_2 :
+					valorStat = valoresStat[2];// inteligencia
+					break;
+				default :
 					byte elemento = Constantes.getElementoPorEfectoID(eh.getEfectoID());
 					if (elemento != Constantes.ELEMENTO_NULO) {
 						valorStat = valoresStat[elemento];
 					}
-				}
+					break;
 			}
 			if (paso) {
 				str.append("\n");
 			} else {
 				str.append(";");
 			}
-			str.append("-> ").append(nombre);
-			str.append(" ").append(stringDataEfecto(eh, valorStat));
+			str.append("-> " + nombre);
+			str.append(" " + stringDataEfecto(eh, valorStat));
 			paso = true;
 		}
 		return str.toString();
@@ -227,7 +230,7 @@ public class Hechizo {
 			EH.aplicarAPelea(pelea, lanzador, objetivos, celdaObj, tipo, esGC);
 			try {
 				Thread.sleep(EfectoHechizo.TIEMPO_ENTRE_EFECTOS);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		return cantObjetivos;
 	}
@@ -294,7 +297,7 @@ public class Hechizo {
 	
 	private static ArrayList<Luchador> getAfectadosZona(Luchador lanzador, ArrayList<Celda> celdasObj, int afectados,
 	short celdaObjetivo) {
-		final ArrayList<Luchador> objetivos = new ArrayList<>();
+		final ArrayList<Luchador> objetivos = new ArrayList<Luchador>();
 		for (final Celda C : celdasObj) {
 			if (C == null) {
 				continue;

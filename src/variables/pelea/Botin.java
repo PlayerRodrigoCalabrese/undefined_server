@@ -1,6 +1,6 @@
 package variables.pelea;
 public class Botin {
-	private final DropMob _drop;
+	private DropMob _drop;
 	private int _maximo;
 	
 	public Botin(DropMob drop) {

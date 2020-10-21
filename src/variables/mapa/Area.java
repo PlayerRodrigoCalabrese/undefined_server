@@ -8,7 +8,7 @@ import estaticos.Mundo;
 public class Area {
 	private final int _id;
 	private final String _nombre;
-	private final ArrayList<SubArea> _subAreas = new ArrayList<>();
+	private final ArrayList<SubArea> _subAreas = new ArrayList<SubArea>();
 	private byte _alineacion = Constantes.ALINEACION_NEUTRAL;
 	private SuperArea _superArea;
 	private Prisma _prisma;
@@ -91,7 +91,7 @@ public class Area {
 	}
 	
 	public ArrayList<Mapa> getMapas() {
-		final ArrayList<Mapa> mapas = new ArrayList<>();
+		final ArrayList<Mapa> mapas = new ArrayList<Mapa>();
 		for (final SubArea SA : _subAreas) {
 			mapas.addAll(SA.getMapas());
 		}

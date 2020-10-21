@@ -84,7 +84,7 @@ public class Glifo {
 		+ ",0,1,1," + _lanzador.getID());
 		try {
 			Thread.sleep(100);
-		} catch (Exception ignored) {}
+		} catch (Exception e) {}
 		Hechizo.aplicaHechizoAPelea(_pelea, _lanzador, glifeado.getCeldaPelea(), _glifoSH.getEfectosNormales(),
 		TipoDaño.GLIFO, false);
 		// _pelea.acaboPelea((byte) 3);

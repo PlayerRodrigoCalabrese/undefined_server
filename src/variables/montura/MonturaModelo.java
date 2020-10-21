@@ -5,10 +5,9 @@ import java.util.Map;
 
 public class MonturaModelo {
 	private String _color = "";
-	private final int _colorID;
-    private final int _certificadoID;
-	private final byte _generacion;
-	private final Map<Integer, Integer> _stats = new HashMap<>();
+	private int _colorID, _certificadoID;
+	private byte _generacion;
+	private Map<Integer, Integer> _stats = new HashMap<Integer, Integer>();
 	
 	public MonturaModelo(int idColor, String stats, String color, int idCertificado, byte generacion) {
 		_colorID = idColor;
@@ -22,7 +21,7 @@ public class MonturaModelo {
 			try {
 				String[] s = str.split(",");
 				_stats.put(Integer.parseInt(s[0]), Integer.parseInt(s[1]));
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 	}
 	

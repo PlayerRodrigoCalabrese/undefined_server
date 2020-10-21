@@ -21,16 +21,13 @@ import estaticos.Mundo.Duo;
 public class Inteligencia extends Thread {
 	public enum EstadoLanzHechizo {
 		PODER, NO_TIENE_PA, NO_TIENE_ALCANCE, OBJETIVO_NO_PERMITIDO, NO_PODER, FALLAR, COOLDOWN, NO_OBJETIVO
-	}
-
+	};
 	public enum EstadoDistancia {
 		TACLEADO, ACERCARSE, NO_PUEDE, INVISIBLE
-	}
-
+	};
 	public enum EstadoMovAtq {
 		SE_MOVIO, NO_HIZO_NADA, LANZO_HECHIZO, TACLEADO, NO_PUEDE_MOVERSE, NO_TIENE_HECHIZOS, TIENE_HECHIZOS_SIN_LANZAR, NULO
-	}
-
+	};
 	public enum Orden {
 		PDV_MENOS_A_MAS, PDV_MAS_A_MENOS, NADA, NIVEL_MENOS_A_MAS, NIVEL_MAS_A_MENOS, INVOS_PRIMEROS, INVOS_ULTIMOS
 	}
@@ -45,25 +42,25 @@ public class Inteligencia extends Thread {
 	private static class CompPDVMenosMas implements Comparator<Luchador> {
 		@Override
 		public int compare(Luchador p1, Luchador p2) {
-			return Integer.compare(p1.getPDVSinBuff(), p2.getPDVSinBuff());
+			return new Integer(p1.getPDVSinBuff()).compareTo(new Integer(p2.getPDVSinBuff()));
 		}
 	}
 	private static class CompPDVMasMenos implements Comparator<Luchador> {
 		@Override
 		public int compare(Luchador p1, Luchador p2) {
-			return Integer.compare(p2.getPDVSinBuff(), p1.getPDVSinBuff());
+			return new Integer(p2.getPDVSinBuff()).compareTo(new Integer(p1.getPDVSinBuff()));
 		}
 	}
 	private static class CompNivelMenosMas implements Comparator<Luchador> {
 		@Override
 		public int compare(Luchador p1, Luchador p2) {
-			return Integer.compare(p1.getNivel(), p2.getNivel());
+			return new Integer(p1.getNivel()).compareTo(new Integer(p2.getNivel()));
 		}
 	}
 	private static class CompNivelMasMenos implements Comparator<Luchador> {
 		@Override
 		public int compare(Luchador p1, Luchador p2) {
-			return Integer.compare(p2.getNivel(), p1.getNivel());
+			return new Integer(p2.getNivel()).compareTo(new Integer(p1.getNivel()));
 		}
 	}
 	private static class CompInvosUltimos implements Comparator<Luchador> {
@@ -84,13 +81,13 @@ public class Inteligencia extends Thread {
 			return 1;
 		}
 	}
-	private static final int PDV_MINIMO_CURAR = 99;
+	private static int PDV_MINIMO_CURAR = 99;
 	private boolean _fin = false, _resetearCeldasHechizos, _resetearInfluencias;
 	private boolean _refrescarMov = false;
 	private final Pelea _pelea;
 	private final Luchador _lanzador;
-	private final Map<Short, Map<StatHechizo, Map<Celda, ArrayList<Luchador>>>> _celdasHechizos = new LinkedHashMap<>();
-	private final Map<Luchador, Map<EfectoHechizo, Integer>> _influencias = new HashMap<>();
+	private Map<Short, Map<StatHechizo, Map<Celda, ArrayList<Luchador>>>> _celdasHechizos = new LinkedHashMap<>();
+	private Map<Luchador, Map<EfectoHechizo, Integer>> _influencias = new HashMap<>();
 	private ArrayList<Short> _celdasMovimiento = new ArrayList<>();
 	
 	public Inteligencia(final Luchador atacante, final Pelea p) {
@@ -142,7 +139,7 @@ public class Inteligencia extends Thread {
 			if (this.getState() == State.NEW) {
 				this.start();
 			} else if (this.getState() != State.TERMINATED) {
-				this.checkAccess();
+				this.resume();
 			}
 		} catch (Exception e) {
 			MainServidor.redactarLogServidorln("Exception ARRANCAR IA tipo: " + getTipoIA() + ", atacante: "
@@ -252,7 +249,7 @@ public class Inteligencia extends Thread {
 						}
 					}
 					if (!_lanzador.puedeJugar()) {
-						this.checkAccess();
+						this.suspend();
 					}
 				}
 			}
@@ -269,7 +266,7 @@ public class Inteligencia extends Thread {
 					MainServidor.redactarLogServidorln("ELMINANDO A LA IA DEL MOB");
 					_pelea.addMuertosReturnFinalizo(_lanzador, null);
 				}
-			} catch (Exception ignored) {}
+			} catch (Exception e1) {}
 		}
 	}
 	
@@ -325,7 +322,9 @@ public class Inteligencia extends Thread {
 					o = SH2.listaObjetivosAfectados(_lanzador, _pelea.getMapaCopia(), celdaPosibleLanzamiento.getID());
 				}
 				// if (!o.isEmpty()) {
-				map.computeIfAbsent(SH2, k -> new HashMap<Celda, ArrayList<Luchador>>());
+				if (map.get(SH2) == null) {
+					map.put(SH2, new HashMap<Celda, ArrayList<Luchador>>());
+				}
 				map.get(SH2).put(celdaPosibleLanzamiento, o);
 				// }
 			}
@@ -780,7 +779,7 @@ public class Inteligencia extends Thread {
 	}
 	
 	private ArrayList<StatHechizo> hechizosLanzables() {
-		ArrayList<StatHechizo> disponibles = new ArrayList<>();
+		ArrayList<StatHechizo> disponibles = new ArrayList<StatHechizo>();
 		if (_lanzador.getHechizos() == null) {
 			return disponibles;
 		}
@@ -806,13 +805,13 @@ public class Inteligencia extends Thread {
 						break;
 					}
 				}
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		return disponibles;
 	}
 	
 	private ArrayList<Luchador> ordenLuchadores(final int equipo, final Orden... orden) {
-		final ArrayList<Luchador> temporales = new ArrayList<>();
+		final ArrayList<Luchador> temporales = new ArrayList<Luchador>();
 		for (final Luchador luch : _pelea.luchadoresDeEquipo(equipo)) {
 			if (!objetivoApto(luch, true)) {
 				continue;
@@ -824,8 +823,8 @@ public class Inteligencia extends Thread {
 	}
 	
 	private void ordenarLuchMasCercano(final ArrayList<Luchador> preLista, ArrayList<Short> celdas, Orden... orden) {
-		ArrayList<Luchador> alejados = new ArrayList<>();
-		ArrayList<Luchador> cercanos = new ArrayList<>();
+		ArrayList<Luchador> alejados = new ArrayList<Luchador>();
+		ArrayList<Luchador> cercanos = new ArrayList<Luchador>();
 		for (final Luchador objetivo : preLista) {
 			if (!objetivoApto(objetivo, true)) {
 				continue;
@@ -846,8 +845,8 @@ public class Inteligencia extends Thread {
 	}
 	
 	private void ordenarLuchVulnerables(final ArrayList<Luchador> preLista) {
-		ArrayList<Luchador> vulnerables = new ArrayList<>();
-		ArrayList<Luchador> invulnerables = new ArrayList<>();
+		ArrayList<Luchador> vulnerables = new ArrayList<Luchador>();
+		ArrayList<Luchador> invulnerables = new ArrayList<Luchador>();
 		for (final Luchador objetivo : preLista) {
 			if (!objetivoApto(objetivo, true)) {
 				continue;
@@ -879,7 +878,7 @@ public class Inteligencia extends Thread {
 					dist = d;
 					tempObjetivo = objetivo;
 				}
-			} catch (final Exception ignored) {}
+			} catch (final Exception e) {}
 		}
 		return tempObjetivo;
 	}
@@ -924,7 +923,7 @@ public class Inteligencia extends Thread {
 			return false;
 		}
 		final ArrayList<Celda> path = pathCeldas._segundo;
-		final ArrayList<Celda> finalPath = new ArrayList<>();
+		final ArrayList<Celda> finalPath = new ArrayList<Celda>();
 		for (int a = 0; a < _lanzador.getPMRestantes(); a++) {
 			if (path.size() == a || path.get(a).getPrimerLuchador() != null) {
 				break;
@@ -1104,7 +1103,8 @@ public class Inteligencia extends Thread {
 		}
 		celdasMovimiento.add(_lanzador.getCeldaPelea().getID());
 		//
-		ArrayList<Luchador> tempObjetivos = new ArrayList<>(enemigos);
+		ArrayList<Luchador> tempObjetivos = new ArrayList<>();
+		tempObjetivos.addAll(enemigos);
 		short tempCeldaID = -1;
 		int dist = 1000;
 		int repeticiones = 100;
@@ -1151,7 +1151,7 @@ public class Inteligencia extends Thread {
 		} else if (tempCeldaID == -2) {// (-2) el path es nulo porq no hay camino
 			return false;
 		}
-		final ArrayList<Celda> finalPath = new ArrayList<>();
+		final ArrayList<Celda> finalPath = new ArrayList<Celda>();
 		for (int a = 0; a < _lanzador.getPMRestantes(); a++) {
 			if (path.size() == a || path.get(a).getPrimerLuchador() != null) {
 				break;
@@ -1163,11 +1163,14 @@ public class Inteligencia extends Thread {
 			return false;
 		}
 		String resultado = _pelea.intentarMoverse(_lanzador, pathStr.toString(), 0, null);
-		return switch (resultado) {
-			case "stop", "ok" -> true;
-			case "tacleado" -> true;
-			default -> false;
-		};
+		switch (resultado) {
+			case "stop" :
+			case "ok" :
+				return true;
+			case "tacleado" :
+				return true;
+		}
+		return false;
 	}
 	
 	private EstadoDistancia acercarseA(ArrayList<Luchador> objetivos, final boolean masCercano,
@@ -1190,7 +1193,8 @@ public class Inteligencia extends Thread {
 		}
 		celdasMovimiento.add(_lanzador.getCeldaPelea().getID());
 		//
-		ArrayList<Luchador> tempObjetivos = new ArrayList<>(objetivos);
+		ArrayList<Luchador> tempObjetivos = new ArrayList<>();
+		tempObjetivos.addAll(objetivos);
 		if (masCercano) {
 			ordenarLuchMasCercano(tempObjetivos, celdasMovimiento, Orden.PDV_MENOS_A_MAS);
 		}
@@ -1246,7 +1250,7 @@ public class Inteligencia extends Thread {
 		} else if (tempCeldaID == -2) {// (-2) el path es nulo porq no hay camino
 			return EstadoDistancia.NO_PUEDE;
 		}
-		final ArrayList<Celda> finalPath = new ArrayList<>();
+		final ArrayList<Celda> finalPath = new ArrayList<Celda>();
 		for (int a = 0; a < _lanzador.getPMRestantes(); a++) {
 			if (path.size() == a || path.get(a).getPrimerLuchador() != null) {
 				break;
@@ -1264,11 +1268,14 @@ public class Inteligencia extends Thread {
 			return EstadoDistancia.NO_PUEDE;
 		}
 		String resultado = _pelea.intentarMoverse(_lanzador, pathStr.toString(), 0, null);
-		return switch (resultado) {
-			case "stop", "ok" -> EstadoDistancia.ACERCARSE;
-			case "tacleado" -> EstadoDistancia.TACLEADO;
-			default -> EstadoDistancia.NO_PUEDE;
-		};
+		switch (resultado) {
+			case "stop" :
+			case "ok" :
+				return EstadoDistancia.ACERCARSE;
+			case "tacleado" :
+				return EstadoDistancia.TACLEADO;
+		}
+		return EstadoDistancia.NO_PUEDE;
 	}
 	
 	private boolean lanzaHechizoAlAzar(ArrayList<Luchador> objetivos, Accion accion) {
@@ -1276,7 +1283,7 @@ public class Inteligencia extends Thread {
 			return false;
 		}
 		if (objetivos == null || objetivos.isEmpty()) {
-			objetivos = new ArrayList<>();
+			objetivos = new ArrayList<Luchador>();
 			objetivos.add(_lanzador);
 		}
 		for (final Luchador objetivo : objetivos) {
@@ -1326,11 +1333,12 @@ public class Inteligencia extends Thread {
 		if (filtroPorHechizo == null) {
 			return EstadoMovAtq.NO_TIENE_HECHIZOS;
 		}
-		ArrayList<Luchador> tempObjetivos = new ArrayList<>(objetivos);
+		ArrayList<Luchador> tempObjetivos = new ArrayList<>();
+		tempObjetivos.addAll(objetivos);
 		if (buffInvoAtaq == Accion.ATACAR) {
-			tempObjetivos.sort(new CompPDVMenosMas());
+			Collections.sort(tempObjetivos, new CompPDVMenosMas());
 		}
-		tempObjetivos.sort(new CompInvosUltimos());
+		Collections.sort(tempObjetivos, new CompInvosUltimos());
 		// -----
 		Mapa mapa = _pelea.getMapaCopia();
 		StatHechizo SH = null;
@@ -1445,11 +1453,14 @@ public class Inteligencia extends Thread {
 			if (i == EstadoLanzHechizo.PODER) {
 				return EstadoMovAtq.LANZO_HECHIZO;
 			}
-			return switch (i) {
-				case PODER -> EstadoMovAtq.LANZO_HECHIZO;
-				case NO_TIENE_ALCANCE -> EstadoMovAtq.TIENE_HECHIZOS_SIN_LANZAR;
-				default -> EstadoMovAtq.NO_HIZO_NADA;
-			};
+			switch (i) {
+				case PODER :
+					return EstadoMovAtq.LANZO_HECHIZO;
+				case NO_TIENE_ALCANCE :
+					return EstadoMovAtq.TIENE_HECHIZOS_SIN_LANZAR;
+				default :
+					return EstadoMovAtq.NO_HIZO_NADA;
+			}
 		}
 		final Duo<Integer, ArrayList<Celda>> pathCeldas = Camino.getPathPelea(mapa, celdaIDLanzador, celdaDestinoMov, -1,
 		null, false);
@@ -1457,7 +1468,7 @@ public class Inteligencia extends Thread {
 			return EstadoMovAtq.TIENE_HECHIZOS_SIN_LANZAR;
 		}
 		final ArrayList<Celda> path = pathCeldas._segundo;
-		final ArrayList<Celda> finalPath = new ArrayList<>();
+		final ArrayList<Celda> finalPath = new ArrayList<Celda>();
 		for (int a = 0; a < _lanzador.getPMRestantes() && a < path.size(); a++) {
 			if (path.get(a).getPrimerLuchador() != null) {
 				break;
@@ -1490,9 +1501,10 @@ public class Inteligencia extends Thread {
 			return false;
 		}
 		boolean ataco = false;
-		ArrayList<Luchador> objetivos = new ArrayList<>(enemigos);
-		objetivos.sort(new CompPDVMenosMas());
-		objetivos.sort(new CompInvosUltimos());
+		ArrayList<Luchador> objetivos = new ArrayList<>();
+		objetivos.addAll(enemigos);
+		Collections.sort(objetivos, new CompPDVMenosMas());
+		Collections.sort(objetivos, new CompInvosUltimos());
 		while (atacaSiEsPosible(objetivos) == EstadoLanzHechizo.PODER) {
 			ataco = true;
 		}
@@ -1526,7 +1538,7 @@ public class Inteligencia extends Thread {
 		}
 		setCeldasHechizoCeldaLanz();
 		if (objetivos == null || objetivos.isEmpty()) {
-			objetivos = new ArrayList<>();
+			objetivos = new ArrayList<Luchador>();
 			objetivos.add(_lanzador);
 		}
 		// Collections.sort(objetivos, new CompNivelMasMenos());
@@ -1550,13 +1562,13 @@ public class Inteligencia extends Thread {
 			return false;
 		}
 		setCeldasHechizoCeldaLanz();
-		ArrayList<Luchador> paraCurar = new ArrayList<>();
+		ArrayList<Luchador> paraCurar = new ArrayList<Luchador>();
 		if (objetivos == null || objetivos.isEmpty()) {
 			paraCurar.add(_lanzador);
 		} else {
 			paraCurar.addAll(objetivos);
 		}
-		paraCurar.sort(new CompPDVMenosMas());
+		Collections.sort(paraCurar, new CompPDVMenosMas());
 		for (final Luchador objetivo : paraCurar) {
 			if (!objetivoApto(objetivo, true)) {
 				continue;
@@ -1633,7 +1645,7 @@ public class Inteligencia extends Thread {
 		if (!_lanzador.puedeJugar() || objetivo == null) {
 			return null;
 		}
-		final ArrayList<StatHechizo> hechizos = new ArrayList<>();
+		final ArrayList<StatHechizo> hechizos = new ArrayList<StatHechizo>();
 		for (final StatHechizo SH : hechizosLanzables()) {
 			if (!_pelea.dentroDelRango(_lanzador, SH, _lanzador.getCeldaPelea().getID(), objetivo.getCeldaPelea().getID())) {
 				continue;
@@ -1703,12 +1715,12 @@ public class Inteligencia extends Thread {
 		if (celdaObjetivo == null || SH == null) {
 			return null;
 		}
-		Duo<StatHechizo, Celda> a = new Duo<>(SH, celdaObjetivo);
+		Duo<StatHechizo, Celda> a = new Duo<StatHechizo, Celda>(SH, celdaObjetivo);
 		if (MainServidor.MODO_DEBUG) {
 			System.out.println("mejorAtaque() Hechizo: " + SH.getHechizo().getNombre() + " (" + SH.getHechizoID()
 			+ ") Celda: " + celdaObjetivo.getID() + " Inf: " + influenciaMax);
 		}
-		return new Duo<>(influenciaMax, a);
+		return new Duo<Integer, Duo<StatHechizo, Celda>>(influenciaMax, a);
 	}
 	
 	private Duo<Integer, Duo<StatHechizo, Celda>> mejorBuff(final short celdaLanzador, Luchador objetivo,
@@ -1756,12 +1768,12 @@ public class Inteligencia extends Thread {
 		if (celdaObjetivo == null || SH == null) {
 			return null;
 		}
-		Duo<StatHechizo, Celda> a = new Duo<>(SH, celdaObjetivo);
+		Duo<StatHechizo, Celda> a = new Duo<StatHechizo, Celda>(SH, celdaObjetivo);
 		if (MainServidor.MODO_DEBUG) {
 			System.out.println("mejorBuff() Hechizo: " + SH.getHechizo().getNombre() + " (" + SH.getHechizoID() + ") Celda: "
 			+ celdaObjetivo.getID() + " Inf: " + influenciaMax);
 		}
-		return new Duo<>(influenciaMax, a);
+		return new Duo<Integer, Duo<StatHechizo, Celda>>(influenciaMax, a);
 	}
 	
 	private Duo<Integer, Duo<StatHechizo, Celda>> mejorCura(final short celdaLanzador, Luchador objetivo,
@@ -1809,12 +1821,12 @@ public class Inteligencia extends Thread {
 		if (celdaObjetivo == null || SH == null) {
 			return null;
 		}
-		Duo<StatHechizo, Celda> a = new Duo<>(SH, celdaObjetivo);
+		Duo<StatHechizo, Celda> a = new Duo<StatHechizo, Celda>(SH, celdaObjetivo);
 		if (MainServidor.MODO_DEBUG) {
 			System.out.println("mejorCura() Hechizo: " + SH.getHechizo().getNombre() + " (" + SH.getHechizoID() + ") Celda: "
 			+ celdaObjetivo.getID() + " Inf: " + influenciaMax);
 		}
-		return new Duo<>(influenciaMax, a);
+		return new Duo<Integer, Duo<StatHechizo, Celda>>(influenciaMax, a);
 	}
 	
 	private Duo<Celda, StatHechizo> mejorInvocacion(Luchador objetivo) {
@@ -1833,7 +1845,12 @@ public class Inteligencia extends Thread {
 				boolean esInvocacion = false;
 				for (final EfectoHechizo EH : SH.getEfectosNormales()) {
 					switch (EH.getEfectoID()) {
-						case 180, 181, 185, 780 -> esInvocacion = true;
+						case 180 :
+						case 181 :
+						case 185 :
+						case 780 :
+							esInvocacion = true;
+							break;
 					}
 				}
 				if (!esInvocacion) {
@@ -1859,7 +1876,7 @@ public class Inteligencia extends Thread {
 				System.out.println("mejorInvocacion() Hechizo: " + SH.getHechizo().getNombre() + " (" + SH.getHechizoID()
 				+ ") Celda: " + celdaObjetivo.getID());
 			}
-			return new Duo<>(celdaObjetivo, SH);
+			return new Duo<Celda, StatHechizo>(celdaObjetivo, SH);
 		}
 		return null;
 	}
@@ -1882,10 +1899,32 @@ public class Inteligencia extends Thread {
 						break;
 					}
 					switch (EH.getEfectoID()) {
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
-						case 82, 85, 86, 87, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 275, 276, 277, 278, 279 -> trampa = 3;
-// Glifo de blops Crea un glifo de nivel
-						case 400, 401, 402 -> {
+						case 82 :
+						case 85 :// Daños Agua %vida del atacante
+						case 86 :// Daños Tierra %vida del atacante
+						case 87 :// Daños Aire %vida del atacante
+						case 88 :// Daños Fuego %vida del atacante
+						case 89 :// Daños Neutral %vida del atacante
+						case 91 :// robo de vida Agua
+						case 92 :// robo de vida Tierra
+						case 93 :// robo de vida Aire
+						case 94 :// robo de vida fuego
+						case 95 :// robo de vida neutral
+						case 96 :// Daños Agua
+						case 97 :// Daños Tierra
+						case 98 :// Daños Aire
+						case 99 :// Daños fuego
+						case 100 :// Daños neutral
+						case 275 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (agua)
+						case 276 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (tierra)
+						case 277 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (aire)
+						case 278 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (fuego)
+						case 279 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
+							trampa = 3;
+							break;
+						case 400 :// Crea una trampa
+						case 401 :// Crea un glifo de nivel
+						case 402 :// Glifo de blops Crea un glifo de nivel
 							if (EH.getEfectoID() == 400) {
 								trampa = 1;
 							} else {
@@ -1896,7 +1935,7 @@ public class Inteligencia extends Thread {
 							for (EfectoHechizo eh : sh.getEfectosNormales()) {
 								daño = Constantes.estimaDaño(eh.getEfectoID()) == 1;
 							}
-						}
+							break;
 					}
 				}
 				if (trampa == 3 || trampa == 0) {
@@ -1904,8 +1943,9 @@ public class Inteligencia extends Thread {
 				}
 			}
 			int distancia = 10000;
-			ArrayList<Luchador> objetivos = new ArrayList<>(ordenLuchadores(daño ? _lanzador.getParamEquipoEnemigo() : _lanzador.getParamEquipoAliado(),
-					Orden.NADA));
+			ArrayList<Luchador> objetivos = new ArrayList<>();
+			objetivos.addAll(ordenLuchadores(daño ? _lanzador.getParamEquipoEnemigo() : _lanzador.getParamEquipoAliado(),
+			Orden.NADA));
 			Celda celdaObjetivo = null;
 			for (final Celda celda : Camino.celdasPosibleLanzamiento(SH, _lanzador, _pelea.getMapaCopia(), _lanzador
 			.getCeldaPelea().getID(), (short) -1)) {
@@ -1940,7 +1980,7 @@ public class Inteligencia extends Thread {
 				System.out.println("mejorGlifoTrampa() Hechizo: " + SH.getHechizo().getNombre() + " (" + SH.getHechizoID()
 				+ ") Celda: " + celdaObjetivo.getID());
 			}
-			return new Duo<>(celdaObjetivo, SH);
+			return new Duo<Celda, StatHechizo>(celdaObjetivo, SH);
 		}
 		return null;
 	}
@@ -1962,9 +2002,32 @@ public class Inteligencia extends Thread {
 				boolean esDaño = false;
 				for (final EfectoHechizo EH : SH.getEfectosNormales()) {
 					switch (EH.getEfectoID()) {
-						case 4 -> esTeleport = true;
-// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
-						case 82, 85, 86, 87, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 275, 276, 277, 278, 279 -> esDaño = true;
+						case 4 :
+							esTeleport = true;
+							break;
+						case 82 :
+						case 85 :// Daños Agua %vida del atacante
+						case 86 :// Daños Tierra %vida del atacante
+						case 87 :// Daños Aire %vida del atacante
+						case 88 :// Daños Fuego %vida del atacante
+						case 89 :// Daños Neutral %vida del atacante
+						case 91 :// robo de vida Agua
+						case 92 :// robo de vida Tierra
+						case 93 :// robo de vida Aire
+						case 94 :// robo de vida fuego
+						case 95 :// robo de vida neutral
+						case 96 :// Daños Agua
+						case 97 :// Daños Tierra
+						case 98 :// Daños Aire
+						case 99 :// Daños fuego
+						case 100 :// Daños neutral
+						case 275 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (agua)
+						case 276 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (tierra)
+						case 277 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (aire)
+						case 278 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (fuego)
+						case 279 :// Daños: #1{~1~2 a }#2% de la vida que le queda al atacante (neutro)
+							esDaño = true;
+							break;
 					}
 				}
 				if (!esTeleport || esDaño) {
@@ -1990,7 +2053,7 @@ public class Inteligencia extends Thread {
 				System.out.println("mejorTeleport() Hechizo: " + SH.getHechizo().getNombre() + " (" + SH.getHechizoID()
 				+ ") Celda: " + celdaObjetivo.getID());
 			}
-			return new Duo<>(celdaObjetivo, SH);
+			return new Duo<Celda, StatHechizo>(celdaObjetivo, SH);
 		}
 		return null;
 	}
@@ -2073,13 +2136,13 @@ public class Inteligencia extends Thread {
 		for (final EfectoHechizo EH : efectos) {
 			ArrayList<Luchador> listaLuchadores = Hechizo.getObjetivosEfecto(mapa, _lanzador, EH, celdaLanzamientoID);
 			switch (EH.getEfectoID()) {
-// mata y reemplaza por una invocacion
-				case 141, 405 -> {
+				case 141 :// mata al objetivo
+				case 405 :// mata y reemplaza por una invocacion
 					matanza = true;
 					if (listaLuchadores.isEmpty()) {
 						return -1;
 					}
-				}
+					break;
 			}
 			int max = EH.getValorParaPromediar();
 			for (Luchador objetivo : listaLuchadores) {
@@ -2096,7 +2159,7 @@ public class Inteligencia extends Thread {
 					influencia = Constantes.getInflBuffPorEfecto(EH.getEfectoID(), _lanzador, objetivo, max, celdaLanzamientoID,
 					SH);
 					if (!_influencias.containsKey(objetivo)) {
-						_influencias.put(objetivo, new HashMap<>());
+						_influencias.put(objetivo, new HashMap<EfectoHechizo, Integer>());
 					}
 					_influencias.get(objetivo).put(EH, influencia);
 				}
@@ -2240,7 +2303,7 @@ public class Inteligencia extends Thread {
 					influencia = Constantes.getInflDañoPorEfecto(EH.getEfectoID(), _lanzador, objetivo, max, celdaLanzamientoID,
 					SH);
 					if (!_influencias.containsKey(objetivo)) {
-						_influencias.put(objetivo, new HashMap<>());
+						_influencias.put(objetivo, new HashMap<EfectoHechizo, Integer>());
 					}
 					_influencias.get(objetivo).put(EH, influencia);
 				}
@@ -2457,7 +2520,7 @@ public class Inteligencia extends Thread {
 					influencia = Constantes.getInflDañoPorEfecto(EH.getEfectoID(), _lanzador, objetivo, max, celdaLanzamientoID,
 					SH);
 					if (!_influencias.containsKey(objetivo)) {
-						_influencias.put(objetivo, new HashMap<>());
+						_influencias.put(objetivo, new HashMap<EfectoHechizo, Integer>());
 					}
 					_influencias.get(objetivo).put(EH, influencia);
 				}
@@ -2541,22 +2604,22 @@ public class Inteligencia extends Thread {
 	private static void ordena(ArrayList<Luchador> lista, Orden... orden) {
 		for (Orden o : orden) {
 			if (o == Orden.PDV_MENOS_A_MAS) {
-				lista.sort(new CompPDVMenosMas());
+				Collections.sort(lista, new CompPDVMenosMas());
 			}
 			if (o == Orden.PDV_MAS_A_MENOS) {
-				lista.sort(new CompPDVMasMenos());
+				Collections.sort(lista, new CompPDVMasMenos());
 			}
 			if (o == Orden.NIVEL_MENOS_A_MAS) {
-				lista.sort(new CompNivelMenosMas());
+				Collections.sort(lista, new CompNivelMenosMas());
 			}
 			if (o == Orden.NIVEL_MAS_A_MENOS) {
-				lista.sort(new CompNivelMasMenos());
+				Collections.sort(lista, new CompNivelMasMenos());
 			}
 			if (o == Orden.INVOS_PRIMEROS) {
-				lista.sort(new CompInvosPrimeros());
+				Collections.sort(lista, new CompInvosPrimeros());
 			}
 			if (o == Orden.INVOS_ULTIMOS) {
-				lista.sort(new CompInvosUltimos());
+				Collections.sort(lista, new CompInvosUltimos());
 			}
 		}
 	}

@@ -75,7 +75,7 @@ public class MisionObjetivoModelo {
 						int y = Integer.parseInt(args[2].split(":")[1]);
 						b &= (perso.getMapa().getX() == x) & (perso.getMapa().getY() == y);
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				break;
 			case ENSEÑAR_OBJETO_NPC :// enseñar X cant de X objeto a X NPC
 				try {
@@ -96,7 +96,7 @@ public class MisionObjetivoModelo {
 					if (b) {
 						b &= perso.tieneObjPorModYCant(idObjModelo, cantObj);
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				break;
 			case ENTREGAR_OBJETO_NPC :// entregar X cant de X objeto X NPC
 				try {
@@ -121,17 +121,17 @@ public class MisionObjetivoModelo {
 							GestorSalida.ENVIAR_Im_INFORMACION(perso, "022;" + cantObj + "~" + idObjModelo);
 						}
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				break;
 			case DESCUBRIR_MAPA :// descubre X mapa
 				try {
 					b = Short.parseShort(_args) == perso.getMapa().getID();
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				break;
 			case DESCUBRIR_ZONA :
 				try {
 					b = Short.parseShort(_args) == perso.getMapa().getSubArea().getArea().getID();
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				break;
 			case VENCER_AL_MOB :// vence al monstruo
 			case VENCER_MOBS_UN_COMBATE :// matar cierto mob
@@ -156,14 +156,14 @@ public class MisionObjetivoModelo {
 						int y = Integer.parseInt(args[2].split(":")[1]);
 						b &= (perso.getMapa().getX() == x) & (perso.getMapa().getY() == y);
 					}
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				break;
 			case UTILIZAR_OBJETO :// utiliza X objeto
 				try {
 					final String[] args = _args.replace("[", "").replace("]", "").replace(" ", "").split(",");
 					final int idObj = Integer.parseInt(args[0]);
 					b = idObj == idObjeto;
-				} catch (final Exception ignored) {}
+				} catch (final Exception e) {}
 				break;
 			case 10 :// escolta X
 			case 11 :// vence jugador desafio
@@ -204,7 +204,7 @@ public class MisionObjetivoModelo {
 								van++;
 								c = true;
 							}
-						} catch (Exception ignored) {}
+						} catch (Exception e) {}
 					}
 					if (c) {
 						o.add(obj);
@@ -216,22 +216,22 @@ public class MisionObjetivoModelo {
 						van = 0;
 						for (Objeto obj : o) {
 							String[] stats = obj.convertirStatsAString(true).split(",");
-							StringBuilder nuevo = new StringBuilder();
+							String nuevo = "";
 							for (String st : stats) {
-								if (nuevo.length() > 0) {
-									nuevo.append(",");
+								if (!nuevo.isEmpty()) {
+									nuevo += ",";
 								}
 								int statID = Integer.parseInt(st.split("#")[0], 16);
 								if (statID == Constantes.STAT_INVOCA_MOB && st.split("#")[3].equalsIgnoreCase(alma) && van < cantidad) {
 									van++;
 								} else {
-									nuevo.append(st);
+									nuevo += st;
 								}
 							}
-							if (nuevo.length() == 0) {
+							if (nuevo.isEmpty()) {
 								perso.borrarOEliminarConOR(obj.getID(), true);
 							} else {
-								obj.convertirStringAStats(nuevo.toString());
+								obj.convertirStringAStats(nuevo);
 								GestorSalida.ENVIAR_OCK_ACTUALIZA_OBJETO(perso, obj);
 							}
 						}

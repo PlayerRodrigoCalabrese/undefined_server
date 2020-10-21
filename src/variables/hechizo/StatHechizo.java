@@ -30,13 +30,13 @@ public class StatHechizo {
 	private final byte _sigLanzamiento;// cantidad de turnos para volver a lanzar el hechizo
 	private final int _nivelRequerido;// nivel requerido
 	private final boolean _esFinTurnoSiFC;// si falla, es final del turno
-	private final ArrayList<EfectoHechizo> _efectosNormales = new ArrayList<>();
-	private final ArrayList<EfectoHechizo> _efectosCriticos = new ArrayList<>();
-	private final ArrayList<EfectoHechizo> _ordenadoNormales = new ArrayList<>();
-	private final ArrayList<EfectoHechizo> _ordenadoCriticos = new ArrayList<>();
+	private final ArrayList<EfectoHechizo> _efectosNormales = new ArrayList<EfectoHechizo>();
+	private final ArrayList<EfectoHechizo> _efectosCriticos = new ArrayList<EfectoHechizo>();
+	private final ArrayList<EfectoHechizo> _ordenadoNormales = new ArrayList<EfectoHechizo>();
+	private final ArrayList<EfectoHechizo> _ordenadoCriticos = new ArrayList<EfectoHechizo>();
 	// private final String _areaEfecto;// genera un estado, tipo portador
-	private final ArrayList<Integer> _estadosProhibidos = new ArrayList<>();
-	private final ArrayList<Integer> _estadosNecesarios = new ArrayList<>();
+	private final ArrayList<Integer> _estadosProhibidos = new ArrayList<Integer>();
+	private final ArrayList<Integer> _estadosNecesarios = new ArrayList<Integer>();
 	private final Hechizo _hechizo;
 	private final byte _tipoHechizo;// 0 normal, 1 pergamino, 2 invocacion, 3 dominios, 4 de clase, 5
 																	// de recaudador
@@ -99,16 +99,30 @@ public class StatHechizo {
 		if (valorIA == 0) {
 			return 0;
 		}
-		int v = switch (tipo) {
-			case ATACAR -> 1;
-			case BOOSTEAR -> 2;
-			case CURAR -> 3;
-			case TRAMPEAR -> 4;
-			case INVOCAR -> 5;
-			case TELEPORTAR -> 6;
-			case NADA -> 0;
-			default -> 0;
-		};
+		int v = 0;
+		switch (tipo) {
+			case ATACAR :
+				v = 1;
+				break;
+			case BOOSTEAR :
+				v = 2;
+				break;
+			case CURAR :
+				v = 3;
+				break;
+			case TRAMPEAR :
+				v = 4;
+				break;
+			case INVOCAR :
+				v = 5;
+				break;
+			case TELEPORTAR :
+				v = 6;
+				break;
+			case NADA :
+				v = 0;
+				break;
+		}
 		if (Math.abs(valorIA) != v) {
 			return -1;
 		}
@@ -225,15 +239,25 @@ public class StatHechizo {
 					String[] ele = a.replace("D_", "").split("");
 					for (String e : ele) {
 						switch (e) {
-							case "A" -> afectadoCond |= 1 << Constantes.ELEMENTO_AIRE;
-							case "W" -> afectadoCond |= 1 << Constantes.ELEMENTO_AGUA;
-							case "F" -> afectadoCond |= 1 << Constantes.ELEMENTO_FUEGO;
-							case "E" -> afectadoCond |= 1 << Constantes.ELEMENTO_TIERRA;
-							case "N" -> afectadoCond |= 1 << Constantes.ELEMENTO_NEUTRAL;
+							case "A" :
+								afectadoCond |= 1 << Constantes.ELEMENTO_AIRE;
+								break;
+							case "W" :
+								afectadoCond |= 1 << Constantes.ELEMENTO_AGUA;
+								break;
+							case "F" :
+								afectadoCond |= 1 << Constantes.ELEMENTO_FUEGO;
+								break;
+							case "E" :
+								afectadoCond |= 1 << Constantes.ELEMENTO_TIERRA;
+								break;
+							case "N" :
+								afectadoCond |= 1 << Constantes.ELEMENTO_NEUTRAL;
+								break;
 						}
 					}
 				}
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		eh.setAfectados(afectado);
 		eh.setAfectadosCond(afectadoCond);
@@ -268,11 +292,11 @@ public class StatHechizo {
 	private void ordenar() {
 		_ordenadoNormales.clear();
 		_ordenadoNormales.addAll(_efectosNormales);
-		_ordenadoNormales.sort(new CompPrioridad());
+		Collections.sort(_ordenadoNormales, new CompPrioridad());
 		_ordenadoNormales.trimToSize();
 		_ordenadoCriticos.clear();
 		_ordenadoCriticos.addAll(_efectosCriticos);
-		_ordenadoCriticos.sort(new CompPrioridad());
+		Collections.sort(_ordenadoCriticos, new CompPrioridad());
 		_ordenadoCriticos.trimToSize();
 	}
 	
@@ -514,7 +538,11 @@ public class StatHechizo {
 	private static class CompPrioridad implements Comparator<EfectoHechizo> {
 		@Override
 		public int compare(EfectoHechizo p1, EfectoHechizo p2) {
-			return Integer.compare(Constantes.prioridadEfecto(p1.getEfectoID()), Constantes.prioridadEfecto(p2.getEfectoID()));
+			if (Constantes.prioridadEfecto(p1.getEfectoID()) < Constantes.prioridadEfecto(p2.getEfectoID()))
+				return -1;
+			if (Constantes.prioridadEfecto(p1.getEfectoID()) > Constantes.prioridadEfecto(p2.getEfectoID()))
+				return 1;
+			return 0;
 		}
 	}
 }

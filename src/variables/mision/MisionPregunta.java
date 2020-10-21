@@ -1,8 +1,8 @@
 package variables.mision;
 public class MisionPregunta {
-	private final int _id;
-	private final int _npc;
-	private final String _condicion;
+	private int _id;
+	private int _npc;
+	private String _condicion;
 	
 	public MisionPregunta(int id, int npc, String condicion) {
 		_id = id;

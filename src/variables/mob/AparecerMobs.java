@@ -6,9 +6,8 @@ import estaticos.MainServidor;
 public class AparecerMobs extends Thread {
 	public static enum Aparecer {
 		INICIO_PELEA, FINAL_PELEA
-	}
-
-    private final Mapa _mapa;
+	};
+	private final Mapa _mapa;
 	private final GrupoMob _grupoMob;
 	private final Aparecer _tipoAparecer;
 	
@@ -29,11 +28,15 @@ public class AparecerMobs extends Thread {
 		if (tiempo > 0) {
 			try {
 				Thread.sleep(tiempo * 1000);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 		switch (_tipoAparecer) {
-			case INICIO_PELEA -> _mapa.addSiguienteGrupoMob(_grupoMob, false);
-			case FINAL_PELEA -> _mapa.addUltimoGrupoMob(_grupoMob, false);
+			case INICIO_PELEA :
+				_mapa.addSiguienteGrupoMob(_grupoMob, false);
+				break;
+			case FINAL_PELEA :
+				_mapa.addUltimoGrupoMob(_grupoMob, false);
+				break;
 		}
 	}
 }

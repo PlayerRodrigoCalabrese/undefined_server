@@ -7,8 +7,8 @@ import variables.pelea.Pelea;
 
 public class Grupo {
 	private Personaje _rastrear;
-	private final CopyOnWriteArrayList<Personaje> _integrantes = new CopyOnWriteArrayList<>();
-	private final CopyOnWriteArrayList<Personaje> _alumnos = new CopyOnWriteArrayList<>();
+	private final CopyOnWriteArrayList<Personaje> _integrantes = new CopyOnWriteArrayList<Personaje>();
+	private final CopyOnWriteArrayList<Personaje> _alumnos = new CopyOnWriteArrayList<Personaje>();
 	private String _packet;
 	private boolean _autoUnir = true;
 	
@@ -65,7 +65,7 @@ public class Grupo {
 	}
 	
 	public ArrayList<Integer> getIDsPersos() {
-		final ArrayList<Integer> lista = new ArrayList<>();
+		final ArrayList<Integer> lista = new ArrayList<Integer>();
 		for (final Personaje perso : _integrantes) {
 			lista.add(perso.getID());
 			if (perso.getCompañero() != null && perso.getCompañero().esMultiman()) {
@@ -158,7 +158,7 @@ public class Grupo {
 			}
 			try {
 				p.getCuenta().getSocket().analizar_Packets(packet);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 	}
 	
@@ -184,7 +184,7 @@ public class Grupo {
 					continue;
 				}
 				p.teleport(id, cell);
-			} catch (Exception ignored) {}
+			} catch (Exception e) {}
 		}
 	}
 	
@@ -192,7 +192,11 @@ public class Grupo {
 		if (_alumnos.isEmpty()) {
 			return;
 		}
-		Thread thread = new Thread(() -> teleport(id, cell));
+		Thread thread = new Thread() {
+			public void run() {
+				teleport(id, cell);
+			}
+		};
 		thread.start();
 	}
 	
@@ -202,12 +206,12 @@ public class Grupo {
 		}
 		_packet = "GA903" + pelea.getID() + ";" + getLiderGrupo().getID();
 		Thread thread = new Thread() {
-			final String packet2 = _packet;
+			String packet2 = _packet;
 			
 			public void run() {
 				try {
 					Thread.sleep(3000);
-				} catch (Exception ignored) {}
+				} catch (Exception e) {}
 				ejecutarPacket(packet2);
 			}
 		};
@@ -220,7 +224,7 @@ public class Grupo {
 		}
 		_packet = packet;
 		Thread thread = new Thread() {
-			final String packet2 = _packet;
+			String packet2 = _packet;
 			
 			public void run() {
 				ejecutarPacket(packet2);
