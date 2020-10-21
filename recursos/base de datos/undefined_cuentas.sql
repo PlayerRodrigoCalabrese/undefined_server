@@ -11,7 +11,7 @@
  Target Server Version : 100413
  File Encoding         : 65001
 
- Date: 10/09/2020 21:01:21
+ Date: 21/10/2020 10:42:45
 */
 
 SET NAMES utf8mb4;
@@ -62,6 +62,6 @@ CREATE TABLE `cuentas`  (
 -- ----------------------------
 -- Records of cuentas
 -- ----------------------------
-INSERT INTO `cuentas` VALUES (21, 'admin', '123', 5, 'Rodrigo', 'Calabrese', 'Argentina', 'Español', '', '05/11/93', 'privatedofus.net@gmail.com', '', 'pepo', 'pepa', 'Player-xD', 0, 0, 0, 0, 0, 1, '', 0, 0, '');
+INSERT INTO `cuentas` VALUES (21, 'admin', '123', 5, 'Rodrigo', 'Calabrese', 'Argentina', 'Español', '', '05/11/93', 'privatedofus.net@gmail.com', '127.0.0.1', 'pepo', 'pepa', 'Player-xD', 0, 0, 0, 0, 0, 1, '', 0, 0, '');
 
 SET FOREIGN_KEY_CHECKS = 1;
