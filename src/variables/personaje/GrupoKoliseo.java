@@ -5,7 +5,7 @@ import estaticos.GestorSalida;
 import estaticos.MainServidor;
 
 public class GrupoKoliseo {
-	private final ArrayList<Personaje> _kolis = new ArrayList<Personaje>();
+	private final ArrayList<Personaje> _kolis = new ArrayList<>();
 	
 	public GrupoKoliseo(final Personaje koli1) {
 		_kolis.add(koli1);
@@ -67,8 +67,7 @@ public class GrupoKoliseo {
 	}
 	
 	public ArrayList<Personaje> getMiembros() {
-		final ArrayList<Personaje> grupo = new ArrayList<Personaje>();
-		grupo.addAll(_kolis);
+        final ArrayList<Personaje> grupo = new ArrayList<Personaje>(_kolis);
 		return grupo;
 	}
 	

@@ -740,8 +740,8 @@ public class Trabajo implements Runnable, Exchanger {
 	
 	private void trabajoCraftear(boolean esSpeedCraft) {
 		try {
-			final Map<Integer, Integer> ingredientesModelo = new TreeMap<Integer, Integer>();
-			final Map<Integer, Integer> runasModelo = new TreeMap<Integer, Integer>();
+			final Map<Integer, Integer> ingredientesModelo = new TreeMap<>();
+			final Map<Integer, Integer> runasModelo = new TreeMap<>();
 			for (final Entry<Integer, Integer> ingrediente : _ingredientes.entrySet()) {
 				final int objetoID = ingrediente.getKey();
 				final int cantObjeto = ingrediente.getValue();
@@ -817,7 +817,7 @@ public class Trabajo implements Runnable, Exchanger {
 							if (st.length() > 0) {
 								st.append(",");
 							}
-							st.append("1f4#" + Integer.toHexString(entry.getKey()) + "#" + Integer.toHexString(entry.getValue()));
+							st.append("1f4#").append(Integer.toHexString(entry.getKey())).append("#").append(Integer.toHexString(entry.getValue()));
 						}
 					}
 					objCreado.convertirStringAStats(st.toString());
@@ -1078,7 +1078,7 @@ public class Trabajo implements Runnable, Exchanger {
 		try {
 			Objeto nuevoObj = null;
 			int r = RESULTADO_FALLO_NORMAL;
-			final Map<Integer, Integer> ingredientesPorModelo = new TreeMap<Integer, Integer>();
+			final Map<Integer, Integer> ingredientesPorModelo = new TreeMap<>();
 			for (final Entry<Integer, Integer> ingrediente : _ingredientes.entrySet()) {
 				final int objetoID = ingrediente.getKey();
 				final int cantObjeto = ingrediente.getValue();
@@ -1651,7 +1651,7 @@ public class Trabajo implements Runnable, Exchanger {
 		} else {
 			GestorSalida.ENVIAR_EMK_MOVER_OBJETO_LOCAL(artesano, 'O', "+", str);
 			GestorSalida.ENVIAR_EmK_MOVER_OBJETO_DISTANTE(cliente, 'O', "+", str + add);
-			objMovedor.add(new Duo<Integer, Integer>(objetoID, cantidad));
+			objMovedor.add(new Duo<>(objetoID, cantidad));
 		}
 	}
 	
@@ -1673,7 +1673,7 @@ public class Trabajo implements Runnable, Exchanger {
 			} else {
 				GestorSalida.ENVIAR_Ep_PAGO_TRABAJO_KAMAS_OBJETOS(_artesano, pagoID, "O", "+", str + add);
 				GestorSalida.ENVIAR_Ep_PAGO_TRABAJO_KAMAS_OBJETOS(_cliente, pagoID, "O", "+", str);
-				_objetosPago.add(new Duo<Integer, Integer>(idObj, cant));
+				_objetosPago.add(new Duo<>(idObj, cant));
 			}
 		} else {
 			final Duo<Integer, Integer> duo = Mundo.getDuoPorIDPrimero(_objetosSiSeConsegui, idObj);
@@ -1685,7 +1685,7 @@ public class Trabajo implements Runnable, Exchanger {
 			} else {
 				GestorSalida.ENVIAR_Ep_PAGO_TRABAJO_KAMAS_OBJETOS(_artesano, pagoID, "O", "+", str + add);
 				GestorSalida.ENVIAR_Ep_PAGO_TRABAJO_KAMAS_OBJETOS(_cliente, pagoID, "O", "+", str);
-				_objetosSiSeConsegui.add(new Duo<Integer, Integer>(idObj, cant));
+				_objetosSiSeConsegui.add(new Duo<>(idObj, cant));
 			}
 		}
 	}

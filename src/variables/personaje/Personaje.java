@@ -121,8 +121,8 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	_tipoInvitacion = "";
 	private final Cuenta _cuenta;
 	private MiembroGremio _miembroGremio;
-	private Map<Integer, Integer> _subStatsBase = new HashMap<Integer, Integer>(),
-	_subStatsScroll = new HashMap<Integer, Integer>(), _titulos = new HashMap<Integer, Integer>();
+	private Map<Integer, Integer> _subStatsBase = new HashMap<>(),
+	_subStatsScroll = new HashMap<>(), _titulos = new HashMap<>();
 	private final TotalStats _totalStats = new TotalStats(new Stats(), new Stats(), new Stats(), new Stats(), 1);
 	private Pelea _pelea, _prePelea;
 	private Mapa _mapa;
@@ -134,18 +134,18 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	private MisionPVP _misionPvp;
 	private Cofre _consultarCofre;
 	private Casa _casaDentro, _consultarCasa;
-	private final ArrayList<Integer> _ornamentos = new ArrayList<Integer>();
-	private final ArrayList<Short> _zaaps = new ArrayList<Short>();
-	private final ArrayList<Integer> _cardMobs = new ArrayList<Integer>(), _almanax = new ArrayList<Integer>(),
+	private final ArrayList<Integer> _ornamentos = new ArrayList<>();
+	private final ArrayList<Short> _zaaps = new ArrayList<>();
+	private final ArrayList<Integer> _cardMobs = new ArrayList<>(), _almanax = new ArrayList<>(),
 	_idsOmitidos = new ArrayList<>();
 	private final Tienda _tienda = new Tienda();
-	private final CopyOnWriteArrayList<Mision> _misiones = new CopyOnWriteArrayList<Mision>();
-	private final Map<Integer, Duo<Integer, Integer>> _bonusSetDeClase = new HashMap<Integer, Duo<Integer, Integer>>();
-	private final Map<Integer, Objeto> _objetos = new ConcurrentHashMap<Integer, Objeto>();
-	private final Map<Integer, SetRapido> _setsRapidos = new ConcurrentHashMap<Integer, SetRapido>();
+	private final CopyOnWriteArrayList<Mision> _misiones = new CopyOnWriteArrayList<>();
+	private final Map<Integer, Duo<Integer, Integer>> _bonusSetDeClase = new HashMap<>();
+	private final Map<Integer, Objeto> _objetos = new ConcurrentHashMap<>();
+	private final Map<Integer, SetRapido> _setsRapidos = new ConcurrentHashMap<>();
 	private Map<Integer, StatHechizo> _mapStatsHechizos;// solo es para los multiman
-	private final Map<Byte, StatOficio> _statsOficios = new HashMap<Byte, StatOficio>();
-	private ArrayList<HechizoPersonaje> _hechizos = new ArrayList<HechizoPersonaje>();
+	private final Map<Byte, StatOficio> _statsOficios = new HashMap<>();
+	private ArrayList<HechizoPersonaje> _hechizos = new ArrayList<>();
 	private Map<String, ArrayList<Long>> _agredir;
 	private Map<String, ArrayList<Long>> _agredido;
 	private GrupoKoliseo _koliseo;
@@ -158,7 +158,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	private StringBuilder _packetsCola = new StringBuilder();
 	private boolean _comandoPasarTurno;
 	private Oficio _oficioActual = null;
-	private Map<Objeto, Boolean> _dropPelea = new HashMap<Objeto, Boolean>();
+	private Map<Objeto, Boolean> _dropPelea = new HashMap<>();
 	private int _unirsePrePeleaAlID;
 	
 	public Map<Objeto, Boolean> getDropsPelea() {
@@ -468,7 +468,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 		final StringBuilder str = new StringBuilder();
 		int i = 0;
 		for (final Mision mision : _misiones) {
-			str.append("|" + mision.getIDModelo() + ";" + (mision.getEstadoMision()) + ";" + i++);
+			str.append("|").append(mision.getIDModelo()).append(";").append(mision.getEstadoMision()).append(";").append(i++);
 		}
 		return str.toString();
 	}
@@ -479,9 +479,9 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			if (str.length() > 0) {
 				str.append("|");
 			}
-			str.append(mision.getIDModelo() + "~" + mision.getEstadoMision());
+			str.append(mision.getIDModelo()).append("~").append(mision.getEstadoMision());
 			if (!mision.estaCompletada()) {
-				str.append("~" + mision.getEtapaID() + "~" + mision.getNivelEtapa());
+				str.append("~").append(mision.getEtapaID()).append("~").append(mision.getNivelEtapa());
 				boolean paso = false;
 				for (final Entry<Integer, Integer> entry : mision.getObjetivos().entrySet()) {
 					if (paso) {
@@ -489,7 +489,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 					} else {
 						str.append("~");
 					}
-					str.append(entry.getKey() + "," + entry.getValue());
+					str.append(entry.getKey()).append(",").append(entry.getValue());
 					paso = true;
 				}
 			}
@@ -509,7 +509,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 					if (str.length() > 0) {
 						str.append(";");
 					}
-					str.append(entry.getKey() + "," + entry.getValue());
+					str.append(entry.getKey()).append(",").append(entry.getValue());
 				}
 				str.append("|");
 				for (final int etapa : Mundo.getMision(id).getEtapas()) {
@@ -565,7 +565,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			final String param2 = obj.getParamStatTexto(Constantes.STAT_PERSONAJE_SEGUIDOR, 3);
 			if (!param2.isEmpty()) {
 				try {
-					str.append(forma + Integer.parseInt(param2, 16) + "^" + _talla);
+					str.append(forma).append(Integer.parseInt(param2, 16)).append("^").append(_talla);
 				} catch (Exception e) {}
 			}
 		}
@@ -686,26 +686,23 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	// 41959 = fantasma, 41959 = tumba
 	public String mostrarmeA() {
 		StringBuilder packet = new StringBuilder();
-		packet.append("RESTRICCIONES A --- " + _nombre + " --- " + _restriccionesALocalPlayer);
-		packet.append("\n" + RA_PUEDE_AGREDIR + " PUEDE AGREDIR : " + getRestriccionA(RA_PUEDE_AGREDIR));
-		packet.append("\n" + RA_PUEDE_DESAFIAR + " RA_PUEDE_DESAFIAR : " + getRestriccionA(RA_PUEDE_DESAFIAR));
-		packet.append("\n" + RA_PUEDE_INTERCAMBIAR + " RA_PUEDE_INTERCAMBIAR : " + getRestriccionA(RA_PUEDE_INTERCAMBIAR));
-		packet.append("\n" + RA_NO_PUEDE_ATACAR + " RA_NO_PUEDE_ATACAR : " + getRestriccionA(RA_NO_PUEDE_ATACAR));
-		packet.append("\n" + RA_PUEDE_CHAT_A_TODOS + " RA_PUEDE_CHAT_A_TODOS : " + getRestriccionA(RA_PUEDE_CHAT_A_TODOS));
-		packet.append("\n" + RA_PUEDE_MERCANTE + " RA_PUEDE_MERCANTE : " + getRestriccionA(RA_PUEDE_MERCANTE));
-		packet.append("\n" + RA_PUEDE_USAR_OBJETOS + " RA_PUEDE_USAR_OBJETOS : " + getRestriccionA(RA_PUEDE_USAR_OBJETOS));
-		packet.append("\n" + RA_PUEDE_INTERACTUAR_RECAUDADOR + " RA_PUEDE_INTERACTUAR_RECAUDADOR : " + getRestriccionA(
-		RA_PUEDE_INTERACTUAR_RECAUDADOR));
-		packet.append("\n" + RA_PUEDE_HABLAR_NPC + " RA_PUEDE_HABLAR_NPC : " + getRestriccionA(RA_PUEDE_HABLAR_NPC));
-		packet.append("\n" + RA_NO_PUEDE_ATACAR_MOBS_DUNG_CUANDO_MUTENTE + " RA_NO_PUEDE_ATACAR_MOBS_DUNG_CUANDO_MUTENTE : "
-		+ getRestriccionA(RA_NO_PUEDE_ATACAR_MOBS_DUNG_CUANDO_MUTENTE));
-		packet.append("\n" + RA_NO_PUEDE_MOVER_TODAS_DIRECCIONES + " RA_NO_PUEDE_MOVER_TODAS_DIRECCIONES : "
-		+ getRestriccionA(RA_NO_PUEDE_MOVER_TODAS_DIRECCIONES));
-		packet.append("\n" + RA_NO_PUEDE_ATACAR_MOBS_CUALQUIERA_CUANDO_MUTANTE
-		+ " RA_NO_PUEDE_ATACAR_MOBS_CUALQUIERA_CUANDO_MUTANTE : " + getRestriccionA(
-		RA_NO_PUEDE_ATACAR_MOBS_CUALQUIERA_CUANDO_MUTANTE));
-		packet.append("\n" + RA_PUEDE_INTERACTUAR_PRISMA + " RA_PUEDE_INTERACTUAR_PRISMA : " + getRestriccionA(
-		RA_PUEDE_INTERACTUAR_PRISMA));
+		packet.append("RESTRICCIONES A --- ").append(_nombre).append(" --- ").append(_restriccionesALocalPlayer);
+		packet.append("\n" + RA_PUEDE_AGREDIR + " PUEDE AGREDIR : ").append(getRestriccionA(RA_PUEDE_AGREDIR));
+		packet.append("\n" + RA_PUEDE_DESAFIAR + " RA_PUEDE_DESAFIAR : ").append(getRestriccionA(RA_PUEDE_DESAFIAR));
+		packet.append("\n" + RA_PUEDE_INTERCAMBIAR + " RA_PUEDE_INTERCAMBIAR : ").append(getRestriccionA(RA_PUEDE_INTERCAMBIAR));
+		packet.append("\n" + RA_NO_PUEDE_ATACAR + " RA_NO_PUEDE_ATACAR : ").append(getRestriccionA(RA_NO_PUEDE_ATACAR));
+		packet.append("\n" + RA_PUEDE_CHAT_A_TODOS + " RA_PUEDE_CHAT_A_TODOS : ").append(getRestriccionA(RA_PUEDE_CHAT_A_TODOS));
+		packet.append("\n" + RA_PUEDE_MERCANTE + " RA_PUEDE_MERCANTE : ").append(getRestriccionA(RA_PUEDE_MERCANTE));
+		packet.append("\n" + RA_PUEDE_USAR_OBJETOS + " RA_PUEDE_USAR_OBJETOS : ").append(getRestriccionA(RA_PUEDE_USAR_OBJETOS));
+		packet.append("\n" + RA_PUEDE_INTERACTUAR_RECAUDADOR + " RA_PUEDE_INTERACTUAR_RECAUDADOR : ").append(getRestriccionA(
+				RA_PUEDE_INTERACTUAR_RECAUDADOR));
+		packet.append("\n" + RA_PUEDE_HABLAR_NPC + " RA_PUEDE_HABLAR_NPC : ").append(getRestriccionA(RA_PUEDE_HABLAR_NPC));
+		packet.append("\n" + RA_NO_PUEDE_ATACAR_MOBS_DUNG_CUANDO_MUTENTE + " RA_NO_PUEDE_ATACAR_MOBS_DUNG_CUANDO_MUTENTE : ").append(getRestriccionA(RA_NO_PUEDE_ATACAR_MOBS_DUNG_CUANDO_MUTENTE));
+		packet.append("\n" + RA_NO_PUEDE_MOVER_TODAS_DIRECCIONES + " RA_NO_PUEDE_MOVER_TODAS_DIRECCIONES : ").append(getRestriccionA(RA_NO_PUEDE_MOVER_TODAS_DIRECCIONES));
+		packet.append("\n" + RA_NO_PUEDE_ATACAR_MOBS_CUALQUIERA_CUANDO_MUTANTE + " RA_NO_PUEDE_ATACAR_MOBS_CUALQUIERA_CUANDO_MUTANTE : ").append(getRestriccionA(
+				RA_NO_PUEDE_ATACAR_MOBS_CUALQUIERA_CUANDO_MUTANTE));
+		packet.append("\n" + RA_PUEDE_INTERACTUAR_PRISMA + " RA_PUEDE_INTERACTUAR_PRISMA : ").append(getRestriccionA(
+				RA_PUEDE_INTERACTUAR_PRISMA));
 		return packet.toString();
 	}
 	
@@ -720,17 +717,17 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	// 63 = fantasma , 159 = tumba
 	public String mostrarmeB() {
 		StringBuilder packet = new StringBuilder();
-		packet.append("RESTRICCIONES B --- " + _nombre + " --- " + _restriccionesBCharacter);
-		packet.append("\n" + RB_PUEDE_SER_AGREDIDO + " PUEDDE SER AGREDIDO : " + getRestriccionB(RB_PUEDE_SER_AGREDIDO));
-		packet.append("\n" + RB_PUEDE_SER_DESAFIADO + " PUEDE SER DESAFIADO : " + getRestriccionB(RB_PUEDE_SER_DESAFIADO));
-		packet.append("\n" + RB_PUEDE_HACER_INTERCAMBIO + " PUEDE HACER INTERCAMBIO : " + getRestriccionB(
-		RB_PUEDE_HACER_INTERCAMBIO));
-		packet.append("\n" + RB_PUEDE_SER_ATACADO + " PUEDE SER ATACADO : " + getRestriccionB(RB_PUEDE_SER_ATACADO));
-		packet.append("\n" + RB_PUEDE_CORRER + " PUEDE CORRER : " + getRestriccionB(RB_PUEDE_CORRER));
-		packet.append("\n" + RB_NO_ES_FANTASMA + " NO ES FANTASMA : " + getRestriccionB(RB_NO_ES_FANTASMA));
-		packet.append("\n" + RB_PUEDE_SWITCH_MODO_CRIATURA + " PUEDE SWITCH MODO CRIATURA : " + getRestriccionB(
-		RB_PUEDE_SWITCH_MODO_CRIATURA));
-		packet.append("\n" + RB_NO_ES_TUMBA + " NO ES TUMBA : " + getRestriccionB(RB_NO_ES_TUMBA));
+		packet.append("RESTRICCIONES B --- ").append(_nombre).append(" --- ").append(_restriccionesBCharacter);
+		packet.append("\n" + RB_PUEDE_SER_AGREDIDO + " PUEDDE SER AGREDIDO : ").append(getRestriccionB(RB_PUEDE_SER_AGREDIDO));
+		packet.append("\n" + RB_PUEDE_SER_DESAFIADO + " PUEDE SER DESAFIADO : ").append(getRestriccionB(RB_PUEDE_SER_DESAFIADO));
+		packet.append("\n" + RB_PUEDE_HACER_INTERCAMBIO + " PUEDE HACER INTERCAMBIO : ").append(getRestriccionB(
+				RB_PUEDE_HACER_INTERCAMBIO));
+		packet.append("\n" + RB_PUEDE_SER_ATACADO + " PUEDE SER ATACADO : ").append(getRestriccionB(RB_PUEDE_SER_ATACADO));
+		packet.append("\n" + RB_PUEDE_CORRER + " PUEDE CORRER : ").append(getRestriccionB(RB_PUEDE_CORRER));
+		packet.append("\n" + RB_NO_ES_FANTASMA + " NO ES FANTASMA : ").append(getRestriccionB(RB_NO_ES_FANTASMA));
+		packet.append("\n" + RB_PUEDE_SWITCH_MODO_CRIATURA + " PUEDE SWITCH MODO CRIATURA : ").append(getRestriccionB(
+				RB_PUEDE_SWITCH_MODO_CRIATURA));
+		packet.append("\n" + RB_NO_ES_TUMBA + " NO ES TUMBA : ").append(getRestriccionB(RB_NO_ES_TUMBA));
 		return packet.toString();
 	}
 	
@@ -767,7 +764,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 					final String modificacion = efecto + ";" + hechizoID + ";" + modif;
 					tiene.add(hechizoID);
 					if (!_bonusSetDeClase.containsKey(hechizoID)) {
-						_bonusSetDeClase.put(hechizoID, new Duo<Integer, Integer>(efecto, modif));
+						_bonusSetDeClase.put(hechizoID, new Duo<>(efecto, modif));
 						if (_enLinea) {
 							GestorSalida.ENVIAR_SB_HECHIZO_BOOST_SET_CLASE(this, modificacion);
 						}
@@ -1467,7 +1464,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			addHechizoPersonaje(Encriptador.getValorHashPorNumero(i), st.getHechizo(), st.getGrado());
 			i++;
 		}
-		_mapStatsHechizos = new HashMap<Integer, StatHechizo>();
+		_mapStatsHechizos = new HashMap<>();
 		_mapStatsHechizos.putAll(mobGrado.getHechizos());
 	}
 	
@@ -1683,7 +1680,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			_agredir = new HashMap<>();
 		}
 		if (_agredir.get(nombre) == null) {
-			_agredir.put(nombre, new ArrayList<Long>());
+			_agredir.put(nombre, new ArrayList<>());
 		}
 		_agredir.get(nombre).add(System.currentTimeMillis());
 	}
@@ -1700,7 +1697,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			_agredido = new HashMap<>();
 		}
 		if (_agredido.get(nombre) == null) {
-			_agredido.put(nombre, new ArrayList<Long>());
+			_agredido.put(nombre, new ArrayList<>());
 		}
 		_agredido.get(nombre).add(System.currentTimeMillis());
 	}
@@ -2010,7 +2007,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			if (ServidorSocket.REGISTROS.get(_cuenta.getNombre()) == null) {
 				ServidorSocket.REGISTROS.put(_cuenta.getNombre(), new StringBuilder());
 			}
-			ServidorSocket.REGISTROS.get(_cuenta.getNombre()).append(System.currentTimeMillis() + ": \t" + packet + "\n");
+			ServidorSocket.REGISTROS.get(_cuenta.getNombre()).append(System.currentTimeMillis()).append(": \t").append(packet).append("\n");
 		}
 	}
 	
@@ -2755,8 +2752,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 		if (_encarnacion != null) {
 			return;
 		}
-		final ArrayList<HechizoPersonaje> hechizos = new ArrayList<HechizoPersonaje>();
-		hechizos.addAll(_hechizos);
+        final ArrayList<HechizoPersonaje> hechizos = new ArrayList<HechizoPersonaje>(_hechizos);
 		for (final HechizoPersonaje hp : hechizos) {
 			for (int i = 1; i < hp.getNivel(); i++) {
 				_puntosHechizos += i;
@@ -2943,7 +2939,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			if (str.length() > 0) {
 				str.append(";");
 			}
-			str.append(hp.getHechizo().getID() + "," + hp.getNivel() + "," + hp.getPosicion());
+			str.append(hp.getHechizo().getID()).append(",").append(hp.getNivel()).append(",").append(hp.getPosicion());
 		}
 		return str.toString();
 	}
@@ -2960,7 +2956,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			if (str.length() > 0) {
 				str.append(";");
 			}
-			str.append(hp.getHechizo().getID() + "~" + hp.getNivel() + "~" + hp.getPosicion());
+			str.append(hp.getHechizo().getID()).append("~").append(hp.getNivel()).append("~").append(hp.getPosicion());
 		}
 		return str.toString();
 	}
@@ -2971,18 +2967,18 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	
 	public String stringParaListaPJsServer() {
 		final StringBuilder str = new StringBuilder("|");
-		str.append(_id + ";");
-		str.append(_nombre + ";");
-		str.append(_nivel + ";");
-		str.append(getGfxID(false) + ";");
-		str.append((_color1 > -1 ? Integer.toHexString(_color1) : -1) + ";");
-		str.append((_color2 > -1 ? Integer.toHexString(_color2) : -1) + ";");
-		str.append((_color3 > -1 ? Integer.toHexString(_color3) : -1) + ";");
-		str.append(getStringAccesorios() + ";");
-		str.append((_esMercante ? 1 : 0) + ";");
-		str.append(MainServidor.SERVIDOR_ID + ";");
+		str.append(_id).append(";");
+		str.append(_nombre).append(";");
+		str.append(_nivel).append(";");
+		str.append(getGfxID(false)).append(";");
+		str.append(_color1 > -1 ? Integer.toHexString(_color1) : -1).append(";");
+		str.append(_color2 > -1 ? Integer.toHexString(_color2) : -1).append(";");
+		str.append(_color3 > -1 ? Integer.toHexString(_color3) : -1).append(";");
+		str.append(getStringAccesorios()).append(";");
+		str.append(_esMercante ? 1 : 0).append(";");
+		str.append(MainServidor.SERVIDOR_ID).append(";");
 		if (MainServidor.MODO_HEROICO || MainServidor.MAPAS_MODO_HEROICO.contains(_mapa.getID())) {
-			str.append((esFantasma() ? 1 : 0) + ";");
+			str.append(esFantasma() ? 1 : 0).append(";");
 		} else {
 			str.append("0;");
 		}
@@ -3033,29 +3029,29 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	
 	public String stringGMmercante() {
 		final StringBuilder str = new StringBuilder();
-		str.append(_celda.getID() + ";");
+		str.append(_celda.getID()).append(";");
 		str.append("1;");
 		str.append("0;");
-		str.append(_id + ";");
-		str.append(_nombre + "^" + _colorNombre + ";");
+		str.append(_id).append(";");
+		str.append(_nombre).append("^").append(_colorNombre).append(";");
 		str.append("-5" + ",");
 		int titulo = getTitulo(false);
 		if (titulo > 0) {
 			str.append(titulo);
 			if (_titulos.containsKey(titulo) && _titulos.get(titulo) > -1) {
-				str.append("**" + _titulos.get(titulo));
+				str.append("**").append(_titulos.get(titulo));
 			}
 		}
 		str.append(";");
-		str.append(getGfxID(false) + "^" + _talla + ";");
-		str.append((_color1 == -1 ? "-1" : Integer.toHexString(_color1)) + ";");
-		str.append((_color2 == -1 ? "-1" : Integer.toHexString(_color2)) + ";");
-		str.append((_color3 == -1 ? "-1" : Integer.toHexString(_color3)) + ";");
-		str.append(getStringAccesorios() + ";");
+		str.append(getGfxID(false)).append("^").append(_talla).append(";");
+		str.append(_color1 == -1 ? "-1" : Integer.toHexString(_color1)).append(";");
+		str.append(_color2 == -1 ? "-1" : Integer.toHexString(_color2)).append(";");
+		str.append(_color3 == -1 ? "-1" : Integer.toHexString(_color3)).append(";");
+		str.append(getStringAccesorios()).append(";");
 		// str.append(_miembroGremio.getGremio().getNombre() + ";" +
 		// _miembroGremio.getGremio().getEmblema() + ";");
 		if (_miembroGremio != null && _miembroGremio.getGremio().getCantidadMiembros() >= 10) {
-			str.append(_miembroGremio.getGremio().getNombre() + ";" + _miembroGremio.getGremio().getEmblema() + ";");
+			str.append(_miembroGremio.getGremio().getNombre()).append(";").append(_miembroGremio.getGremio().getEmblema()).append(";");
 		} else {
 			str.append(";;");
 		}
@@ -3068,34 +3064,34 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 		if (_pelea != null) {
 			return "";
 		}
-		str.append(_celda.getID() + ";");
-		str.append(_orientacion + ";");
-		str.append(_ornamento + "^" + (MainServidor.PARAM_AURA_VIP ? ((esAbonado() ? 1 : 0)) : "") + ";");
-		str.append(_id + ";");
-		str.append(_nombre + "^" + _colorNombre + ";");
-		str.append(_claseID + ",");
+		str.append(_celda.getID()).append(";");
+		str.append(_orientacion).append(";");
+		str.append(_ornamento).append("^").append(MainServidor.PARAM_AURA_VIP ? ((esAbonado() ? 1 : 0)) : "").append(";");
+		str.append(_id).append(";");
+		str.append(_nombre).append("^").append(_colorNombre).append(";");
+		str.append(_claseID).append(",");
 		int titulo = getTitulo(false);
 		if (titulo > 0) {
 			str.append(titulo);
 			if (_titulos.containsKey(titulo) && _titulos.get(titulo) > -1) {
-				str.append("**" + _titulos.get(titulo));
+				str.append("**").append(_titulos.get(titulo));
 			}
 		}
 		if (!_tituloVIP.isEmpty()) {
-			str.append("~" + _tituloVIP);
+			str.append("~").append(_tituloVIP);
 		}
 		str.append(";");
-		str.append(getGfxID(true) + "^" + _talla + stringSeguidores() + ";");
-		str.append(_sexo + ";");
-		str.append(_alineacion + ",");
-		str.append(_ordenNivel + ",");
-		str.append((alasActivadas() ? _gradoAlineacion : "0") + ",");
-		str.append((_id + _nivel) + ",");
-		str.append((_deshonor > 0 ? 1 : 0) + ";");
-		str.append((_color1 < 0 ? "-1" : Integer.toHexString(_color1)) + ";");
-		str.append((_color2 < 0 ? "-1" : Integer.toHexString(_color2)) + ";");
-		str.append((_color3 < 0 ? "-1" : Integer.toHexString(_color3)) + ";");
-		str.append(getStringAccesorios() + ";");
+		str.append(getGfxID(true)).append("^").append(_talla).append(stringSeguidores()).append(";");
+		str.append(_sexo).append(";");
+		str.append(_alineacion).append(",");
+		str.append(_ordenNivel).append(",");
+		str.append(alasActivadas() ? _gradoAlineacion : "0").append(",");
+		str.append(_id + _nivel).append(",");
+		str.append(_deshonor > 0 ? 1 : 0).append(";");
+		str.append(_color1 < 0 ? "-1" : Integer.toHexString(_color1)).append(";");
+		str.append(_color2 < 0 ? "-1" : Integer.toHexString(_color2)).append(";");
+		str.append(_color3 < 0 ? "-1" : Integer.toHexString(_color3)).append(";");
+		str.append(getStringAccesorios()).append(";");
 		if (MainServidor.PARAM_ACTIVAR_AURA) {
 			int aura = _totalStats.getStatsObjetos().getStatParaMostrar(Constantes.STAT_AURA);
 			str.append(aura != 0 ? aura : ((_nivel / 100)) + ";");
@@ -3105,33 +3101,32 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 		str.append(";");
 		str.append(";");
 		if (_miembroGremio != null && _miembroGremio.getGremio().getCantidadMiembros() >= 10) {
-			str.append(_miembroGremio.getGremio().getNombre() + ";" + _miembroGremio.getGremio().getEmblema() + ";");
+			str.append(_miembroGremio.getGremio().getNombre()).append(";").append(_miembroGremio.getGremio().getEmblema()).append(";");
 		} else {
 			str.append(";;");
 		}
-		str.append(Integer.toString(_restriccionesBCharacter, 36) + ";");
-		str.append((_montando && _montura != null ? _montura.getStringColor(stringColor()) : "") + ";");// 19
-		str.append(Math.max(0, _totalStats.getStatsObjetos().getStatParaMostrar(Constantes.STAT_MAS_VELOCIDAD) / 1000f)
-		+ ";");
-		str.append(_resets + ";");
+		str.append(Integer.toString(_restriccionesBCharacter, 36)).append(";");
+		str.append(_montando && _montura != null ? _montura.getStringColor(stringColor()) : "").append(";");// 19
+		str.append(Math.max(0, _totalStats.getStatsObjetos().getStatParaMostrar(Constantes.STAT_MAS_VELOCIDAD) / 1000f)).append(";");
+		str.append(_resets).append(";");
 		return str.toString();
 	}
 	
 	public String getStringAccesorios() {
 		final StringBuilder str = new StringBuilder();
-		str.append(strObjEnPosParaOa(Constantes.OBJETO_POS_ARMA) + ",");// arma
-		str.append(strObjEnPosParaOa(Constantes.OBJETO_POS_SOMBRERO) + ",");// sombrero
-		str.append(strObjEnPosParaOa(Constantes.OBJETO_POS_CAPA) + ",");// capa
-		str.append(strObjEnPosParaOa(Constantes.OBJETO_POS_MASCOTA) + ",");// mascota
-		str.append(strObjEnPosParaOa(Constantes.OBJETO_POS_ESCUDO) + ",");// escudo
-		str.append(_rostro + ",");// change face
+		str.append(strObjEnPosParaOa(Constantes.OBJETO_POS_ARMA)).append(",");// arma
+		str.append(strObjEnPosParaOa(Constantes.OBJETO_POS_SOMBRERO)).append(",");// sombrero
+		str.append(strObjEnPosParaOa(Constantes.OBJETO_POS_CAPA)).append(",");// capa
+		str.append(strObjEnPosParaOa(Constantes.OBJETO_POS_MASCOTA)).append(",");// mascota
+		str.append(strObjEnPosParaOa(Constantes.OBJETO_POS_ESCUDO)).append(",");// escudo
+		str.append(_rostro).append(",");// change face
 		try {
 			if (getMiembroGremio() != null) {
 				final String[] args = getMiembroGremio().getGremio().getEmblema().split(",");
 				final String colorEscudo = Integer.toHexString(Integer.parseInt(args[1], 36));
 				final int emblemaID = Integer.parseInt(args[2], 36);
 				final int colorEmblema = Integer.parseInt(args[3], 36) + 1;
-				str.append(colorEscudo + "~" + emblemaID + "~" + colorEmblema);
+				str.append(colorEscudo).append("~").append(emblemaID).append("~").append(colorEmblema);
 			}
 		} catch (final Exception e) {}
 		return str.toString();
@@ -3140,11 +3135,11 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	public String stringStats() {
 		final StringBuilder str = new StringBuilder("As");
 		str.append(stringStatsComplemento());
-		str.append(getIniciativa() + "|");
+		str.append(getIniciativa()).append("|");
 		int base = 0, equipo = 0, bendMald = 0, buff = 0, total = 0;
 		total = _totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_PROSPECCION);
 		// prospeccion
-		str.append(total + "|");
+		str.append(total).append("|");
 		final int[] stats = {111, 128, 118, 125, 124, 123, 119, 126, 117, 182, 112, 142, 165, 138, 178, 225, 226, 220, 115,
 		122, 160, 161, 244, 214, 264, 254, 240, 210, 260, 250, 241, 211, 261, 251, 242, 212, 262, 252, 243, 213, 263, 253,
 		410, 413, 419, 416, 415, 417, 418};
@@ -3154,7 +3149,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			bendMald = _totalStats.getStatsBendMald().getStatParaMostrar(s);
 			buff = _totalStats.getStatsBuff().getStatParaMostrar(s);
 			total = _totalStats.getTotalStatParaMostrar(s);
-			str.append(base + "," + equipo + "," + bendMald + "," + buff + "," + (total) + "|");
+			str.append(base).append(",").append(equipo).append(",").append(bendMald).append(",").append(buff).append(",").append(total).append("|");
 		}
 		return str.toString();
 	}
@@ -3167,20 +3162,20 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	
 	private String stringStatsComplemento() {
 		final StringBuilder str = new StringBuilder();
-		str.append(stringExperiencia(",") + "|");
-		str.append(_kamas + "|");
+		str.append(stringExperiencia(",")).append("|");
+		str.append(_kamas).append("|");
 		if (_encarnacion != null) {
 			str.append("0|0|");
 		} else {
-			str.append(_puntosStats + "|" + _puntosHechizos + "|");
+			str.append(_puntosStats).append("|").append(_puntosHechizos).append("|");
 		}
-		str.append(_alineacion + "~");
-		str.append(_alineacion + ",");// fake alineacion, si son diferentes se activa haveFakeAlignment
-		str.append(_ordenNivel + ",");// orden alineacion
-		str.append(_gradoAlineacion + ",");// nValue
-		str.append(_honor + ",");// nHonour
-		str.append(_deshonor + ",");// nDisgrace
-		str.append((alasActivadas() ? "1" : "0") + "|");// bEnabled
+		str.append(_alineacion).append("~");
+		str.append(_alineacion).append(",");// fake alineacion, si son diferentes se activa haveFakeAlignment
+		str.append(_ordenNivel).append(",");// orden alineacion
+		str.append(_gradoAlineacion).append(",");// nValue
+		str.append(_honor).append(",");// nHonour
+		str.append(_deshonor).append(",");// nDisgrace
+		str.append(alasActivadas() ? "1" : "0").append("|");// bEnabled
 		int PDV = getPDV();
 		int PDVMax = getPDVMax();
 		if (_pelea != null && _pelea.getLuchadorPorID(_id) != null) {
@@ -3190,8 +3185,8 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 				PDVMax = luchador.getPDVMaxConBuff();
 			}
 		}
-		str.append(PDV + "," + PDVMax + "|");
-		str.append(_energia + ",10000|");
+		str.append(PDV).append(",").append(PDVMax).append("|");
+		str.append(_energia).append(",10000|");
 		return str.toString();
 	}
 	
@@ -3214,7 +3209,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	public void actualizarObjEquipStats() {
 		_totalStats.getStatsObjetos().clear();
 		boolean esEncarnacion = false;
-		final ArrayList<Integer> listaSetsEquipados = new ArrayList<Integer>();
+		final ArrayList<Integer> listaSetsEquipados = new ArrayList<>();
 		for (byte pos : Constantes.POSICIONES_EQUIPAMIENTO) {
 			final Objeto objeto = getObjPosicion(pos);
 			if (objeto == null) {
@@ -3776,7 +3771,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	}
 	
 	public boolean tenerYEliminarObjPorModYCant(final int idModelo, int cantidad) {
-		final ArrayList<Objeto> listaObjBorrar = new ArrayList<Objeto>();
+		final ArrayList<Objeto> listaObjBorrar = new ArrayList<>();
 		for (final Objeto obj : _objetos.values()) {
 			if (obj.getObjModeloID() != idModelo) {
 				continue;
@@ -3802,7 +3797,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	}
 	
 	public int restarObjPorModYCant(final int idModelo, int cantidad) {
-		final ArrayList<Objeto> listaObjBorrar = new ArrayList<Objeto>();
+		final ArrayList<Objeto> listaObjBorrar = new ArrayList<>();
 		int eliminados = 0;
 		for (final Objeto obj : _objetos.values()) {
 			if (obj.getObjModeloID() != idModelo) {
@@ -3829,8 +3824,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	}
 	
 	public int eliminarPorObjModeloRecibidoDesdeMinutos(final int objModeloID, int recibidoMinutos) {
-		final ArrayList<Objeto> lista = new ArrayList<Objeto>();
-		lista.addAll(_objetos.values());
+        final ArrayList<Objeto> lista = new ArrayList<Objeto>(_objetos.values());
 		int eliminados = 0;
 		for (final Objeto obj : lista) {
 			if (obj.getObjModeloID() != objModeloID) {
@@ -3882,8 +3876,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	
 	public String strListaObjetos() {
 		final StringBuilder str = new StringBuilder();
-		TreeMap<Integer, Objeto> objetos = new TreeMap<>();
-		objetos.putAll(_objetos);
+        TreeMap<Integer, Objeto> objetos = new TreeMap<>(_objetos);
 		for (final Objeto obj : objetos.values()) {
 			if (obj == null) {
 				continue;
@@ -4087,7 +4080,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 				if (str.length() > 0) {
 					str.append(";");
 				}
-				str.append(_statsOficios.get(i).getOficio().getID() + "," + _statsOficios.get(i).getExp());
+				str.append(_statsOficios.get(i).getOficio().getID()).append(",").append(_statsOficios.get(i).getExp());
 			} catch (Exception e) {}
 		}
 		return str.toString();
@@ -4283,17 +4276,17 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	
 	public String stringInfoGrupo() {
 		final StringBuilder str = new StringBuilder();
-		str.append(_id + ";");
-		str.append(_nombre + ";");
-		str.append(getGfxID(false) + ";");
-		str.append(_color1 + ";");
-		str.append(_color2 + ";");
-		str.append(_color3 + ";");
-		str.append(getStringAccesorios() + ";");
-		str.append(_PDV + "," + _PDVMax + ";");
-		str.append(_nivel + ";");
-		str.append(getIniciativa() + ";");
-		str.append(_totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_PROSPECCION) + ";");
+		str.append(_id).append(";");
+		str.append(_nombre).append(";");
+		str.append(getGfxID(false)).append(";");
+		str.append(_color1).append(";");
+		str.append(_color2).append(";");
+		str.append(_color3).append(";");
+		str.append(getStringAccesorios()).append(";");
+		str.append(_PDV).append(",").append(_PDVMax).append(";");
+		str.append(_nivel).append(";");
+		str.append(getIniciativa()).append(";");
+		str.append(_totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_PROSPECCION)).append(";");
 		str.append("1");
 		return str.toString();
 	}
@@ -4476,7 +4469,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			linea = 9;
 			String path = AJ.getPathPacket();
 			linea = 10;
-			final AtomicReference<String> pathRef = new AtomicReference<String>(path);
+			final AtomicReference<String> pathRef = new AtomicReference<>(path);
 			linea = 11;
 			final short ultCelda = Encriptador.hashACeldaID(path.substring(path.length() - 2));
 			linea = 12;
@@ -5115,16 +5108,16 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	public String analizarListaAmigos(final int id) {
 		final StringBuilder str = new StringBuilder(";");
 		str.append("?;");
-		str.append(_nombre + ";");
+		str.append(_nombre).append(";");
 		if (_cuenta.esAmigo(id)) {
-			str.append(_nivel + ";");
-			str.append(_alineacion + ";");
+			str.append(_nivel).append(";");
+			str.append(_alineacion).append(";");
 		} else {
 			str.append("?;");
 			str.append("-1;");
 		}
-		str.append(_claseID + ";");
-		str.append(_sexo + ";");
+		str.append(_claseID).append(";");
+		str.append(_sexo).append(";");
 		str.append(getGfxID(false));
 		return str.toString();
 	}
@@ -5132,16 +5125,16 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	public String analizarListaEnemigos(final int id) {
 		final StringBuilder str = new StringBuilder(";");
 		str.append("?;");
-		str.append(_nombre + ";");
+		str.append(_nombre).append(";");
 		if (_cuenta.esEnemigo(id)) {
-			str.append(_nivel + ";");
-			str.append(_alineacion + ";");
+			str.append(_nivel).append(";");
+			str.append(_alineacion).append(";");
 		} else {
 			str.append("?;");
 			str.append("-1;");
 		}
-		str.append(_claseID + ";");
-		str.append(_sexo + ";");
+		str.append(_claseID).append(";");
+		str.append(_sexo).append(";");
 		str.append(getGfxID(false));
 		return str.toString();
 	}
@@ -5569,10 +5562,10 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 					continue;
 				}
 				if (prisma.getEstadoPelea() == 0 || prisma.getEstadoPelea() == -2) {
-					str.append("|" + prisma.getMapa().getID() + ";*");
+					str.append("|").append(prisma.getMapa().getID()).append(";*");
 				} else {
 					int costo = Formulas.calcularCosteZaap(_mapa, prisma.getMapa());
-					str.append("|" + prisma.getMapa().getID() + ";" + costo);
+					str.append("|").append(prisma.getMapa().getID()).append(";").append(costo);
 				}
 			} catch (Exception e) {}
 		}
@@ -5591,7 +5584,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 					continue;
 				}
 				int costo = Formulas.calcularCosteZaap(_mapa, Mundo.getMapa(i));
-				str.append("|" + i + ";" + costo);
+				str.append("|").append(i).append(";").append(costo);
 			} catch (final Exception e) {}
 		}
 		return str.toString();
@@ -5630,7 +5623,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 				precio = 10;
 			}
 			for (final String s : Zaapis) {
-				listaZaapi.append(s + ";" + precio + "|");
+				listaZaapi.append(s).append(";").append(precio).append("|");
 			}
 		}
 		if (_mapa.getSubArea().getArea().getID() != 11 || _alineacion == Constantes.ALINEACION_BONTARIANO) {
@@ -5643,7 +5636,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 				precio = 10;
 			}
 			for (final String s : Zaapis) {
-				listaZaapi.append(s + ";" + precio + "|");
+				listaZaapi.append(s).append(";").append(precio).append("|");
 			}
 		}
 		GestorSalida.ENVIAR_Wc_LISTA_ZAPPIS(this, _mapa.getID() + "|" + listaZaapi.toString());
@@ -5885,7 +5878,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			}
 			str.append(b);
 			if (_titulos.get(b) > -1) {
-				str.append("*" + _titulos.get(b));
+				str.append("*").append(_titulos.get(b));
 			}
 		}
 		return str.toString();
@@ -5980,12 +5973,11 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 		final Personaje esposo = Mundo.getPersonaje(_esposoID);
 		final StringBuilder str = new StringBuilder();
 		if (esposo != null) {
-			str.append(esposo._nombre + "|" + esposo._claseID + esposo._sexo + "|" + esposo._color1 + "|" + esposo._color2
-			+ "|" + esposo._color3 + "|");
+			str.append(esposo._nombre).append("|").append(esposo._claseID).append(esposo._sexo).append("|").append(esposo._color1).append("|").append(esposo._color2).append("|").append(esposo._color3).append("|");
 			if (!esposo._enLinea) {
 				str.append("|");
 			} else {
-				str.append(esposo.stringUbicEsposo() + "|");
+				str.append(esposo.stringUbicEsposo()).append("|");
 			}
 		} else {
 			str.append("|");
@@ -6108,7 +6100,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			return "null";
 		}
 		try {
-			if (obj.getParamStatTexto(Constantes.STAT_APARIENCIA_OBJETO, 2) != "") {
+			if (!obj.getParamStatTexto(Constantes.STAT_APARIENCIA_OBJETO, 2).equals("")) {
 				return obj.getParamStatTexto(Constantes.STAT_APARIENCIA_OBJETO, 3);
 			}
 			if (obj.getObjevivoID() > 0) {
@@ -6150,7 +6142,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 	public String getStringTienda() {
 		final StringBuilder str = new StringBuilder();
 		for (final Objeto obj : _tienda.getObjetos()) {
-			str.append(obj.getID() + "|");
+			str.append(obj.getID()).append("|");
 		}
 		return str.toString();
 	}
@@ -6181,26 +6173,26 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 			if (str.length() > 0) {
 				str.append("|");
 			}
-			str.append(obj.getID() + ";" + obj.getCantidad() + ";" + obj.getObjModeloID() + ";" + obj.convertirStatsAString(
-			false) + ";" + obj.getPrecio());
+			str.append(obj.getID()).append(";").append(obj.getCantidad()).append(";").append(obj.getObjModeloID()).append(";").append(obj.convertirStatsAString(
+					false)).append(";").append(obj.getPrecio());
 		}
 		return str.toString();
 	}
 	
 	public String stringGMLuchador() {
 		StringBuilder str = new StringBuilder();
-		str.append(getClaseID(false) + ";");
-		str.append(getGfxID(false) + "^" + getTalla() + ";");
-		str.append(getSexo() + ";");
-		str.append(getNivel() + ";");
-		str.append(getAlineacion() + ",");
-		str.append(getOrdenNivel() + ",");
-		str.append((alasActivadas() ? getGradoAlineacion() : "0") + ",");
-		str.append((getID() + getNivel()) + "," + (getDeshonor() > 0 ? 1 : 0) + ";");
-		str.append((getColor1() > -1 ? Integer.toHexString(getColor1()) : -1) + ";");
-		str.append((getColor2() > -1 ? Integer.toHexString(getColor2()) : -1) + ";");
-		str.append((getColor3() > -1 ? Integer.toHexString(getColor3()) : -1) + ";");
-		str.append(getStringAccesorios() + ";");
+		str.append(getClaseID(false)).append(";");
+		str.append(getGfxID(false)).append("^").append(getTalla()).append(";");
+		str.append(getSexo()).append(";");
+		str.append(getNivel()).append(";");
+		str.append(getAlineacion()).append(",");
+		str.append(getOrdenNivel()).append(",");
+		str.append(alasActivadas() ? getGradoAlineacion() : "0").append(",");
+		str.append(getID() + getNivel()).append(",").append(getDeshonor() > 0 ? 1 : 0).append(";");
+		str.append(getColor1() > -1 ? Integer.toHexString(getColor1()) : -1).append(";");
+		str.append(getColor2() > -1 ? Integer.toHexString(getColor2()) : -1).append(";");
+		str.append(getColor3() > -1 ? Integer.toHexString(getColor3()) : -1).append(";");
+		str.append(getStringAccesorios()).append(";");
 		return str.toString();
 	}
 	
@@ -6256,7 +6248,7 @@ public class Personaje implements PreLuchador, Exchanger, Preguntador {
 				if (primera) {
 					nombreFinal.append((letra + "").toUpperCase());
 				} else {
-					nombreFinal.append((letra + ""));
+					nombreFinal.append(letra);
 				}
 				primera = false;
 				if (abcMin.contains(letra + "") && letra != '-') {

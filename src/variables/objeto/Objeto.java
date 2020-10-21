@@ -232,7 +232,7 @@ public class Objeto {
 	
 	public ArrayList<EfectoHechizo> getEfectosCriticos() {
 		if (_efectosNormales != null) {
-			final ArrayList<EfectoHechizo> efectos = new ArrayList<EfectoHechizo>();
+			final ArrayList<EfectoHechizo> efectos = new ArrayList<>();
 			for (final EfectoHechizo EH : _efectosNormales) {
 				try {
 					if (EH.getEfectoID() == Constantes.STAT_MENOS_PA) {
@@ -428,8 +428,7 @@ public class Objeto {
 					}
 					final String[] infos = EH.getArgs().split(",");
 					try {
-						stats.append(Integer.toHexString(EH.getEfectoID()) + "#" + Integer.toHexString(Integer.parseInt(infos[0]))
-						+ "#" + Integer.toHexString(Integer.parseInt(infos[1])) + "#0#" + infos[5]);
+						stats.append(Integer.toHexString(EH.getEfectoID())).append("#").append(Integer.toHexString(Integer.parseInt(infos[0]))).append("#").append(Integer.toHexString(Integer.parseInt(infos[1]))).append("#0#").append(infos[5]);
 					} catch (final Exception e) {
 						e.printStackTrace();
 					}
@@ -439,8 +438,7 @@ public class Objeto {
 				if (stats.length() > 0) {
 					stats.append(",");
 				}
-				stats.append(Integer.toHexString(Constantes.STAT_RESISTENCIA) + "#0#" + Integer.toHexString(_durabilidad) + "#"
-				+ Integer.toHexString(_durabilidadMax) + "#0d0+" + _durabilidad);
+				stats.append(Integer.toHexString(Constantes.STAT_RESISTENCIA)).append("#0#").append(Integer.toHexString(_durabilidad)).append("#").append(Integer.toHexString(_durabilidadMax)).append("#0d0+").append(_durabilidad);
 			}
 			String oStats = _statsGeneral.getStringStats(this);
 			if (!oStats.isEmpty()) {
@@ -468,7 +466,7 @@ public class Objeto {
 			if (stats.length() > 0) {
 				stats.append(",");
 			}
-			stats.append(Integer.toHexString(Constantes.STAT_COLOR_NOMBRE_OBJETO) + "#1");
+			stats.append(Integer.toHexString(Constantes.STAT_COLOR_NOMBRE_OBJETO)).append("#1");
 		}
 		return stats.toString();
 	}
@@ -488,7 +486,7 @@ public class Objeto {
 				if (stats.length() > 0) {
 					stats.append(";");
 				}
-				stats.append(Integer.parseInt(s[3], 16) + "," + Integer.parseInt(s[1], 16) + "," + Integer.parseInt(s[1], 16));
+				stats.append(Integer.parseInt(s[3], 16)).append(",").append(Integer.parseInt(s[1], 16)).append(",").append(Integer.parseInt(s[1], 16));
 			} catch (Exception e) {}
 		}
 		return stats.toString();
@@ -507,7 +505,7 @@ public class Objeto {
 				if (stats.length() > 0) {
 					stats.append(";");
 				}
-				stats.append(Integer.parseInt(s[1], 16) + "," + Integer.parseInt(s[2], 16));
+				stats.append(Integer.parseInt(s[1], 16)).append(",").append(Integer.parseInt(s[2], 16));
 			} catch (Exception e) {}
 		}
 		return stats.toString();
@@ -899,7 +897,7 @@ public class Objeto {
 	
 	private int getStatElegidoAPerder(final int pesoOrigRuna, final int statRuna,
 	final ArrayList<Integer> statsCheckeados) {
-		final ArrayList<Integer> listaStats = new ArrayList<Integer>();
+		final ArrayList<Integer> listaStats = new ArrayList<>();
 		for (final Entry<Integer, Integer> entry : _statsGeneral.getEntrySet()) {
 			final int statID = entry.getKey();
 			int valor = entry.getValue();
@@ -964,9 +962,8 @@ public class Objeto {
 	public String stringObjetoConGuiño() {
 		final StringBuilder str = new StringBuilder();
 		try {
-			str.append(Integer.toHexString(_id) + "~" + Integer.toHexString(_idObjModelo) + "~" + Integer.toHexString(
-			_cantidad) + "~" + (_posicion == Constantes.OBJETO_POS_NO_EQUIPADO ? "" : Integer.toHexString(_posicion)) + "~"
-			+ convertirStatsAString(false) + "~" + _objModelo.getKamas() / 10);
+			str.append(Integer.toHexString(_id)).append("~").append(Integer.toHexString(_idObjModelo)).append("~").append(Integer.toHexString(
+                    _cantidad)).append("~").append(_posicion == Constantes.OBJETO_POS_NO_EQUIPADO ? "" : Integer.toHexString(_posicion)).append("~").append(convertirStatsAString(false)).append("~").append(_objModelo.getKamas() / 10);
 			str.append(";");
 		} catch (Exception e) {
 			MainServidor.redactarLogServidorln("OBJETO BUG stringObjetoConGuiño " + _id + " Exception: " + e.toString());
@@ -977,7 +974,7 @@ public class Objeto {
 	public String stringObjetoConPalo(final int cantidad) {
 		final StringBuilder str = new StringBuilder();
 		try {
-			str.append(_id + "|" + cantidad + "|" + _idObjModelo + "|" + convertirStatsAString(false));
+			str.append(_id).append("|").append(cantidad).append("|").append(_idObjModelo).append("|").append(convertirStatsAString(false));
 		} catch (Exception e) {
 			MainServidor.redactarLogServidorln("OBJETO BUG stringObjetoConPalo " + _id + " Exception: " + e.toString());
 		}

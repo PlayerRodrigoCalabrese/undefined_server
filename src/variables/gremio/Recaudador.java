@@ -34,8 +34,8 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 	private long _kamas, _exp, _proxMovimiento = -1, _tiempoProteccion, _tiempoCreacion;
 	private boolean _enRecolecta = false;
 	private String _nombre1 = "", _nombre2 = "";
-	private final Map<Integer, Objeto> _objetos = new TreeMap<Integer, Objeto>();
-	private final Map<Integer, Integer> _objModeloID = new TreeMap<Integer, Integer>();
+	private final Map<Integer, Objeto> _objetos = new TreeMap<>();
+	private final Map<Integer, Integer> _objModeloID = new TreeMap<>();
 	private Pelea _pelea;
 	private Gremio _gremio;
 	private final Mapa _mapa;
@@ -287,7 +287,7 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 	public String stringListaObjetosBD() {
 		final StringBuilder str = new StringBuilder();
 		for (final Objeto obj : _objetos.values()) {
-			str.append(obj.getID() + "|");
+			str.append(obj.getID()).append("|");
 		}
 		return str.toString();
 	}
@@ -295,7 +295,7 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 	private String stringRecolecta() {
 		final StringBuilder str = new StringBuilder("|" + _exp);
 		for (final Entry<Integer, Integer> entry : _objModeloID.entrySet()) {
-			str.append(";" + entry.getKey() + "," + entry.getValue());
+			str.append(";").append(entry.getKey()).append(",").append(entry.getValue());
 		}
 		// for (final Objeto obj : _objetos.values()) {
 		// str.append(";" + obj.getIDObjModelo() + "," + obj.getCantidad());
@@ -313,15 +313,15 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 			return "";
 		}
 		final StringBuilder str = new StringBuilder();
-		str.append(_celda.getID() + ";");
-		str.append(_direccion + ";");
+		str.append(_celda.getID()).append(";");
+		str.append(_direccion).append(";");
 		str.append("0;");
-		str.append(_id + ";");
-		str.append(_nombre1 + "," + _nombre2 + ";");
+		str.append(_id).append(";");
+		str.append(_nombre1).append(",").append(_nombre2).append(";");
 		str.append("-6;");// tipo
 		str.append("6000^100;");// gfxID ^ talla
-		str.append(_gremio.getNivel() + ";");
-		str.append(_gremio.getNombre() + ";" + _gremio.getEmblema());
+		str.append(_gremio.getNivel()).append(";");
+		str.append(_gremio.getNombre()).append(";").append(_gremio.getEmblema());
 		return str.toString();
 	}
 	
@@ -337,9 +337,9 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 				if (perso == null) {
 					continue;
 				}
-				str.append("|" + Integer.toString(perso.getID(), 36) + ";");
-				str.append(perso.getNombre() + ";");
-				str.append(perso.getNivel() + ";");
+				str.append("|").append(Integer.toString(perso.getID(), 36)).append(";");
+				str.append(perso.getNombre()).append(";");
+				str.append(perso.getNivel()).append(";");
 			}
 		} catch (Exception e) {}
 		return str.toString();
@@ -354,10 +354,10 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 				if (perso == null) {
 					continue;
 				}
-				str.append("|" + Integer.toString(perso.getID(), 36) + ";");
-				str.append(perso.getNombre() + ";");
-				str.append(perso.getGfxID(false) + ";");
-				str.append(perso.getNivel() + ";");
+				str.append("|").append(Integer.toString(perso.getID(), 36)).append(";");
+				str.append(perso.getNombre()).append(";");
+				str.append(perso.getGfxID(false)).append(";");
+				str.append(perso.getNivel()).append(";");
 			}
 			stra.append(str.substring(1));
 			_pelea.setListaDefensores(stra.toString());
@@ -368,10 +368,10 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 	public String getListaExchanger(Personaje perso) {
 		final StringBuilder str = new StringBuilder();
 		for (final Objeto obj : _objetos.values()) {
-			str.append("O" + obj.stringObjetoConGuiño());
+			str.append("O").append(obj.stringObjetoConGuiño());
 		}
 		if (_kamas > 0) {
-			str.append("G" + _kamas);
+			str.append("G").append(_kamas);
 		}
 		return str.toString();
 	}
@@ -528,14 +528,14 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 	
 	public String getInfoPanel() {
 		StringBuilder str = new StringBuilder();
-		str.append(Integer.toString(_id, 36) + ";");
-		str.append(_nombre1 + "," + _nombre2 + ",");
+		str.append(Integer.toString(_id, 36)).append(";");
+		str.append(_nombre1).append(",").append(_nombre2).append(",");
 		Personaje dueño = Mundo.getPersonaje(_dueño);
 		if (dueño != null) {
 			str.append(dueño.getNombre());
 		}
-		str.append("," + _tiempoCreacion + ",,100000000,100000000");
-		str.append(";" + Integer.toString(_mapa.getID(), 36) + "," + _mapa.getX() + "," + _mapa.getY() + ";");
+		str.append(",").append(_tiempoCreacion).append(",,100000000,100000000");
+		str.append(";").append(Integer.toString(_mapa.getID(), 36)).append(",").append(_mapa.getX()).append(",").append(_mapa.getY()).append(";");
 		int estadoR = 0;
 		if (_pelea != null) {
 			switch (_pelea.getFase()) {
@@ -548,14 +548,14 @@ public class Recaudador implements PreLuchador, Exchanger, Preguntador {
 					break;
 			}
 		}
-		str.append(estadoR + ";");
+		str.append(estadoR).append(";");
 		if (estadoR == 1) {
-			str.append(_pelea.getTiempoFaltInicioPelea() + ";");
+			str.append(_pelea.getTiempoFaltInicioPelea()).append(";");
 		} else {
 			str.append("0;");
 		}
-		str.append((MainServidor.SEGUNDOS_INICIO_PELEA * 1000) + ";");
-		str.append((_pelea == null ? 0 : (_pelea.getPosPelea(2) - 1)) + ";");
+		str.append(MainServidor.SEGUNDOS_INICIO_PELEA * 1000).append(";");
+		str.append(_pelea == null ? 0 : (_pelea.getPosPelea(2) - 1)).append(";");
 		return str.toString();
 	}
 }

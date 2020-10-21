@@ -27,12 +27,12 @@ public class Cuenta {
 	private String _actualIP = "", _ultimaIP = "", _ultimaConexion = "", _idioma = "es";
 	private ServidorSocket _entradaPersonaje;
 	private Personaje _tempPerso;
-	private final ArrayList<Integer> _idsAmigos = new ArrayList<Integer>(), _idsEnemigos = new ArrayList<Integer>();
-	private final Map<Integer, Personaje> _personajes = new TreeMap<Integer, Personaje>();
-	private final Map<Byte, ArrayList<Integer>> _idsReportes = new TreeMap<Byte, ArrayList<Integer>>();
+	private final ArrayList<Integer> _idsAmigos = new ArrayList<>(), _idsEnemigos = new ArrayList<>();
+	private final Map<Integer, Personaje> _personajes = new TreeMap<>();
+	private final Map<Byte, ArrayList<Integer>> _idsReportes = new TreeMap<>();
 	// private final Map<Integer, Objeto> _objetosEnBanco = new TreeMap<Integer, Objeto>();
-	private final ConcurrentHashMap<Integer, Montura> _establo = new ConcurrentHashMap<Integer, Montura>();
-	private final ArrayList<String> _mensajes = new ArrayList<String>();
+	private final ConcurrentHashMap<Integer, Montura> _establo = new ConcurrentHashMap<>();
+	private final ArrayList<String> _mensajes = new ArrayList<>();
 	private final Cofre _banco = new Cofre((short) -1, (short) -1, (short) 0, (short) 0, 99999);
 	
 	public Cuenta(final int id, final String nombre) {
@@ -122,7 +122,7 @@ public class Cuenta {
 		}
 		byte i = 0;
 		for (final String s : reportes.split(Pattern.quote("|"))) {
-			final ArrayList<Integer> array = new ArrayList<Integer>();
+			final ArrayList<Integer> array = new ArrayList<>();
 			for (final String f : s.split(";")) {
 				try {
 					if (f.isEmpty())
@@ -187,7 +187,7 @@ public class Cuenta {
 	public void addIDReporte(final byte tipo, final int id) {
 		try {
 			if (_idsReportes.get(tipo) == null) {
-				_idsReportes.put(tipo, new ArrayList<Integer>());
+				_idsReportes.put(tipo, new ArrayList<>());
 			}
 			if (!_idsReportes.get(tipo).contains(id)) {
 				_idsReportes.get(tipo).add(id);
@@ -561,7 +561,7 @@ public class Cuenta {
 			if (cuenta == null) {
 				continue;
 			}
-			str.append("|" + cuenta.getApodo());
+			str.append("|").append(cuenta.getApodo());
 			if (!cuenta.enLinea()) {
 				continue;
 			}

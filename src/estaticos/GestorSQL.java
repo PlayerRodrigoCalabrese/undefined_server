@@ -1043,7 +1043,7 @@ public class GestorSQL {
 		try {
 			final ResultSet resultado = consultaSQL("SELECT * FROM `recetas`;", _bdEstatica);
 			while (resultado.next()) {
-				final ArrayList<Duo<Integer, Integer>> arrayDuos = new ArrayList<Duo<Integer, Integer>>();
+				final ArrayList<Duo<Integer, Integer>> arrayDuos = new ArrayList<>();
 				boolean continua = false;
 				int idReceta = resultado.getInt("id");
 				String receta = resultado.getString("receta");
@@ -1052,7 +1052,7 @@ public class GestorSQL {
 						final String[] s = str.split(Pattern.quote(","));
 						final int idModeloObj = Integer.parseInt(s[0]);
 						final int cantidad = Integer.parseInt(s[1]);
-						arrayDuos.add(new Duo<Integer, Integer>(idModeloObj, cantidad));
+						arrayDuos.add(new Duo<>(idModeloObj, cantidad));
 						continua = true;
 					} catch (final Exception e) {
 						continua = false;
@@ -1441,14 +1441,14 @@ public class GestorSQL {
 		try {
 			final ResultSet resultado = consultaSQL("SELECT * FROM `personajes`;", _bdDinamica);
 			while (resultado.next()) {
-				final TreeMap<Integer, Integer> statsBase = new TreeMap<Integer, Integer>();
+				final TreeMap<Integer, Integer> statsBase = new TreeMap<>();
 				statsBase.put(Constantes.STAT_MAS_VITALIDAD, resultado.getInt("vitalidad"));
 				statsBase.put(Constantes.STAT_MAS_FUERZA, resultado.getInt("fuerza"));
 				statsBase.put(Constantes.STAT_MAS_SABIDURIA, resultado.getInt("sabiduria"));
 				statsBase.put(Constantes.STAT_MAS_INTELIGENCIA, resultado.getInt("inteligencia"));
 				statsBase.put(Constantes.STAT_MAS_SUERTE, resultado.getInt("suerte"));
 				statsBase.put(Constantes.STAT_MAS_AGILIDAD, resultado.getInt("agilidad"));
-				final TreeMap<Integer, Integer> statsScroll = new TreeMap<Integer, Integer>();
+				final TreeMap<Integer, Integer> statsScroll = new TreeMap<>();
 				statsScroll.put(Constantes.STAT_MAS_VITALIDAD, resultado.getInt("sVitalidad"));
 				statsScroll.put(Constantes.STAT_MAS_FUERZA, resultado.getInt("sFuerza"));
 				statsScroll.put(Constantes.STAT_MAS_SABIDURIA, resultado.getInt("sSabiduria"));
@@ -2880,8 +2880,7 @@ public class GestorSQL {
 		if (objetos == null || objetos.isEmpty()) {
 			return;
 		}
-		List<Objeto> tempObjetos = new ArrayList<>();
-		tempObjetos.addAll(objetos);
+		List<Objeto> tempObjetos = new ArrayList<>(objetos);
 		String consultaSQL = "REPLACE INTO `objetos` VALUES(?,?,?,?,?,?,?);";
 		try {
 			PreparedStatement declaracion = transaccionSQL(consultaSQL, _bdDinamica);
@@ -4370,11 +4369,10 @@ public class GestorSQL {
 				if (str2.length() > 0) {
 					str2.append("#");
 				}
-				str2.append(resultado.getInt("id") + ";" + resultado.getString("perso") + ";" + resultado.getString("asunto")
-				+ ";" + resultado.getString("fecha") + ";" + (cuenta.tieneReporte(Constantes.REPORTE_BUGS, resultado.getInt(
-				"id")) ? 1 : 0));
+				str2.append(resultado.getInt("id")).append(";").append(resultado.getString("perso")).append(";").append(resultado.getString("asunto")).append(";").append(resultado.getString("fecha")).append(";").append(cuenta.tieneReporte(Constantes.REPORTE_BUGS, resultado.getInt(
+						"id")) ? 1 : 0);
 			}
-			str.append(str2.toString() + "|");
+			str.append(str2.toString()).append("|");
 			cerrarResultado(resultado);
 			resultado = consultaSQL("SELECT * FROM `sugerencias` LIMIT " + MainServidor.LIMITE_REPORTES + ";", _bdDinamica);
 			str2 = new StringBuilder();
@@ -4382,11 +4380,10 @@ public class GestorSQL {
 				if (str2.length() > 0) {
 					str2.append("#");
 				}
-				str2.append(resultado.getInt("id") + ";" + resultado.getString("perso") + ";" + resultado.getString("asunto")
-				+ ";" + resultado.getString("fecha") + ";" + (cuenta.tieneReporte(Constantes.REPORTE_SUGERENCIAS, resultado
-				.getInt("id")) ? 1 : 0));
+				str2.append(resultado.getInt("id")).append(";").append(resultado.getString("perso")).append(";").append(resultado.getString("asunto")).append(";").append(resultado.getString("fecha")).append(";").append(cuenta.tieneReporte(Constantes.REPORTE_SUGERENCIAS, resultado
+						.getInt("id")) ? 1 : 0);
 			}
-			str.append(str2.toString() + "|");
+			str.append(str2.toString()).append("|");
 			cerrarResultado(resultado);
 			resultado = consultaSQL("SELECT * FROM `denuncias` LIMIT " + MainServidor.LIMITE_REPORTES + ";", _bdDinamica);
 			str2 = new StringBuilder();
@@ -4394,11 +4391,10 @@ public class GestorSQL {
 				if (str2.length() > 0) {
 					str2.append("#");
 				}
-				str2.append(resultado.getInt("id") + ";" + resultado.getString("perso") + ";" + resultado.getString("asunto")
-				+ ";" + resultado.getString("fecha") + ";" + (cuenta.tieneReporte(Constantes.REPORTE_DENUNCIAS, resultado
-				.getInt("id")) ? 1 : 0));
+				str2.append(resultado.getInt("id")).append(";").append(resultado.getString("perso")).append(";").append(resultado.getString("asunto")).append(";").append(resultado.getString("fecha")).append(";").append(cuenta.tieneReporte(Constantes.REPORTE_DENUNCIAS, resultado
+						.getInt("id")) ? 1 : 0);
 			}
-			str.append(str2.toString() + "|");
+			str.append(str2.toString()).append("|");
 			cerrarResultado(resultado);
 			resultado = consultaSQL("SELECT * FROM `problema_ogrinas` LIMIT " + MainServidor.LIMITE_REPORTES + ";",
 			_bdDinamica);
@@ -4407,9 +4403,8 @@ public class GestorSQL {
 				if (str2.length() > 0) {
 					str2.append("#");
 				}
-				str2.append(resultado.getInt("id") + ";" + resultado.getString("perso") + ";" + resultado.getString("asunto")
-				+ ";" + resultado.getString("fecha") + ";" + (cuenta.tieneReporte(Constantes.REPORTE_OGRINAS, resultado.getInt(
-				"id")) ? 1 : 0));
+				str2.append(resultado.getInt("id")).append(";").append(resultado.getString("perso")).append(";").append(resultado.getString("asunto")).append(";").append(resultado.getString("fecha")).append(";").append(cuenta.tieneReporte(Constantes.REPORTE_OGRINAS, resultado.getInt(
+						"id")) ? 1 : 0);
 			}
 			str.append(str2.toString());
 			cerrarResultado(resultado);

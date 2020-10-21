@@ -73,14 +73,14 @@ public class Luchador {
 	private PreLuchador _preLuchador;
 	private final TotalStats _totalStats;
 	private ArrayList<Luchador> _bombas;
-	private final ArrayList<HechizoLanzado> _hechizosLanzados = new ArrayList<HechizoLanzado>();
-	private final ArrayList<Integer> _hechiLanzadosReto = new ArrayList<Integer>();
-	private final ArrayList<Integer> _retoMobsAsesinados = new ArrayList<Integer>();
-	private final ArrayList<Integer> _visibles = new ArrayList<Integer>();
-	private final CopyOnWriteArrayList<Buff> _buffsPelea = new CopyOnWriteArrayList<Buff>();
+	private final ArrayList<HechizoLanzado> _hechizosLanzados = new ArrayList<>();
+	private final ArrayList<Integer> _hechiLanzadosReto = new ArrayList<>();
+	private final ArrayList<Integer> _retoMobsAsesinados = new ArrayList<>();
+	private final ArrayList<Integer> _visibles = new ArrayList<>();
+	private final CopyOnWriteArrayList<Buff> _buffsPelea = new CopyOnWriteArrayList<>();
 	// private final ArrayList<Buff> _buffsCond = new ArrayList<Buff>();
-	private final Map<Integer, Integer> _estados = new TreeMap<Integer, Integer>();
-	private final Map<Integer, Integer> _bonusCastigo = new TreeMap<Integer, Integer>();
+	private final Map<Integer, Integer> _estados = new TreeMap<>();
+	private final Map<Integer, Integer> _bonusCastigo = new TreeMap<>();
 	private StringBuilder _stringBuilderGTM = new StringBuilder();
 	private Inteligencia _IA = null;
 	private String _nombre;// , _strGMLuchador;
@@ -628,8 +628,7 @@ public class Luchador {
 	}
 	
 	public void actualizaHechizoLanzado() {
-		final ArrayList<HechizoLanzado> copia = new ArrayList<HechizoLanzado>();
-		copia.addAll(_hechizosLanzados);
+        final ArrayList<HechizoLanzado> copia = new ArrayList<HechizoLanzado>(_hechizosLanzados);
 		for (final HechizoLanzado HL : copia) {
 			HL.actuSigLanzamiento();
 			if (HL.getSigLanzamiento() <= 0) {
@@ -781,15 +780,15 @@ public class Luchador {
 	
 	public String stringGM(int idMirador) {
 		final StringBuilder str = new StringBuilder();
-		str.append((idMirador != 0 && esInvisible(idMirador) ? 0 : _celda.getID()) + ";");
-		str.append(Camino.getIndexPorDireccion(getDireccion()) + ";");// direccion
-		str.append("0" + "^" + _esAbonado + ";");// estrellas bonus
-		str.append(_idLuch + ";");
-		str.append(_nombre + "^" + _colorNombre + ";");
+		str.append(idMirador != 0 && esInvisible(idMirador) ? 0 : _celda.getID()).append(";");
+		str.append(Camino.getIndexPorDireccion(getDireccion())).append(";");// direccion
+		str.append("0" + "^").append(_esAbonado).append(";");// estrellas bonus
+		str.append(_idLuch).append(";");
+		str.append(_nombre).append("^").append(_colorNombre).append(";");
 		str.append(getPreLuchador().stringGMLuchador());// ex _strGMLuchador
-		str.append(getPDVConBuff() + ";");
-		str.append(_totalStats.getTotalStatParaMostrar(Constantes.STAT_MAS_PA) + ";");// PA
-		str.append(_totalStats.getTotalStatParaMostrar(Constantes.STAT_MAS_PM) + ";");// PM
+		str.append(getPDVConBuff()).append(";");
+		str.append(_totalStats.getTotalStatParaMostrar(Constantes.STAT_MAS_PA)).append(";");// PA
+		str.append(_totalStats.getTotalStatParaMostrar(Constantes.STAT_MAS_PM)).append(";");// PM
 		String resist = "";
 		switch (_pelea.getTipoPelea()) {
 			case Constantes.PELEA_TIPO_DESAFIO :
@@ -810,9 +809,9 @@ public class Luchador {
 		for (String r : resist.split(",")) {
 			int statID = Integer.parseInt(r);
 			int total = _totalStats.getTotalStatConComplemento(statID);
-			str.append(total + ";");
+			str.append(total).append(";");
 		}
-		str.append(_equipoBin + ";");
+		str.append(_equipoBin).append(";");
 		Personaje perso = null;
 		if (getPreLuchador().getClass() == Personaje.class) {
 			perso = (Personaje) getPreLuchador();
@@ -823,8 +822,8 @@ public class Luchador {
 			}
 			str.append(";");
 		}
-		str.append(_totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_HUIDA) + ";");
-		str.append(_totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_PLACAJE) + ";");
+		str.append(_totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_HUIDA)).append(";");
+		str.append(_totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_PLACAJE)).append(";");
 		return str.toString();
 	}
 	
@@ -959,7 +958,7 @@ public class Luchador {
 	}
 	
 	private void disminuirEstados() {
-		final Map<Integer, Integer> copia = new TreeMap<Integer, Integer>();
+		final Map<Integer, Integer> copia = new TreeMap<>();
 		for (final Entry<Integer, Integer> est : _estados.entrySet()) {
 			if (est.getValue() <= 0) {
 				copia.put(est.getKey(), est.getValue());
@@ -1171,7 +1170,7 @@ public class Luchador {
 				hechizoID, args));
 			}
 		}
-		return new Duo<Boolean, Buff>(variosGIE, buff);
+		return new Duo<>(variosGIE, buff);
 	}
 	
 	public boolean esDoble() {
@@ -1237,7 +1236,7 @@ public class Luchador {
 	
 	void addDropLuchador(Objeto objeto, boolean addInventario) {
 		if (_objDropeados == null) {
-			_objDropeados = (new HashMap<Objeto, Boolean>());
+			_objDropeados = (new HashMap<>());
 		}
 		// tipo piedra de alma y mascota
 		if (objeto.puedeTenerStatsIguales()) {

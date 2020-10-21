@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 public class ObjetoTrueque implements Comparable<ObjetoTrueque> {
 	private int _id;
-	private Map<Integer, Integer> _necesita = new TreeMap<Integer, Integer>();
+	private Map<Integer, Integer> _necesita = new TreeMap<>();
 	private int _prioridad;
 	private ArrayList<Integer> _npcs;
 	

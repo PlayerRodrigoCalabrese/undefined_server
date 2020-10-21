@@ -212,21 +212,21 @@ public class GestorSalida {
 	}
 	
 	public static void ENVIAR_ALK_LISTA_DE_PERSONAJES(final Personaje ss, final Cuenta cuenta) {
-		String packet = ("ALK" + cuenta.getTiempoAbono() + "|" + cuenta.getPersonajes().size());
+		StringBuilder packet = new StringBuilder(("ALK" + cuenta.getTiempoAbono() + "|" + cuenta.getPersonajes().size()));
 		for (final Personaje perso : cuenta.getPersonajes()) {
-			packet += (perso.stringParaListaPJsServer());
+			packet.append(perso.stringParaListaPJsServer());
 		}
-		enviarEnCola(ss, packet, true);
-		imprimir("LISTA DE PJS: OUT", packet);
+		enviarEnCola(ss, packet.toString(), true);
+		imprimir("LISTA DE PJS: OUT", packet.toString());
 	}
 	
 	public static void ENVIAR_ALK_LISTA_DE_PERSONAJES(final ServidorSocket ss, final Cuenta cuenta) {
-		String packet = ("ALK" + cuenta.getTiempoAbono() + "|" + cuenta.getPersonajes().size());
+		StringBuilder packet = new StringBuilder(("ALK" + cuenta.getTiempoAbono() + "|" + cuenta.getPersonajes().size()));
 		for (final Personaje perso : cuenta.getPersonajes()) {
-			packet += (perso.stringParaListaPJsServer());
+			packet.append(perso.stringParaListaPJsServer());
 		}
-		ss.enviarPW(packet);
-		imprimir("LISTA DE PJS: OUT", packet);
+		ss.enviarPW(packet.toString());
+		imprimir("LISTA DE PJS: OUT", packet.toString());
 	}
 	
 	public static void ENVIAR_Ag_LISTA_REGALOS(final ServidorSocket ss, final int idObjeto, final String codObjeto) {
@@ -851,20 +851,20 @@ public class GestorSalida {
 	}
 	
 	public static void ENVIAR_GIC_UBICACION_LUCHADORES_INICIAR(final Pelea pelea, final int equipos) {
-		String packet = ("GIC|");
+		StringBuilder packet = new StringBuilder(("GIC|"));
 		for (final Luchador luchador : pelea.luchadoresDeEquipo(3)) {
 			if (luchador.estaRetirado() || luchador.getCeldaPelea() == null || luchador.esMultiman()) {
 				continue;
 			}
-			packet += (luchador.getID() + ";" + luchador.getCeldaPelea().getID() + "|");
+			packet.append(luchador.getID()).append(";").append(luchador.getCeldaPelea().getID()).append("|");
 		}
 		for (final Luchador luchador : pelea.luchadoresDeEquipo(equipos)) {
 			if (luchador.estaRetirado() || luchador.esMultiman()) {
 				continue;
 			}
-			enviarEnCola(luchador.getPersonaje(), packet, true);
+			enviarEnCola(luchador.getPersonaje(), packet.toString(), true);
 		}
-		imprimir("UBIC LUCH INICIAR: PELEA", packet);
+		imprimir("UBIC LUCH INICIAR: PELEA", packet.toString());
 	}
 	
 	public static void ENVIAR_GIC_APARECER_LUCHADORES_INVISIBLES(final Pelea pelea, final int equipos,
@@ -923,18 +923,18 @@ public class GestorSalida {
 	}
 	
 	public static void ENVIAR_Gñ_IDS_PARA_MODO_CRIATURA(final Pelea pelea, final Personaje perso) {
-		String packet = ("Gñ");
+		StringBuilder packet = new StringBuilder(("Gñ"));
 		for (final Luchador luchador : pelea.luchadoresDeEquipo(3)) {
 			if (luchador.estaMuerto() || luchador.esInvisible(perso.getID())) {
 				continue;
 			}
 			if (packet.length() > 2) {
-				packet += (",");
+				packet.append(",");
 			}
-			packet += (luchador.getID());
+			packet.append(luchador.getID());
 		}
-		enviarEnCola(perso, packet, true);
-		imprimir("IDS MODO CRIATURA: PERSO", packet);
+		enviarEnCola(perso, packet.toString(), true);
+		imprimir("IDS MODO CRIATURA: PERSO", packet.toString());
 	}
 	
 	public static void ENVIAR_GTM_INFO_STATS_TODO_LUCHADORES_A_TODOS(final Pelea pelea, final int equipos,
@@ -944,7 +944,7 @@ public class GestorSalida {
 			final TotalStats totalStats = luchador.getTotalStats();
 			final StringBuilder packet1 = new StringBuilder();
 			final StringBuilder packet2 = new StringBuilder();
-			packet1.append("|" + luchador.getID() + ";");
+			packet1.append("|").append(luchador.getID()).append(";");
 			if (luchador.estaMuerto()) {
 				packet1.append(1 + ";");
 			} else {
@@ -952,13 +952,13 @@ public class GestorSalida {
 					continue;
 				}
 				packet1.append(0 + ";");
-				packet1.append(luchador.getPDVConBuff() + ";");
-				packet1.append(Math.max(0, luchador.getPARestantes()) + ";");
-				packet1.append(Math.max(0, luchador.getPMRestantes()) + ";");// PM
+				packet1.append(luchador.getPDVConBuff()).append(";");
+				packet1.append(Math.max(0, luchador.getPARestantes())).append(";");
+				packet1.append(Math.max(0, luchador.getPMRestantes())).append(";");// PM
 				packet2.append(";");
-				packet2.append(luchador.getPDVMaxConBuff() + ";");
-				packet2.append(totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_HUIDA) + ";");
-				packet2.append(totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_PLACAJE) + ";");
+				packet2.append(luchador.getPDVMaxConBuff()).append(";");
+				packet2.append(totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_HUIDA)).append(";");
+				packet2.append(totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_PLACAJE)).append(";");
 				int[] resist = new int[7];
 				switch (pelea.getTipoPelea()) {
 					case Constantes.PELEA_TIPO_DESAFIO :
@@ -983,7 +983,7 @@ public class GestorSalida {
 				resist[6] = Constantes.STAT_MAS_ESQUIVA_PERD_PM;
 				for (int statID : resist) {
 					int total = totalStats.getTotalStatConComplemento(statID);
-					packet2.append(total + ",");
+					packet2.append(total).append(",");
 				}
 				luchador.setUpdateGTM(false);
 			}
@@ -993,9 +993,9 @@ public class GestorSalida {
 				}
 				enviar.getStringBuilderGTM().append(packet1.toString());
 				if (!luchador.estaMuerto()) {
-					enviar.getStringBuilderGTM().append((luchador.getCeldaPelea() == null || luchador.esInvisible(enviar.getID())
-					? "-1"
-					: luchador.getCeldaPelea().getID()) + ";" + packet2.toString());
+					enviar.getStringBuilderGTM().append(luchador.getCeldaPelea() == null || luchador.esInvisible(enviar.getID())
+                            ? "-1"
+                            : luchador.getCeldaPelea().getID()).append(";").append(packet2.toString());
 				}
 			}
 		}
@@ -1026,21 +1026,21 @@ public class GestorSalida {
 		final StringBuilder packet = new StringBuilder("GTM");
 		for (final Luchador luchador : pelea.luchadoresDeEquipo(3)) {
 			final TotalStats totalStats = luchador.getTotalStats();
-			packet.append("|" + luchador.getID() + ";");
+			packet.append("|").append(luchador.getID()).append(";");
 			if (luchador.estaMuerto()) {
 				packet.append(1 + ";");
 			} else {
 				packet.append(0 + ";");
-				packet.append(luchador.getPDVConBuff() + ";");
-				packet.append(Math.max(0, luchador.getPARestantes()) + ";");
-				packet.append(Math.max(0, luchador.getPMRestantes()) + ";");// PM
-				packet.append((luchador.getCeldaPelea() == null || luchador.esInvisible(perso.getID())
-				? "-1"
-				: luchador.getCeldaPelea().getID()) + ";");
+				packet.append(luchador.getPDVConBuff()).append(";");
+				packet.append(Math.max(0, luchador.getPARestantes())).append(";");
+				packet.append(Math.max(0, luchador.getPMRestantes())).append(";");// PM
+				packet.append(luchador.getCeldaPelea() == null || luchador.esInvisible(perso.getID())
+                        ? "-1"
+                        : luchador.getCeldaPelea().getID()).append(";");
 				packet.append(";");
-				packet.append(luchador.getPDVMaxConBuff() + ";");
-				packet.append(totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_HUIDA) + ";");
-				packet.append(totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_PLACAJE) + ";");
+				packet.append(luchador.getPDVMaxConBuff()).append(";");
+				packet.append(totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_HUIDA)).append(";");
+				packet.append(totalStats.getTotalStatConComplemento(Constantes.STAT_MAS_PLACAJE)).append(";");
 				int[] resist = new int[7];
 				switch (pelea.getTipoPelea()) {
 					case Constantes.PELEA_TIPO_DESAFIO :
@@ -1065,7 +1065,7 @@ public class GestorSalida {
 				resist[6] = Constantes.STAT_MAS_ESQUIVA_PERD_PM;
 				for (int statID : resist) {
 					int total = totalStats.getTotalStatConComplemento(statID);
-					packet.append(total + ",");
+					packet.append(total).append(",");
 				}
 			}
 		}
@@ -1981,31 +1981,31 @@ public class GestorSalida {
 	}
 	
 	public static void ENVIAR_PM_TODOS_MIEMBROS_GRUPO_A_GRUPO(final Grupo grupo) {
-		String packet = "";
+		StringBuilder packet = new StringBuilder();
 		for (final Personaje pj : grupo.getMiembros()) {
-			if (!packet.isEmpty()) {
-				packet += "|";
+			if (packet.length() > 0) {
+				packet.append("|");
 			}
-			packet += pj.stringInfoGrupo();
+			packet.append(pj.stringInfoGrupo());
 		}
-		packet = "PM+" + packet;
+		packet.insert(0, "PM+");
 		for (final Personaje pj : grupo.getMiembros()) {
-			enviarEnCola(pj, packet, true);
+			enviarEnCola(pj, packet.toString(), true);
 		}
-		imprimir("MIEMBROS GRUPO: GRUPO", packet);
+		imprimir("MIEMBROS GRUPO: GRUPO", packet.toString());
 	}
 	
 	public static void ENVIAR_PM_TODOS_MIEMBROS_GRUPO_A_PERSO(final Personaje perso, final Grupo grupo) {
-		String packet = "";
+		StringBuilder packet = new StringBuilder();
 		for (final Personaje pj : grupo.getMiembros()) {
-			if (!packet.isEmpty()) {
-				packet += "|";
+			if (packet.length() > 0) {
+				packet.append("|");
 			}
-			packet += pj.stringInfoGrupo();
+			packet.append(pj.stringInfoGrupo());
 		}
-		packet = "PM+" + packet;
-		enviarEnCola(perso, packet, true);
-		imprimir("MIEMBROS GRUPO: PERSO", packet);
+		packet.insert(0, "PM+");
+		enviarEnCola(perso, packet.toString(), true);
+		imprimir("MIEMBROS GRUPO: PERSO", packet.toString());
 	}
 	
 	public static void ENVIAR_PM_AGREGAR_PJ_GRUPO_A_GRUPO(final Grupo grupo, final String s) {
@@ -2075,17 +2075,17 @@ public class GestorSalida {
 	}
 	
 	public static void ENVIAR_kM_TODOS_MIEMBROS_KOLISEO(final Personaje perso, final GrupoKoliseo grupo) {
-		String packet = ("kM+");
+		StringBuilder packet = new StringBuilder(("kM+"));
 		boolean primero = true;
 		for (final Personaje pj : grupo.getMiembros()) {
 			if (!primero) {
-				packet += "|";
+				packet.append("|");
 			}
-			packet += (pj.stringInfoGrupo());
+			packet.append(pj.stringInfoGrupo());
 			primero = false;
 		}
-		enviarEnCola(perso, packet, true);
-		imprimir("MIEMBROS GRUPO: PERSO", packet);
+		enviarEnCola(perso, packet.toString(), true);
+		imprimir("MIEMBROS GRUPO: PERSO", packet.toString());
 	}
 	
 	public static void ENVIAR_kM_AGREGAR_PJ_KOLISEO(final GrupoKoliseo grupo, final String s) {
@@ -2116,22 +2116,22 @@ public class GestorSalida {
 		if (pelea == null) {
 			return;
 		}
-		String packet = ("fD" + pelea.getID() + "|");
+		StringBuilder packet = new StringBuilder(("fD" + pelea.getID() + "|"));
 		for (final Luchador luchador : pelea.luchadoresDeEquipo(1)) {
 			if (luchador.esInvocacion()) {
 				continue;
 			}
-			packet += (luchador.getNombre() + "~" + luchador.getNivel() + ";");
+			packet.append(luchador.getNombre()).append("~").append(luchador.getNivel()).append(";");
 		}
-		packet += ("|");
+		packet.append("|");
 		for (final Luchador luchador : pelea.luchadoresDeEquipo(2)) {
 			if (luchador.esInvocacion()) {
 				continue;
 			}
-			packet += (luchador.getNombre() + "~" + luchador.getNivel() + ";");
+			packet.append(luchador.getNombre()).append("~").append(luchador.getNivel()).append(";");
 		}
-		enviarEnCola(ss, packet, true);
-		imprimir("DETALLES PELEA: PERSO", packet);
+		enviarEnCola(ss, packet.toString(), true);
+		imprimir("DETALLES PELEA: PERSO", packet.toString());
 	}
 	
 	public static void ENVIAR_IQ_NUMERO_ARRIBA_PJ(final Personaje perso, final int idPerso, final int numero) {
@@ -2223,15 +2223,15 @@ public class GestorSalida {
 	// enviarEnCola(perso, packet, true);
 	// }
 	public static void ENVIAR_JX_EXPERINENCIA_OFICIO(final Personaje perso, final Collection<StatOficio> oficios) {
-		String packet = ("JX");
+		StringBuilder packet = new StringBuilder(("JX"));
 		for (final StatOficio statOficio : oficios) {
 			if (statOficio.getPosicion() != 7) {
-				packet += ("|" + statOficio.getOficio().getID() + ";" + statOficio.getNivel() + ";" + statOficio.getExpString(
-				";") + ";");
+				packet.append("|").append(statOficio.getOficio().getID()).append(";").append(statOficio.getNivel()).append(";").append(statOficio.getExpString(
+						";")).append(";");
 			}
 		}
-		enviarEnCola(perso, packet, true);
-		imprimir("EXPERIENCIA OFICIO: PERSO", packet);
+		enviarEnCola(perso, packet.toString(), true);
+		imprimir("EXPERIENCIA OFICIO: PERSO", packet.toString());
 	}
 	
 	public static void ENVIAR_JX_EXPERINENCIA_OFICIO(final Personaje perso, StatOficio statOficio) {
@@ -2273,14 +2273,14 @@ public class GestorSalida {
 	}
 	
 	public static void ENVIAR_JS_SKILLS_DE_OFICIO(final Personaje perso, final Collection<StatOficio> oficios) {
-		String packet = ("JS");
+		StringBuilder packet = new StringBuilder(("JS"));
 		for (final StatOficio statOficio : oficios) {
 			if (statOficio.getPosicion() != 7) {
-				packet += (statOficio.stringSKillsOficio());
+				packet.append(statOficio.stringSKillsOficio());
 			}
 		}
-		enviarEnCola(perso, packet, true);
-		imprimir("TRABAJO POR OFICIO: PERSO", packet);
+		enviarEnCola(perso, packet.toString(), true);
+		imprimir("TRABAJO POR OFICIO: PERSO", packet.toString());
 	}
 	
 	public static void ENVIAR_JS_SKILL_DE_OFICIO(final Personaje perso, StatOficio statsOficios) {
@@ -2424,13 +2424,13 @@ public class GestorSalida {
 			packet += ("-" + setID);
 		} else {
 			packet += ("+" + setID + "|");
-			String objetos = "";
+			StringBuilder objetos = new StringBuilder();
 			for (final ObjetoModelo OM : OS.getObjetosModelos()) {
 				if (perso.tieneObjModeloEquipado(OM.getID())) {
 					if (objetos.length() > 0) {
-						objetos += (";");
+						objetos.append(";");
 					}
-					objetos += (OM.getID());
+					objetos.append(OM.getID());
 				}
 			}
 			packet += (objetos + "|" + OS.getBonusStatPorNroObj(num).convertirStatsAString());

@@ -57,7 +57,7 @@ public class SetRapido {
 			if (data.length() > 0) {
 				data.append(";");
 			}
-			data.append(_objetos[i] + "," + i);
+			data.append(_objetos[i]).append(",").append(i);
 		}
 		return _id + "|" + _nombre + "|" + _icono + "|" + data.toString();
 	}

@@ -30,12 +30,12 @@ public class GrupoMob {
 	private short _celdaID;
 	private int _bonusEstrellas = MainServidor.INICIO_BONUS_ESTRELLAS_MOBS;
 	private int _grupoID, _segundosRespawn;
-	private final ArrayList<MobGradoModelo> _mobsGradoModelo = new ArrayList<MobGradoModelo>();
-	private final HashMap<Integer, Integer> _almas = new HashMap<Integer, Integer>();
+	private final ArrayList<MobGradoModelo> _mobsGradoModelo = new ArrayList<>();
+	private final HashMap<Integer, Integer> _almas = new HashMap<>();
 	private String _condInicioPelea = "", _strGrupoMob = "", _condUnirsePelea = "";
 	private Timer _timer;
 	private Pelea _pelea;
-	private final ArrayList<Integer> _objetosHeroico = new ArrayList<Integer>();
+	private final ArrayList<Integer> _objetosHeroico = new ArrayList<>();
 	private long _kamasHeroico;
 	private ArrayList<Mapa> _mapasRandom;
 	
@@ -136,7 +136,7 @@ public class GrupoMob {
 			if (str.length() > 0) {
 				str.append(";");
 			}
-			str.append(mobGrado.getIDModelo() + "," + mobGrado.getNivel() + "," + mobGrado.getNivel());
+			str.append(mobGrado.getIDModelo()).append(",").append(mobGrado.getNivel()).append(",").append(mobGrado.getNivel());
 			_mobsGradoModelo.add(mobGrado);
 		}
 		if (_mobsGradoModelo.isEmpty()) {
@@ -164,7 +164,7 @@ public class GrupoMob {
 		_fijo = true;
 		_strGrupoMob = strGrupoMob;
 		int maxNivel = 0;
-		final List<Byte> grados = new ArrayList<Byte>();
+		final List<Byte> grados = new ArrayList<>();
 		for (final String data : _strGrupoMob.split(";")) {
 			try {
 				final String[] infos = data.split(",");
@@ -493,7 +493,7 @@ public class GrupoMob {
 				mobNiveles.append(",");
 			}
 			mobIDs.append(mob.getMobModelo().getID());
-			mobGFX.append(mob.getMobModelo().getGfxID() + "^" + mob.getMobModelo().getTalla());
+			mobGFX.append(mob.getMobModelo().getGfxID()).append("^").append(mob.getMobModelo().getTalla());
 			mobNiveles.append(mob.getNivel());
 			totalExp += mob.getBaseXp();
 		}
@@ -507,12 +507,11 @@ public class GrupoMob {
 			// colorAccesorios.append("accesorios");
 		}
 		StringBuilder s = new StringBuilder();
-		s.append(_celdaID + ";" + _orientacion + ";" + getBonusEstrellas() + ";" + _grupoID + ";" + mobIDs.toString()
-		+ ";-3;" + mobGFX.toString() + ";" + mobNiveles.toString() + ";");
+		s.append(_celdaID).append(";").append(_orientacion).append(";").append(getBonusEstrellas()).append(";").append(_grupoID).append(";").append(mobIDs.toString()).append(";-3;").append(mobGFX.toString()).append(";").append(mobNiveles.toString()).append(";");
 		if (MainServidor.PARAM_MOSTRAR_EXP_MOBS) {
 			s.append(totalExp);
 		}
-		s.append(";" + colorAccesorios.toString());
+		s.append(";").append(colorAccesorios.toString());
 		return s.toString();
 	}
 	

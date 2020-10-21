@@ -87,7 +87,7 @@ public class Buff extends EfectoHechizo {
 	
 	public void aplicarBuffDeInicioTurno(final Pelea pelea, Luchador objetivo) {
 		try {
-			ArrayList<Luchador> obj2 = new ArrayList<Luchador>();
+			ArrayList<Luchador> obj2 = new ArrayList<>();
 			obj2.add(objetivo);
 			switch (_efectoID) {
 				case 85 :// Daños Agua %vida del atacante
@@ -129,7 +129,7 @@ public class Buff extends EfectoHechizo {
 	}
 	
 	public void aplicarBuffCondicional(Luchador objetivo) {
-		ArrayList<Luchador> objetivos = new ArrayList<Luchador>();
+		ArrayList<Luchador> objetivos = new ArrayList<>();
 		objetivos.add(objetivo);
 		String c = _condicionBuff;
 		_condicionBuff = "";

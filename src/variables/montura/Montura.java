@@ -38,8 +38,8 @@ public class Montura implements Exchanger {
 	private long _experiencia, _tiempoInicioDescanso, _tiempoGestacion;
 	private Stats _stats = new Stats();
 	private String _ancestros = "?,?,?,?,?,?,?,?,?,?,?,?,?,?", _nombre = "Sin Nombre";
-	private final Map<Integer, Objeto> _objetos = new TreeMap<Integer, Objeto>();
-	private final ArrayList<Byte> _habilidades = new ArrayList<Byte>(2);
+	private final Map<Integer, Objeto> _objetos = new TreeMap<>();
+	private final ArrayList<Byte> _habilidades = new ArrayList<>(2);
 	private Ubicacion _ubicacion = Ubicacion.PERGAMINO;// por defecto
 	private MonturaModelo _monturaModelo;
 	
@@ -260,7 +260,7 @@ public class Montura implements Exchanger {
 	public String getListaExchanger(Personaje perso) {
 		final StringBuilder objetos = new StringBuilder();
 		for (final Objeto obj : _objetos.values()) {
-			objetos.append("O" + obj.stringObjetoConGuiño());
+			objetos.append("O").append(obj.stringObjetoConGuiño());
 		}
 		return objetos.toString();
 	}
@@ -464,26 +464,26 @@ public class Montura implements Exchanger {
 	
 	public String detallesMontura() {
 		final StringBuilder str = new StringBuilder(_id + ":");
-		str.append(_colorID + ":");
-		str.append(_ancestros + ":");
-		str.append(",," + strCapacidades() + ":");
-		str.append(_nombre + ":");
-		str.append(_sexo + ":");
-		str.append(stringExp() + ":");
-		str.append(_nivel + ":");
-		str.append((esMontable() ? "1" : "0") + ":");
-		str.append(getTotalPods() + ":");
-		str.append((_salvaje ? 1 : 0) + ":");// salvaje
-		str.append(_resistencia + ",10000:");
-		str.append(_madurez + "," + getMaxMadurez() + ":");
-		str.append(_energia + "," + getMaxEnergia() + ":");
-		str.append(_serenidad + ",-10000,10000:");
-		str.append(_amor + ",10000:");
-		str.append(getFecundadaHaceMinutos() + ":");
-		str.append((disponibleParaFecundar() ? 10 : 0) + ":");
-		str.append(convertirStringAStats() + ":");
-		str.append(_fatiga + ",240:");
-		str.append(_reproducciones + ",20:");
+		str.append(_colorID).append(":");
+		str.append(_ancestros).append(":");
+		str.append(",,").append(strCapacidades()).append(":");
+		str.append(_nombre).append(":");
+		str.append(_sexo).append(":");
+		str.append(stringExp()).append(":");
+		str.append(_nivel).append(":");
+		str.append(esMontable() ? "1" : "0").append(":");
+		str.append(getTotalPods()).append(":");
+		str.append(_salvaje ? 1 : 0).append(":");// salvaje
+		str.append(_resistencia).append(",10000:");
+		str.append(_madurez).append(",").append(getMaxMadurez()).append(":");
+		str.append(_energia).append(",").append(getMaxEnergia()).append(":");
+		str.append(_serenidad).append(",-10000,10000:");
+		str.append(_amor).append(",10000:");
+		str.append(getFecundadaHaceMinutos()).append(":");
+		str.append(disponibleParaFecundar() ? 10 : 0).append(":");
+		str.append(convertirStringAStats()).append(":");
+		str.append(_fatiga).append(",240:");
+		str.append(_reproducciones).append(",20:");
 		return str.toString();
 	}
 	
@@ -493,7 +493,7 @@ public class Montura implements Exchanger {
 			if (stats.length() > 0) {
 				stats.append(",");
 			}
-			stats.append(Integer.toHexString(entry.getKey()) + "#" + Integer.toHexString(entry.getValue()) + "#0#0");
+			stats.append(Integer.toHexString(entry.getKey())).append("#").append(Integer.toHexString(entry.getValue())).append("#0#0");
 		}
 		return stats.toString();
 	}
@@ -690,7 +690,7 @@ public class Montura implements Exchanger {
 	public String stringObjetosBD() {
 		final StringBuilder str = new StringBuilder();
 		for (final int id : _objetos.keySet()) {
-			str.append((str.length() > 0 ? "," : "") + id);
+			str.append(str.length() > 0 ? "," : "").append(id);
 		}
 		return str.toString();
 	}
@@ -766,19 +766,19 @@ public class Montura implements Exchanger {
 			str.append(_celda.getID());
 		}
 		str.append(";");
-		str.append(_orientacion + ";0;" + _id + ";" + _nombre + ";-9;");
+		str.append(_orientacion).append(";0;").append(_id).append(";").append(_nombre).append(";-9;");
 		if (_colorID == 88) {
 			str.append(7005);
 		} else {
 			str.append(7002);
 		}
-		str.append("^" + _talla + ";");
+		str.append("^").append(_talla).append(";");
 		try {
 			str.append(Mundo.getPersonaje(_dueñoID).getNombre());
 		} catch (final Exception e) {
 			str.append("Sin Dueño");
 		}
-		str.append(";" + _nivel + ";" + _colorID);
+		str.append(";").append(_nivel).append(";").append(_colorID);
 		return str.toString();
 	}
 	
@@ -864,7 +864,7 @@ public class Montura implements Exchanger {
 				break;
 			}
 			tempCeldaID = celdaPrueba;
-			path.append(cDir + Encriptador.celdaIDAHash(tempCeldaID));
+			path.append(cDir).append(Encriptador.celdaIDAHash(tempCeldaID));
 			celdasMovidas++;
 		}
 		if (tempCeldaID != celdaInicio) {

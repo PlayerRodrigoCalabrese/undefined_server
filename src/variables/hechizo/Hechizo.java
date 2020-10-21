@@ -21,7 +21,7 @@ public class Hechizo {
 	private final String _nombre;
 	private String _spriteInfos;// tipo lanz, anim pj, 1 o 0 (frente al sprite)
 	private int _valorIA = 0;
-	private final Map<Integer, StatHechizo> _statsHechizos = new HashMap<Integer, StatHechizo>();
+	private final Map<Integer, StatHechizo> _statsHechizos = new HashMap<>();
 	
 	public Hechizo(final int aHechizoID, final String aNombre, final int aSpriteID, final String aSpriteInfos,
 	final int valorIA) {
@@ -165,8 +165,8 @@ public class Hechizo {
 			} else {
 				str.append(";");
 			}
-			str.append("-> " + nombre);
-			str.append(" " + stringDataEfecto(eh, valorStat));
+			str.append("-> ").append(nombre);
+			str.append(" ").append(stringDataEfecto(eh, valorStat));
 			paso = true;
 		}
 		return str.toString();
@@ -297,7 +297,7 @@ public class Hechizo {
 	
 	private static ArrayList<Luchador> getAfectadosZona(Luchador lanzador, ArrayList<Celda> celdasObj, int afectados,
 	short celdaObjetivo) {
-		final ArrayList<Luchador> objetivos = new ArrayList<Luchador>();
+		final ArrayList<Luchador> objetivos = new ArrayList<>();
 		for (final Celda C : celdasObj) {
 			if (C == null) {
 				continue;

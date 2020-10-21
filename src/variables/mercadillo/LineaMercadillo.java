@@ -6,8 +6,8 @@ import variables.objeto.Objeto;
 
 public class LineaMercadillo {
 	private final int _lineaID, _modeloID;
-	private final ArrayList<ArrayList<ObjetoMercadillo>> _categoriasDeUnaLinea = new ArrayList<ArrayList<ObjetoMercadillo>>(
-	3);
+	private final ArrayList<ArrayList<ObjetoMercadillo>> _categoriasDeUnaLinea = new ArrayList<>(
+            3);
 	private final String _strStats;
 	
 	public LineaMercadillo(final int lineaID, final ObjetoMercadillo objMerca) {
@@ -16,7 +16,7 @@ public class LineaMercadillo {
 		_strStats = objeto.convertirStatsAString(false);
 		_modeloID = objeto.getObjModeloID();
 		for (int i = 0; i < 3; i++) {
-			_categoriasDeUnaLinea.add(new ArrayList<ObjetoMercadillo>());
+			_categoriasDeUnaLinea.add(new ArrayList<>());
 		}
 		final int categoria = objMerca.getTipoCantidad(false) - 1;
 		_categoriasDeUnaLinea.get(categoria).add(objMerca);

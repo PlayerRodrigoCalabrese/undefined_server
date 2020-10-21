@@ -1,6 +1,7 @@
 package variables.zotros;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -567,10 +568,10 @@ public class Accion {
 							int mobID = Integer.parseInt(mobONivel[0]);
 							mobGrupo.append(mobID);
 							if (mobONivel.length > 1) {
-								mobGrupo.append("," + Integer.parseInt(mobONivel[1]));
+								mobGrupo.append(",").append(Integer.parseInt(mobONivel[1]));
 							}
 							if (mobONivel.length > 2) {
-								mobGrupo.append("," + Integer.parseInt(mobONivel[2]));
+								mobGrupo.append(",").append(Integer.parseInt(mobONivel[2]));
 							}
 							mobGrupo.append(";");
 						}
@@ -1097,7 +1098,7 @@ public class Accion {
 							perso.botonActDesacAlas('+');
 						}
 						Personaje victima = null;
-						final ArrayList<Personaje> victimas = new ArrayList<Personaje>();
+						final ArrayList<Personaje> victimas = new ArrayList<>();
 						for (final Personaje temp : Mundo.getPersonajesEnLinea()) {
 							if (temp.getNivel() < MainServidor.NIVEL_MINIMO_PARA_PVP) {
 								continue;
@@ -1735,9 +1736,7 @@ public class Accion {
 						final String[] dar = _args.split(Pattern.quote("|"))[1].split(";");
 						boolean quito = false;
 						ArrayList<String> array = new ArrayList<>();
-						for (String s : quitar) {
-							array.add(s);
-						}
+						array.addAll(Arrays.asList(quitar));
 						while (!array.isEmpty()) {
 							int random = new Random().nextInt(array.size());
 							String s = array.get(random);

@@ -50,7 +50,7 @@ public class Especialidad {
 	public ArrayList<Don> getDones() {
 		return _dones;
 	}
-	public class Don {
+	public static class Don {
 		private final int _id;
 		private final int _nivel;
 		private final Stats _stats = new Stats();

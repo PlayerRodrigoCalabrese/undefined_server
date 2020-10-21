@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class SuperArea {
 	private final int _id;
-	private final ArrayList<Area> _areas = new ArrayList<Area>();
+	private final ArrayList<Area> _areas = new ArrayList<>();
 	
 	public SuperArea(final int id) {
 		_id = id;

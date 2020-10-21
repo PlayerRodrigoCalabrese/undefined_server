@@ -39,7 +39,7 @@ public class CreaTuItem {
 			if (s.length() > 0) {
 				s.append(",");
 			}
-			s.append(entry.getKey() + "*" + entry.getValue());
+			s.append(entry.getKey()).append("*").append(entry.getValue());
 		}
 		return s.toString();
 	}

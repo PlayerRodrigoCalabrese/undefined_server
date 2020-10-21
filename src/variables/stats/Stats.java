@@ -10,7 +10,7 @@ import variables.personaje.Personaje;
 import estaticos.Constantes;
 
 public class Stats {
-	private Map<Integer, Integer> _statsIDs = new TreeMap<Integer, Integer>();
+	private Map<Integer, Integer> _statsIDs = new TreeMap<>();
 	private ArrayList<String> _statsHechizos;
 	private ArrayList<String> _statsRepetidos;
 	private Map<Integer, String> _statsTextos;
@@ -228,7 +228,7 @@ public class Stats {
 				if (stats.length() > 0) {
 					stats.append(",");
 				}
-				stats.append(Integer.toHexString(entry.getKey()) + "#" + entry.getValue());
+				stats.append(Integer.toHexString(entry.getKey())).append("#").append(entry.getValue());
 			}
 		}
 		for (final Entry<Integer, Integer> entry : _statsIDs.entrySet()) {
@@ -236,9 +236,9 @@ public class Stats {
 				stats.append(",");
 			}
 			boolean esExo = objeto.esStatExo(entry.getKey());
-			stats.append(Integer.toHexString(entry.getKey()) + "#" + Integer.toHexString(entry.getValue()) + "#0#" + (esExo
-			? "18B5B"
-			: "0") + "#0d0+" + entry.getValue());
+			stats.append(Integer.toHexString(entry.getKey())).append("#").append(Integer.toHexString(entry.getValue())).append("#0#").append(esExo
+					? "18B5B"
+					: "0").append("#0d0+").append(entry.getValue());
 		}
 		return stats.toString();
 	}
@@ -289,8 +289,7 @@ public class Stats {
 		|| (!_statsRepetidos.isEmpty() && stats._statsRepetidos.isEmpty())) {
 			return false;
 		} else if (!_statsRepetidos.isEmpty() && !stats._statsRepetidos.isEmpty()) {
-			ArrayList<String> repetidos = new ArrayList<>();
-			repetidos.addAll(stats._statsRepetidos);
+            ArrayList<String> repetidos = new ArrayList<>(stats._statsRepetidos);
 			for (final String entry : _statsRepetidos) {
 				if (!repetidos.contains(entry)) {
 					return false;
@@ -333,7 +332,7 @@ public class Stats {
 			if (str.length() > 0) {
 				str.append(",");
 			}
-			str.append(Integer.toHexString(entry.getKey()) + "#" + Integer.toHexString(entry.getValue()) + "#0#0");
+			str.append(Integer.toHexString(entry.getKey())).append("#").append(Integer.toHexString(entry.getValue())).append("#0#0");
 		}
 		return str.toString();
 	}

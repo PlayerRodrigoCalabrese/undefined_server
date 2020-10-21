@@ -7,7 +7,7 @@ public class MisionModelo {
 	private final int _id;
 	private final boolean _puedeRepetirse;
 	private final String _nombre;
-	private final ArrayList<Integer> _etapas = new ArrayList<Integer>();
+	private final ArrayList<Integer> _etapas = new ArrayList<>();
 	private MisionPregunta[] _preguntas = new MisionPregunta[3];
 	
 	public MisionModelo(final int id, final String etapas, final String nombre, final String pregDarMision,
@@ -75,14 +75,14 @@ public class MisionModelo {
 	}
 	
 	public String strEtapas() {
-		String s = "";
+		StringBuilder s = new StringBuilder();
 		for (int i : _etapas) {
-			if (!s.isEmpty()) {
-				s += ",";
+			if (s.length() > 0) {
+				s.append(",");
 			}
-			s += i;
+			s.append(i);
 		}
-		return s;
+		return s.toString();
 	}
 	
 	public void setEtapas(final String etapas) {

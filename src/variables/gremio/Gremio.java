@@ -27,10 +27,10 @@ public class Gremio {
 	private long _experiencia;
 	private String _nombre = "", _emblema = "";
 	private final Map<Integer, StatHechizo> _hechizos = hechizosPrimarios(
-	"462;0|461;0|460;0|459;0|458;0|457;0|456;0|455;0|454;0|453;0|452;0|451;0");;
-	private final Map<Integer, Integer> _statsRecolecta = new HashMap<Integer, Integer>();
-	private final Map<Short, Long> _tiempoMapaRecolecta = new HashMap<Short, Long>();
-	private final Map<Integer, MiembroGremio> _miembros = new HashMap<Integer, MiembroGremio>();
+	"462;0|461;0|460;0|459;0|458;0|457;0|456;0|455;0|454;0|453;0|452;0|451;0");
+	private final Map<Integer, Integer> _statsRecolecta = new HashMap<>();
+	private final Map<Short, Long> _tiempoMapaRecolecta = new HashMap<>();
+	private final Map<Integer, MiembroGremio> _miembros = new HashMap<>();
 	private final CopyOnWriteArrayList<Recaudador> _recaudadores = new CopyOnWriteArrayList<>();
 	private final Stats _statsPelea = new Stats();
 	
@@ -202,23 +202,23 @@ public class Gremio {
 			if (str.length() > 0) {
 				str.append("|");
 			}
-			str.append(miembro.getID() + ";");
-			str.append(miembro.getNombre() + ";");
-			str.append(miembro.getNivel() + ";");
-			str.append(miembro.getGfx() + ";");
-			str.append(miembro.getRango() + ";");
-			str.append(miembro.getXpDonada() + ";");
-			str.append(miembro.getPorcXpDonada() + ";");
-			str.append(miembro.getDerechos() + ";");
-			str.append((miembro.getPersonaje().enLinea() ? 1 : 0) + ";");
-			str.append(miembro.getPersonaje().getAlineacion() + ";");
+			str.append(miembro.getID()).append(";");
+			str.append(miembro.getNombre()).append(";");
+			str.append(miembro.getNivel()).append(";");
+			str.append(miembro.getGfx()).append(";");
+			str.append(miembro.getRango()).append(";");
+			str.append(miembro.getXpDonada()).append(";");
+			str.append(miembro.getPorcXpDonada()).append(";");
+			str.append(miembro.getDerechos()).append(";");
+			str.append(miembro.getPersonaje().enLinea() ? 1 : 0).append(";");
+			str.append(miembro.getPersonaje().getAlineacion()).append(";");
 			str.append(miembro.getHorasDeUltimaConeccion());
 		}
 		return str.toString();
 	}
 	
 	public ArrayList<Personaje> getMiembros() {
-		final ArrayList<Personaje> a = new ArrayList<Personaje>();
+		final ArrayList<Personaje> a = new ArrayList<>();
 		for (final MiembroGremio miembro : _miembros.values()) {
 			a.add(miembro.getPersonaje());
 		}
@@ -233,8 +233,7 @@ public class Gremio {
 	}
 	
 	public void expulsarTodosMiembros() {
-		final ArrayList<MiembroGremio> a = new ArrayList<MiembroGremio>();
-		a.addAll(_miembros.values());
+        final ArrayList<MiembroGremio> a = new ArrayList<MiembroGremio>(_miembros.values());
 		for (final MiembroGremio miembro : a) {
 			expulsarMiembro(miembro.getID());
 		}
@@ -278,7 +277,7 @@ public class Gremio {
 	}
 	
 	public void refrescarStatsPelea() {
-		Map<Integer, Integer> stats = new TreeMap<Integer, Integer>();
+		Map<Integer, Integer> stats = new TreeMap<>();
 		stats.put(Constantes.STAT_MAS_PA, 6);
 		stats.put(Constantes.STAT_MAS_PM, 5);
 		stats.put(Constantes.STAT_MAS_SABIDURIA, getStatRecolecta(Constantes.STAT_MAS_SABIDURIA));
@@ -313,8 +312,8 @@ public class Gremio {
 		final StringBuilder str = new StringBuilder(maxCercados);
 		for (final Cercado cercados : Mundo.CERCADOS.values()) {
 			if (cercados.getGremio() == this) {
-				str.append("|" + cercados.getMapa().getID() + ";" + cercados.getCapacidadMax() + ";" + cercados
-				.getCantObjMax());
+				str.append("|").append(cercados.getMapa().getID()).append(";").append(cercados.getCapacidadMax()).append(";").append(cercados
+						.getCantObjMax());
 				if (cercados.getCriando().size() > 0) {
 					str.append(";");
 					boolean primero = false;
@@ -325,7 +324,7 @@ public class Gremio {
 						if (primero) {
 							str.append(",");
 						}
-						str.append(DP.getColor() + "," + DP.getNombre() + ",");
+						str.append(DP.getColor()).append(",").append(DP.getNombre()).append(",");
 						if (Mundo.getPersonaje(DP.getDueñoID()) == null) {
 							str.append("SIN DUEÑO");
 						} else {
@@ -340,7 +339,7 @@ public class Gremio {
 	}
 	
 	private Map<Integer, StatHechizo> hechizosPrimarios(String strHechizo) {
-		TreeMap<Integer, StatHechizo> hechizos = new TreeMap<Integer, StatHechizo>();
+		TreeMap<Integer, StatHechizo> hechizos = new TreeMap<>();
 		for (final String split : strHechizo.split(Pattern.quote("|"))) {
 			try {
 				int id = Integer.parseInt(split.split(";")[0]);
@@ -381,7 +380,7 @@ public class Gremio {
 			if (str.length() > 0) {
 				str.append("|");
 			}
-			str.append(statHechizo.getKey() + ";" + (statHechizo.getValue() == null ? 0 : statHechizo.getValue().getGrado()));
+			str.append(statHechizo.getKey()).append(";").append(statHechizo.getValue() == null ? 0 : statHechizo.getValue().getGrado());
 		}
 		return str.toString();
 	}
@@ -392,7 +391,7 @@ public class Gremio {
 			if (str.length() > 0) {
 				str.append("|");
 			}
-			str.append(stats.getKey() + ";" + stats.getValue());
+			str.append(stats.getKey()).append(";").append(stats.getValue());
 		}
 		return str.toString();
 	}

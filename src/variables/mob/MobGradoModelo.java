@@ -17,7 +17,7 @@ public class MobGradoModelo {
 	private String _resistencias, _spells;
 	private final MobModelo _mobModelo;
 	private final Stats _stats = new Stats();
-	private Map<Integer, StatHechizo> _hechizos = new TreeMap<Integer, StatHechizo>();
+	private Map<Integer, StatHechizo> _hechizos = new TreeMap<>();
 	private static int[] ORDEN_RESISTENCIAS = {Constantes.STAT_MAS_RES_PORC_NEUTRAL, Constantes.STAT_MAS_RES_PORC_TIERRA,
 	Constantes.STAT_MAS_RES_PORC_FUEGO, Constantes.STAT_MAS_RES_PORC_AGUA, Constantes.STAT_MAS_RES_PORC_AIRE,
 	Constantes.STAT_MAS_ESQUIVA_PERD_PA, Constantes.STAT_MAS_ESQUIVA_PERD_PM};
@@ -35,7 +35,7 @@ public class MobGradoModelo {
 		}
 		_minKamas = minKamas;
 		_maxKamas = maxKamas;
-		Map<Integer, Integer> mapStats = new TreeMap<Integer, Integer>();
+		Map<Integer, Integer> mapStats = new TreeMap<>();
 		mapStats.put(Constantes.STAT_MAS_PA, PA);
 		mapStats.put(Constantes.STAT_MAS_PM, PM);
 		int i = -1;
@@ -175,7 +175,7 @@ public class MobGradoModelo {
 					if (strStats.length() > 0) {
 						strStats.append(",");
 					}
-					strStats.append(entry.getKey() + ":" + entry.getValue());
+					strStats.append(entry.getKey()).append(":").append(entry.getValue());
 					break;
 			}
 		}

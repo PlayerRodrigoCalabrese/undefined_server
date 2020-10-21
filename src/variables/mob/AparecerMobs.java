@@ -6,8 +6,9 @@ import estaticos.MainServidor;
 public class AparecerMobs extends Thread {
 	public static enum Aparecer {
 		INICIO_PELEA, FINAL_PELEA
-	};
-	private final Mapa _mapa;
+	}
+
+    private final Mapa _mapa;
 	private final GrupoMob _grupoMob;
 	private final Aparecer _tipoAparecer;
 	

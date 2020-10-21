@@ -83,7 +83,7 @@ public class Encarnacion {
 		int nivel = _nivel / 10;
 		final StringBuilder str = new StringBuilder();
 		for (final Entry<Integer, Character> SH : _posicionHechizos.entrySet()) {
-			str.append(SH.getKey() + "~" + (nivel + 1) + "~" + SH.getValue() + ";");
+			str.append(SH.getKey()).append("~").append(nivel + 1).append("~").append(SH.getValue()).append(";");
 		}
 		return str.toString();
 	}

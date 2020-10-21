@@ -77,13 +77,13 @@ public class Pelea {
 	private Luchador _luchInit1, _luchInit2, _luchadorDeTurno;
 	private GrupoMob _mobGrupo;
 	private Timer _rebootTurno;
-	private final ConcurrentHashMap<Integer, Luchador> _equipo1 = new ConcurrentHashMap<Integer, Luchador>(),
-	_equipo2 = new ConcurrentHashMap<Integer, Luchador>(), _espectadores = new ConcurrentHashMap<Integer, Luchador>();
-	private final ArrayList<Celda> _celdasPos1 = new ArrayList<Celda>(), _celdasPos2 = new ArrayList<Celda>();
+	private final ConcurrentHashMap<Integer, Luchador> _equipo1 = new ConcurrentHashMap<>(),
+	_equipo2 = new ConcurrentHashMap<>(), _espectadores = new ConcurrentHashMap<>();
+	private final ArrayList<Celda> _celdasPos1 = new ArrayList<>(), _celdasPos2 = new ArrayList<>();
 	private final List<Luchador> _inicioLuchEquipo1 = new ArrayList<>(9), _inicioLuchEquipo2 = new ArrayList<>(9),
 	_ordenLuchadores = new ArrayList<>(), _listaMuertos = new ArrayList<>();
 	private final List<Inteligencia> _IAs = new ArrayList<>();
-	private final Map<Integer, Celda> _posInicialLuch = new TreeMap<Integer, Celda>();
+	private final Map<Integer, Celda> _posInicialLuch = new TreeMap<>();
 	private CopyOnWriteArrayList<Glifo> _glifos;
 	private CopyOnWriteArrayList<Trampa> _trampas;
 	private List<Luchador> _capturadores, _domesticadores;
@@ -251,10 +251,8 @@ public class Pelea {
 		GestorSalida.ENVIAR_GJK_UNIRSE_PELEA(this, 3, 2, false, true, false, (MainServidor.SEGUNDOS_INICIO_PELEA * 1000)
 		- 1500, _tipo);
 		startTimerInicioPelea();
-		final List<Entry<Integer, Luchador>> equipo1 = new ArrayList<Entry<Integer, Luchador>>();
-		equipo1.addAll(_equipo1.entrySet());
-		final List<Entry<Integer, Luchador>> equipo2 = new ArrayList<Entry<Integer, Luchador>>();
-		equipo2.addAll(_equipo2.entrySet());
+		final List<Entry<Integer, Luchador>> equipo1 = new ArrayList<Entry<Integer, Luchador>>(_equipo1.entrySet());
+		final List<Entry<Integer, Luchador>> equipo2 = new ArrayList<Entry<Integer, Luchador>>(_equipo2.entrySet());
 		definirCeldasPos();
 		final StringBuilder gm1 = new StringBuilder("GM");
 		final StringBuilder gm2 = new StringBuilder("GM");
@@ -266,7 +264,7 @@ public class Pelea {
 				continue;
 			}
 			lucha.setCeldaPelea(celdaRandom);
-			gm1.append("|+" + lucha.stringGM(0));
+			gm1.append("|+").append(lucha.stringGM(0));
 		}
 		for (final Entry<Integer, Luchador> entry : equipo2) {
 			final Luchador lucha = entry.getValue();
@@ -276,7 +274,7 @@ public class Pelea {
 				continue;
 			}
 			lucha.setCeldaPelea(celdaRandom);
-			gm2.append("|+" + lucha.stringGM(0));
+			gm2.append("|+").append(lucha.stringGM(0));
 		}
 		for (final Personaje persos : grupo1.getMiembros()) {
 			GestorSalida.enviarEnCola(persos, gm1.toString(), true);
@@ -986,7 +984,7 @@ public class Pelea {
 		if (celdas.isEmpty()) {
 			return null;
 		}
-		final ArrayList<Celda> celdas2 = new ArrayList<Celda>();
+		final ArrayList<Celda> celdas2 = new ArrayList<>();
 		for (Celda c : celdas) {
 			if (c == null || c.getPrimerLuchador() != null) {
 				continue;
@@ -1013,7 +1011,7 @@ public class Pelea {
 	
 	public ArrayList<Luchador> luchadoresDeEquipo(int equipos) {
 		try {
-			final ArrayList<Luchador> luchadores = new ArrayList<Luchador>();
+			final ArrayList<Luchador> luchadores = new ArrayList<>();
 			if (equipos - 4 >= 0) {
 				luchadores.addAll(_espectadores.values());
 				equipos -= 4;
@@ -1154,8 +1152,8 @@ public class Pelea {
 						if (str.length() > 0) {
 							str.append(";");
 						}
-						str.append(394 + "," + Constantes.getNivelMiliciano(l.getNivel()) + "," + Constantes.getNivelMiliciano(l
-						.getNivel()));
+						str.append(394 + ",").append(Constantes.getNivelMiliciano(l.getNivel())).append(",").append(Constantes.getNivelMiliciano(l
+								.getNivel()));
 					}
 					GrupoMob gm = new GrupoMob(_mapaReal, (short) 1, str.toString(), TipoGrupo.SOLO_UNA_PELEA, "");
 					for (MobGradoModelo mobG : gm.getMobs()) {
@@ -1227,11 +1225,11 @@ public class Pelea {
 			final StringBuilder gm2 = new StringBuilder("GM");
 			for (final Luchador l : _equipo1.values()) {
 				if (l != null)
-					gm1.append("|+" + l.stringGM(0));
+					gm1.append("|+").append(l.stringGM(0));
 			}
 			for (final Luchador l : _equipo2.values()) {
 				if (l != null)
-					gm2.append("|+" + l.stringGM(0));
+					gm2.append("|+").append(l.stringGM(0));
 			}
 			for (final Luchador l : _equipo1.values()) {
 				if (l != null)
@@ -1283,8 +1281,8 @@ public class Pelea {
 			Thread.sleep(500);
 		} catch (final Exception e) {}
 		if (_tipo == Constantes.PELEA_TIPO_PVM || _tipo == Constantes.PELEA_TIPO_PVM_NO_ESPADA) {
-			_retos = new ConcurrentHashMap<Byte, Reto>();
-			final ArrayList<Byte> retosPosibles = new ArrayList<Byte>();
+			_retos = new ConcurrentHashMap<>();
+			final ArrayList<Byte> retosPosibles = new ArrayList<>();
 			for (byte retoID = 1; retoID <= 50; retoID++) {
 				switch (retoID) {
 					case 13 :// no tienen nada
@@ -1406,9 +1404,10 @@ public class Pelea {
 		if (luchador.getPersonaje().tieneHechizoID(idHechizo)) {
 			ver = true;
 			for (final HechizoLanzado hl : luchador.getHechizosLanzados()) {
-				if (hl.getHechizoID() == idHechizo && hl.getSigLanzamiento() > 0) {
-					ver = false;
-				}
+                if (hl.getHechizoID() == idHechizo && hl.getSigLanzamiento() > 0) {
+                    ver = false;
+                    break;
+                }
 			}
 		}
 		return ver;
@@ -1416,10 +1415,10 @@ public class Pelea {
 	
 	private void iniciarOrdenLuchadores() {
 		int cantLuch = 0;
-		final ArrayList<Duo<Integer, Luchador>> iniLuch = new ArrayList<Duo<Integer, Luchador>>();
+		final ArrayList<Duo<Integer, Luchador>> iniLuch = new ArrayList<>();
 		for (final Luchador luch : luchadoresDeEquipo(3)) {
 			luch.resetPuntos();
-			iniLuch.add(new Duo<Integer, Luchador>(Formulas.getIniciativa(luch.getTotalStats(), luch.getPorcPDV()), luch));
+			iniLuch.add(new Duo<>(Formulas.getIniciativa(luch.getTotalStats(), luch.getPorcPDV()), luch));
 			cantLuch++;
 		}
 		int equipo1 = 0;
@@ -1470,8 +1469,8 @@ public class Pelea {
 		if (_luchInit1 != null && _idLuchInit1 == idInit) {
 			_soloGrupo1 = !_soloGrupo1;
 			if (_soloGrupo1) {
-				final ArrayList<Integer> lista = new ArrayList<Integer>();
-				final ArrayList<Integer> expulsar = new ArrayList<Integer>();
+				final ArrayList<Integer> lista = new ArrayList<>();
+				final ArrayList<Integer> expulsar = new ArrayList<>();
 				try {
 					lista.addAll(_luchInit1.getPersonaje().getGrupoParty().getIDsPersos());
 				} catch (Exception e) {}
@@ -1498,8 +1497,8 @@ public class Pelea {
 		} else if (_luchInit2 != null && _idLuchInit2 == idInit) {
 			_soloGrupo2 = !_soloGrupo2;
 			if (_soloGrupo2) {
-				final ArrayList<Integer> lista = new ArrayList<Integer>();
-				final ArrayList<Integer> expulsar = new ArrayList<Integer>();
+				final ArrayList<Integer> lista = new ArrayList<>();
+				final ArrayList<Integer> expulsar = new ArrayList<>();
 				try {
 					lista.addAll(_luchInit2.getPersonaje().getGrupoParty().getIDsPersos());
 				} catch (Exception e) {}
@@ -1533,8 +1532,7 @@ public class Pelea {
 			GestorSalida.ENVIAR_Im_INFORMACION_A_PELEA(this, 7, _sinEspectador ? "039" : "040");
 		}
 		if (_sinEspectador) {
-			Map<Integer, Luchador> espectadores = new TreeMap<Integer, Luchador>();
-			espectadores.putAll(_espectadores);
+			Map<Integer, Luchador> espectadores = new TreeMap<Integer, Luchador>(_espectadores);
 			for (final Luchador espectador : espectadores.values()) {
 				try {
 					if (espectador.esEspectadorAdmin()) {
@@ -1780,7 +1778,7 @@ public class Pelea {
 							_luchadorDeTurno.getHechizosLanzadosReto().clear();
 							break;
 						case Constantes.RETO_IMPREVISIBLE :
-							final ArrayList<Luchador> mobsVivos = new ArrayList<Luchador>();
+							final ArrayList<Luchador> mobsVivos = new ArrayList<>();
 							for (final Luchador luch : _inicioLuchEquipo2) {
 								if (luch.estaMuerto()) {
 									continue;
@@ -2059,7 +2057,7 @@ public class Pelea {
 				quitarTransportados(victima.getPortador());
 			}
 			victima.getCeldaPelea().removerLuchador(victima);
-			final TreeMap<Integer, Luchador> team = new TreeMap<Integer, Luchador>();
+			final TreeMap<Integer, Luchador> team = new TreeMap<>();
 			if (victima.getEquipoBin() == 0) {
 				team.putAll(_equipo1);
 			} else if (victima.getEquipoBin() == 1) {
@@ -2410,7 +2408,7 @@ public class Pelea {
 			int porcHuida = 100;
 			int agiTac = 0;
 			boolean paso = false;
-			final ArrayList<Integer> tacleadores = new ArrayList<Integer>();
+			final ArrayList<Integer> tacleadores = new ArrayList<>();
 			for (int i = 0; i < 4; i++) {
 				final Luchador tacleador = Camino.getEnemigoAlrededor(movedor.getCeldaPelea().getID(), _mapaCopia, tacleadores,
 				movedor.getEquipoBin());
@@ -2472,7 +2470,7 @@ public class Pelea {
 			}
 		}
 		String moverse = "ok";
-		final AtomicReference<String> pathRef = new AtomicReference<String>(path);
+		final AtomicReference<String> pathRef = new AtomicReference<>(path);
 		short ultimaCelda = -1;
 		try {
 			ultimaCelda = Encriptador.hashACeldaID(path.substring(path.length() - 2));
@@ -3167,8 +3165,7 @@ public class Pelea {
 					_kamasRobadas += kamas;
 					_expRobada += pjPerdedor.getExperiencia() / 10;
 					pjPerdedor.addKamas(-kamas, false, false);
-					final ArrayList<Objeto> objPerder = new ArrayList<Objeto>();
-					objPerder.addAll(pjPerdedor.getObjetosTodos());
+					final ArrayList<Objeto> objPerder = new ArrayList<Objeto>(pjPerdedor.getObjetosTodos());
 					for (final Objeto obj : objPerder) {
 						if (robarObjPersonaje(obj, pjPerdedor)) {
 							pjPerdedor.borrarOEliminarConOR(obj.getID(), false);
@@ -3284,7 +3281,7 @@ public class Pelea {
 					if (objetos.length() > 0) {
 						objetos.append(";");
 					}
-					objetos.append(craneo + "," + 1);
+					objetos.append(craneo).append(",").append(1);
 				}
 			}
 			for (String s : objetos.toString().split(";")) {
@@ -3317,7 +3314,7 @@ public class Pelea {
 	
 	private void addObjetosRobados(Objeto obj) {
 		if (_objetosRobados == null) {
-			_objetosRobados = new ArrayList<Objeto>();
+			_objetosRobados = new ArrayList<>();
 		}
 		_objetosRobados.add(obj);
 	}
@@ -3405,7 +3402,7 @@ public class Pelea {
 	private void mostrarResultados(String packet) {
 		try {
 			if (MainServidor.SALVAR_LOGS_TIPO_COMBATE.contains(_tipo)) {
-				LOG_COMBATES.append(new Date() + "\t" + _tipo + "\t" + _mapaCopia.getID() + "\t" + packet + "\n");
+				LOG_COMBATES.append(new Date()).append("\t").append(_tipo).append("\t").append(_mapaCopia.getID()).append("\t").append(packet).append("\n");
 			}
 			Thread.sleep(100 + (300 * _cantUltAfec));
 			GestorSalida.ENVIAR_GE_PANEL_RESULTADOS_PELEA(this, 7, packet);
@@ -3444,7 +3441,7 @@ public class Pelea {
 						_kamasRobadas += _luchInit2.getRecaudador().getKamas();
 						_expRobada += _luchInit2.getRecaudador().getExp();
 						if (_objetosRobados == null) {
-							_objetosRobados = new ArrayList<Objeto>();
+							_objetosRobados = new ArrayList<>();
 						}
 						_objetosRobados.addAll(_luchInit2.getRecaudador().getObjetos());
 						_luchInit2.getRecaudador().clearObjetos();
@@ -3525,10 +3522,10 @@ public class Pelea {
 				luchadorSalirPelea(luch);
 			}
 			final StringBuilder packet = new StringBuilder("GE");
-			packet.append(tiempo + ";" + _bonusEstrellas + "|" + initID + "|" + tipoX + "|");
+			packet.append(tiempo).append(";").append(_bonusEstrellas).append("|").append(initID).append("|").append(tipoX).append("|");
 			if (equipoGanador == 3) {
 				// cancelar la pelea
-				final ArrayList<Luchador> cancelados = new ArrayList<Luchador>();
+				final ArrayList<Luchador> cancelados = new ArrayList<>();
 				cancelados.addAll(_equipo1.values());
 				cancelados.addAll(_equipo2.values());
 				for (final Luchador luch : cancelados) {
@@ -3547,33 +3544,33 @@ public class Pelea {
 						}
 					}
 					if (tipoX == 0) {// PVM -> SIN HONOR
-						packet.append("2;" + luch.getID() + ";" + luch.getNombre() + ";" + luch.getNivel() + ";" + (luch
-						.estaMuerto() ? "1" : "0") + ";");
-						packet.append(luch.xpStringLuch(";") + ";");
-						packet.append((luch.getExpGanada() == 0 ? "" : luch.getExpGanada()) + ";");
+						packet.append("2;").append(luch.getID()).append(";").append(luch.getNombre()).append(";").append(luch.getNivel()).append(";").append(luch
+								.estaMuerto() ? "1" : "0").append(";");
+						packet.append(luch.xpStringLuch(";")).append(";");
+						packet.append(luch.getExpGanada() == 0 ? "" : luch.getExpGanada()).append(";");
 						packet.append("" + ";");
 						packet.append("" + ";");
 						packet.append("" + ";");
-						packet.append((luch.getKamasGanadas() == 0 ? "" : luch.getKamasGanadas()) + "|");
+						packet.append(luch.getKamasGanadas() == 0 ? "" : luch.getKamasGanadas()).append("|");
 					} else { // PVP -> CON HONOR
-						packet.append("2;" + luch.getID() + ";" + luch.getNombre() + ";" + luch.getNivel());
-						packet.append(";" + (luch.estaMuerto() ? 1 : 0) + ";");
-						packet.append(stringHonor(luch) + ";");
+						packet.append("2;").append(luch.getID()).append(";").append(luch.getNombre()).append(";").append(luch.getNivel());
+						packet.append(";").append(luch.estaMuerto() ? 1 : 0).append(";");
+						packet.append(stringHonor(luch)).append(";");
 						packet.append(0 + ";");
-						packet.append(luch.getNivelAlineacion() + ";");
-						packet.append(luch.getPreLuchador().getDeshonor() + ";");
+						packet.append(luch.getNivelAlineacion()).append(";");
+						packet.append(luch.getPreLuchador().getDeshonor()).append(";");
 						packet.append(0 + ";");
 						packet.append("" + ";");
-						packet.append(luch.getKamasGanadas() + ";");
-						packet.append(luch.xpStringLuch(";") + ";");
-						packet.append(luch.getExpGanada() + "|");
+						packet.append(luch.getKamasGanadas()).append(";");
+						packet.append(luch.xpStringLuch(";")).append(";");
+						packet.append(luch.getExpGanada()).append("|");
 					}
 				}
 				return packet.toString();
 			}
 			// si la pelea no se cancela
-			final ArrayList<Luchador> ganadores = new ArrayList<Luchador>();
-			final ArrayList<Luchador> perdedores = new ArrayList<Luchador>();
+			final ArrayList<Luchador> ganadores = new ArrayList<>();
+			final ArrayList<Luchador> perdedores = new ArrayList<>();
 			if (equipoGanador == 1) {
 				ganadores.addAll(_equipo1.values());
 				perdedores.addAll(_equipo2.values());
@@ -3830,8 +3827,8 @@ public class Pelea {
 										if (piedraStats.length() > 0) {
 											piedraStats.append(",");
 										}
-										piedraStats.append(Integer.toHexString(Constantes.STAT_INVOCA_MOB) + "#" + Integer.toHexString(
-										luchPerdedor.getNivel()) + "#0#" + Integer.toHexString(m));
+										piedraStats.append(Integer.toHexString(Constantes.STAT_INVOCA_MOB)).append("#").append(Integer.toHexString(
+												luchPerdedor.getNivel())).append("#0#").append(Integer.toHexString(m));
 										if (luchPerdedor.getNivel() > maxNivel) {
 											maxNivel = luchPerdedor.getNivel();
 										}
@@ -3968,10 +3965,10 @@ public class Pelea {
 				} catch (Exception e) {}
 				// hasta aqui acaba todo lo q tiene q ver con ganadores
 			}
-			final Map<Integer, Luchador> todosConPP = new TreeMap<Integer, Luchador>();
+			final Map<Integer, Luchador> todosConPP = new TreeMap<>();
 			int prospTemp, tempPP;
 			final ArrayList<Luchador> dropeadores = new ArrayList<>();
-			final ArrayList<Luchador> ordenLuchMasAMenosPP = new ArrayList<Luchador>();
+			final ArrayList<Luchador> ordenLuchMasAMenosPP = new ArrayList<>();
 			for (final Luchador luchGanador : ganadores) {
 				prospTemp = luchGanador.getProspeccionLuchador();
 				while (todosConPP.containsKey(prospTemp)) {
@@ -4192,21 +4189,20 @@ public class Pelea {
 								if (strDrops.length() > 0) {
 									strDrops.append(",");
 								}
-								strDrops.append(obj.getObjModeloID() + "~" + obj.getCantidad());
+								strDrops.append(obj.getObjModeloID()).append("~").append(obj.getCantidad());
 								if (entry.getValue()) {
 									luchRecau.addObjetoAInventario(obj);
 								}
 							}
 						}
 					}
-					packet.append("5;" + luchRecau.getID() + ";" + luchRecau.getNombre() + ";" + luchRecau.getNivel() + ";"
-					+ (luchRecau.estaMuerto() ? "1" : "0") + ";");
-					packet.append(luchRecau.xpStringLuch(";") + ";");
-					packet.append((luchRecau.getExpGanada() == 0 ? "" : luchRecau.getExpGanada()) + ";");
-					packet.append((xpParaGremio == 0 ? "" : xpParaGremio) + ";");
-					packet.append((xpParaMontura == 0 ? "" : xpParaMontura) + ";");
-					packet.append(strDrops.toString() + ";");
-					packet.append((luchRecau.getKamasGanadas() == 0 ? "" : luchRecau.getKamasGanadas()) + "|");
+					packet.append("5;").append(luchRecau.getID()).append(";").append(luchRecau.getNombre()).append(";").append(luchRecau.getNivel()).append(";").append(luchRecau.estaMuerto() ? "1" : "0").append(";");
+					packet.append(luchRecau.xpStringLuch(";")).append(";");
+					packet.append(luchRecau.getExpGanada() == 0 ? "" : luchRecau.getExpGanada()).append(";");
+					packet.append(xpParaGremio == 0 ? "" : xpParaGremio).append(";");
+					packet.append(xpParaMontura == 0 ? "" : xpParaMontura).append(";");
+					packet.append(strDrops.toString()).append(";");
+					packet.append(luchRecau.getKamasGanadas() == 0 ? "" : luchRecau.getKamasGanadas()).append("|");
 				}
 			}
 			StringBuilder cuentas_g = null;
@@ -4407,7 +4403,7 @@ public class Pelea {
 							if (strDrops.length() > 0) {
 								strDrops.append(",");
 							}
-							strDrops.append(obj.getObjModeloID() + "~" + obj.getCantidad());
+							strDrops.append(obj.getObjModeloID()).append("~").append(obj.getCantidad());
 							if (entry.getValue()) {
 								luchGanador.addObjetoAInventario(obj);
 							}
@@ -4443,15 +4439,15 @@ public class Pelea {
 						pjGanador.addExperiencia(luchGanador.getExpGanada(), (tipoX == 1));
 					}
 				}
-				packet.append("2;" + luchGanador.getID() + ";" + luchGanador.getNombre() + ";" + luchGanador.getNivel());
-				packet.append(";" + (luchGanador.estaMuerto() ? 1 : 0) + ";");
+				packet.append("2;").append(luchGanador.getID()).append(";").append(luchGanador.getNombre()).append(";").append(luchGanador.getNivel());
+				packet.append(";").append(luchGanador.estaMuerto() ? 1 : 0).append(";");
 				if (tipoX == 0) {// PVM -> SIN HONOR
-					packet.append(luchGanador.xpStringLuch(";") + ";");
-					packet.append((luchGanador.getExpGanada() == 0 ? "" : luchGanador.getExpGanada()) + ";");
-					packet.append((xpParaGremio == 0 ? "" : xpParaGremio) + ";");
-					packet.append((xpParaMontura == 0 ? "" : xpParaMontura) + ";");
-					packet.append(strDrops.toString() + ";");
-					packet.append((luchGanador.getKamasGanadas() == 0 ? "" : luchGanador.getKamasGanadas()) + "|");
+					packet.append(luchGanador.xpStringLuch(";")).append(";");
+					packet.append(luchGanador.getExpGanada() == 0 ? "" : luchGanador.getExpGanada()).append(";");
+					packet.append(xpParaGremio == 0 ? "" : xpParaGremio).append(";");
+					packet.append(xpParaMontura == 0 ? "" : xpParaMontura).append(";");
+					packet.append(strDrops.toString()).append(";");
+					packet.append(luchGanador.getKamasGanadas() == 0 ? "" : luchGanador.getKamasGanadas()).append("|");
 				} else { // PVP -> CON HONOR
 					if (MainServidor.PARAM_SALVAR_LOGS_AGRESION_SQL && _tipo == Constantes.PELEA_TIPO_PVP) {
 						if (luchGanador.getPersonaje() != null && luchGanador.getPersonaje().getCuenta() != null) {
@@ -4467,15 +4463,15 @@ public class Pelea {
 							puntos_g.append(ganarHonor);
 						}
 					}
-					packet.append(stringHonor(luchGanador) + ";");
-					packet.append(ganarHonor + ";");
-					packet.append(luchGanador.getNivelAlineacion() + ";");
-					packet.append(luchGanador.getPreLuchador().getDeshonor() + ";");
-					packet.append(deshonor + ";");
-					packet.append(strDrops.toString() + ";");
-					packet.append(luchGanador.getKamasGanadas() + ";");
-					packet.append(luchGanador.xpStringLuch(";") + ";");
-					packet.append(luchGanador.getExpGanada() + "|");
+					packet.append(stringHonor(luchGanador)).append(";");
+					packet.append(ganarHonor).append(";");
+					packet.append(luchGanador.getNivelAlineacion()).append(";");
+					packet.append(luchGanador.getPreLuchador().getDeshonor()).append(";");
+					packet.append(deshonor).append(";");
+					packet.append(strDrops.toString()).append(";");
+					packet.append(luchGanador.getKamasGanadas()).append(";");
+					packet.append(luchGanador.xpStringLuch(";")).append(";");
+					packet.append(luchGanador.getExpGanada()).append("|");
 				}
 			}
 			// -----------
@@ -4565,15 +4561,15 @@ public class Pelea {
 						pjPerdedor.addKamas(luchPerdedor.getKamasGanadas(), false, false);
 					}
 				}
-				packet.append("0;" + luchPerdedor.getID() + ";" + luchPerdedor.getNombre() + ";" + luchPerdedor.getNivel());
-				packet.append(";" + (luchPerdedor.estaMuerto() ? 1 : 0) + ";");
+				packet.append("0;").append(luchPerdedor.getID()).append(";").append(luchPerdedor.getNombre()).append(";").append(luchPerdedor.getNivel());
+				packet.append(";").append(luchPerdedor.estaMuerto() ? 1 : 0).append(";");
 				if (tipoX == 0) {// PVM -> SIN HONOR
-					packet.append(luchPerdedor.xpStringLuch(";") + ";");
-					packet.append((luchPerdedor.getExpGanada() == 0 ? "" : luchPerdedor.getExpGanada()) + ";");
-					packet.append((xpParaGremio == 0 ? "" : xpParaGremio) + ";");
-					packet.append((xpParaMontura == 0 ? "" : xpParaMontura) + ";");
-					packet.append(strDrops.toString() + ";");
-					packet.append((luchPerdedor.getKamasGanadas() == 0 ? "" : luchPerdedor.getKamasGanadas()) + "|");
+					packet.append(luchPerdedor.xpStringLuch(";")).append(";");
+					packet.append(luchPerdedor.getExpGanada() == 0 ? "" : luchPerdedor.getExpGanada()).append(";");
+					packet.append(xpParaGremio == 0 ? "" : xpParaGremio).append(";");
+					packet.append(xpParaMontura == 0 ? "" : xpParaMontura).append(";");
+					packet.append(strDrops.toString()).append(";");
+					packet.append(luchPerdedor.getKamasGanadas() == 0 ? "" : luchPerdedor.getKamasGanadas()).append("|");
 				} else {// PVP -> CON HONOR
 					if (MainServidor.PARAM_SALVAR_LOGS_AGRESION_SQL && _tipo == Constantes.PELEA_TIPO_PVP) {
 						if (luchPerdedor.getPersonaje() != null && luchPerdedor.getPersonaje().getCuenta() != null) {
@@ -4589,15 +4585,15 @@ public class Pelea {
 							puntos_p.append(ganarHonor);
 						}
 					}
-					packet.append(stringHonor(luchPerdedor) + ";");
-					packet.append(ganarHonor + ";");
-					packet.append(luchPerdedor.getNivelAlineacion() + ";");
-					packet.append(luchPerdedor.getPreLuchador().getDeshonor() + ";");
-					packet.append(deshonor + ";");
+					packet.append(stringHonor(luchPerdedor)).append(";");
+					packet.append(ganarHonor).append(";");
+					packet.append(luchPerdedor.getNivelAlineacion()).append(";");
+					packet.append(luchPerdedor.getPreLuchador().getDeshonor()).append(";");
+					packet.append(deshonor).append(";");
 					packet.append(strDrops.toString());
-					packet.append(";" + luchPerdedor.getKamasGanadas() + ";");
-					packet.append(luchPerdedor.xpStringLuch(";") + ";");
-					packet.append(luchPerdedor.getExpGanada() + "|");
+					packet.append(";").append(luchPerdedor.getKamasGanadas()).append(";");
+					packet.append(luchPerdedor.xpStringLuch(";")).append(";");
+					packet.append(luchPerdedor.getExpGanada()).append("|");
 				}
 			}
 			if (MainServidor.PARAM_SALVAR_LOGS_AGRESION_SQL && _tipo == Constantes.PELEA_TIPO_PVP) {
@@ -4704,7 +4700,7 @@ public class Pelea {
 	
 	public void addAccion(final Accion accion) {
 		if (_acciones == null) {
-			_acciones = new ArrayList<Accion>();
+			_acciones = new ArrayList<>();
 		}
 		_acciones.add(accion);
 	}
@@ -4715,7 +4711,7 @@ public class Pelea {
 		}
 		final StringBuilder str = new StringBuilder();
 		for (final Accion accion : _acciones) {
-			str.append("\nAccion ID: " + accion.getID() + ", Arg: " + accion.getArgs());
+			str.append("\nAccion ID: ").append(accion.getID()).append(", Arg: ").append(accion.getArgs());
 		}
 		return str.toString();
 	}
@@ -5044,7 +5040,7 @@ public class Pelea {
 	public String stringOrdenJugadores() {
 		final StringBuilder packet = new StringBuilder("GTL");
 		for (final Luchador luchador : _ordenLuchadores) {
-			packet.append("|" + luchador.getID());
+			packet.append("|").append(luchador.getID());
 		}
 		return packet.toString();
 	}
@@ -5067,8 +5063,8 @@ public class Pelea {
 			return "";
 		}
 		final StringBuilder infos = new StringBuilder();
-		infos.append(_id + ";");
-		infos.append((_fase <= Constantes.PELEA_FASE_POSICION ? "-1" : _tiempoCombate) + ";");
+		infos.append(_id).append(";");
+		infos.append(_fase <= Constantes.PELEA_FASE_POSICION ? "-1" : _tiempoCombate).append(";");
 		int jugEquipo1 = 0, jugEquipo2 = 0;
 		for (final Luchador l : _equipo1.values()) {
 			if (l == null || l.esInvocacion()) {
@@ -5086,16 +5082,16 @@ public class Pelea {
 			acaboPelea((byte) 3);
 			return "";
 		}
-		infos.append(_luchInit1.getFlag() + ",");
-		infos.append(((_tipo == Constantes.PELEA_TIPO_PVP || _tipo == Constantes.PELEA_TIPO_PRISMA)
-		? _luchInit1.getAlineacion()
-		: 0) + ",");
-		infos.append(jugEquipo1 + ";");
-		infos.append(_luchInit2.getFlag() + ",");
-		infos.append(((_tipo == Constantes.PELEA_TIPO_PVP || _tipo == Constantes.PELEA_TIPO_PRISMA)
-		? _luchInit2.getAlineacion()
-		: 0) + ",");
-		infos.append(jugEquipo2 + ";");
+		infos.append(_luchInit1.getFlag()).append(",");
+		infos.append((_tipo == Constantes.PELEA_TIPO_PVP || _tipo == Constantes.PELEA_TIPO_PRISMA)
+				? _luchInit1.getAlineacion()
+				: 0).append(",");
+		infos.append(jugEquipo1).append(";");
+		infos.append(_luchInit2.getFlag()).append(",");
+		infos.append((_tipo == Constantes.PELEA_TIPO_PVP || _tipo == Constantes.PELEA_TIPO_PRISMA)
+				? _luchInit2.getAlineacion()
+				: 0).append(",");
+		infos.append(jugEquipo2).append(";");
 		return infos.toString();
 	}
 	
@@ -5147,19 +5143,19 @@ public class Pelea {
 		// flag1 + ";" + alin1
 		// + "|" + id2 + ";" + celda2 + ";" + flag2 + ";" + alin2;
 		StringBuilder p = new StringBuilder("Gc+");
-		p.append(_id + ";");
+		p.append(_id).append(";");
 		if (_tipo == Constantes.PELEA_TIPO_CACERIA) {
 			p.append(0);
 		} else {
 			p.append(_tipo);
 		}
-		p.append("|" + _idLuchInit1 + ";" + _celdaID1 + ";" + _luchInit1.getFlag() + ";");
+		p.append("|").append(_idLuchInit1).append(";").append(_celdaID1).append(";").append(_luchInit1.getFlag()).append(";");
 		if (_tipo == Constantes.PELEA_TIPO_PVP || _tipo == Constantes.PELEA_TIPO_PRISMA) {
 			p.append(_luchInit1.getAlineacion());
 		} else {
 			p.append(Constantes.ALINEACION_NULL);
 		}
-		p.append("|" + _idLuchInit2 + ";" + _celdaID2 + ";" + _luchInit2.getFlag() + ";");
+		p.append("|").append(_idLuchInit2).append(";").append(_celdaID2).append(";").append(_luchInit2.getFlag()).append(";");
 		if (_tipo == Constantes.PELEA_TIPO_PVP || _tipo == Constantes.PELEA_TIPO_PRISMA) {
 			p.append(_luchInit2.getAlineacion());
 		} else {
@@ -5179,7 +5175,7 @@ public class Pelea {
 				if (!enviar.toString().isEmpty()) {
 					enviar.append("|+");
 				}
-				enviar.append(luchador.getID() + ";" + luchador.getNombre() + ";" + luchador.getNivel());
+				enviar.append(luchador.getID()).append(";").append(luchador.getNombre()).append(";").append(luchador.getNivel());
 			}
 			GestorSalida.ENVIAR_Gt_AGREGAR_NOMBRE_ESPADA(perso, _idLuchInit1, enviar.toString());
 			GestorSalida.ENVIAR_Go_BOTON_ESPEC_AYUDA(perso, _cerrado1 ? '+' : '-', 'A', _idLuchInit1);
@@ -5192,7 +5188,7 @@ public class Pelea {
 				if (!enviar.toString().isEmpty()) {
 					enviar.append("|+");
 				}
-				enviar.append(luchador.getID() + ";" + luchador.getNombre() + ";" + luchador.getNivel());
+				enviar.append(luchador.getID()).append(";").append(luchador.getNombre()).append(";").append(luchador.getNivel());
 			}
 			GestorSalida.ENVIAR_Gt_AGREGAR_NOMBRE_ESPADA(perso, _idLuchInit2, enviar.toString());
 			GestorSalida.ENVIAR_Go_BOTON_ESPEC_AYUDA(perso, _cerrado2 ? '+' : '-', 'A', _idLuchInit2);

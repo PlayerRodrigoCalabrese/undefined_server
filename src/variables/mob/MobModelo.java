@@ -26,8 +26,8 @@ public class MobModelo {
 	private short _talla, _gfxID;
 	private String _colores;
 	private final String _nombre;
-	private final Map<Byte, MobGradoModelo> _grados = new TreeMap<Byte, MobGradoModelo>();
-	private final ArrayList<DropMob> _drops = new ArrayList<DropMob>();
+	private final Map<Byte, MobGradoModelo> _grados = new TreeMap<>();
+	private final ArrayList<DropMob> _drops = new ArrayList<>();
 	private final boolean _esCapturable;
 	private final boolean _esKickeable;
 	
@@ -272,24 +272,23 @@ public class MobModelo {
 	
 	public String detalleMob() {
 		final StringBuilder str = new StringBuilder();
-		str.append(_tipoMob + "|");
+		str.append(_tipoMob).append("|");
 		StringBuilder str2 = new StringBuilder();
 		for (final DropMob drop : _drops) {
 			if (str2.length() > 0) {
 				str2.append(";");
 			}
-			str2.append(drop.getIDObjModelo() + "," + drop.getProspeccion() + "#" + (drop.getPorcentaje() * 1000) + "#"
-			+ drop.getMaximo());
+			str2.append(drop.getIDObjModelo()).append(",").append(drop.getProspeccion()).append("#").append(drop.getPorcentaje() * 1000).append("#").append(drop.getMaximo());
 		}
-		str.append(str2.toString() + "|");
+		str.append(str2.toString()).append("|");
 		str2 = new StringBuilder();
 		for (final MobGradoModelo mob : _grados.values()) {
 			if (str2.length() > 0) {
 				str2.append("|");
 			}
-			str2.append(mob.getPDVMAX() + "~" + mob.getPA() + "~" + mob.getPM() + "~" + mob.getResistencias() + "~" + mob
-			.getSpells().replace(";", ",") + "~" + mob.getBaseXp());
-			str2.append("~" + mob.getMinKamas() + " - " + mob.getMaxKamas());
+			str2.append(mob.getPDVMAX()).append("~").append(mob.getPA()).append("~").append(mob.getPM()).append("~").append(mob.getResistencias()).append("~").append(mob
+                    .getSpells().replace(";", ",")).append("~").append(mob.getBaseXp());
+			str2.append("~").append(mob.getMinKamas()).append(" - ").append(mob.getMaxKamas());
 		}
 		str.append(str2.toString());
 		return str.toString();

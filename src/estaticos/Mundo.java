@@ -70,77 +70,77 @@ import variables.zotros.Tutorial;
 
 public class Mundo {
 	// Fijos
-	public static Map<Short, Mapa> MAPAS = new TreeMap<Short, Mapa>();
-	public static Map<Integer, Area> AREAS = new TreeMap<Integer, Area>();
-	public static Map<Integer, SuperArea> SUPER_AREAS = new TreeMap<Integer, SuperArea>();
-	public static Map<Integer, SubArea> SUB_AREAS = new TreeMap<Integer, SubArea>();
-	public static Map<Short, Cercado> CERCADOS = new HashMap<Short, Cercado>();
-	public static Map<Integer, Experiencia> EXPERIENCIA = new TreeMap<Integer, Experiencia>();
-	public static Map<Integer, Hechizo> HECHIZOS = new HashMap<Integer, Hechizo>();
-	public static Map<Integer, ObjetoModelo> OBJETOS_MODELOS = new HashMap<Integer, ObjetoModelo>();
-	public static Map<Short, String> SISTEMA_ITEMS = new HashMap<Short, String>();
-	public static Map<Integer, MobModelo> MOBS_MODELOS = new HashMap<Integer, MobModelo>();
-	public static Map<Integer, MonturaModelo> MONTURAS_MODELOS = new HashMap<Integer, MonturaModelo>();
-	public static Map<Integer, NPCModelo> NPC_MODELOS = new HashMap<Integer, NPCModelo>();
-	public static Map<Integer, PreguntaNPC> NPC_PREGUNTAS = new HashMap<Integer, PreguntaNPC>();
-	public static Map<Integer, RespuestaNPC> NPC_RESPUESTAS = new HashMap<Integer, RespuestaNPC>();
-	public static Map<Integer, Oficio> OFICIOS = new HashMap<Integer, Oficio>();
-	public static Map<Integer, ArrayList<Duo<Integer, Integer>>> RECETAS = new HashMap<Integer, ArrayList<Duo<Integer, Integer>>>();
-	public static Map<Integer, ObjetoSet> OBJETOS_SETS = new HashMap<Integer, ObjetoSet>();
-	public static Map<Integer, Casa> CASAS = new HashMap<Integer, Casa>();
-	public static Map<Integer, Mercadillo> MERCADILLOS = new HashMap<Integer, Mercadillo>();
-	public static Map<Integer, Animacion> ANIMACIONES = new HashMap<Integer, Animacion>();
-	public static Map<Integer, Cofre> COFRES = new HashMap<Integer, Cofre>();
-	public static Map<Integer, Tutorial> TUTORIALES = new HashMap<Integer, Tutorial>();
-	public static Map<Integer, MisionObjetivoModelo> OBJETIVOS_MODELOS = new HashMap<Integer, MisionObjetivoModelo>();
-	public static Map<Integer, EncarnacionModelo> ENCARNACIONES_MODELOS = new HashMap<Integer, EncarnacionModelo>();
-	public static Map<Integer, MisionEtapaModelo> ETAPAS = new HashMap<Integer, MisionEtapaModelo>();
-	public static Map<Integer, MisionModelo> MISIONES_MODELOS = new HashMap<Integer, MisionModelo>();
-	public static Map<Integer, MascotaModelo> MASCOTAS_MODELOS = new TreeMap<Integer, MascotaModelo>();
-	public static Map<Integer, Especialidad> ESPECIALIDADES = new TreeMap<Integer, Especialidad>();
-	public static Map<Integer, Integer> DONES_MODELOS = new TreeMap<Integer, Integer>();
-	public static ArrayList<ObjetoInteractivoModelo> OBJETOS_INTERACTIVOS_MODELOS = new ArrayList<ObjetoInteractivoModelo>();
-	public static Map<Integer, Servicio> SERVICIOS = new HashMap<Integer, Servicio>();
-	public static Map<String, Integer> COMANDOS = new HashMap<String, Integer>();
-	public static Map<Short, ArrayList<Short>> MAPAS_ESTRELLAS = new HashMap<Short, ArrayList<Short>>();
-	public static Map<Short, ArrayList<String>> MAPAS_HEROICOS = new HashMap<Short, ArrayList<String>>();
-	public static Map<Byte, ArrayList<Duo<Integer, Integer>>> MOBS_EVENTOS = new HashMap<Byte, ArrayList<Duo<Integer, Integer>>>();
-	public static Map<Integer, Almanax> ALMANAX = new HashMap<Integer, Almanax>();
-	public static CopyOnWriteArrayList<OtroInteractivo> OTROS_INTERACTIVOS = new CopyOnWriteArrayList<OtroInteractivo>();
-	public static ArrayList<ObjetoInteractivo> OBJETOS_INTERACTIVOS = new ArrayList<ObjetoInteractivo>();
-	public static ArrayList<DropMob> DROPS_FIJOS = new ArrayList<DropMob>();
+	public static Map<Short, Mapa> MAPAS = new TreeMap<>();
+	public static Map<Integer, Area> AREAS = new TreeMap<>();
+	public static Map<Integer, SuperArea> SUPER_AREAS = new TreeMap<>();
+	public static Map<Integer, SubArea> SUB_AREAS = new TreeMap<>();
+	public static Map<Short, Cercado> CERCADOS = new HashMap<>();
+	public static Map<Integer, Experiencia> EXPERIENCIA = new TreeMap<>();
+	public static Map<Integer, Hechizo> HECHIZOS = new HashMap<>();
+	public static Map<Integer, ObjetoModelo> OBJETOS_MODELOS = new HashMap<>();
+	public static Map<Short, String> SISTEMA_ITEMS = new HashMap<>();
+	public static Map<Integer, MobModelo> MOBS_MODELOS = new HashMap<>();
+	public static Map<Integer, MonturaModelo> MONTURAS_MODELOS = new HashMap<>();
+	public static Map<Integer, NPCModelo> NPC_MODELOS = new HashMap<>();
+	public static Map<Integer, PreguntaNPC> NPC_PREGUNTAS = new HashMap<>();
+	public static Map<Integer, RespuestaNPC> NPC_RESPUESTAS = new HashMap<>();
+	public static Map<Integer, Oficio> OFICIOS = new HashMap<>();
+	public static Map<Integer, ArrayList<Duo<Integer, Integer>>> RECETAS = new HashMap<>();
+	public static Map<Integer, ObjetoSet> OBJETOS_SETS = new HashMap<>();
+	public static Map<Integer, Casa> CASAS = new HashMap<>();
+	public static Map<Integer, Mercadillo> MERCADILLOS = new HashMap<>();
+	public static Map<Integer, Animacion> ANIMACIONES = new HashMap<>();
+	public static Map<Integer, Cofre> COFRES = new HashMap<>();
+	public static Map<Integer, Tutorial> TUTORIALES = new HashMap<>();
+	public static Map<Integer, MisionObjetivoModelo> OBJETIVOS_MODELOS = new HashMap<>();
+	public static Map<Integer, EncarnacionModelo> ENCARNACIONES_MODELOS = new HashMap<>();
+	public static Map<Integer, MisionEtapaModelo> ETAPAS = new HashMap<>();
+	public static Map<Integer, MisionModelo> MISIONES_MODELOS = new HashMap<>();
+	public static Map<Integer, MascotaModelo> MASCOTAS_MODELOS = new TreeMap<>();
+	public static Map<Integer, Especialidad> ESPECIALIDADES = new TreeMap<>();
+	public static Map<Integer, Integer> DONES_MODELOS = new TreeMap<>();
+	public static ArrayList<ObjetoInteractivoModelo> OBJETOS_INTERACTIVOS_MODELOS = new ArrayList<>();
+	public static Map<Integer, Servicio> SERVICIOS = new HashMap<>();
+	public static Map<String, Integer> COMANDOS = new HashMap<>();
+	public static Map<Short, ArrayList<Short>> MAPAS_ESTRELLAS = new HashMap<>();
+	public static Map<Short, ArrayList<String>> MAPAS_HEROICOS = new HashMap<>();
+	public static Map<Byte, ArrayList<Duo<Integer, Integer>>> MOBS_EVENTOS = new HashMap<>();
+	public static Map<Integer, Almanax> ALMANAX = new HashMap<>();
+	public static CopyOnWriteArrayList<OtroInteractivo> OTROS_INTERACTIVOS = new CopyOnWriteArrayList<>();
+	public static ArrayList<ObjetoInteractivo> OBJETOS_INTERACTIVOS = new ArrayList<>();
+	public static ArrayList<DropMob> DROPS_FIJOS = new ArrayList<>();
 	public static ArrayList<ObjetoTrueque> OBJETOS_TRUEQUE = new ArrayList<>();
-	public static Map<Short, Short> ZAAPS = new HashMap<Short, Short>();
-	public static ArrayList<Short> ZAAPIS_BONTA = new ArrayList<Short>();
-	public static ArrayList<Short> ZAAPIS_BRAKMAR = new ArrayList<Short>();
-	public static Map<Integer, Clase> CLASES = new TreeMap<Integer, Clase>();
-	public static Map<Integer, CreaTuItem> CREA_TU_ITEM = new TreeMap<Integer, CreaTuItem>();
-	public static Map<Integer, String> RULETA = new TreeMap<Integer, String>();
-	public static Map<Integer, Ornamento> ORNAMENTOS = new TreeMap<Integer, Ornamento>();
-	public static Map<Integer, Titulo> TITULOS = new TreeMap<Integer, Titulo>();
+	public static Map<Short, Short> ZAAPS = new HashMap<>();
+	public static ArrayList<Short> ZAAPIS_BONTA = new ArrayList<>();
+	public static ArrayList<Short> ZAAPIS_BRAKMAR = new ArrayList<>();
+	public static Map<Integer, Clase> CLASES = new TreeMap<>();
+	public static Map<Integer, CreaTuItem> CREA_TU_ITEM = new TreeMap<>();
+	public static Map<Integer, String> RULETA = new TreeMap<>();
+	public static Map<Integer, Ornamento> ORNAMENTOS = new TreeMap<>();
+	public static Map<Integer, Titulo> TITULOS = new TreeMap<>();
 	//
 	// concurrentes
 	//
-	private static ConcurrentHashMap<Integer, Cuenta> _CUENTAS = new ConcurrentHashMap<Integer, Cuenta>();
-	private static ConcurrentHashMap<String, Integer> _CUENTAS_POR_NOMBRE = new ConcurrentHashMap<String, Integer>();
-	private static ConcurrentHashMap<Integer, Personaje> _PERSONAJES = new ConcurrentHashMap<Integer, Personaje>();
-	private static ConcurrentHashMap<Integer, Objeto> _OBJETOS = new ConcurrentHashMap<Integer, Objeto>();
-	private static ConcurrentHashMap<Integer, Gremio> _GREMIOS = new ConcurrentHashMap<Integer, Gremio>();
-	private static ConcurrentHashMap<Integer, Montura> _MONTURAS = new ConcurrentHashMap<Integer, Montura>();
-	private static ConcurrentHashMap<Integer, Prisma> _PRISMAS = new ConcurrentHashMap<Integer, Prisma>();
-	private static ConcurrentHashMap<Integer, Recaudador> _RECAUDADORES = new ConcurrentHashMap<Integer, Recaudador>();
-	private static ConcurrentHashMap<Integer, RankingKoliseo> _RANKINGS_KOLISEO = new ConcurrentHashMap<Integer, RankingKoliseo>();
-	private static ConcurrentHashMap<Integer, RankingPVP> _RANKINGS_PVP = new ConcurrentHashMap<Integer, RankingPVP>();
+	private static ConcurrentHashMap<Integer, Cuenta> _CUENTAS = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<String, Integer> _CUENTAS_POR_NOMBRE = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<Integer, Personaje> _PERSONAJES = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<Integer, Objeto> _OBJETOS = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<Integer, Gremio> _GREMIOS = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<Integer, Montura> _MONTURAS = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<Integer, Prisma> _PRISMAS = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<Integer, Recaudador> _RECAUDADORES = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<Integer, RankingKoliseo> _RANKINGS_KOLISEO = new ConcurrentHashMap<>();
+	private static ConcurrentHashMap<Integer, RankingPVP> _RANKINGS_PVP = new ConcurrentHashMap<>();
 	// private static ConcurrentHashMap<Integer, Encarnacion> _ENCARNACIONES = new
 	// ConcurrentHashMap<Integer, Encarnacion>();
-	private static ConcurrentHashMap<Integer, Personaje> _INSCRITOS_KOLISEO = new ConcurrentHashMap<Integer, Personaje>();
+	private static ConcurrentHashMap<Integer, Personaje> _INSCRITOS_KOLISEO = new ConcurrentHashMap<>();
 	//
 	// publicas
 	//
-	public static Map<Short, Short> ZONAS = new HashMap<Short, Short>();
+	public static Map<Short, Short> ZONAS = new HashMap<>();
 	// public static ArrayList<Short> MAPAS_OBJETIVOS = new ArrayList<>();
-	public static ArrayList<String> CAPTCHAS = new ArrayList<String>();
-	public static ArrayList<Cuenta> CUENTAS_A_BORRAR = new ArrayList<Cuenta>();
+	public static ArrayList<String> CAPTCHAS = new ArrayList<>();
+	public static ArrayList<Cuenta> CUENTAS_A_BORRAR = new ArrayList<>();
 	private static CopyOnWriteArrayList<Personaje> ONLINES = new CopyOnWriteArrayList<>();
 	//
 	// variables primitivas
@@ -526,7 +526,7 @@ public class Mundo {
 				if (str.length() > 0) {
 					str.append(";");
 				}
-				str.append(o.getID() + "," + o.getPrecioStr());
+				str.append(o.getID()).append(",").append(o.getPrecioStr());
 			}
 		}
 		return str.toString();
@@ -547,7 +547,7 @@ public class Mundo {
 				if (str.length() > 0) {
 					str.append(";");
 				}
-				str.append(o.getID() + "," + o.getPrecioStr());
+				str.append(o.getID()).append(",").append(o.getPrecioStr());
 			}
 		}
 		return str.toString();
@@ -597,7 +597,7 @@ public class Mundo {
 			if (str.length() > 0) {
 				str.append(";");
 			}
-			str.append(obj.getID() + "," + obj.getGFX());
+			str.append(obj.getID()).append(",").append(obj.getGFX());
 		}
 		LISTA_GFX = str.toString();
 	}
@@ -611,16 +611,16 @@ public class Mundo {
 			if (str.length() > 0) {
 				str.append(";");
 			}
-			str.append(obj.getID() + "," + obj.getNivel());
+			str.append(obj.getID()).append(",").append(obj.getNivel());
 		}
 		LISTA_NIVEL = str.toString();
 	}
 	
 	public static void addMobEvento(final byte evento, final int mobOriginal, final int mobEvento) {
 		if (MOBS_EVENTOS.get(evento) == null) {
-			MOBS_EVENTOS.put(evento, new ArrayList<Duo<Integer, Integer>>());
+			MOBS_EVENTOS.put(evento, new ArrayList<>());
 		}
-		MOBS_EVENTOS.get(evento).add(new Duo<Integer, Integer>(mobOriginal, mobEvento));
+		MOBS_EVENTOS.get(evento).add(new Duo<>(mobOriginal, mobEvento));
 	}
 	
 	public static ArrayList<Duo<Integer, Integer>> getMobsEventoDelDia() {
@@ -691,8 +691,7 @@ public class Mundo {
 	private static void rankingNivel() {
 		if (!MainServidor.PARAM_LADDER_NIVEL)
 			return;
-		ArrayList<Personaje> persos = new ArrayList<>();
-		persos.addAll(_PERSONAJES.values());
+        ArrayList<Personaje> persos = new ArrayList<>(_PERSONAJES.values());
 		Collections.sort(persos, new CompNivelMasMenos());
 		_LADDER_NIVEL.clear();
 		_LADDER_NIVEL.addAll(persos);
@@ -701,8 +700,7 @@ public class Mundo {
 	private static void rankingDia() {
 		if (!MainServidor.PARAM_LADDER_EXP_DIA)
 			return;
-		ArrayList<Personaje> persos = new ArrayList<>();
-		persos.addAll(_PERSONAJES.values());
+        ArrayList<Personaje> persos = new ArrayList<>(_PERSONAJES.values());
 		Collections.sort(persos, new CompDiaMasMenos());
 		_LADDER_EXP_DIA.clear();
 		_LADDER_EXP_DIA.addAll(persos);
@@ -711,8 +709,7 @@ public class Mundo {
 	private static void rankingGremio() {
 		if (!MainServidor.PARAM_LADDER_GREMIO)
 			return;
-		ArrayList<Gremio> persos = new ArrayList<>();
-		persos.addAll(_GREMIOS.values());
+        ArrayList<Gremio> persos = new ArrayList<>(_GREMIOS.values());
 		Collections.sort(persos, new CompGremioMasMenos());
 		_LADDER_GREMIO.clear();
 		_LADDER_GREMIO.addAll(persos);
@@ -722,8 +719,7 @@ public class Mundo {
 		if (!MainServidor.PARAM_LADDER_PVP) {
 			return;
 		}
-		ArrayList<RankingPVP> persos = new ArrayList<>();
-		persos.addAll(_RANKINGS_PVP.values());
+        ArrayList<RankingPVP> persos = new ArrayList<>(_RANKINGS_PVP.values());
 		Collections.sort(persos, new CompPVPMasMenos());
 		_LADDER_PVP.clear();
 		_LADDER_PVP.addAll(persos);
@@ -733,15 +729,14 @@ public class Mundo {
 		if (!MainServidor.PARAM_LADDER_KOLISEO) {
 			return;
 		}
-		ArrayList<RankingKoliseo> persos = new ArrayList<>();
-		persos.addAll(_RANKINGS_KOLISEO.values());
+        ArrayList<RankingKoliseo> persos = new ArrayList<>(_RANKINGS_KOLISEO.values());
 		Collections.sort(persos, new CompKoliseoMasMenos());
 		_LADDER_KOLISEO.clear();
 		_LADDER_KOLISEO.addAll(persos);
 	}
 	
 	private static void addPaginas(StringBuilder temp, int inicio, int add) {
-		temp.append("|" + (inicio == -1 ? 0 : 1) + "|" + (add == MainServidor.LIMITE_LADDER + 1 ? 1 : 0));
+		temp.append("|").append(inicio == -1 ? 0 : 1).append("|").append(add == MainServidor.LIMITE_LADDER + 1 ? 1 : 0);
 	}
 	
 	private static void addStringParaLadder(StringBuilder temp, Personaje perso, int pos) {
@@ -1019,8 +1014,7 @@ public class Mundo {
 					if (temp.length() > 0) {
 						temp.append("#");
 					}
-					temp.append(pos + ";" + gremio.getEmblema() + ";" + gremio.getNombre() + ";" + gremio.getCantidadMiembros()
-					+ ";" + gremio.getNivel() + ";" + gremio.getExperiencia() + ";;;");
+					temp.append(pos).append(";").append(gremio.getEmblema()).append(";").append(gremio.getNombre()).append(";").append(gremio.getCantidadMiembros()).append(";").append(gremio.getNivel()).append(";").append(gremio.getExperiencia()).append(";;;");
 				}
 				add++;
 			} catch (final Exception e) {}
@@ -1232,7 +1226,7 @@ public class Mundo {
 			return;
 		}
 		VENDER_BOLETOS = false;
-		final ArrayList<Integer> lista = new ArrayList<Integer>();
+		final ArrayList<Integer> lista = new ArrayList<>();
 		for (int x = 1; x <= LOTERIA_BOLETOS.length; x++) {
 			if (LOTERIA_BOLETOS[x - 1] != 0) {
 				lista.add(x);
@@ -1253,7 +1247,7 @@ public class Mundo {
 		} catch (final Exception e) {}
 		int premios = 1;
 		premios += lista.size() / MainServidor.GANADORES_POR_BOLETOS;
-		final Map<Integer, Integer> ganadores = new TreeMap<Integer, Integer>();
+		final Map<Integer, Integer> ganadores = new TreeMap<>();
 		for (int a = 0; a < premios; a++) {
 			final int boleto = lista.get(Formulas.getRandomInt(0, lista.size() - 1));
 			ganadores.put(boleto, LOTERIA_BOLETOS[boleto - 1]);
@@ -1650,7 +1644,7 @@ public class Mundo {
 	}
 	
 	public static ArrayList<Cofre> getCofresPorCasa(final Casa casa) {
-		final ArrayList<Cofre> cofres = new ArrayList<Cofre>();
+		final ArrayList<Cofre> cofres = new ArrayList<>();
 		for (final Cofre cofre : COFRES.values()) {
 			if (cofre.getCasaID() == casa.getID()) {
 				cofres.add(cofre);
@@ -1820,7 +1814,7 @@ public class Mundo {
 		for (final Mapa mapa : MAPAS.values()) {
 			if (mapa.getX() == mapaX && mapa.getY() == mapaY && mapa.getSubArea().getArea().getSuperArea()
 			.getID() == idContinente) {
-				str.append(mapa.getID() + ", ");
+				str.append(mapa.getID()).append(", ");
 			}
 		}
 		return str.toString();
@@ -1885,8 +1879,7 @@ public class Mundo {
 	}
 	
 	public static Personaje getPersonajePorNombre(final String nombre) {
-		final ArrayList<Personaje> Ps = new ArrayList<Personaje>();
-		Ps.addAll(_PERSONAJES.values());
+        final ArrayList<Personaje> Ps = new ArrayList<Personaje>(_PERSONAJES.values());
 		for (final Personaje perso : Ps) {
 			if (perso.getNombre().equalsIgnoreCase(nombre)) {
 				return perso;
@@ -1962,7 +1955,7 @@ public class Mundo {
 			if (str.length() > 0) {
 				str.append("|");
 			}
-			str.append(subarea.getID() + ";" + subarea.getAlineacion());
+			str.append(subarea.getID()).append(";").append(subarea.getAlineacion());
 		}
 		return str.toString();
 	}
@@ -2310,8 +2303,7 @@ public class Mundo {
 		montura.setUbicacion(Ubicacion.NULL);
 		_MONTURAS.remove(montura.getID());
 		GestorSQL.DELETE_MONTURA(montura);
-		final ArrayList<Objeto> objetos = new ArrayList<Objeto>();
-		objetos.addAll(montura.getObjetos());
+        final ArrayList<Objeto> objetos = new ArrayList<Objeto>(montura.getObjetos());
 		eliminarObjetosPorArray(objetos);
 	}
 	
@@ -2357,8 +2349,7 @@ public class Mundo {
 				esposo.divorciar();
 				perso.divorciar();
 			}
-			final ArrayList<Objeto> objetos = new ArrayList<Objeto>();
-			objetos.addAll(perso.getObjetosTodos());
+            final ArrayList<Objeto> objetos = new ArrayList<Objeto>(perso.getObjetosTodos());
 			eliminarObjetosPorArray(objetos);
 			objetos.clear();
 			objetos.addAll(perso.getObjetosTienda());
@@ -2428,8 +2419,8 @@ public class Mundo {
 				if (add.length() > 0) {
 					add.append("|");
 				}
-				add.append(objMod.getID() + ";");
-				add.append(objMod.stringStatsModelo() + ";");
+				add.append(objMod.getID()).append(";");
+				add.append(objMod.stringStatsModelo()).append(";");
 				if (MainServidor.SISTEMA_ITEMS_TIPO_DE_PAGO.equalsIgnoreCase("KAMAS")) {
 					add.append(objMod.getPrecioPanelKamas());
 				} else {
@@ -2442,8 +2433,8 @@ public class Mundo {
 					add.append("0");
 					if (MainServidor.PARAM_SISTEMA_ITEMS_EXO_PA_PM) {
 						if (!MainServidor.SISTEMA_ITEMS_EXO_TIPOS_NO_PERMITIDOS.contains(objMod.getTipo())) {
-							add.append(";" + (objMod.tieneStatInicial(Constantes.STAT_MAS_PA) ? "0" : "1") + ";" + (objMod
-							.tieneStatInicial(Constantes.STAT_MAS_PM) ? "0" : "1"));
+							add.append(";").append(objMod.tieneStatInicial(Constantes.STAT_MAS_PA) ? "0" : "1").append(";").append(objMod
+									.tieneStatInicial(Constantes.STAT_MAS_PM) ? "0" : "1");
 						}
 					}
 				}
@@ -2576,7 +2567,7 @@ public class Mundo {
 		}
 		final StringBuilder str = new StringBuilder();
 		for (Objeto obj : objetos) {
-			str.append((str.length() > 0 ? "," : "") + obj.getID());
+			str.append(str.length() > 0 ? "," : "").append(obj.getID());
 			_OBJETOS.remove(obj.getID());
 			obj = null;
 		}
@@ -2888,7 +2879,7 @@ public class Mundo {
 		} else if (alineacion == Constantes.ALINEACION_BRAKMARIANO) {
 			str.append(SubArea.BRAKMARS);
 		}
-		str.append("|" + SUB_AREAS.size() + "|" + (SUB_AREAS.size() - (SubArea.BONTAS + SubArea.BRAKMARS)) + "|");
+		str.append("|").append(SUB_AREAS.size()).append("|").append(SUB_AREAS.size() - (SubArea.BONTAS + SubArea.BRAKMARS)).append("|");
 		boolean primero = false;
 		for (final SubArea subArea : SUB_AREAS.values()) {
 			if (!subArea.esConquistable()) {
@@ -2897,10 +2888,10 @@ public class Mundo {
 			if (primero) {
 				str.append(";");
 			}
-			str.append(subArea.getID() + ",");
-			str.append(subArea.getAlineacion() + ",");
-			str.append((subArea.getPrisma() == null ? 0 : (subArea.getPrisma().getPelea() == null ? 0 : 1)) + ",");// pelea
-			str.append((subArea.getPrisma() == null ? 0 : (subArea.getPrisma().getMapa().getID())) + ",");
+			str.append(subArea.getID()).append(",");
+			str.append(subArea.getAlineacion()).append(",");
+			str.append(subArea.getPrisma() == null ? 0 : (subArea.getPrisma().getPelea() == null ? 0 : 1)).append(",");// pelea
+			str.append(subArea.getPrisma() == null ? 0 : (subArea.getPrisma().getMapa().getID())).append(",");
 			str.append("1");// atacable
 			primero = true;
 		}
@@ -2910,14 +2901,14 @@ public class Mundo {
 		} else if (alineacion == Constantes.ALINEACION_BRAKMARIANO) {
 			str.append(Area.BRAKMARS);
 		}
-		str.append("|" + AREAS.size() + "|");
+		str.append("|").append(AREAS.size()).append("|");
 		primero = false;
 		for (final Area area : AREAS.values()) {
 			if (primero) {
 				str.append(";");
 			}
-			str.append(area.getID() + ",");
-			str.append(area.getAlineacion() + ",");// alineacion
+			str.append(area.getID()).append(",");
+			str.append(area.getAlineacion()).append(",");// alineacion
 			str.append("1,");// door
 			str.append(area.getPrisma() == null ? 0 : 1);// tiene prisma
 			primero = true;
@@ -2996,7 +2987,7 @@ public class Mundo {
 	}
 	
 	public static void iniciarKoliseo() {
-		final ArrayList<Mapa> mapas = new ArrayList<Mapa>();
+		final ArrayList<Mapa> mapas = new ArrayList<>();
 		for (final String s : MainServidor.MAPAS_KOLISEO.split(",")) {
 			try {
 				mapas.add(getMapa(Short.parseShort(s)));
@@ -3007,7 +2998,7 @@ public class Mundo {
 			GestorSalida.ENVIAR_Im_INFORMACION_KOLISEO("1KOLISEO_FALTA_MAPAS");
 			return;
 		}
-		final ArrayList<Personaje> listos = new ArrayList<Personaje>();
+		final ArrayList<Personaje> listos = new ArrayList<>();
 		for (final Personaje p : _INSCRITOS_KOLISEO.values()) {
 			if (p.puedeIrKoliseo()) {
 				listos.add(p);
@@ -3037,7 +3028,7 @@ public class Mundo {
 			}
 			p.setPuntKoli(ptsNivel + ptsStats + ptsKoliseo);
 		}
-		final ArrayList<Personaje> ordenados = new ArrayList<Personaje>();
+		final ArrayList<Personaje> ordenados = new ArrayList<>();
 		while (true) {
 			int maximo = 0;
 			if (ordenados.size() == listos.size()) {
@@ -3059,7 +3050,7 @@ public class Mundo {
 				break;
 			}
 		}
-		final ArrayList<GrupoKoliseo> grupos = new ArrayList<GrupoKoliseo>();
+		final ArrayList<GrupoKoliseo> grupos = new ArrayList<>();
 		int i = 0, j = 1;
 		boolean b = true;
 		for (final Personaje p : ordenados) {
@@ -3102,7 +3093,7 @@ public class Mundo {
 				}
 			}
 		}
-		final ArrayList<GrupoKoliseo> combate = new ArrayList<GrupoKoliseo>();
+		final ArrayList<GrupoKoliseo> combate = new ArrayList<>();
 		while (true) {
 			int maximo = 0;
 			if (combate.size() == grupos.size()) {
@@ -3150,9 +3141,8 @@ public class Mundo {
 	}
 	
 	public static Map<Integer, Integer> listaObjetosTruequePor(Map<Integer, Integer> aDar, int npcID) {
-		Map<Integer, Integer> recibir = new TreeMap<Integer, Integer>();
-		Map<Integer, Integer> aDar2 = new TreeMap<Integer, Integer>();
-		aDar2.putAll(aDar);
+		Map<Integer, Integer> recibir = new TreeMap<>();
+        Map<Integer, Integer> aDar2 = new TreeMap<Integer, Integer>(aDar);
 		ArrayList<ObjetoTrueque> objetos = new ArrayList<>();
 		for (ObjetoTrueque objT : OBJETOS_TRUEQUE) {
 			if (objT.permiteNPC(npcID) && !objT.getNecesita().isEmpty()) {

@@ -30,13 +30,13 @@ public class StatHechizo {
 	private final byte _sigLanzamiento;// cantidad de turnos para volver a lanzar el hechizo
 	private final int _nivelRequerido;// nivel requerido
 	private final boolean _esFinTurnoSiFC;// si falla, es final del turno
-	private final ArrayList<EfectoHechizo> _efectosNormales = new ArrayList<EfectoHechizo>();
-	private final ArrayList<EfectoHechizo> _efectosCriticos = new ArrayList<EfectoHechizo>();
-	private final ArrayList<EfectoHechizo> _ordenadoNormales = new ArrayList<EfectoHechizo>();
-	private final ArrayList<EfectoHechizo> _ordenadoCriticos = new ArrayList<EfectoHechizo>();
+	private final ArrayList<EfectoHechizo> _efectosNormales = new ArrayList<>();
+	private final ArrayList<EfectoHechizo> _efectosCriticos = new ArrayList<>();
+	private final ArrayList<EfectoHechizo> _ordenadoNormales = new ArrayList<>();
+	private final ArrayList<EfectoHechizo> _ordenadoCriticos = new ArrayList<>();
 	// private final String _areaEfecto;// genera un estado, tipo portador
-	private final ArrayList<Integer> _estadosProhibidos = new ArrayList<Integer>();
-	private final ArrayList<Integer> _estadosNecesarios = new ArrayList<Integer>();
+	private final ArrayList<Integer> _estadosProhibidos = new ArrayList<>();
+	private final ArrayList<Integer> _estadosNecesarios = new ArrayList<>();
 	private final Hechizo _hechizo;
 	private final byte _tipoHechizo;// 0 normal, 1 pergamino, 2 invocacion, 3 dominios, 4 de clase, 5
 																	// de recaudador

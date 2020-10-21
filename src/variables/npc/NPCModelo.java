@@ -21,8 +21,8 @@ public class NPCModelo {
 	private String _accesoriosHex;
 	private final String _nombre;
 	private String _listaObjetos = "";
-	private final ArrayList<ObjetoModelo> _objVender = new ArrayList<ObjetoModelo>();
-	private final ArrayList<MisionModelo> _misiones = new ArrayList<MisionModelo>();
+	private final ArrayList<ObjetoModelo> _objVender = new ArrayList<>();
+	private final ArrayList<MisionModelo> _misiones = new ArrayList<>();
 	
 	public NPCModelo(final int id, final int gfxID, final short escalaX, final short escalaY, final byte sexo,
 	final int color1, final int color2, final int color3, final int foto, final int preguntaID, final String objVender,
@@ -205,7 +205,7 @@ public class NPCModelo {
 		}
 		final StringBuilder objetos = new StringBuilder();
 		for (final ObjetoModelo obj : _objVender) {
-			objetos.append(obj.stringDeStatsParaTienda() + "|");
+			objetos.append(obj.stringDeStatsParaTienda()).append("|");
 		}
 		_listaObjetos = objetos.toString();
 	}
@@ -220,7 +220,7 @@ public class NPCModelo {
 		}
 		final StringBuilder objetos = new StringBuilder();
 		for (final ObjetoModelo obj : _objVender) {
-			objetos.append(obj.getID() + ",");
+			objetos.append(obj.getID()).append(",");
 		}
 		return objetos.toString();
 	}

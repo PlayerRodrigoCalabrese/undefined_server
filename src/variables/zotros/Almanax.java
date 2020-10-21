@@ -14,7 +14,7 @@ public class Almanax {
 		_bonus = bonus;
 		int idObjeto = Integer.parseInt(ofrenda.split(",")[0]);
 		int cantidad = Integer.parseInt(ofrenda.split(",")[1]);
-		_ofrenda = new Duo<Integer, Integer>(idObjeto, cantidad);
+		_ofrenda = new Duo<>(idObjeto, cantidad);
 	}
 	
 	public Duo<Integer, Integer> getOfrenda() {

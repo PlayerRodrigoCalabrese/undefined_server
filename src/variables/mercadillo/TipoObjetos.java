@@ -6,7 +6,7 @@ import variables.personaje.Personaje;
 import estaticos.GestorSalida;
 
 public class TipoObjetos {
-	private Map<Integer, ModeloMercadillo> _modelosDeUnTipo = new HashMap<Integer, ModeloMercadillo>();
+	private Map<Integer, ModeloMercadillo> _modelosDeUnTipo = new HashMap<>();
 	private int _tipoObjeto;
 	
 	public TipoObjetos(final int tipoObjeto) {

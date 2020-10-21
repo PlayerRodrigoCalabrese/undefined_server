@@ -1821,7 +1821,7 @@ public class Constantes {
 	public static final ArrayList<String> convertirStringArray(final String str) {
 		final char[] s = str.toCharArray();
 		int corchete = 0;
-		final ArrayList<String> fini = new ArrayList<String>();
+		final ArrayList<String> fini = new ArrayList<>();
 		StringBuilder temp = new StringBuilder();
 		for (final char a : s) {
 			if (a == ' ') {
@@ -3458,11 +3458,11 @@ public class Constantes {
 				try {
 					s.append("\n");
 					if (fichero.isFile()) {
-						s.append(fichero.getName() + "\t" + fichero.getTotalSpace() + " bytes");
+						s.append(fichero.getName()).append("\t").append(fichero.getTotalSpace()).append(" bytes");
 					} else if (fichero.isDirectory()) {
-						s.append(fichero.getName() + "\t DIR");
+						s.append(fichero.getName()).append("\t DIR");
 					} else {
-						s.append(fichero.getName() + "\t UNKNOWN");
+						s.append(fichero.getName()).append("\t UNKNOWN");
 					}
 				} catch (final Exception e) {}
 			}
@@ -3559,7 +3559,7 @@ public class Constantes {
 			if (!paso) {
 				continue;
 			}
-			r.append(x + "");
+			r.append(x);
 		}
 		return r.toString();
 	}
@@ -3959,7 +3959,7 @@ public class Constantes {
 	
 	public static final ArrayList<Trabajo> getTrabajosPorOficios(final int idOficio, final int nivel,
 	final StatOficio oficio) {
-		final ArrayList<Trabajo> skills = new ArrayList<Trabajo>();
+		final ArrayList<Trabajo> skills = new ArrayList<>();
 		final int tiempoGanado = Math.min(nivel, 100) * 100;
 		switch (idOficio) {
 			case OFICIO_BASE :
@@ -4683,13 +4683,13 @@ public class Constantes {
 	
 	public static final int getObjetoPorRecurso(final int recurso, final boolean especial) {
 		try {
-			final ArrayList<ArrayList<Integer>> obj = new ArrayList<ArrayList<Integer>>();
+			final ArrayList<ArrayList<Integer>> obj = new ArrayList<>();
 			for (final int[] element : TRABAJOS_Y_DROPS) {
 				if (element[0] == recurso) {
 					if (element.length == 1) {
 						continue;
 					}
-					final ArrayList<Integer> x = new ArrayList<Integer>();
+					final ArrayList<Integer> x = new ArrayList<>();
 					x.add(element[1]);
 					if (element.length > 2) {
 						x.add(element[2]);
@@ -4702,7 +4702,7 @@ public class Constantes {
 			} else if (obj.size() == 1) {
 				return obj.get(0).size() > 1 && especial ? obj.get(0).get(1) : obj.get(0).get(0);
 			} else if (obj.size() >= 2) {
-				ArrayList<Integer> z = new ArrayList<Integer>();
+				ArrayList<Integer> z = new ArrayList<>();
 				z = obj.get(Formulas.getRandomInt(0, obj.size() - 1));
 				return z.size() > 1 && especial ? z.get(1) : z.get(0);
 			}
@@ -4938,7 +4938,7 @@ public class Constantes {
 		} else if (A == 19 && B == 23) {
 			colorNuevaCria = 87; // ciruela - purpura
 		}
-		final ArrayList<Integer> posibles = new ArrayList<Integer>();
+		final ArrayList<Integer> posibles = new ArrayList<>();
 		posibles.add(10);
 		posibles.add(18);
 		posibles.add(20);

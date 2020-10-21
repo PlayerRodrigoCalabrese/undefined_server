@@ -7,8 +7,8 @@ import variables.pelea.Pelea;
 
 public class Grupo {
 	private Personaje _rastrear;
-	private final CopyOnWriteArrayList<Personaje> _integrantes = new CopyOnWriteArrayList<Personaje>();
-	private final CopyOnWriteArrayList<Personaje> _alumnos = new CopyOnWriteArrayList<Personaje>();
+	private final CopyOnWriteArrayList<Personaje> _integrantes = new CopyOnWriteArrayList<>();
+	private final CopyOnWriteArrayList<Personaje> _alumnos = new CopyOnWriteArrayList<>();
 	private String _packet;
 	private boolean _autoUnir = true;
 	
@@ -65,7 +65,7 @@ public class Grupo {
 	}
 	
 	public ArrayList<Integer> getIDsPersos() {
-		final ArrayList<Integer> lista = new ArrayList<Integer>();
+		final ArrayList<Integer> lista = new ArrayList<>();
 		for (final Personaje perso : _integrantes) {
 			lista.add(perso.getID());
 			if (perso.getCompañero() != null && perso.getCompañero().esMultiman()) {

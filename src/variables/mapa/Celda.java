@@ -95,8 +95,8 @@ public class Celda {
 	}
 	
 	public void celdaNornmal() {
-		_personajes = new CopyOnWriteArrayList<Personaje>();
-		_acciones = new TreeMap<Integer, Accion>();
+		_personajes = new CopyOnWriteArrayList<>();
+		_acciones = new TreeMap<>();
 	}
 	
 	public Mapa getMapa() {

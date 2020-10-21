@@ -22,7 +22,7 @@ public class Cofre implements Exchanger {
 	private int _persoID, _limite;
 	private long _kamas;
 	private String _clave = "-";
-	private final Map<Integer, Objeto> _objetos = new HashMap<Integer, Objeto>();
+	private final Map<Integer, Objeto> _objetos = new HashMap<>();
 	private ArrayList<Personaje> _consultores = new ArrayList<>();
 	
 	public Cofre(final int id, final int casaID, final short mapaID, final short celdaID, int limite) {
@@ -182,10 +182,10 @@ public class Cofre implements Exchanger {
 			if (objeto == null) {
 				continue;
 			}
-			packet.append("O" + objeto.stringObjetoConGuiño());
+			packet.append("O").append(objeto.stringObjetoConGuiño());
 		}
 		if (_kamas > 0) {
-			packet.append("G" + getKamas());
+			packet.append("G").append(getKamas());
 		}
 		return packet.toString();
 	}

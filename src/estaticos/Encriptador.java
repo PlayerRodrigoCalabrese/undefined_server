@@ -106,9 +106,9 @@ public class Encriptador {
 		preData[7] = preData[7] | valores[2] >> 12 & 1;
 		preData[8] = valores[2] >> 6 & 63;
 		preData[9] = valores[2] & 63;
-		String fD = "";
+		StringBuilder fD = new StringBuilder();
 		for (int d : preData) {
-			fD += Encriptador.getValorHashPorNumero(d);
+			fD.append(Encriptador.getValorHashPorNumero(d));
 		}
 		return fD + fP;
 	}
@@ -122,7 +122,7 @@ public class Encriptador {
 				if (((i & 15) << 4 | o & 15) == Integer.parseInt(split[cantidad])) {
 					final Character A = (char) (i + 48);
 					final Character B = (char) (o + 48);
-					encriptado.append(A.toString() + B.toString());
+					encriptado.append(A.toString()).append(B.toString());
 					i = 0;
 					o = 0;
 					cantidad++;
@@ -200,7 +200,7 @@ public class Encriptador {
 			short objInteractivo;
 			for (short f = 0; f < mapa.getMapData().length(); f += 10) {
 				final StringBuilder celdaData = new StringBuilder(mapa.getMapData().substring(f, f + 10));
-				ArrayList<Byte> celdaInfo = new ArrayList<Byte>();
+				ArrayList<Byte> celdaInfo = new ArrayList<>();
 				for (int i = 0; i < celdaData.length(); i++) {
 					celdaInfo.add(getNumeroPorValorHash(celdaData.charAt(i)));
 				}
@@ -283,16 +283,16 @@ public class Encriptador {
 	
 	private static String decypherData(String d, String k, String checksum) throws Exception {
 		int c = Integer.parseInt(checksum, 16) * 2;
-		String _loc5 = "";
+		StringBuilder _loc5 = new StringBuilder();
 		int _loc6 = k.length();
 		int _loc7 = 0;
 		int _loc9 = 0;
 		for (; _loc9 < d.length(); _loc9 = _loc9 + 2) {
-			_loc5 += (char) (Integer.parseInt(d.substring(_loc9, _loc9 + 2), 16) ^ k.codePointAt((_loc7 + c) % _loc6));
+			_loc5.append((char) (Integer.parseInt(d.substring(_loc9, _loc9 + 2), 16) ^ k.codePointAt((_loc7 + c) % _loc6)));
 			_loc7++;
 		}
-		_loc5 = unescape(_loc5);
-		return (_loc5);
+		_loc5 = new StringBuilder(unescape(_loc5.toString()));
+		return (_loc5.toString());
 	}
 	
 	private static String d2h(int d) {
@@ -332,13 +332,13 @@ public class Encriptador {
 	}
 	
 	public static String prepareKey(String d) {
-		String _loc3 = new String();
+		StringBuilder _loc3 = new StringBuilder(new String());
 		int _loc4 = 0;
 		for (; _loc4 < d.length(); _loc4 = _loc4 + 2) {
-			_loc3 = _loc3 + (char) (Integer.parseInt(d.substring(_loc4, _loc4 + 2), 16));
+			_loc3.append((char) (Integer.parseInt(d.substring(_loc4, _loc4 + 2), 16)));
 		}
-		_loc3 = unescape(_loc3);
-		return (_loc3);
+		_loc3 = new StringBuilder(unescape(_loc3.toString()));
+		return (_loc3.toString());
 	}
 	
 	private static char checksum(String s) {

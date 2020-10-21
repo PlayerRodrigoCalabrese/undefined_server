@@ -22,8 +22,8 @@ public class Casa {
 	private int _derechosGremio;
 	private long _kamasVenta = 1000000;
 	private String _clave = "-";
-	private final Map<Integer, Boolean> _tieneDerecho = new HashMap<Integer, Boolean>();
-	private final ArrayList<Short> _mapasContenidos = new ArrayList<Short>();
+	private final Map<Integer, Boolean> _tieneDerecho = new HashMap<>();
+	private final ArrayList<Short> _mapasContenidos = new ArrayList<>();
 	
 	public Casa(final int id, final short mapaIDFuera, final short celdaIDFuera, final short mapaIDDentro,
 	final short celdaIDDentro, final long precio, final String mapasContenidos) {
@@ -369,14 +369,14 @@ public class Casa {
 		try {
 			packet.append(_dueñoID.getNombre());
 		} catch (final Exception e) {}
-		packet.append(";" + (_kamasVenta > 0 ? 1 : 0));
+		packet.append(";").append(_kamasVenta > 0 ? 1 : 0);
 		boolean esDelGremio = perso.getGremio() != null && perso.getGremio().getID() == getGremioID();
 		if (_gremio != null) {
 			if (_gremio.getCantidadMiembros() < 10) {
 				_gremio = null;
 			} else if (tieneDerecho(Constantes.C_ESCUDO_VISIBLE_PARA_TODOS) || (tieneDerecho(
 			Constantes.C_ESCUDO_VISIBLE_MIEMBROS) && esDelGremio)) {
-				packet.append(";" + _gremio.getNombre() + ";" + _gremio.getEmblema());
+				packet.append(";").append(_gremio.getNombre()).append(";").append(_gremio.getEmblema());
 			}
 		}
 		return packet.toString();
@@ -394,14 +394,14 @@ public class Casa {
 				if (packet.length() > 0) {
 					packet.append("|");
 				}
-				packet.append(casa._id + ";");
+				packet.append(casa._id).append(";");
 				try {
-					packet.append(casa.getDueño().getNombre() + ";");
+					packet.append(casa.getDueño().getNombre()).append(";");
 				} catch (final Exception e) {
 					packet.append("?;");
 				}
 				final Mapa mapa = Mundo.getMapa(casa.getMapaIDDentro());
-				packet.append(mapa.getX() + "," + mapa.getY() + ";");
+				packet.append(mapa.getX()).append(",").append(mapa.getY()).append(";");
 				packet.append("0;");
 				packet.append(casa.getDerechosGremio());
 			}

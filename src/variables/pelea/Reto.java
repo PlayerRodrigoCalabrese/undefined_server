@@ -6,8 +6,9 @@ import estaticos.GestorSalida;
 public class Reto {
 	public enum EstReto {
 		EN_ESPERA, REALIZADO, FALLADO
-	};
-	private final byte _id;
+	}
+
+    private final byte _id;
 	private boolean _esLupa = false;
 	private Luchador _mob = null;
 	private EstReto _estado;

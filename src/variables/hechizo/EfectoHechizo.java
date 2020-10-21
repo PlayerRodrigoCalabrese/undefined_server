@@ -856,8 +856,7 @@ public class EfectoHechizo {
 		StringBuilder info = null;
 		if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 			info = new StringBuilder();
-			info.append("SpellID: " + hechizoID + " TargetID: " + objetivo.getID() + " CaC: " + esCaC + " GC: " + esGC
-			+ " DmgStart: " + dañoInicial);
+			info.append("SpellID: ").append(hechizoID).append(" TargetID: ").append(objetivo.getID()).append(" CaC: ").append(esCaC).append(" GC: ").append(esGC).append(" DmgStart: ").append(dañoInicial);
 		}
 		switch (elemento) {
 			case Constantes.ELEMENTO_NEUTRAL + 10 :
@@ -960,9 +959,7 @@ public class EfectoHechizo {
 		multiplicaDaños = tStatsLanzador.getTotalStatParaMostrar(Constantes.STAT_MULTIPLICA_DAÑOS);
 		if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 			info.append("\n");
-			info.append("PtsStats: " + statC + " +Dmg: " + masDaños + " %Dmg: " + porcDaños + " +ResTarget: " + resMasO
-			+ " %ResTarget: " + resPorcO + " RedMagTarget: " + redMag + " RedPhyTarget: " + redFis + " xDmg: "
-			+ multiplicaDaños);
+			info.append("PtsStats: ").append(statC).append(" +Dmg: ").append(masDaños).append(" %Dmg: ").append(porcDaños).append(" +ResTarget: ").append(resMasO).append(" %ResTarget: ").append(resPorcO).append(" RedMagTarget: ").append(redMag).append(" RedPhyTarget: ").append(redFis).append(" xDmg: ").append(multiplicaDaños);
 		}
 		// resPorcO = maxResistencia(objetivo, resPorcO);
 		int armaClase = 90;
@@ -1047,7 +1044,7 @@ public class EfectoHechizo {
 						break;
 				}
 				if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
-					info.append(" %DmgWeapon: " + dominioArma + " ClasseWeapon: " + armaClase);
+					info.append(" %DmgWeapon: ").append(dominioArma).append(" ClasseWeapon: ").append(armaClase);
 				}
 			} catch (final Exception e) {}
 		}
@@ -1060,7 +1057,7 @@ public class EfectoHechizo {
 			porcDaños += porcTrampa;
 			masDaños += masTrampa;
 			if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
-				info.append(" %DmgTrap: " + porcTrampa + " +DmgTrap: " + masTrampa);
+				info.append(" %DmgTrap: ").append(porcTrampa).append(" +DmgTrap: ").append(masTrampa);
 			}
 		}
 		if (multiplicaDaños < 1) {
@@ -1069,21 +1066,19 @@ public class EfectoHechizo {
 		if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 			info.append("\n");
 			info.append("Formule: ");
-			info.append("DmgFinal = DmgStart X xDmg {" + dañoInicial + " * " + multiplicaDaños + "}");
+			info.append("DmgFinal = DmgStart X xDmg {").append(dañoInicial).append(" * ").append(multiplicaDaños).append("}");
 		}
 		float dañoFinal = dañoInicial * multiplicaDaños;
 		if (esCaC) {
 			if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 				info.append("\n");
-				info.append("DmgFinal = DmgFinal X ((100 + %DmgWeapon) / 100) X (ClasseWeapon / 100)   {" + dañoFinal + " * "
-				+ " ((100 + " + dominioArma + ") / 100f) * (" + armaClase + "/ 100f)}");
+				info.append("DmgFinal = DmgFinal X ((100 + %DmgWeapon) / 100) X (ClasseWeapon / 100)   {").append(dañoFinal).append(" * ").append(" ((100 + ").append(dominioArma).append(") / 100f) * (").append(armaClase).append("/ 100f)}");
 			}
 			dañoFinal = (dañoFinal * ((100 + dominioArma) / 100f) * (armaClase / 100f));
 		}
 		if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 			info.append("\n");
-			info.append("DmgFinal = (DmgFinal X (100 + PtsStats + %Dmg) / 100) + +Dmg   {(" + dañoFinal + " * " + " (100 + "
-			+ statC + " + " + porcDaños + ") / 100f) + " + masDaños + " }");
+			info.append("DmgFinal = (DmgFinal X (100 + PtsStats + %Dmg) / 100) + +Dmg   {(").append(dañoFinal).append(" * ").append(" (100 + ").append(statC).append(" + ").append(porcDaños).append(") / 100f) + ").append(masDaños).append(" }");
 		}
 		dañoFinal = (dañoFinal * (100 + statC + porcDaños) / 100f);
 		dañoFinal += masDaños;
@@ -1092,8 +1087,7 @@ public class EfectoHechizo {
 			int redDañoCritico = tStatsObjetivo.getTotalStatParaMostrar(Constantes.STAT_MAS_REDUCCION_CRITICOS);
 			if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 				info.append("\n");
-				info.append("DmgFinal = DmgFinal + +DmgCritique - +RedCritTarget  {" + dañoFinal + " + " + dañoCritico + " + "
-				+ redDañoCritico + "}");
+				info.append("DmgFinal = DmgFinal + +DmgCritique - +RedCritTarget  {").append(dañoFinal).append(" + ").append(dañoCritico).append(" + ").append(redDañoCritico).append("}");
 			}
 			dañoFinal += dañoCritico;
 			dañoFinal -= redDañoCritico;
@@ -1126,15 +1120,13 @@ public class EfectoHechizo {
 		int dañoReducido = (int) (dañoFinal * resPorcO / 100f);
 		if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 			info.append("\n");
-			info.append("DmgFinal = DmgFinal - (DmgFinal X  %ResTarget / 100)  {" + dañoFinal + " - (" + dañoFinal + " * "
-			+ resPorcO + " / 100f)}");
+			info.append("DmgFinal = DmgFinal - (DmgFinal X  %ResTarget / 100)  {").append(dañoFinal).append(" - (").append(dañoFinal).append(" * ").append(resPorcO).append(" / 100f)}");
 		}
 		dañoFinal -= dañoReducido;
 		int resistencias = resMasO + redMag + redFis + redArmadO;
 		if (MainServidor.PARAM_INFO_DAÑO_BATALLA) {
 			info.append("\n");
-			info.append("DmgFinal = DmgFinal - (ResistElem + RedMagic + RedPhysic + ArmSpell)  {" + dañoFinal + " - ("
-			+ resMasO + " + " + redMag + " + " + redFis + " + " + redArmadO + ")}");
+			info.append("DmgFinal = DmgFinal - (ResistElem + RedMagic + RedPhysic + ArmSpell)  {").append(dañoFinal).append(" - (").append(resMasO).append(" + ").append(redMag).append(" + ").append(redFis).append(" + ").append(redArmadO).append(")}");
 		}
 		dañoFinal -= resistencias;
 		if (dañoFinal < 0) {
@@ -1255,7 +1247,7 @@ public class EfectoHechizo {
 			if (afectados.length() > 0) {
 				afectados.append("¬");
 			}
-			afectados.append(objetivo.getID() + "," + (-valor));
+			afectados.append(objetivo.getID()).append(",").append(-valor);
 		}
 		return valor;
 	}
@@ -1968,7 +1960,7 @@ public class EfectoHechizo {
 	private void efecto_Buff_Valor_Fijo(final ArrayList<Luchador> objetivos, final Pelea pelea, Luchador lanzador,
 	Celda celdaObjetivo) {
 		int efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+		final ArrayList<Luchador> temp = new ArrayList<>();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
 				continue;
@@ -2060,7 +2052,7 @@ public class EfectoHechizo {
 				if (afectados.length() > 0) {
 					afectados.append("¬");
 				}
-				afectados.append(objetivo.getID() + "," + (-perdidos) + "," + duracionFinal(objetivo));
+				afectados.append(objetivo.getID()).append(",").append(-perdidos).append(",").append(duracionFinal(objetivo));
 				ganados += perdidos;
 			}
 		}
@@ -2082,14 +2074,14 @@ public class EfectoHechizo {
 		final int valor = getRandomValor(lanzador);
 		StringBuilder afectados = new StringBuilder();
 		int ganados = 0, efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+		final ArrayList<Luchador> temp = new ArrayList<>();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
 				continue;
 			}
 			if (afectados.length() > 0)
 				afectados.append("¬");
-			afectados.append(objetivo.getID() + "," + (valor) + "," + duracionFinal(objetivo));
+			afectados.append(objetivo.getID()).append(",").append(valor).append(",").append(duracionFinal(objetivo));
 			temp.add(objetivo);
 			ganados += valor;
 		}
@@ -2116,7 +2108,7 @@ public class EfectoHechizo {
 		StringBuilder afectados = new StringBuilder();
 		int robo = 0, efectoID = getStatPorEfecto(_efectoID);
 		final int valor2 = valor;
-		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+		final ArrayList<Luchador> temp = new ArrayList<>();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
 				continue;
@@ -2130,7 +2122,7 @@ public class EfectoHechizo {
 			}
 			if (afectados.length() > 0)
 				afectados.append("¬");
-			afectados.append(objetivo.getID() + "," + (valor) + "," + duracionFinal(objetivo));
+			afectados.append(objetivo.getID()).append(",").append(valor).append(",").append(duracionFinal(objetivo));
 			robo += valor;
 			valor = valor2;
 		}
@@ -2174,7 +2166,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+			final ArrayList<Luchador> temp = new ArrayList<>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2215,7 +2207,7 @@ public class EfectoHechizo {
 			if (afectados.length() > 0) {
 				afectados.append("¬");
 			}
-			afectados.append(objetivo.getID() + "," + (valor));
+			afectados.append(objetivo.getID()).append(",").append(valor);
 		}
 		if (afectados.length() > 0 && _condicionHechizo.isEmpty()) {
 			GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 130, lanzador.getID() + "", afectados.toString());
@@ -2224,7 +2216,7 @@ public class EfectoHechizo {
 	
 	private void efecto_Efectos_De_Hechizos(final ArrayList<Luchador> objetivos, final Pelea pelea, Luchador lanzador) {
 		int efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+		final ArrayList<Luchador> temp = new ArrayList<>();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
 				continue;
@@ -2241,7 +2233,7 @@ public class EfectoHechizo {
 	Celda celdaObjetivo, TipoDaño tipo) {
 		final int valor = getRandomValor(lanzador);
 		int efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+		final ArrayList<Luchador> temp = new ArrayList<>();
 		StringBuilder afectados = new StringBuilder();
 		for (Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
@@ -2296,7 +2288,7 @@ public class EfectoHechizo {
 			if (afectados.length() > 0) {
 				afectados.append("¬");
 			}
-			afectados.append(objetivo.getID() + "," + (-perdidos) + "," + duracionFinal(objetivo));
+			afectados.append(objetivo.getID()).append(",").append(-perdidos).append(",").append(duracionFinal(objetivo));
 		}
 		if (afectados.length() > 0 && _condicionHechizo.isEmpty()) {
 			GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, efectoID, lanzador.getID() + "", afectados.toString());
@@ -2352,7 +2344,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+			final ArrayList<Luchador> temp = new ArrayList<>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2384,7 +2376,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+			final ArrayList<Luchador> temp = new ArrayList<>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2415,7 +2407,7 @@ public class EfectoHechizo {
 			}
 		} else {
 			int efectoID = getStatPorEfecto(_efectoID);
-			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+			final ArrayList<Luchador> temp = new ArrayList<>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2450,7 +2442,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+			final ArrayList<Luchador> temp = new ArrayList<>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2491,7 +2483,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+			final ArrayList<Luchador> temp = new ArrayList<>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2539,7 +2531,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+			final ArrayList<Luchador> temp = new ArrayList<>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2587,7 +2579,7 @@ public class EfectoHechizo {
 				GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, 100, lanzador.getID() + "", afectados.toString());
 			}
 		} else {
-			final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+			final ArrayList<Luchador> temp = new ArrayList<>();
 			for (final Luchador objetivo : objetivos) {
 				if (objetivo.estaMuerto()) {
 					continue;
@@ -2665,7 +2657,7 @@ public class EfectoHechizo {
 	private void efecto_Dominio_Arma(final ArrayList<Luchador> objetivos, final Pelea pelea, Luchador lanzador,
 	Celda celdaObjetivo) {
 		int efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+		final ArrayList<Luchador> temp = new ArrayList<>();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
 				continue;
@@ -2691,7 +2683,7 @@ public class EfectoHechizo {
 		int valor = getRandomValor(lanzador);
 		int efectoID = getStatPorEfecto(_efectoID);
 		final int valor2 = valor;
-		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+		final ArrayList<Luchador> temp = new ArrayList<>();
 		StringBuilder afectados = new StringBuilder();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
@@ -2767,7 +2759,7 @@ public class EfectoHechizo {
 					if (afectados.length() > 0) {
 						afectados.append("¬");
 					}
-					afectados.append(objetivo.getID() + "," + valor + "," + duracionFinal(objetivo));
+					afectados.append(objetivo.getID()).append(",").append(valor).append(",").append(duracionFinal(objetivo));
 					break;
 			}
 		}
@@ -2786,7 +2778,7 @@ public class EfectoHechizo {
 		if (nivelMax == -1) {
 			return;
 		}
-		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+		final ArrayList<Luchador> temp = new ArrayList<>();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
 				continue;
@@ -2811,7 +2803,7 @@ public class EfectoHechizo {
 			if (afectados.length() > 0) {
 				afectados.append("¬");
 			}
-			afectados.append(objetivo.getID() + "");
+			afectados.append(objetivo.getID());
 		}
 		if (afectados.length() > 0 && _condicionHechizo.isEmpty()) {
 			GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, _efectoID, lanzador.getID() + "", afectados.toString());
@@ -2829,7 +2821,7 @@ public class EfectoHechizo {
 	Celda celdaObjetivo) {
 		int gfxID = _tercerValor;
 		int efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+		final ArrayList<Luchador> temp = new ArrayList<>();
 		quitarInvisibilidad(lanzador, TipoDaño.NORMAL);
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
@@ -2859,7 +2851,7 @@ public class EfectoHechizo {
 	private void efecto_Invisibilidad(final ArrayList<Luchador> objetivos, final Pelea pelea, Luchador lanzador,
 	Celda celdaObjetivo) {
 		int efectoID = getStatPorEfecto(_efectoID);
-		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+		final ArrayList<Luchador> temp = new ArrayList<>();
 		StringBuilder afectados = new StringBuilder();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {
@@ -2869,7 +2861,7 @@ public class EfectoHechizo {
 			objetivo.vaciarVisibles();
 			if (afectados.length() > 0)
 				afectados.append("¬");
-			afectados.append(objetivo.getID() + "," + duracionFinal(objetivo));
+			afectados.append(objetivo.getID()).append(",").append(duracionFinal(objetivo));
 		}
 		if (afectados.length() > 0 && _condicionHechizo.isEmpty()) {
 			GestorSalida.ENVIAR_GA_ACCION_PELEA(pelea, 7, _efectoID, lanzador.getID() + "", afectados.toString());
@@ -2966,14 +2958,10 @@ public class EfectoHechizo {
 		if (MainServidor.PARAM_MOSTRAR_STATS_INVOCACION) {
 			StringBuilder str = new StringBuilder();
 			str.append("<b>STATS INVOCATION [</b>");
-			str.append("<b>STR:</b> " + invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_FUERZA)
-			+ ", ");
-			str.append("<b>INT:</b> " + invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_INTELIGENCIA)
-			+ ", ");
-			str.append("<b>CHA:</b> " + invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_SUERTE)
-			+ ", ");
-			str.append("<b>AGI:</b> " + invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_AGILIDAD)
-			+ "<b>]</b>");
+			str.append("<b>STR:</b> ").append(invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_FUERZA)).append(", ");
+			str.append("<b>INT:</b> ").append(invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_INTELIGENCIA)).append(", ");
+			str.append("<b>CHA:</b> ").append(invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_SUERTE)).append(", ");
+			str.append("<b>AGI:</b> ").append(invocacion.getTotalStats().getTotalStatParaMostrar(Constantes.STAT_MAS_AGILIDAD)).append("<b>]</b>");
 			GestorSalida.ENVIAR_cs_CHAT_MENSAJE_A_PELEA(pelea, str.toString(), Constantes.COLOR_NARANJA);
 		}
 		try {
@@ -3240,7 +3228,7 @@ public class EfectoHechizo {
 		if (estadoID == -1) {
 			return;
 		}
-		final ArrayList<Luchador> temp = new ArrayList<Luchador>();
+		final ArrayList<Luchador> temp = new ArrayList<>();
 		// StringBuilder afectados = new StringBuilder();
 		for (final Luchador objetivo : objetivos) {
 			if (objetivo.estaMuerto()) {

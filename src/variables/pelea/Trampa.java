@@ -18,7 +18,7 @@ public class Trampa implements Comparable<Trampa> {
 	private final int _hechizoID, _color;
 	private final StatHechizo _trampaSH;
 	private final Pelea _pelea;
-	private ArrayList<Integer> _visibles = new ArrayList<Integer>();
+	private ArrayList<Integer> _visibles = new ArrayList<>();
 	private final ArrayList<Celda> _celdas;
 	
 	// private ArrayList<Luchador> _objetivos;

@@ -23,9 +23,9 @@ public class Cercado implements Exchanger {
 	private final Mapa _mapa;
 	// private final Map<Short, Map<Integer, Objeto>> _objCrianzaConDueño = new HashMap<Short,
 	// Map<Integer, Objeto>>();
-	private final Map<Short, Objeto> _objCrianza = new HashMap<Short, Objeto>();
-	private final ConcurrentHashMap<Integer, Montura> _criando = new ConcurrentHashMap<Integer, Montura>();
-	private final ArrayList<Short> _celdasObjeto = new ArrayList<Short>();
+	private final Map<Short, Objeto> _objCrianza = new HashMap<>();
+	private final ConcurrentHashMap<Integer, Montura> _criando = new ConcurrentHashMap<>();
+	private final ArrayList<Short> _celdasObjeto = new ArrayList<>();
 	
 	// private static String CERCADO_8848 =
 	// "305;0|171;0|308;0|311;0|413;0|470;0|228;0|527;0|194;0|254;0|117;0|251;0|365;0";
@@ -198,13 +198,13 @@ public class Cercado implements Exchanger {
 			if (str.length() > 0) {
 				str.append("|");
 			}
-			str.append(entry.getKey() + ";" + (esPublico() ? 0 : entry.getValue().getID()));
+			str.append(entry.getKey()).append(";").append(esPublico() ? 0 : entry.getValue().getID());
 		}
 		return str.toString();
 	}
 	
 	public ArrayList<Objeto> getObjetosParaBD() {
-		final ArrayList<Objeto> objetos = new ArrayList<Objeto>();
+		final ArrayList<Objeto> objetos = new ArrayList<>();
 		for (final Objeto obj : _objCrianza.values()) {
 			if (obj == null) {
 				continue;

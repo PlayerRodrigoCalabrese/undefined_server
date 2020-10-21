@@ -108,7 +108,7 @@ public class MainServidor {
 	public static Map<Byte, Integer> OGRINAS_CREAR_CLASE = new TreeMap<>();
 	public static Map<String, String> PRECIOS_SERVICIOS = new TreeMap<>();
 	public static String COLOR_CELDAS_PELEA_AGRESOR = "";
-	public static Map<Integer, Integer> MAX_GOLPES_CAC = new TreeMap<Integer, Integer>();
+	public static Map<Integer, Integer> MAX_GOLPES_CAC = new TreeMap<>();
 	// CREAR TU ITEM
 	public static String GFX_CREA_TU_ITEM_CAPAS = "1,2,3,4,5,7,8,9,10,11,12,15,16,17,18,19,21,22,23,33,34,35,36,37,38,39,40,41,42,43,44,46,47,48,49,50,51,52,53,54,55,56,58,59,60,61,62,63,64,65,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,89,90,91,92,93,94,95,96,97,98,99,100,101,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,230,231,232,233,234,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259";
 	public static String GFX_CREA_TU_ITEM_AMULETOS = "1,2,3,4,5,6,7,8,9,10,11,12,13,15,16,17,18,19,20,22,23,24,25,26,27,28,29,30,31,32,33,34,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135,136,137,138,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225";
@@ -287,11 +287,11 @@ public class MainServidor {
 	//
 	public static String MENSAJE_TIMER_REBOOT = "";
 	//
-	public static ArrayList<Integer> SUBAREAS_NO_PVP = new ArrayList<Integer>();
-	public static ArrayList<Short> TIPO_RECURSOS = new ArrayList<Short>();
-	public static ArrayList<Integer> OBJ_NO_PERMITIDOS = new ArrayList<Integer>();
-	public static ArrayList<Short> TIPO_ALIMENTO_MONTURA = new ArrayList<Short>();
-	public static ArrayList<String> PUBLICIDAD = new ArrayList<String>();
+	public static ArrayList<Integer> SUBAREAS_NO_PVP = new ArrayList<>();
+	public static ArrayList<Short> TIPO_RECURSOS = new ArrayList<>();
+	public static ArrayList<Integer> OBJ_NO_PERMITIDOS = new ArrayList<>();
+	public static ArrayList<Short> TIPO_ALIMENTO_MONTURA = new ArrayList<>();
+	public static ArrayList<String> PUBLICIDAD = new ArrayList<>();
 	public static String ARMAS_ENCARNACIONES = "9544,9545,9546,9547,9548,10125,10126,10127,10133";
 	public static int SABIDURIA_PARA_REENVIO = 100;
 	// TIEMPOS MILISEGUNDOS
@@ -430,10 +430,10 @@ public class MainServidor {
 	public static int LIMITE_MIEMBROS_GREMIO = 0;
 	public static int LIMITE_OBJETOS_COFRE = 80;
 	public static long LIMITE_DETECTAR_FALLA_KAMAS = 10000000;
-	public static Map<Integer, Integer> LIMITE_STATS_SIN_BUFF = new TreeMap<Integer, Integer>();
-	public static Map<Integer, Integer> LIMITE_STATS_CON_BUFF = new TreeMap<Integer, Integer>();
-	public static Map<Integer, Integer> LIMITE_STATS_EXO_FORJAMAGIA = new TreeMap<Integer, Integer>();
-	public static Map<Integer, Integer> LIMITE_STATS_OVER_FORJAMAGIA = new TreeMap<Integer, Integer>();
+	public static Map<Integer, Integer> LIMITE_STATS_SIN_BUFF = new TreeMap<>();
+	public static Map<Integer, Integer> LIMITE_STATS_CON_BUFF = new TreeMap<>();
+	public static Map<Integer, Integer> LIMITE_STATS_EXO_FORJAMAGIA = new TreeMap<>();
+	public static Map<Integer, Integer> LIMITE_STATS_OVER_FORJAMAGIA = new TreeMap<>();
 	// public static short LIMITE_PA = 15;
 	// public static short LIMITE_PM = 7;
 	// public static short LIMITE_ALCANCE = 30;
@@ -448,7 +448,7 @@ public class MainServidor {
 	public static int NIVEL_MAX_ALINEACION;
 	public static int NIVEL_MAX_ESCOGER_NIVEL;
 	//
-	public static ArrayList<String> PALABRAS_PROHIBIDAS = new ArrayList<String>();
+	public static ArrayList<String> PALABRAS_PROHIBIDAS = new ArrayList<>();
 	// PRIVATES
 	private static int DEFECTO_XP_PVM;
 	private static int DEFECTO_XP_PVP;
@@ -553,7 +553,7 @@ public class MainServidor {
 				} else {
 					final String param = linea.split("=")[0].trim();
 					if (param.equalsIgnoreCase(p)) {
-						str.append(param + " = " + v);
+						str.append(param).append(" = ").append(v);
 						tiene = true;
 					} else {
 						str.append(linea);
@@ -562,7 +562,7 @@ public class MainServidor {
 				str.append("\n");
 			}
 			if (!tiene) {
-				str.append(p + " = " + v);
+				str.append(p).append(" = ").append(v);
 			}
 			config.close();
 			BufferedWriter mod = new BufferedWriter(new FileWriter(ARCHIVO_CONFIG));
@@ -578,7 +578,7 @@ public class MainServidor {
 			final BufferedReader config = new BufferedReader(new FileReader(ARCHIVO_CONFIG));
 			String linea = "";
 			while ((linea = config.readLine()) != null) {
-				str.append(linea + "\n");
+				str.append(linea).append("\n");
 			}
 			config.close();
 		} catch (Exception e) {}

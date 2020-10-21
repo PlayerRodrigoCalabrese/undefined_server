@@ -20,7 +20,8 @@ import estaticos.Mundo.Duo;
 public class ObjetoModelo {
 	public enum CAPACIDAD_STATS {
 		RANDOM, MINIMO, MAXIMO
-	};
+	}
+
 	private boolean _esDosManos, _forjaMagueable, _nivelModifi, _etereo;
 	private byte _bonusGC, _costePA;
 	private short _tipo, _peso, _nivel, _probGC;
@@ -29,9 +30,9 @@ public class ObjetoModelo {
 	private long _precioMedio;
 	private StatHechizo _statHechizo;
 	private String _condiciones, _statsModelo, _nombre;
-	private final Map<Integer, Accion> _accionesDeUso = new TreeMap<Integer, Accion>();
-	private final ArrayList<EfectoHechizo> _efectosModelo = new ArrayList<EfectoHechizo>();
-	private final Map<Integer, Duo<Integer, Integer>> _statsIniciales = new TreeMap<Integer, Duo<Integer, Integer>>();
+	private final Map<Integer, Accion> _accionesDeUso = new TreeMap<>();
+	private final ArrayList<EfectoHechizo> _efectosModelo = new ArrayList<>();
+	private final Map<Integer, Duo<Integer, Integer>> _statsIniciales = new TreeMap<>();
 	private Duo<Integer, Integer> _itemPago;
 	private ArrayList<Integer> _mobsQueDropean = new ArrayList<>();
 	
@@ -84,7 +85,7 @@ public class ObjetoModelo {
 			try {
 				int idItemPago = Integer.parseInt(itemPago.split(",")[0]);
 				int cantItemPago = Integer.parseInt(itemPago.split(",")[1]);
-				_itemPago = new Duo<Integer, Integer>(idItemPago, cantItemPago);
+				_itemPago = new Duo<>(idItemPago, cantItemPago);
 			} catch (Exception e) {}
 		}
 	}
@@ -209,7 +210,7 @@ public class ObjetoModelo {
 					min = -min;
 					max = -max;
 				}
-				Duo<Integer, Integer> duo = new Duo<Integer, Integer>(Math.min(min, max), Math.max(min, max));
+				Duo<Integer, Integer> duo = new Duo<>(Math.min(min, max), Math.max(min, max));
 				_statsIniciales.put(statPositivo, duo);
 			}
 		}
@@ -311,18 +312,18 @@ public class ObjetoModelo {
 	
 	public String stringDeStatsParaTienda() {
 		StringBuilder str = new StringBuilder();
-		str.append(_idModelo + ";" + _statsModelo);
+		str.append(_idModelo).append(";").append(_statsModelo);
 		if (_itemPago != null) {
 			// no pasa nada
 		} else if (_ogrinas > 0) {
 			if (_statsModelo.length() > 0) {
 				str.append(",");
 			}
-			str.append(Integer.toHexString(Constantes.STAT_COLOR_NOMBRE_OBJETO) + "#1");
+			str.append(Integer.toHexString(Constantes.STAT_COLOR_NOMBRE_OBJETO)).append("#1");
 		}
 		str.append(";");
 		if (_itemPago != null) {
-			str.append(_itemPago._segundo + ";" + _itemPago._primero);
+			str.append(_itemPago._segundo).append(";").append(_itemPago._primero);
 		} else if (_ogrinas > 0) {
 			str.append(_ogrinas);
 		} else {
@@ -374,8 +375,8 @@ public class ObjetoModelo {
 		// + Integer.toHexString(((actual.get(2) + 3) % 12) * 100 + actual.get(5)) + "#"
 		// + Integer.toHexString(actual.get(11) * 100 + (actual.get(12)));
 		if (_diasIntercambio > 0) {
-			stats.append(Integer.toHexString(Constantes.STAT_INTERCAMBIABLE_DESDE) + "#" + stringFechaIntercambiable(
-			_diasIntercambio));
+			stats.append(Integer.toHexString(Constantes.STAT_INTERCAMBIABLE_DESDE)).append("#").append(stringFechaIntercambiable(
+                    _diasIntercambio));
 		}
 		if (_tipo == Constantes.OBJETO_TIPO_OBJETO_MUTACION) {// objeto de mutacion
 			pos = Constantes.OBJETO_POS_OBJ_MUTACION;
@@ -421,7 +422,7 @@ public class ObjetoModelo {
 	
 	public boolean convertirStatsPerfecto(int cantMod, final Stats stats) {
 		try {
-			final Map<Integer, Integer> tempStats = new TreeMap<Integer, Integer>();
+			final Map<Integer, Integer> tempStats = new TreeMap<>();
 			for (Entry<Integer, Duo<Integer, Integer>> entry : _statsIniciales.entrySet()) {
 				int statID = entry.getKey();
 				int valor = entry.getValue()._segundo;
@@ -459,9 +460,9 @@ public class ObjetoModelo {
 				}
 				if (Constantes.STAT_RECIBIDO_EL == statID) {
 					Calendar actual = Calendar.getInstance();
-					statsObjeto.append(stats[0] + "#" + (Integer.toHexString(actual.get(Calendar.YEAR)) + "#" + Integer
-					.toHexString(actual.get(Calendar.MONTH) * 100 + actual.get(Calendar.DAY_OF_MONTH)) + "#" + Integer
-					.toHexString(actual.get(Calendar.HOUR_OF_DAY) * 100 + actual.get(Calendar.MINUTE))));
+					statsObjeto.append(stats[0]).append("#").append(Integer.toHexString(actual.get(Calendar.YEAR))).append("#").append(Integer
+                            .toHexString(actual.get(Calendar.MONTH) * 100 + actual.get(Calendar.DAY_OF_MONTH))).append("#").append(Integer
+                            .toHexString(actual.get(Calendar.HOUR_OF_DAY) * 100 + actual.get(Calendar.MINUTE)));
 					continue;
 				}
 				if (Constantes.esStatRepetible(statID) || Constantes.esStatTexto(statID) || Constantes.esStatHechizo(statID)
@@ -470,13 +471,13 @@ public class ObjetoModelo {
 					continue;
 				}
 				if (statID == Constantes.STAT_TURNOS || statID == Constantes.STAT_PUNTOS_VIDA) {
-					statsObjeto.append(stats[0] + "#0#0#" + stats[3]);
+					statsObjeto.append(stats[0]).append("#0#0#").append(stats[3]);
 					continue;
 				}
 				boolean esEfecto = false;
 				for (final int a : Constantes.BUFF_ARMAS) {
 					if (a == statID) {
-						statsObjeto.append(stats[0] + "#" + stats[1] + "#" + stats[2] + "#0#" + stats[4]);
+						statsObjeto.append(stats[0]).append("#").append(stats[1]).append("#").append(stats[2]).append("#0#").append(stats[4]);
 						esEfecto = true;
 						break;
 					}
@@ -518,7 +519,7 @@ public class ObjetoModelo {
 						valor = 0;
 					}
 				} catch (final Exception e) {}
-				statsObjeto.append(stats[0] + "#" + Integer.toHexString(valor) + "#0#" + stats[3] + "#0d0+" + valor);
+				statsObjeto.append(stats[0]).append("#").append(Integer.toHexString(valor)).append("#0#").append(stats[3]).append("#0d0+").append(valor);
 			} catch (final Exception e) {}
 		}
 		return statsObjeto.toString();

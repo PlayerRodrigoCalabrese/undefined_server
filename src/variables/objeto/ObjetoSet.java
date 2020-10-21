@@ -10,7 +10,7 @@ import estaticos.Mundo;
 
 public class ObjetoSet {
 	private final int _id;
-	private final ArrayList<ObjetoModelo> _objetosModelos = new ArrayList<ObjetoModelo>();
+	private final ArrayList<ObjetoModelo> _objetosModelos = new ArrayList<>();
 	private final Map<Integer, Stats> _bonus = new TreeMap<>();
 	private final String _nombre;
 	

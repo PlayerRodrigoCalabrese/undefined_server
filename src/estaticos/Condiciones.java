@@ -381,8 +381,7 @@ public class Condiciones {
 		boolean b = false;
 		try {
 			if (perso.getPelea() != null) {
-				CopyOnWriteArrayList<MobGradoModelo> mobs = new CopyOnWriteArrayList<>();
-				mobs.addAll(perso.getPelea().getMobGrupo().getMobs());
+                CopyOnWriteArrayList<MobGradoModelo> mobs = new CopyOnWriteArrayList<>(perso.getPelea().getMobGrupo().getMobs());
 				String[] ss = s.substring(3).split(";");
 				for (String a : ss) {
 					String[] args = a.split(",");

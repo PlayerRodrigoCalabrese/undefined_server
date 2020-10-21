@@ -7,7 +7,7 @@ public class MonturaModelo {
 	private String _color = "";
 	private int _colorID, _certificadoID;
 	private byte _generacion;
-	private Map<Integer, Integer> _stats = new HashMap<Integer, Integer>();
+	private Map<Integer, Integer> _stats = new HashMap<>();
 	
 	public MonturaModelo(int idColor, String stats, String color, int idCertificado, byte generacion) {
 		_colorID = idColor;

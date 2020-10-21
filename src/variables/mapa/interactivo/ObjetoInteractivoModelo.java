@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class ObjetoInteractivoModelo {
 	private final int _id, _tiempoRecarga, _duracion;
-	private final ArrayList<Integer> _gfx = new ArrayList<Integer>(), _skills = new ArrayList<Integer>();
+	private final ArrayList<Integer> _gfx = new ArrayList<>(), _skills = new ArrayList<>();
 	private final byte _tipo, _animacionnPJ;
 	@SuppressWarnings("unused")
 	private final byte _caminable;

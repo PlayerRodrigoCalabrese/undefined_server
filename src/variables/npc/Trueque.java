@@ -16,9 +16,9 @@ import variables.personaje.Personaje;
 
 public class Trueque implements Exchanger {
 	private final Personaje _perso;
-	private final ArrayList<Duo<Integer, Integer>> _entregar = new ArrayList<Duo<Integer, Integer>>();
-	private Map<Integer, Integer> _dar = new HashMap<Integer, Integer>();
-	private final Map<Integer, Integer> _objetosModelo = new HashMap<Integer, Integer>();
+	private final ArrayList<Duo<Integer, Integer>> _entregar = new ArrayList<>();
+	private Map<Integer, Integer> _dar = new HashMap<>();
+	private final Map<Integer, Integer> _objetosModelo = new HashMap<>();
 	private boolean _ok, _resucitar, _polvo;
 	private int _idMascota = 0, _npcID = 0;
 	
@@ -104,7 +104,7 @@ public class Trueque implements Exchanger {
 		if (duo != null) {
 			duo._segundo += cantidad;
 		} else {
-			duo = new Duo<Integer, Integer>(objeto.getID(), cantidad);
+			duo = new Duo<>(objeto.getID(), cantidad);
 			_entregar.add(duo);
 		}
 		GestorSalida.ENVIAR_EMK_MOVER_OBJETO_LOCAL(_perso, 'O', "+", objeto.getID() + "|" + duo._segundo);

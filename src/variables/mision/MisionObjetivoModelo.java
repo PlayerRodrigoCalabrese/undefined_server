@@ -216,22 +216,22 @@ public class MisionObjetivoModelo {
 						van = 0;
 						for (Objeto obj : o) {
 							String[] stats = obj.convertirStatsAString(true).split(",");
-							String nuevo = "";
+							StringBuilder nuevo = new StringBuilder();
 							for (String st : stats) {
-								if (!nuevo.isEmpty()) {
-									nuevo += ",";
+								if (nuevo.length() > 0) {
+									nuevo.append(",");
 								}
 								int statID = Integer.parseInt(st.split("#")[0], 16);
 								if (statID == Constantes.STAT_INVOCA_MOB && st.split("#")[3].equalsIgnoreCase(alma) && van < cantidad) {
 									van++;
 								} else {
-									nuevo += st;
+									nuevo.append(st);
 								}
 							}
-							if (nuevo.isEmpty()) {
+							if (nuevo.length() == 0) {
 								perso.borrarOEliminarConOR(obj.getID(), true);
 							} else {
-								obj.convertirStringAStats(nuevo);
+								obj.convertirStringAStats(nuevo.toString());
 								GestorSalida.ENVIAR_OCK_ACTUALIZA_OBJETO(perso, obj);
 							}
 						}

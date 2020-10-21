@@ -57,18 +57,14 @@ public class Comandos {
 				}
 				return;
 			}
-			switch (rangoJugador) {
-				case 0 :
-					// nada
-					break;
-				default :
-					if (rangoJugador >= rangoComando) {
-						rangoJugador = 5;
-					} else {
-						GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1DONT_RANGE_GM");
-						return;
-					}
-					break;
+			if (rangoJugador == 0) {// nada
+			} else {
+				if (rangoJugador >= rangoComando) {
+					rangoJugador = 5;
+				} else {
+					GestorSalida.ENVIAR_Im_INFORMACION(_perso, "1DONT_RANGE_GM");
+					return;
+				}
 			}
 			switch (rangoJugador) {
 			
@@ -579,22 +575,21 @@ public class Comandos {
 						strB.append("\n");
 					}
 					if (ep.getCuenta() == null) {
-						strB.append("Socket sin loguear cuenta - IP: " + ep.getActualIP());
+						strB.append("Socket sin loguear cuenta - IP: ").append(ep.getActualIP());
 						continue;
 					}
 					if (objetivo == null) {
-						strB.append("Cuenta sin loguear personaje - Cuenta: " + ep.getCuenta().getNombre() + " IP: " + ep
-						.getActualIP());
+						strB.append("Cuenta sin loguear personaje - Cuenta: ").append(ep.getCuenta().getNombre()).append(" IP: ").append(ep
+                                .getActualIP());
 						continue;
 					}
 					if (!objetivo.enLinea()) {
-						strB.append("Personaje Offline: " + objetivo.getNombre() + "Cuenta: " + ep.getCuenta().getNombre() + " IP: "
-						+ ep.getActualIP());
+						strB.append("Personaje Offline: ").append(objetivo.getNombre()).append("Cuenta: ").append(ep.getCuenta().getNombre()).append(" IP: ").append(ep.getActualIP());
 						continue;
 					}
-					strB.append(objetivo.getNombre() + "\t");
-					strB.append("(" + objetivo.getID() + ") " + "\t");
-					strB.append("[" + objetivo.getCuenta().getNombre() + "]" + "\t");
+					strB.append(objetivo.getNombre()).append("\t");
+					strB.append("(").append(objetivo.getID()).append(") ").append("\t");
+					strB.append("[").append(objetivo.getCuenta().getNombre()).append("]").append("\t");
 					switch (objetivo.getClaseID(true)) {
 						case 1 :
 							strB.append("Feca" + "\t");
@@ -644,10 +639,10 @@ public class Comandos {
 						default :
 							strB.append("Desconocido" + "\t");
 					}
-					strB.append(" " + (objetivo.getSexo() == 0 ? "M" : "F") + "\t");
-					strB.append(objetivo.getNivel() + "\t");
-					strB.append(objetivo.getMapa().getID() + "\t");
-					strB.append("(" + objetivo.getMapa().getX() + "," + objetivo.getMapa().getY() + ")" + "\t");
+					strB.append(" ").append(objetivo.getSexo() == 0 ? "M" : "F").append("\t");
+					strB.append(objetivo.getNivel()).append("\t");
+					strB.append(objetivo.getMapa().getID()).append("\t");
+					strB.append("(").append(objetivo.getMapa().getX()).append(",").append(objetivo.getMapa().getY()).append(")").append("\t");
 					strB.append(objetivo.getPelea() == null ? "" : "En combat ");
 				}
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, strB.toString());
@@ -2205,9 +2200,9 @@ public class Comandos {
 						return;
 					}
 					try {
-						String s = "";
+						StringBuilder s = new StringBuilder();
 						for (short c : Camino.celdasPorDistancia(_perso.getCelda(), _perso.getMapa(), celdaID)) {
-							s += c + ",";
+							s.append(c).append(",");
 							GestorSalida.ENVIAR_GDO_OBJETO_TIRAR_SUELO(_perso, '+', c, 311, false, "");
 						}
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Las celdas a mostrar son " + s);
@@ -3260,8 +3255,8 @@ public class Comandos {
 					}
 					for (final MobModelo mMod : Mundo.MOBS_MODELOS.values()) {
 						if (mMod.getTipoMob() == id) {
-							strB.append("ID: " + mMod.getID() + " - Nombre: " + mMod.getNombre() + " - Niveles: " + mMod
-							.listaNiveles() + " - Colores: " + mMod.getColores() + "\n");
+							strB.append("ID: ").append(mMod.getID()).append(" - Nombre: ").append(mMod.getNombre()).append(" - Niveles: ").append(mMod
+                                    .listaNiveles()).append(" - Colores: ").append(mMod.getColores()).append("\n");
 						}
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Los Mobs Tipo Criatura - " + Constantes.getNombreTipoMob(id)
@@ -3280,7 +3275,7 @@ public class Comandos {
 					StringBuilder strB = new StringBuilder();
 					for (int i = -1; i < 100; i++) {
 						if (!Constantes.getNombreTipoMob(i).isEmpty()) {
-							strB.append("Tipo ID: " + i + " - Criaturas: " + Constantes.getNombreTipoMob(i) + "\n");
+							strB.append("Tipo ID: ").append(i).append(" - Criaturas: ").append(Constantes.getNombreTipoMob(i)).append("\n");
 						}
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Lista Tipo Criatura son:\n" + strB.toString());
@@ -3344,9 +3339,7 @@ public class Comandos {
 					try {
 						descripcion = infos[8];
 					} catch (final Exception e) {}
-					strB.append("Se creo acción para Otro Interactivo GfxID: " + id + ", mapaID: " + mapaID + ", celdaID: "
-					+ celdaID + ", accionID: " + accionID + ", args: " + args + ", condicion: " + condicion + ", tiempoRecarga: "
-					+ tiempoRecarga);
+					strB.append("Se creo acción para Otro Interactivo GfxID: ").append(id).append(", mapaID: ").append(mapaID).append(", celdaID: ").append(celdaID).append(", accionID: ").append(accionID).append(", args: ").append(args).append(", condicion: ").append(condicion).append(", tiempoRecarga: ").append(tiempoRecarga);
 					Mundo.borrarOtroInteractivo(id, mapaID, celdaID, accionID, true);
 					OtroInteractivo otro = new OtroInteractivo(id, mapaID, celdaID, accionID, args, condicion, tiempoRecarga);
 					Mundo.addOtroInteractivo(otro);
@@ -3374,8 +3367,7 @@ public class Comandos {
 							continue;
 						}
 						strB.append("\n");
-						strB.append("Mapa: " + oi.getMapaID() + " Celda: " + oi.getCeldaID() + " GfxID: " + oi.getGfxID()
-						+ " Accion: " + oi.getAccionID() + " Args: " + oi.getArgs() + " Condicion: " + oi.getCondicion());
+						strB.append("Mapa: ").append(oi.getMapaID()).append(" Celda: ").append(oi.getCeldaID()).append(" GfxID: ").append(oi.getGfxID()).append(" Accion: ").append(oi.getAccionID()).append(" Args: ").append(oi.getArgs()).append(" Condicion: ").append(oi.getCondicion());
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Los otros interactivos son:" + strB.toString());
 				} catch (final Exception e) {
@@ -3452,8 +3444,8 @@ public class Comandos {
 					}
 					Accion accion = new Accion(accionID, args, condicion);
 					respuesta.addAccion(accion);
-					strB.append("La acción respuesta " + respuesta.getID() + ", accionID: " + accion.getID() + ", args: " + accion
-					.getArgs() + ", condición: " + accion.getCondicion() + " agregada");
+					strB.append("La acción respuesta ").append(respuesta.getID()).append(", accionID: ").append(accion.getID()).append(", args: ").append(accion
+                            .getArgs()).append(", condición: ").append(accion.getCondicion()).append(" agregada");
 					if (GestorSQL.REPLACE_ACCIONES_RESPUESTA(respuesta.getID(), accion.getID(), accion.getArgs(), accion
 					.getCondicion())) {
 						strB.append(" a la BDD");
@@ -3511,8 +3503,7 @@ public class Comandos {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "NPC no existe");
 						return;
 					}
-					strB.append("Fija al NPC Modelo " + npcID + " - Nombre: " + npcModelo.getNombre() + ", Pregunta: "
-					+ preguntaID);
+					strB.append("Fija al NPC Modelo ").append(npcID).append(" - Nombre: ").append(npcModelo.getNombre()).append(", Pregunta: ").append(preguntaID);
 					npcModelo.setPreguntaID(preguntaID);
 					if (GestorSQL.UPDATE_NPC_PREGUNTA(npcID, preguntaID)) {
 						strB.append(" a la BDD");
@@ -3555,8 +3546,7 @@ public class Comandos {
 						pregunta.setRespuestas(respuestas);
 						pregunta.setParams(args);
 					}
-					strB.append("Parámetros de la pregunta " + id + " => respuestas: " + pregunta.getStrRespuestas() + ", args: "
-					+ pregunta.getParams() + ", alternos: " + pregunta.getStrAlternos());
+					strB.append("Parámetros de la pregunta ").append(id).append(" => respuestas: ").append(pregunta.getStrRespuestas()).append(", args: ").append(pregunta.getParams()).append(", alternos: ").append(pregunta.getStrAlternos());
 					if (GestorSQL.REPLACE_PREGUNTA_NPC(pregunta)) {
 						strB.append(" a la BDD");
 					}
@@ -3595,8 +3585,7 @@ public class Comandos {
 					} else {
 						pregunta.setPreguntasCondicionales(alternos);
 					}
-					strB.append("Parámetros de la pregunta " + id + " => respuestas: " + pregunta.getStrRespuestas() + ", args: "
-					+ pregunta.getParams() + ", alternos: " + pregunta.getStrAlternos());
+					strB.append("Parámetros de la pregunta ").append(id).append(" => respuestas: ").append(pregunta.getStrRespuestas()).append(", args: ").append(pregunta.getParams()).append(", alternos: ").append(pregunta.getStrAlternos());
 					if (GestorSQL.REPLACE_PREGUNTA_NPC(pregunta)) {
 						strB.append(" a la BDD");
 					}
@@ -3650,8 +3639,8 @@ public class Comandos {
 							continue;
 						}
 						StringBuilder sB = new StringBuilder();
-						sB.append("\n\t--> Answers: " + pregunta.getStrRespuestas());
-						sB.append("\n\t--> Alternates: " + pregunta.getStrAlternos());
+						sB.append("\n\t--> Answers: ").append(pregunta.getStrRespuestas());
+						sB.append("\n\t--> Alternates: ").append(pregunta.getStrAlternos());
 						GestorSalida.enviar(_perso, "DLQ" + respuestaID + "|" + sB.toString());
 					}
 					GestorSalida.enviar(_perso, "DX");
@@ -3681,9 +3670,9 @@ public class Comandos {
 							continue;
 						}
 						StringBuilder sB = new StringBuilder();
-						sB.append("\n\t--> Condition: " + respuesta.getCondicion());
+						sB.append("\n\t--> Condition: ").append(respuesta.getCondicion());
 						for (Accion a : respuesta.getAcciones()) {
-							sB.append("\n\t--> Action ID: " + a.getID() + ", Args: " + a.getArgs());
+							sB.append("\n\t--> Action ID: ").append(a.getID()).append(", Args: ").append(a.getArgs());
 						}
 						GestorSalida.enviar(_perso, "DLA" + respuestaID + "|" + sB.toString());
 					}
@@ -3736,10 +3725,10 @@ public class Comandos {
 						if (strB.length() > 0) {
 							strB.append("\n----------------------------------\n");
 						}
-						strB.append("Acciones de la respuesta ID " + respuesta2.getID() + ", condición: " + respuesta2
-						.getCondicion());
+						strB.append("Acciones de la respuesta ID ").append(respuesta2.getID()).append(", condición: ").append(respuesta2
+                                .getCondicion());
 						for (Accion a : respuesta2.getAcciones()) {
-							strB.append("\n\tAccion ID: " + a.getID() + ", Args: " + a.getArgs());
+							strB.append("\n\tAccion ID: ").append(a.getID()).append(", Args: ").append(a.getArgs());
 						}
 					}
 					if (strB.length() == 0) {
@@ -3768,8 +3757,8 @@ public class Comandos {
 							if (strB.length() > 0) {
 								strB.append("\n");
 							}
-							strB.append("Respuestas de la pregunta " + pregunta2.getID() + ", respuestas: " + pregunta2
-							.getStrRespuestas());
+							strB.append("Respuestas de la pregunta ").append(pregunta2.getID()).append(", respuestas: ").append(pregunta2
+                                    .getStrRespuestas());
 						}
 					}
 					if (strB.length() == 0) {
@@ -3940,10 +3929,9 @@ public class Comandos {
 					for (final Celda celda : mapa.getCeldas().values()) {
 						if (celda.getObjetoInteractivo() != null) {
 							strB.append("\n");
-							strB.append("Mapa: " + mapa.getID() + " Celda: " + celda.getID() + " Movimiento: " + celda.getMovimiento()
-							+ " Gfx: " + celda.getObjetoInteractivo().getGfxID());
+							strB.append("Mapa: ").append(mapa.getID()).append(" Celda: ").append(celda.getID()).append(" Movimiento: ").append(celda.getMovimiento()).append(" Gfx: ").append(celda.getObjetoInteractivo().getGfxID());
 							try {
-								strB.append(" ID ObjInt: " + celda.getObjetoInteractivo().getObjIntModelo().getID());
+								strB.append(" ID ObjInt: ").append(celda.getObjetoInteractivo().getObjIntModelo().getID());
 							} catch (Exception e) {}
 						}
 					}
@@ -3966,7 +3954,7 @@ public class Comandos {
 								strB.append("|");
 							}
 							celda.getObjetoInteractivo().recargando(true);
-							strB.append(celda.getID() + ";" + celda.getObjetoInteractivo().getInfoPacket());
+							strB.append(celda.getID()).append(";").append(celda.getObjetoInteractivo().getInfoPacket());
 							cantidad++;
 						}
 					}
@@ -4157,8 +4145,8 @@ public class Comandos {
 						if (objModelo == null) {
 							continue;
 						}
-						strB.append(" - " + drop.getIDObjModelo() + " - " + objModelo.getNombre() + "\tProsp: " + drop
-						.getProspeccion() + "\tPorcentaje: " + drop.getPorcentaje() + "%\tMax: " + drop.getMaximo() + "\n");
+						strB.append(" - ").append(drop.getIDObjModelo()).append(" - ").append(objModelo.getNombre()).append("\tProsp: ").append(drop
+                                .getProspeccion()).append("\tPorcentaje: ").append(drop.getPorcentaje()).append("%\tMax: ").append(drop.getMaximo()).append("\n");
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La listas de drop del mob " + mobModelo.getNombre() + " es: \n"
 					+ strB.toString());
@@ -4230,8 +4218,7 @@ public class Comandos {
 						}
 					} catch (final Exception e) {}
 					mapa.addAccionFinPelea(tipo, new Accion(accionID, args, ""));
-					strB.append("Se agregó la accion fin pelea, mapaID: " + mapa.getID() + ", tipoPelea: " + tipo + ", accionID: "
-					+ accionID + ", args: " + args + " condicion: " + condicion);
+					strB.append("Se agregó la accion fin pelea, mapaID: ").append(mapa.getID()).append(", tipoPelea: ").append(tipo).append(", accionID: ").append(accionID).append(", args: ").append(args).append(" condicion: ").append(condicion);
 					if (GestorSQL.INSERT_ACCION_FIN_PELEA(mapa.getID(), tipo, accionID, args, condicion, descripcion)) {
 						strB.append(" a la BDD");
 					}
@@ -5185,9 +5172,9 @@ public class Comandos {
 						objetivo.addObjIdentAInventario(obj, false);
 					}
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
-						strB.append("Création de la panoplie " + OS.getNombre() + " pour " + objetivo.getNombre());
+						strB.append("Création de la panoplie ").append(OS.getNombre()).append(" pour ").append(objetivo.getNombre());
 					} else {
-						strB.append("Creación del objeto set " + OS.getNombre() + " a " + objetivo.getNombre());
+						strB.append("Creación del objeto set ").append(OS.getNombre()).append(" a ").append(objetivo.getNombre());
 					}
 					switch (useMax) {
 						case MAXIMO :
@@ -5226,13 +5213,13 @@ public class Comandos {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "NPC inválido");
 						return;
 					}
-					final ArrayList<ObjetoModelo> objetos = new ArrayList<ObjetoModelo>();
+					final ArrayList<ObjetoModelo> objetos = new ArrayList<>();
 					for (final String a : infos[2].split(",")) {
 						try {
 							objModelo = Mundo.getObjetoModelo(Integer.parseInt(a));
 							if (objModelo != null) {
 								objetos.add(objModelo);
-								strB.append("\n" + objModelo.getNombre());
+								strB.append("\n").append(objModelo.getNombre());
 							}
 						} catch (final Exception e) {}
 					}
@@ -5261,13 +5248,13 @@ public class Comandos {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "NPC inválido");
 						return;
 					}
-					final ArrayList<ObjetoModelo> objetos = new ArrayList<ObjetoModelo>();
+					final ArrayList<ObjetoModelo> objetos = new ArrayList<>();
 					for (final String a : infos[2].split(",")) {
 						try {
 							objModelo = Mundo.getObjetoModelo(Integer.parseInt(a));
 							if (objModelo != null) {
 								objetos.add(objModelo);
-								strB.append("\n" + objModelo.getNombre());
+								strB.append("\n").append(objModelo.getNombre());
 							}
 						} catch (final Exception e) {}
 					}
@@ -6493,11 +6480,9 @@ public class Comandos {
 					}
 					objetivo.addObjIdentAInventario(obj, false);
 					if (_cuenta.getIdioma().equalsIgnoreCase("fr")) {
-						strB.append("Creatio de l'objet " + OM.getNombre() + " (" + id + ") en " + cantInt + " exemplaires pour "
-						+ objetivo.getNombre());
+						strB.append("Creatio de l'objet ").append(OM.getNombre()).append(" (").append(id).append(") en ").append(cantInt).append(" exemplaires pour ").append(objetivo.getNombre());
 					} else {
-						strB.append("Se creó " + cantInt + " objeto(s) " + OM.getNombre() + " (" + id + ") para el personaje "
-						+ objetivo.getNombre());
+						strB.append("Se creó ").append(cantInt).append(" objeto(s) ").append(OM.getNombre()).append(" (").append(id).append(") para el personaje ").append(objetivo.getNombre());
 					}
 					switch (useMax) {
 						case MAXIMO :
@@ -6545,7 +6530,8 @@ public class Comandos {
 		ObjetoModelo objMod;
 		Personaje objetivo = null;
 		Cuenta cuenta;
-		String str = "", args = "";
+		StringBuilder str = new StringBuilder();
+		String args = "";
 		switch (comando.toUpperCase()) {
 			case "RELOAD_CONFIG" :
 			case "CARGAR_CONFIGURACION" :
@@ -6587,8 +6573,8 @@ public class Comandos {
 			case "CREAR_SONIDO" :
 				try {
 					infos = mensaje.split(" ", 2);
-					str = infos[1];
-					String mp3 = TextoAVoz.crearMP3(str, "");
+					str = new StringBuilder(infos[1]);
+					String mp3 = TextoAVoz.crearMP3(str.toString(), "");
 					if (mp3 == null) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "No se pudo crear el sonido");
 					} else if (mp3.isEmpty()) {
@@ -6608,8 +6594,8 @@ public class Comandos {
 			case "CREAR_SONIDO_IDIOMA" :
 				try {
 					infos = mensaje.split(" ", 3);
-					str = infos[2];
-					String mp3 = TextoAVoz.crearMP3(str, infos[1]);
+					str = new StringBuilder(infos[2]);
+					String mp3 = TextoAVoz.crearMP3(str.toString(), infos[1]);
 					if (mp3 == null) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "No se pudo crear el sonido");
 					} else if (mp3.isEmpty()) {
@@ -6703,7 +6689,7 @@ public class Comandos {
 					String npcs = "";
 					try {
 						idInt = Integer.parseInt(infos[1]);
-						str = infos[2];
+						str = new StringBuilder(infos[2]);
 						prioridad = Byte.parseByte(infos[3]);
 					} catch (Exception e) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Argumentos invalidos");
@@ -6714,12 +6700,12 @@ public class Comandos {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Objeto modelo no existe");
 						return;
 					}
-					if (str.isEmpty()) {
+					if (str.length() == 0) {
 						GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Objetos necesarios invalidos");
 						return;
 					}
-					Mundo.addObjetoTrueque(objMod.getID(), str, prioridad, npcs);
-					GestorSQL.INSERT_OBJETO_TRUEQUE(objMod.getID(), str, prioridad, npcs, objMod.getNombre());
+					Mundo.addObjetoTrueque(objMod.getID(), str.toString(), prioridad, npcs);
+					GestorSQL.INSERT_OBJETO_TRUEQUE(objMod.getID(), str.toString(), prioridad, npcs, objMod.getNombre());
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Se agregó el objeto trueque " + objMod.getNombre() + " (" + objMod
 					.getID() + "), objetos necesarios: " + str + ", prioridad: " + prioridad + ", npcs: " + npcs);
 				} catch (final Exception e) {
@@ -6729,7 +6715,7 @@ public class Comandos {
 			case "INICIAR_ATAQUE" :
 			case "START_ATTACK" :
 			case "STARTATTACK" :
-				str = infos[1];
+				str = new StringBuilder(infos[1]);
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Start the Attack: " + str);
 				GestorSalida.enviarTodos(1, "AjI" + str);
 				break;
@@ -6742,7 +6728,7 @@ public class Comandos {
 			case "PAQUETE_ATAQUE" :
 			case "PACKET_ATTACK" :
 			case "PACKETATTACK" :
-				str = infos[1];
+				str = new StringBuilder(infos[1]);
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Send Packet of Attack: " + str);
 				GestorSalida.enviarTodos(1, "AjE" + str);
 				break;
@@ -6901,9 +6887,9 @@ public class Comandos {
 				: _perso.getMapa(), celda1, celda2, idInt, null, true);
 				if (path != null) {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Path es " + path._primero + " y " + path._segundo.size());
-					String s = "";
+					StringBuilder s = new StringBuilder();
 					for (Celda c : path._segundo) {
-						s += c.getID() + " ";
+						s.append(c.getID()).append(" ");
 					}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "celdas " + s);
 				} else
@@ -7058,13 +7044,13 @@ public class Comandos {
 					return;
 				}
 				for (byte i : Constantes.POSICIONES_EQUIPAMIENTO) {
-					if (!str.isEmpty()) {
-						str += ", ";
+					if (str.length() > 0) {
+						str.append(", ");
 					}
 					if (objetivo.getObjPosicion(i) == null) {
-						str += "null";
+						str.append("null");
 					} else {
-						str += objetivo.getObjPosicion(i).getID();
+						str.append(objetivo.getObjPosicion(i).getID());
 					}
 				}
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Stuff de " + objetivo.getNombre() + " es " + str);
@@ -7623,7 +7609,7 @@ public class Comandos {
 					return;
 				}
 				try {
-					str = infos[2];
+					str = new StringBuilder(infos[2]);
 				} catch (final Exception e) {}
 				objMod = Mundo.getObjetoModelo(idInt);
 				if (objMod == null) {
@@ -7632,8 +7618,8 @@ public class Comandos {
 				}
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Se modifico los statsModelo del objeto " + objMod.getNombre()
 				+ ": \nAntiguo Stats - " + objMod.getStatsModelo() + "\nNuevos Stats - " + str);
-				objMod.setStatsModelo(str);
-				GestorSQL.UPDATE_STATS_OBJETO_MODELO(idInt, str);
+				objMod.setStatsModelo(str.toString());
+				GestorSQL.UPDATE_STATS_OBJETO_MODELO(idInt, str.toString());
 				try {
 					for (final NPCModelo npcMod : Mundo.NPC_MODELOS.values()) {
 						if (npcMod.getObjAVender().contains(objMod)) {
@@ -7760,11 +7746,11 @@ public class Comandos {
 						return;
 					}
 					try {
-						str = infos[2];
+						str = new StringBuilder(infos[2]);
 					} catch (final Exception e) {}
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "Cambio stats del objeto " + idInt + ": \nAntiguo Stats - " + obj
 					.convertirStatsAString(true) + "\nNuevos Stats - " + str);
-					obj.convertirStringAStats(str);
+					obj.convertirStringAStats(str.toString());
 					if (_perso.getObjeto(idInt) != null) {
 						if (_perso.enLinea()) {
 							GestorSalida.ENVIAR_OCK_ACTUALIZA_OBJETO(_perso, obj);
@@ -7812,12 +7798,12 @@ public class Comandos {
 					return;
 				}
 				if (infos.length > 2) {
-					str = infos[2];
+					str = new StringBuilder(infos[2]);
 				} else {
 					GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La contraseña no puede estar vacia");
 					return;
 				}
-				GestorSQL.CAMBIAR_CONTRASEÑA_CUENTA(str, consultado.getID());
+				GestorSQL.CAMBIAR_CONTRASEÑA_CUENTA(str.toString(), consultado.getID());
 				GestorSalida.ENVIAR_BAT2_CONSOLA(_perso, "La cuenta " + consultado.getNombre() + " ha cambiado su contraseña a "
 				+ str);
 				break;

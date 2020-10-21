@@ -72,9 +72,9 @@ import sprites.Preguntador;
 public class ServidorSocket implements Runnable {
 	private static HashMap<String, Integer> POSIBLES_ATAQUES = new HashMap<>();
 	public static Map<String, StringBuilder> REGISTROS = new ConcurrentHashMap<>();
-	public static ArrayList<String> JUGADORES_REGISTRAR = new ArrayList<String>();
-	public static ArrayList<Integer> RASTREAR_CUENTAS = new ArrayList<Integer>();
-	public static ArrayList<String> RASTREAR_IPS = new ArrayList<String>();
+	public static ArrayList<String> JUGADORES_REGISTRAR = new ArrayList<>();
+	public static ArrayList<Integer> RASTREAR_CUENTAS = new ArrayList<>();
+	public static ArrayList<String> RASTREAR_IPS = new ArrayList<>();
 	//
 	// dinamicos
 	//
@@ -126,7 +126,7 @@ public class ServidorSocket implements Runnable {
 				return;
 			}
 			POSIBLES_ATAQUES.put(_IP, 0);
-			_accionesDeJuego = new TreeMap<Integer, AccionDeJuego>();
+			_accionesDeJuego = new TreeMap<>();
 			_ultPackets = new String[7];
 			_timePackets = new long[7];
 			_aKeys = new String[16];
@@ -314,8 +314,8 @@ public class ServidorSocket implements Runnable {
 				if (REGISTROS.get(_cuenta.getNombre()) == null) {
 					REGISTROS.put(_cuenta.getNombre(), new StringBuilder());
 				}
-				REGISTROS.get(_cuenta.getNombre()).append(System.currentTimeMillis() + " - " + new Date(System
-				.currentTimeMillis()) + " : \t" + packet + "\n");
+				REGISTROS.get(_cuenta.getNombre()).append(System.currentTimeMillis()).append(" - ").append(new Date(System
+                        .currentTimeMillis())).append(" : \t").append(packet).append("\n");
 			}
 		} catch (Exception e) {}
 	}
@@ -783,7 +783,7 @@ public class ServidorSocket implements Runnable {
 				if (lista.length() > 0) {
 					lista.append(";");
 				}
-				lista.append("0~" + Integer.toString(Integer.parseInt(str), 16) + "~1~~" + efectos);
+				lista.append("0~").append(Integer.toString(Integer.parseInt(str), 16)).append("~1~~").append(efectos);
 			} catch (final Exception e) {}
 		}
 		if (lista.length() == 0) {
@@ -1743,7 +1743,7 @@ public class ServidorSocket implements Runnable {
 					if (stats.length() > 0) {
 						stats.append(",");
 					}
-					stats.append(Integer.toHexString(statID) + "#" + Integer.toHexString(cantidad) + "#0#0#0d0+" + cantidad);
+					stats.append(Integer.toHexString(statID)).append("#").append(Integer.toHexString(cantidad)).append("#0#0#0d0+").append(cantidad);
 					ids.add(statID);
 					if (ids.size() >= 9) {
 						break;
@@ -1761,7 +1761,7 @@ public class ServidorSocket implements Runnable {
 				if (stats.length() > 0) {
 					stats.append(",");
 				}
-				stats.append(Integer.toHexString(Constantes.STAT_FACBRICADO_POR) + "#0#0#0#" + _perso.getNombre());
+				stats.append(Integer.toHexString(Constantes.STAT_FACBRICADO_POR)).append("#0#0#0#").append(_perso.getNombre());
 			}
 			error = 12;
 			if (GestorSQL.RESTAR_OGRINAS(_cuenta, ogrinas, _perso)) {
@@ -3266,7 +3266,7 @@ public class ServidorSocket implements Runnable {
 				GestorSalida.ENVIAR_BN_NADA(_perso);
 				return;
 			}
-			if (_perso.getNombre() != "Elbusta") {
+			if (!_perso.getNombre().equals("Elbusta")) {
 				if (_perso.getGremio() == null) {
 					GestorSalida.ENVIAR_BN_NADA(_perso);
 					return;
@@ -3583,8 +3583,7 @@ public class ServidorSocket implements Runnable {
 			if (str.length() > 0) {
 				str.append("|");
 			}
-			str.append(miembro.getMapa().getX() + ";" + miembro.getMapa().getY() + ";" + miembro.getMapa().getID() + ";2;"
-			+ miembro.getID() + ";" + miembro.getNombre());
+			str.append(miembro.getMapa().getX()).append(";").append(miembro.getMapa().getY()).append(";").append(miembro.getMapa().getID()).append(";2;").append(miembro.getID()).append(";").append(miembro.getNombre());
 		}
 		GestorSalida.ENVIAR_IH_COORDENADAS_UBICACION(_perso, str.toString());
 	}
@@ -4138,12 +4137,12 @@ public class ServidorSocket implements Runnable {
 				if (str.length() > 0) {
 					str.append(";");
 				}
-				str.append(obj.getID() + "," + obj.getPosicion());
+				str.append(obj.getID()).append(",").append(obj.getPosicion());
 			} else {
 				if (cond.length() > 0) {
 					cond.append(";");
 				}
-				cond.append(obj.getID() + "," + obj.getPosicion());
+				cond.append(obj.getID()).append(",").append(obj.getPosicion());
 			}
 		}
 		if (cond.length() > 0) {
@@ -5766,7 +5765,7 @@ public class ServidorSocket implements Runnable {
 				case Constantes.EMOTE_PEDO :
 				case Constantes.EMOTE_MOSTRAR_ARMA :
 				case Constantes.EMOTE_BESO :
-					ArrayList<Montura> monturas = new ArrayList<Montura>();
+					ArrayList<Montura> monturas = new ArrayList<>();
 					for (final Montura montura : cercado.getCriando().values()) {
 						if (montura.getDueñoID() == _perso.getID()) {
 							monturas.add(montura);

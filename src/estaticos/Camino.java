@@ -41,10 +41,9 @@ public class Camino {
 				// final int nroLados = 4;
 				final byte[] diagonales = {ancho, (byte) (ancho - 1), (byte) -ancho, (byte) -(ancho - 1)};
 				final byte[] unos = {1, 1, 1, 1};
-				final Map<Short, Celda> celdas = new TreeMap<Short, Celda>();
-				celdas.putAll(mapa.getCeldas());
-				final Map<Short, CeldaCamino> celdasCamino1 = new TreeMap<Short, CeldaCamino>();
-				final Map<Short, CeldaCamino> celdasCamino2 = new TreeMap<Short, CeldaCamino>();
+				final Map<Short, Celda> celdas = new TreeMap<Short, Celda>(mapa.getCeldas());
+				final Map<Short, CeldaCamino> celdasCamino1 = new TreeMap<>();
+				final Map<Short, CeldaCamino> celdasCamino2 = new TreeMap<>();
 				boolean ok = true;
 				final CeldaCamino newCeldaCamino = new CeldaCamino();
 				newCeldaCamino.id = celdaInicio;
@@ -74,7 +73,7 @@ public class Camino {
 					}
 					if (celdaCamino.id == celdaDestino) {
 						// se llego al objetivo
-						final ArrayList<Celda> tempCeldas = new ArrayList<Celda>();
+						final ArrayList<Celda> tempCeldas = new ArrayList<>();
 						while (celdaCamino.id != celdaInicio) {
 							if (celdaCamino.movimiento == 0) {
 								tempCeldas.clear();
@@ -83,7 +82,7 @@ public class Camino {
 							}
 							celdaCamino = celdaCamino.anterior;
 						}
-						return new Duo<Integer, ArrayList<Celda>>(intentos, tempCeldas);
+						return new Duo<>(intentos, tempCeldas);
 					}
 					boolean enemigoAlr = false;
 					if (tacleado != null) {
@@ -203,13 +202,13 @@ public class Camino {
 			switch (resultado) {
 				case "invisible" :
 					movimientos += nroCeldas;
-					nuevoPath.append(cDir + Encriptador.celdaIDAHash(nuevaCelda));
+					nuevoPath.append(cDir).append(Encriptador.celdaIDAHash(nuevaCelda));
 					pathRef.set(nuevoPath.toString());
 					return (short) (movimientos + 20000);
 				case "stop" :
 				case "trampa" :
 					movimientos += nroCeldas;
-					nuevoPath.append(cDir + Encriptador.celdaIDAHash(nuevaCelda));
+					nuevoPath.append(cDir).append(Encriptador.celdaIDAHash(nuevaCelda));
 					pathRef.set(nuevoPath.toString());
 					return (short) (movimientos + 10000);
 				case "no" :
@@ -220,7 +219,7 @@ public class Camino {
 					movimientos += nroCeldas;
 					break;
 			}
-			nuevoPath.append(cDir + Encriptador.celdaIDAHash(nuevaCelda));
+			nuevoPath.append(cDir).append(Encriptador.celdaIDAHash(nuevaCelda));
 		}
 		pathRef.set(nuevoPath.toString());
 		return movimientos;
@@ -487,7 +486,7 @@ public class Camino {
 	public static Duo<Integer, Short> getCeldaDespuesDeEmpujon(final Pelea pelea, final Celda celdaInicio,
 	final Celda celdaObjetivo, int movimientos) {
 		if (celdaInicio.getID() == celdaObjetivo.getID()) {
-			return new Duo<Integer, Short>(-1, (short) -1);
+			return new Duo<>(-1, (short) -1);
 		}
 		Mapa mapa = pelea.getMapaCopia();
 		int dir = direccionEntreDosCeldas(mapa, celdaInicio.getID(), celdaObjetivo.getID(), true);
@@ -500,22 +499,22 @@ public class Camino {
 			final short sigCeldaID = getSigIDCeldaMismaDir(celdaID, dir, mapa, true);
 			Celda sigCelda = mapa.getCelda(sigCeldaID);
 			if (sigCelda == null || !sigCelda.esCaminable(true) || sigCelda.getPrimerLuchador() != null) {
-				return new Duo<Integer, Short>((movimientos - i), celdaID);
+				return new Duo<>((movimientos - i), celdaID);
 			}
 			if (pelea.getTrampas() != null) {
 				for (final Trampa trampa : pelea.getTrampas()) {
 					final int dist = distanciaDosCeldas(mapa, trampa.getCelda().getID(), sigCeldaID);
 					if (dist <= trampa.getTamaño()) {
-						return new Duo<Integer, Short>(0, sigCeldaID);
+						return new Duo<>(0, sigCeldaID);
 					}
 				}
 			}
 			celdaID = sigCeldaID;
 		}
 		if (celdaID == celdaObjetivo.getID()) {
-			return new Duo<Integer, Short>(-1, (short) -1);
+			return new Duo<>(-1, (short) -1);
 		}
-		return new Duo<Integer, Short>(0, celdaID);
+		return new Duo<>(0, celdaID);
 	}
 	
 	public static int getDireccionOpuesta(int dir) {
@@ -657,7 +656,7 @@ public class Camino {
 	
 	public static ArrayList<Celda> celdasAfectadasEnElArea(final Mapa mapa, short celdaIDObjetivo,
 	final short celdaIDLanzador, final String areaEfecto) {
-		final ArrayList<Celda> celdas = new ArrayList<Celda>();
+		final ArrayList<Celda> celdas = new ArrayList<>();
 		if (mapa.getCelda(celdaIDObjetivo) == null) {
 			return celdas;
 		}
@@ -759,7 +758,7 @@ public class Camino {
 	}
 	
 	public static ArrayList<Short> celdasPorDistancia(final Celda celda, final Mapa mapa, final int distancia) {
-		ArrayList<Short> celdas = new ArrayList<Short>();
+		ArrayList<Short> celdas = new ArrayList<>();
 		byte x = celda.getCoordX(), y = celda.getCoordY();
 		byte[][] f = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
 		for (int x2 = 0; x2 <= distancia; x2++) {
@@ -776,7 +775,7 @@ public class Camino {
 	}
 	
 	private static ArrayList<Short> celdasPorCruz(final Celda celda, final Mapa mapa, final int distancia) {
-		ArrayList<Short> celdas = new ArrayList<Short>();
+		ArrayList<Short> celdas = new ArrayList<>();
 		byte x = celda.getCoordX(), y = celda.getCoordY();
 		for (byte[] b : COORD_ALREDEDOR) {
 			Celda cell = mapa.getCeldaPorPos((byte) (x + (b[0] * distancia)), (byte) (y + (b[1] * distancia)));
@@ -789,7 +788,7 @@ public class Camino {
 	}
 	
 	private static ArrayList<Short> celdasPorLinea(final Celda celda, final Mapa mapa, final int distancia, int dir) {
-		ArrayList<Short> celdas = new ArrayList<Short>();
+		ArrayList<Short> celdas = new ArrayList<>();
 		if (dir == -1) {
 			return celdas;
 		}
@@ -807,7 +806,7 @@ public class Camino {
 	
 	public static ArrayList<Celda> celdasPosibleLanzamiento(final StatHechizo SH, final Luchador lanzador,
 	final Mapa mapa, short tempCeldaIDLanzador, short celdaObjetivo) {
-		final ArrayList<Celda> celdasF = new ArrayList<Celda>();
+		final ArrayList<Celda> celdasF = new ArrayList<>();
 		Personaje perso = lanzador.getPersonaje();
 		int maxAlc = SH.getMaxAlc();
 		final int minAlc = SH.getMinAlc();
@@ -1024,7 +1023,7 @@ public class Camino {
 		int distancia = 1000;
 		short celdaID = celdaInicio;
 		if (celdasProhibidas == null) {
-			celdasProhibidas = new ArrayList<Celda>();
+			celdasProhibidas = new ArrayList<>();
 		}
 		final char[] dirs = listaDirEntreDosCeldas(mapa, celdaInicio, celdaDestino);
 		for (final char d : dirs) {
@@ -1045,7 +1044,7 @@ public class Camino {
 	
 	public static ArrayList<Short> celdasDeMovimiento(final Pelea pelea, final Celda celdaInicio, boolean filtro,
 	boolean ocupadas, Luchador tacleado) {
-		final ArrayList<Short> celdas = new ArrayList<Short>();
+		final ArrayList<Short> celdas = new ArrayList<>();
 		if (pelea.getPMLuchadorTurno() <= 0) {
 			return celdas;
 		}
@@ -1081,7 +1080,7 @@ public class Camino {
 	}
 	
 	public static short celdaMoverSprite(final Mapa mapa, final short celda) {
-		final ArrayList<Short> celdasPosibles = new ArrayList<Short>();
+		final ArrayList<Short> celdasPosibles = new ArrayList<>();
 		final short ancho = mapa.getAncho();
 		final short[] dir = {(short) -ancho, (short) -(ancho - 1), (short) (ancho - 1), ancho};
 		for (final short element : dir) {

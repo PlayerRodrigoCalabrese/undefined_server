@@ -425,8 +425,8 @@ public class Formulas {
 		int totalNivLuchGanador = 0, totalNivLuchPerdedor = 0;
 		byte cantGanadores = 0, cantPerdedores = 0;
 		ArrayList<String> ips = new ArrayList<>(16);
-		ArrayList<Luchador> oGanadores = new ArrayList<Luchador>();
-		ArrayList<Luchador> oPerdedores = new ArrayList<Luchador>();
+		ArrayList<Luchador> oGanadores = new ArrayList<>();
+		ArrayList<Luchador> oPerdedores = new ArrayList<>();
 		while (oGanadores.size() < ganadores.size()) {
 			int mayor = -1;
 			Luchador lTemp = null;

@@ -20,10 +20,10 @@ public class Mercadillo implements Exchanger {
 	private short _tiempoVenta;
 	private final short _maxObjCuenta, _nivelMax;
 	private final String _tipoObjPermitidos;
-	private final ArrayList<Short> _mapas = new ArrayList<Short>();
+	private final ArrayList<Short> _mapas = new ArrayList<>();
 	private final CopyOnWriteArrayList<ObjetoMercadillo> _objMercadillos = new CopyOnWriteArrayList<>();
-	private final Map<Integer, TipoObjetos> _tipoObjetos = new HashMap<Integer, TipoObjetos>();
-	private final Map<Integer, Duo<Integer, Integer>> _lineas = new HashMap<Integer, Duo<Integer, Integer>>();
+	private final Map<Integer, TipoObjetos> _tipoObjetos = new HashMap<>();
+	private final Map<Integer, Duo<Integer, Integer>> _lineas = new HashMap<>();
 	
 	public Mercadillo(final int id, final String mapaID, final int tasa, final short tiempoVenta,
 	final short maxObjCuenta, final short nivelMax, final String tipoObj) {
@@ -142,7 +142,7 @@ public class Mercadillo implements Exchanger {
 		}
 		// objMerca.setMercadilloID(_id);
 		_tipoObjetos.get(tipoObj).addModeloVerificacion(objMerca);
-		_lineas.put(objMerca.getLineaID(), new Duo<Integer, Integer>(tipoObj, modeloID));
+		_lineas.put(objMerca.getLineaID(), new Duo<>(tipoObj, modeloID));
 		_objMercadillos.add(objMerca);
 	}
 	

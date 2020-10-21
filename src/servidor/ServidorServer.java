@@ -23,9 +23,9 @@ public class ServidorServer extends Thread {
 	private static ServerSocket _serverSocket;
 	private static Timer segundero;
 	private static Map<String, ArrayList<ServidorSocket>> _IpsClientes = new ConcurrentHashMap<>();
-	private static CopyOnWriteArrayList<ServidorSocket> _clientes = new CopyOnWriteArrayList<ServidorSocket>();
-	private static CopyOnWriteArrayList<Cuenta> _cuentasEspera = new CopyOnWriteArrayList<Cuenta>();
-	private static CopyOnWriteArrayList<String> _IpsEspera = new CopyOnWriteArrayList<String>();
+	private static CopyOnWriteArrayList<ServidorSocket> _clientes = new CopyOnWriteArrayList<>();
+	private static CopyOnWriteArrayList<Cuenta> _cuentasEspera = new CopyOnWriteArrayList<>();
+	private static CopyOnWriteArrayList<String> _IpsEspera = new CopyOnWriteArrayList<>();
 	public static int _j = 0, _recordJugadores = 0;
 	public static int[] _conexiones = new int[5];
 	public static int _segundosON = 0;
@@ -243,7 +243,7 @@ public class ServidorServer extends Thread {
 	public static void addIPsClientes(ServidorSocket s) {
 		String ip = s.getActualIP();
 		if (_IpsClientes.get(ip) == null) {
-			_IpsClientes.put(ip, new ArrayList<ServidorSocket>());
+			_IpsClientes.put(ip, new ArrayList<>());
 		}
 		if (!_IpsClientes.get(ip).contains(s)) {
 			_IpsClientes.get(ip).add(s);
@@ -337,12 +337,12 @@ public class ServidorServer extends Thread {
 				if (ep.getPersonaje() != null) {
 					if (!ep.getPersonaje().enLinea()) {
 						ep.cerrarSocket(true, "listaClientesBug(1)");
-						str.append("\n" + ep.getActualIP());
+						str.append("\n").append(ep.getActualIP());
 					}
 				} else {
 					if (System.currentTimeMillis() - ep.getTiempoUltPacket() > segundos * 1000) {
 						ep.cerrarSocket(true, "listaClientesBug(2)");
-						str.append("\n" + ep.getActualIP());
+						str.append("\n").append(ep.getActualIP());
 					}
 				}
 			} catch (final Exception e) {}
@@ -384,13 +384,13 @@ public class ServidorServer extends Thread {
 	
 	public static String getFechaHoy() {
 		final Calendar hoy = Calendar.getInstance();
-		String dia = hoy.get(Calendar.DAY_OF_MONTH) + "";
+		StringBuilder dia = new StringBuilder(hoy.get(Calendar.DAY_OF_MONTH) + "");
 		while (dia.length() < 2) {
-			dia = "0" + dia;
+			dia.insert(0, "0");
 		}
-		String mes = (hoy.get(Calendar.MONTH)) + "";
+		StringBuilder mes = new StringBuilder((hoy.get(Calendar.MONTH)) + "");
 		while (mes.length() < 2) {
-			mes = "0" + mes;
+			mes.insert(0, "0");
 		}
 		int año = hoy.get(Calendar.YEAR);
 		return "BD" + año + "|" + mes + "|" + dia;

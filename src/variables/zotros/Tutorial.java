@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Tutorial {
 	private final int _id;
-	private final ArrayList<Accion> _recompensa = new ArrayList<Accion>(4);
+	private final ArrayList<Accion> _recompensa = new ArrayList<>(4);
 	private Accion _inicio, _final;
 	
 	public Tutorial(final int id, final String recompensa, final String inicio, final String fin) {

@@ -9,8 +9,8 @@ import estaticos.Constantes;
 public class Clase {
 	private int _id, _PDV = 50;
 	private final short _mapaInicio, _celdaInicio;
-	private ArrayList<Integer> _gfxs = new ArrayList<Integer>(3);
-	private ArrayList<Integer> _tallas = new ArrayList<Integer>(3);
+	private ArrayList<Integer> _gfxs = new ArrayList<>(3);
+	private ArrayList<Integer> _tallas = new ArrayList<>(3);
 	private ArrayList<BoostStat> _boostFuerza = new ArrayList<>();
 	private ArrayList<BoostStat> _boostInteligencia = new ArrayList<>();
 	private ArrayList<BoostStat> _boostVitalidad = new ArrayList<>();
